@@ -11,7 +11,7 @@ import {
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { SearchRepository, TagRepository } from '../../src/db/repositories';
-import type { SearchFilters } from '../../src/db/repositories/SearchRepository';
+import type { SearchFilters } from '../../src/types';
 import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
 import { QUICK_TAGS } from '../../src/constants/quickTags';
 import { Background } from '../../src/components/Background';
@@ -668,10 +668,10 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       borderWidth: 1,
       borderColor: theme.borderLight,
     },
-    resultIconTrip: {
+    resultIconChapter: {
       backgroundColor: theme.accentSoft,
     },
-    resultIconEntry: {
+    resultIconMemory: {
       backgroundColor: theme.backgroundSecondary,
     },
     resultContent: {
@@ -682,7 +682,7 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       fontFamily: fonts.heading,
       color: theme.text,
     },
-    resultTrip: {
+    resultChapter: {
       fontSize: fontSize.sm,
       fontFamily: fonts.body,
       color: theme.textSecondary,

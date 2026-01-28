@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import * as FileSystem from 'expo-file-system/legacy';
 import type { UnlockedBadge, Badge } from '../utils/badges';
 import { evaluateBadges } from '../utils/badges';
-import type { TravelStats, PostInstallStats } from '../db/repositories/StatsRepository';
+import type { BabyStats, PostInstallStats } from '../db/repositories/StatsRepository';
 
 interface BadgeState {
   unlockedBadges: UnlockedBadge[];
@@ -10,7 +10,7 @@ interface BadgeState {
   isLoaded: boolean;
   pendingToast: Badge | null;
   loadBadges: () => Promise<void>;
-  checkAndUnlockBadges: (stats: TravelStats, postInstallStats: PostInstallStats) => Promise<Badge[]>;
+  checkAndUnlockBadges: (stats: BabyStats, postInstallStats: PostInstallStats) => Promise<Badge[]>;
   getAppInstalledAt: () => string | null;
   clearPendingToast: () => void;
   triggerBadgeUnlock: (badge: Badge) => Promise<void>;
@@ -62,7 +62,7 @@ export const useBadgeStore = create<BadgeState>((set, get) => ({
     return get().appInstalledAt;
   },
 
-  checkAndUnlockBadges: async (stats: TravelStats, postInstallStats: PostInstallStats) => {
+  checkAndUnlockBadges: async (stats: BabyStats, postInstallStats: PostInstallStats) => {
     const { unlockedBadges, appInstalledAt } = get();
     const { unlocked, newlyUnlocked } = evaluateBadges(
       stats,

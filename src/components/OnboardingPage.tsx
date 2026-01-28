@@ -11,6 +11,7 @@ export type OnboardingPageData = {
   iconColor: string;
   title: string;
   subtitle: string;
+  image?: ImageSourcePropType;
 };
 
 type Props = {

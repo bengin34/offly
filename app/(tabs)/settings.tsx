@@ -103,7 +103,7 @@ export default function SettingsScreen() {
                 return;
               }
 
-              const summary = `${t('tabs.chapters')}: ${result.tripsImported}\n${t('common.memories')}: ${result.entriesImported}\n${t('entryForm.tagsLabel')}: ${result.tagsImported}`;
+              const summary = `${t('tabs.chapters')}: ${result.chaptersImported}\n${t('common.memories')}: ${result.memoriesImported}\n${t('entryForm.tagsLabel')}: ${result.tagsImported}`;
               if (result.success) {
                 Alert.alert(t('alerts.importComplete'), summary);
               } else {

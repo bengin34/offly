@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { spacing, borderRadius } from '../constants';
 import { useTheme } from '../hooks/useTheme';
 import { useI18n } from '../hooks/useI18n';
-import type { ShareFormat } from '../utils/cityShare';
+export type ShareFormat = 'text' | 'image' | 'pdf';
 
 interface ShareOption {
   format: ShareFormat;

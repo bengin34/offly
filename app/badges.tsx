@@ -10,7 +10,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useBadgeStore } from '../src/stores';
 import { BADGES, getBadgeProgress, type UnlockedBadge, type Badge } from '../src/utils/badges';
-import { StatsRepository, type TravelStats, type PostInstallStats } from '../src/db/repositories';
+import { StatsRepository, type BabyStats, type PostInstallStats } from '../src/db/repositories';
 import { BadgeDetailDialog } from '../src/components/BadgeDetailDialog';
 import { Background } from '../src/components/Background';
 import { useI18n, useTheme } from '../src/hooks';
@@ -20,7 +20,7 @@ export default function AllBadgesScreen() {
   const theme = useTheme();
   const { t } = useI18n();
   const { unlockedBadges, loadBadges, getAppInstalledAt } = useBadgeStore();
-  const [stats, setStats] = useState<TravelStats | null>(null);
+  const [stats, setStats] = useState<BabyStats | null>(null);
   const [postInstallStats, setPostInstallStats] = useState<PostInstallStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
