@@ -103,7 +103,7 @@ export default function OnboardingScreen() {
     [currentIndex]
   );
 
-  const goToNext = useCallback(async () => {
+  const goToNext = useCallback(() => {
     if (currentIndex < pages.length - 1) {
       const nextIndex = currentIndex + 1;
       flatListRef.current?.scrollToIndex({
@@ -114,13 +114,9 @@ export default function OnboardingScreen() {
       return;
     }
 
-    // Show paywall at end of onboarding (skip if already pro)
-    if (!isPro) {
-      await presentPaywall();
-    }
-    await completeOnboarding();
-    router.replace('/');
-  }, [completeOnboarding, currentIndex, pages.length, router, isPro, presentPaywall]);
+    // Navigate to baby setup (paywall is shown there after setup)
+    router.replace('/baby-setup');
+  }, [currentIndex, pages.length, router]);
 
   const goToBack = useCallback(() => {
     if (currentIndex === 0) return;
@@ -132,14 +128,10 @@ export default function OnboardingScreen() {
     setCurrentIndex(previousIndex);
   }, [currentIndex]);
 
-  const handleSkip = useCallback(async () => {
-    // Show paywall at end of onboarding (skip if already pro)
-    if (!isPro) {
-      await presentPaywall();
-    }
-    await completeOnboarding();
-    router.replace('/');
-  }, [completeOnboarding, router, isPro, presentPaywall]);
+  const handleSkip = useCallback(() => {
+    // Skip carousel and go directly to baby setup
+    router.replace('/baby-setup');
+  }, [router]);
 
   const styles = createStyles(theme);
   const isLastPage = currentIndex === pages.length - 1;

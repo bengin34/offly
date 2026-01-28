@@ -6,7 +6,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { getDatabase } from '../src/db/database';
 import { colors, fonts } from '../src/constants';
 import { useI18n, useTheme, SubscriptionProvider } from '../src/hooks';
-import { useLocaleStore, useThemeStore, usePaywallStore } from '../src/stores';
+import { useLocaleStore, useThemeStore, usePaywallStore, useBackupStore } from '../src/stores';
 import { useOnboardingStore } from '../src/stores/onboardingStore';
 
 function AppContent() {
@@ -19,7 +19,7 @@ function AppContent() {
 
   useEffect(() => {
     if (!isOnboardingLoaded) return;
-    const isOnboardingRoute = segments[0] === 'onboarding';
+    const isOnboardingRoute = segments[0] === 'onboarding' || segments[0] === 'baby-setup';
 
     if (!hasCompletedOnboarding && !isOnboardingRoute) {
       router.replace('/onboarding');
@@ -60,6 +60,12 @@ function AppContent() {
         />
         <Stack.Screen
           name="onboarding"
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="baby-setup"
           options={{
             headerShown: false,
           }}
@@ -109,6 +115,34 @@ function AppContent() {
           }}
         />
         <Stack.Screen
+          name="pregnancy-journal/index"
+          options={{
+            title: 'Pregnancy Journal',
+          }}
+        />
+        <Stack.Screen
+          name="pregnancy-journal/new-entry"
+          options={{
+            title: 'New Journal Entry',
+            presentation: 'modal',
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="vault/[id]"
+          options={{
+            title: 'Vault',
+          }}
+        />
+        <Stack.Screen
+          name="vault/new-entry"
+          options={{
+            title: 'New Letter',
+            presentation: 'modal',
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
           name="export"
           options={{
             title: t('settings.exportTitle'),
@@ -131,11 +165,12 @@ export default function RootLayout() {
   const loadLocale = useLocaleStore((state) => state.loadLocale);
   const loadOnboardingState = useOnboardingStore((state) => state.loadOnboardingState);
   const loadPaywallState = usePaywallStore((state) => state.loadPaywallState);
+  const loadBackupState = useBackupStore((state) => state.loadBackupState);
 
   useEffect(() => {
     async function initializeApp() {
       try {
-        await Promise.all([getDatabase(), loadTheme(), loadLocale(), loadOnboardingState(), loadPaywallState()]);
+        await Promise.all([getDatabase(), loadTheme(), loadLocale(), loadOnboardingState(), loadPaywallState(), loadBackupState()]);
         setIsReady(true);
       } catch (error) {
         console.error('Failed to initialize app:', error);
@@ -144,7 +179,7 @@ export default function RootLayout() {
     }
 
     initializeApp();
-  }, [loadTheme, loadLocale, loadPaywallState]);
+  }, [loadTheme, loadLocale, loadPaywallState, loadBackupState]);
 
   if (!isReady) {
     return (

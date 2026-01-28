@@ -9,12 +9,14 @@ interface ChapterSearchRow {
 
 interface MemorySearchRow {
   id: string;
-  chapter_id: string;
+  chapter_id: string | null;
+  vault_id: string | null;
+  is_pregnancy_journal: number;
   memory_type: MemoryType;
   title: string;
   description: string | null;
   importance: number | null;
-  chapter_title: string;
+  chapter_title: string | null;
 }
 
 interface TagSearchRow {
@@ -65,8 +67,11 @@ export const SearchRepository = {
       }
     }
 
-    // Search memories
-    if (showMemories) {
+    // Search memories (including vault entries and pregnancy journal)
+    const showVaults = !filters?.resultType || filters.resultType === 'all' || filters.resultType === 'vault';
+    const showPregnancy = !filters?.resultType || filters.resultType === 'all' || filters.resultType === 'pregnancy_journal';
+
+    if (showMemories || showVaults || showPregnancy) {
       // Build dynamic WHERE clause based on filters
       let memoryWhereClause = '(m.title LIKE ? OR m.description LIKE ?)';
       const memoryParams: (string | number)[] = [searchPattern, searchPattern];
@@ -86,10 +91,19 @@ export const SearchRepository = {
         memoryParams.push(filters.chapterId);
       }
 
+      // Filter by result type
+      if (filters?.resultType === 'memory') {
+        memoryWhereClause += ' AND m.vault_id IS NULL AND m.is_pregnancy_journal = 0';
+      } else if (filters?.resultType === 'vault') {
+        memoryWhereClause += ' AND m.vault_id IS NOT NULL';
+      } else if (filters?.resultType === 'pregnancy_journal') {
+        memoryWhereClause += ' AND m.is_pregnancy_journal = 1';
+      }
+
       const memoryRows = await db.getAllAsync<MemorySearchRow>(
-        `SELECT m.id, m.chapter_id, m.memory_type, m.title, m.description, m.importance, c.title as chapter_title
+        `SELECT m.id, m.chapter_id, m.vault_id, m.is_pregnancy_journal, m.memory_type, m.title, m.description, m.importance, c.title as chapter_title
          FROM memories m
-         INNER JOIN chapters c ON m.chapter_id = c.id
+         LEFT JOIN chapters c ON m.chapter_id = c.id
          WHERE ${memoryWhereClause}`,
         memoryParams
       );
@@ -117,16 +131,20 @@ export const SearchRepository = {
           matchedText = row.description;
         }
 
+        const resultType = row.vault_id ? 'vault' as const : 'memory' as const;
+
         results.push({
-          type: 'memory',
+          type: resultType,
           id: row.id,
           title: row.title,
           matchedField,
           matchedText,
-          chapterId: row.chapter_id,
-          chapterTitle: row.chapter_title,
+          chapterId: row.chapter_id ?? undefined,
+          chapterTitle: row.chapter_title ?? undefined,
+          vaultId: row.vault_id ?? undefined,
           memoryType: row.memory_type,
           importance: row.importance ?? undefined,
+          isPregnancyJournal: row.is_pregnancy_journal === 1,
         });
       }
     }
@@ -134,11 +152,11 @@ export const SearchRepository = {
     // Search by tags (memories)
     const memoryTagRows = await db.getAllAsync<TagSearchRow>(
       `SELECT m.id as memory_id, NULL as chapter_id, tg.name as tag_name,
-              m.title as memory_title, c.title as chapter_title
+              m.title as memory_title, COALESCE(c.title, '') as chapter_title
        FROM tags tg
        INNER JOIN memory_tags mt ON tg.id = mt.tag_id
        INNER JOIN memories m ON mt.memory_id = m.id
-       INNER JOIN chapters c ON m.chapter_id = c.id
+       LEFT JOIN chapters c ON m.chapter_id = c.id
        WHERE tg.name LIKE ?`,
       [searchPattern]
     );
@@ -151,7 +169,7 @@ export const SearchRepository = {
           title: row.memory_title,
           matchedField: 'tag',
           matchedText: row.tag_name,
-          chapterTitle: row.chapter_title,
+          chapterTitle: row.chapter_title || undefined,
         });
       }
     }

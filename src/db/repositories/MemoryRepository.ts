@@ -14,6 +14,8 @@ import type {
 interface MemoryRow {
   id: string;
   chapter_id: string;
+  vault_id: string | null;
+  is_pregnancy_journal: number;
   memory_type: MemoryType;
   title: string;
   description: string | null;
@@ -38,6 +40,8 @@ function rowToMemory(row: MemoryRow): Memory {
   return {
     id: row.id,
     chapterId: row.chapter_id,
+    vaultId: row.vault_id ?? undefined,
+    isPregnancyJournal: row.is_pregnancy_journal === 1,
     memoryType: row.memory_type,
     title: row.title,
     description: row.description ?? undefined,
@@ -125,11 +129,13 @@ export const MemoryRepository = {
     const now = getTimestamp();
 
     await db.runAsync(
-      `INSERT INTO memories (id, chapter_id, memory_type, title, description, importance, date, location_name, latitude, longitude, map_url, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO memories (id, chapter_id, vault_id, is_pregnancy_journal, memory_type, title, description, importance, date, location_name, latitude, longitude, map_url, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         id,
-        input.chapterId,
+        input.chapterId || null,
+        input.vaultId ?? null,
+        input.isPregnancyJournal ? 1 : 0,
         input.memoryType,
         input.title,
         input.description ?? null,
@@ -310,5 +316,71 @@ export const MemoryRepository = {
       'SELECT COUNT(*) as count FROM memories'
     );
     return result?.count ?? 0;
+  },
+
+  // Vault entries
+  async getByVaultId(vaultId: string): Promise<Memory[]> {
+    const db = await getDatabase();
+    const rows = await db.getAllAsync<MemoryRow>(
+      'SELECT * FROM memories WHERE vault_id = ? ORDER BY date ASC, created_at ASC',
+      [vaultId]
+    );
+    return rows.map(rowToMemory);
+  },
+
+  async getByVaultIdWithRelations(vaultId: string): Promise<MemoryWithRelations[]> {
+    const memories = await this.getByVaultId(vaultId);
+    const result: MemoryWithRelations[] = [];
+    for (const memory of memories) {
+      const withRelations = await this.getWithRelations(memory.id);
+      if (withRelations) result.push(withRelations);
+    }
+    return result;
+  },
+
+  async countByVaultId(vaultId: string): Promise<number> {
+    const db = await getDatabase();
+    const result = await db.getFirstAsync<{ count: number }>(
+      'SELECT COUNT(*) as count FROM memories WHERE vault_id = ?',
+      [vaultId]
+    );
+    return result?.count ?? 0;
+  },
+
+  // Pregnancy journal entries
+  async getPregnancyJournalEntries(): Promise<Memory[]> {
+    const db = await getDatabase();
+    const rows = await db.getAllAsync<MemoryRow>(
+      'SELECT * FROM memories WHERE is_pregnancy_journal = 1 ORDER BY date ASC, created_at ASC'
+    );
+    return rows.map(rowToMemory);
+  },
+
+  async getPregnancyJournalEntriesWithRelations(): Promise<MemoryWithRelations[]> {
+    const memories = await this.getPregnancyJournalEntries();
+    const result: MemoryWithRelations[] = [];
+    for (const memory of memories) {
+      const withRelations = await this.getWithRelations(memory.id);
+      if (withRelations) result.push(withRelations);
+    }
+    return result;
+  },
+
+  async countPregnancyJournal(): Promise<number> {
+    const db = await getDatabase();
+    const result = await db.getFirstAsync<{ count: number }>(
+      'SELECT COUNT(*) as count FROM memories WHERE is_pregnancy_journal = 1'
+    );
+    return result?.count ?? 0;
+  },
+
+  // Move pregnancy journal entries to a chapter (for mode switch)
+  async movePregnancyJournalToChapter(chapterId: string): Promise<number> {
+    const db = await getDatabase();
+    const result = await db.runAsync(
+      'UPDATE memories SET chapter_id = ?, is_pregnancy_journal = 0 WHERE is_pregnancy_journal = 1',
+      [chapterId]
+    );
+    return result.changes;
   },
 };

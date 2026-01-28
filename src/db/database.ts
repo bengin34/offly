@@ -1,5 +1,5 @@
 import * as SQLite from "expo-sqlite";
-import { ALL_MIGRATIONS } from "./schema";
+import { ALL_MIGRATIONS, UPGRADE_MIGRATIONS } from "./schema";
 import { v4 as uuidv4 } from "uuid";
 
 const DATABASE_NAME = "BabyLegacy.db";
@@ -16,9 +16,18 @@ export async function getDatabase(): Promise<SQLite.SQLiteDatabase> {
   // Enable foreign keys
   await db.execAsync("PRAGMA foreign_keys = ON;");
 
-  // Run migrations
+  // Run create-table migrations (idempotent via IF NOT EXISTS)
   for (const migration of ALL_MIGRATIONS) {
     await db.execAsync(migration);
+  }
+
+  // Run ALTER upgrades safely (column may already exist)
+  for (const migration of UPGRADE_MIGRATIONS) {
+    try {
+      await db.execAsync(migration);
+    } catch {
+      // Column already exists — ignore
+    }
   }
 
   // Ensure default baby profile exists

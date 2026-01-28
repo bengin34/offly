@@ -4,21 +4,28 @@ import {
   ChapterRepository,
   MemoryRepository,
   TagRepository,
+  VaultRepository,
 } from "../db/repositories";
 import { BabyProfileRepository } from "../db/repositories/BabyProfileRepository";
-import type { Chapter, MemoryWithRelations, Tag, BabyProfile } from "../types";
+import type { Chapter, MemoryWithRelations, Tag, BabyProfile, Vault } from "../types";
 
 export interface ExportData {
   version: string;
   exportedAt: string;
   babyProfile: BabyProfile | null;
   chapters: ExportChapter[];
+  vaults: ExportVault[];
+  pregnancyJournalEntries: ExportMemory[];
   tags: Tag[];
 }
 
 export interface ExportChapter extends Chapter {
   tags: Tag[];
   memories: ExportMemory[];
+}
+
+export interface ExportVault extends Vault {
+  entries: ExportMemory[];
 }
 
 export interface ExportMemory extends Omit<MemoryWithRelations, "photos"> {
@@ -32,39 +39,58 @@ export interface ExportPhoto {
   filename: string;
 }
 
+function toExportMemory(memory: MemoryWithRelations): ExportMemory {
+  return {
+    ...memory,
+    photos: memory.photos.map((photo) => ({
+      id: photo.id,
+      uri: photo.uri,
+      orderIndex: photo.orderIndex,
+      filename: photo.uri.split("/").pop() || `photo_${photo.id}`,
+    })),
+  };
+}
+
 async function buildExportData(): Promise<ExportData> {
   const babyProfile = await BabyProfileRepository.getDefault();
   const chapters = await ChapterRepository.getAll();
   const allTags = await TagRepository.getAll();
 
+  // Export chapters with memories
   const exportChapters: ExportChapter[] = [];
-
   for (const chapter of chapters) {
     const chapterTags = await TagRepository.getForChapter(chapter.id);
     const memories = await MemoryRepository.getByChapterIdWithRelations(chapter.id);
-
-    const exportMemories: ExportMemory[] = memories.map((memory) => ({
-      ...memory,
-      photos: memory.photos.map((photo) => ({
-        id: photo.id,
-        uri: photo.uri,
-        orderIndex: photo.orderIndex,
-        filename: photo.uri.split("/").pop() || `photo_${photo.id}`,
-      })),
-    }));
-
     exportChapters.push({
       ...chapter,
       tags: chapterTags,
-      memories: exportMemories,
+      memories: memories.map(toExportMemory),
     });
   }
 
+  // Export vaults with entries
+  const exportVaults: ExportVault[] = [];
+  if (babyProfile) {
+    const vaults = await VaultRepository.getAll(babyProfile.id);
+    for (const vault of vaults) {
+      const entries = await MemoryRepository.getByVaultIdWithRelations(vault.id);
+      exportVaults.push({
+        ...vault,
+        entries: entries.map(toExportMemory),
+      });
+    }
+  }
+
+  // Export pregnancy journal entries
+  const pregnancyEntries = await MemoryRepository.getPregnancyJournalEntriesWithRelations();
+
   const exportData: ExportData = {
-    version: "1.0.0",
+    version: "1.1.0",
     exportedAt: new Date().toISOString(),
     babyProfile: babyProfile || null,
     chapters: exportChapters,
+    vaults: exportVaults,
+    pregnancyJournalEntries: pregnancyEntries.map(toExportMemory),
     tags: allTags,
   };
 
@@ -250,7 +276,10 @@ export async function getExportStats(): Promise<{
   memoryCount: number;
   photoCount: number;
   tagCount: number;
+  vaultCount: number;
+  pregnancyEntryCount: number;
 }> {
+  const babyProfile = await BabyProfileRepository.getDefault();
   const chapters = await ChapterRepository.getAll();
   const allTags = await TagRepository.getAll();
 
@@ -265,10 +294,19 @@ export async function getExportStats(): Promise<{
     }
   }
 
+  let vaultCount = 0;
+  if (babyProfile) {
+    vaultCount = await VaultRepository.count(babyProfile.id);
+  }
+
+  const pregnancyEntryCount = await MemoryRepository.countPregnancyJournal();
+
   return {
     chapterCount: chapters.length,
     memoryCount,
     photoCount,
     tagCount: allTags.length,
+    vaultCount,
+    pregnancyEntryCount,
   };
 }

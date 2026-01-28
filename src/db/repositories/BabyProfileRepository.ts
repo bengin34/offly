@@ -1,11 +1,13 @@
 import { generateUUID } from '../../utils/uuid';
 import { getDatabase, getTimestamp } from '../database';
-import type { BabyProfile, CreateBabyProfileInput, UpdateBabyProfileInput } from '../../types';
+import type { BabyProfile, BabyMode, CreateBabyProfileInput, UpdateBabyProfileInput } from '../../types';
 
 interface BabyProfileRow {
   id: string;
   name: string | null;
   birthdate: string | null;
+  edd: string | null;
+  mode: string;
   avatar_uri: string | null;
   is_default: number;
   created_at: string;
@@ -17,6 +19,8 @@ function rowToProfile(row: BabyProfileRow): BabyProfile {
     id: row.id,
     name: row.name ?? undefined,
     birthdate: row.birthdate ?? undefined,
+    edd: row.edd ?? undefined,
+    mode: (row.mode as BabyMode) || 'born',
     avatarUri: row.avatar_uri ?? undefined,
     isDefault: row.is_default === 1,
     createdAt: row.created_at,
@@ -68,12 +72,14 @@ export const BabyProfileRepository = {
     const isDefault = (count?.count ?? 0) === 0 ? 1 : 0;
 
     await db.runAsync(
-      `INSERT INTO baby_profiles (id, name, birthdate, avatar_uri, is_default, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO baby_profiles (id, name, birthdate, edd, mode, avatar_uri, is_default, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         id,
         input.name ?? null,
         input.birthdate ?? null,
+        input.edd ?? null,
+        input.mode ?? 'born',
         input.avatarUri ?? null,
         isDefault,
         now,
@@ -95,12 +101,16 @@ export const BabyProfileRepository = {
       `UPDATE baby_profiles SET
          name = ?,
          birthdate = ?,
+         edd = ?,
+         mode = ?,
          avatar_uri = ?,
          updated_at = ?
        WHERE id = ?`,
       [
         input.name !== undefined ? input.name ?? null : existing.name ?? null,
         input.birthdate !== undefined ? input.birthdate ?? null : existing.birthdate ?? null,
+        input.edd !== undefined ? input.edd ?? null : existing.edd ?? null,
+        input.mode !== undefined ? input.mode : existing.mode,
         input.avatarUri !== undefined ? input.avatarUri ?? null : existing.avatarUri ?? null,
         now,
         input.id,

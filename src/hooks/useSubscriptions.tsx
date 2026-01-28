@@ -7,6 +7,7 @@ import Purchases, {
 } from 'react-native-purchases';
 import { PAYWALL_RESULT } from "react-native-purchases-ui";
 import { TimedPaywall } from '../components/TimedPaywall';
+import { useI18n } from './useI18n';
 
 const REVENUECAT_API_KEY = Platform.select({
   ios: process.env.EXPO_PUBLIC_REVENUECAT_API_KEY_IOS,
@@ -25,6 +26,7 @@ const SubscriptionContext = createContext<SubscriptionContextType>({} as Subscri
 
 // 2. PROVIDER BİLEŞENİ
 export const SubscriptionProvider = ({ children }: { children: React.ReactNode }) => {
+  const { t } = useI18n();
   const [isPro, setIsPro] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isConfigured, setIsConfigured] = useState(false);
@@ -118,20 +120,32 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
   // 5. PAYWALL'U SUNMA FONKSİYONU
   const presentPaywall = async (): Promise<boolean> => {
     if (!REVENUECAT_API_KEY) {
-        Alert.alert("Purchases unavailable", "RevenueCat API key is missing in this build.");
+        Alert.alert(
+          t('alerts.purchasesUnavailableTitle'),
+          t('alerts.purchasesUnavailableMessage')
+        );
         return false;
     }
     if (configError) {
-        Alert.alert("Purchases unavailable", configError);
+        Alert.alert(
+          t('alerts.purchasesUnavailableTitle'),
+          t('alerts.purchasesUnavailableMessage')
+        );
         return false;
     }
     if (!isConfigured) {
-        Alert.alert("Purchases not ready", "Please try again in a moment.");
+        Alert.alert(
+          t('alerts.purchasesNotReadyTitle'),
+          t('alerts.purchasesNotReadyMessage')
+        );
         return false;
     }
     const configured = await Purchases.isConfigured();
     if (!configured) {
-        Alert.alert("Purchases unavailable", "RevenueCat is not configured yet.");
+        Alert.alert(
+          t('alerts.purchasesNotConfiguredTitle'),
+          t('alerts.purchasesNotConfiguredMessage')
+        );
         return false;
     }
     if (!offeringsRef.current) {
@@ -159,12 +173,12 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
           const customerInfo = await Purchases.restorePurchases();
           updateCustomerStatus(customerInfo);
           if (typeof customerInfo.entitlements.active[ENTITLEMENT_ID] !== "undefined") {
-             Alert.alert("Restore", "Your purchases were restored successfully.");
+             Alert.alert(t('alerts.restoreTitle'), t('alerts.restoreSuccessMessage'));
           } else {
-             Alert.alert("Restore", "No active subscriptions to restore.");
+             Alert.alert(t('alerts.restoreTitle'), t('alerts.restoreEmptyMessage'));
           }
       } catch (e) {
-           Alert.alert("Error", "Restore failed. Please try again.");
+           Alert.alert(t('alerts.errorTitle'), t('alerts.restoreFailedMessage'));
       } finally {
         setIsLoading(false);
       }

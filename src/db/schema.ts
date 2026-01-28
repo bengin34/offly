@@ -5,6 +5,8 @@ export const CREATE_BABY_PROFILES_TABLE = `
     id TEXT PRIMARY KEY NOT NULL,
     name TEXT,
     birthdate TEXT,
+    edd TEXT,
+    mode TEXT NOT NULL DEFAULT 'born',
     avatar_uri TEXT,
     is_default INTEGER NOT NULL DEFAULT 0,
     created_at TEXT NOT NULL,
@@ -30,8 +32,10 @@ export const CREATE_CHAPTERS_TABLE = `
 export const CREATE_MEMORIES_TABLE = `
   CREATE TABLE IF NOT EXISTS memories (
     id TEXT PRIMARY KEY NOT NULL,
-    chapter_id TEXT NOT NULL,
-    memory_type TEXT NOT NULL CHECK (memory_type IN ('milestone', 'note')),
+    chapter_id TEXT,
+    vault_id TEXT,
+    is_pregnancy_journal INTEGER NOT NULL DEFAULT 0,
+    memory_type TEXT NOT NULL CHECK (memory_type IN ('milestone', 'note', 'letter')),
     title TEXT NOT NULL,
     description TEXT,
     importance INTEGER,
@@ -42,7 +46,8 @@ export const CREATE_MEMORIES_TABLE = `
     map_url TEXT,
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL,
-    FOREIGN KEY (chapter_id) REFERENCES chapters (id) ON DELETE CASCADE
+    FOREIGN KEY (chapter_id) REFERENCES chapters (id) ON DELETE CASCADE,
+    FOREIGN KEY (vault_id) REFERENCES vaults (id) ON DELETE CASCADE
   );
 `;
 
@@ -83,6 +88,48 @@ export const CREATE_MEMORY_PHOTOS_TABLE = `
   );
 `;
 
+export const CREATE_VAULTS_TABLE = `
+  CREATE TABLE IF NOT EXISTS vaults (
+    id TEXT PRIMARY KEY NOT NULL,
+    baby_id TEXT NOT NULL,
+    target_age_years INTEGER NOT NULL,
+    unlock_date TEXT,
+    status TEXT NOT NULL DEFAULT 'locked' CHECK (status IN ('locked', 'unlocked')),
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL,
+    FOREIGN KEY (baby_id) REFERENCES baby_profiles (id) ON DELETE CASCADE
+  );
+`;
+
+export const CREATE_VAULTS_BABY_ID_INDEX = `
+  CREATE INDEX IF NOT EXISTS idx_vaults_baby_id ON vaults (baby_id);
+`;
+
+export const CREATE_MEMORIES_VAULT_ID_INDEX = `
+  CREATE INDEX IF NOT EXISTS idx_memories_vault_id ON memories (vault_id);
+`;
+
+export const CREATE_MEMORIES_PREGNANCY_JOURNAL_INDEX = `
+  CREATE INDEX IF NOT EXISTS idx_memories_pregnancy_journal ON memories (is_pregnancy_journal);
+`;
+
+// Migration: add columns to existing tables for upgrades
+export const ALTER_BABY_PROFILES_ADD_EDD = `
+  ALTER TABLE baby_profiles ADD COLUMN edd TEXT;
+`;
+
+export const ALTER_BABY_PROFILES_ADD_MODE = `
+  ALTER TABLE baby_profiles ADD COLUMN mode TEXT NOT NULL DEFAULT 'born';
+`;
+
+export const ALTER_MEMORIES_ADD_VAULT_ID = `
+  ALTER TABLE memories ADD COLUMN vault_id TEXT REFERENCES vaults(id) ON DELETE CASCADE;
+`;
+
+export const ALTER_MEMORIES_ADD_IS_PREGNANCY_JOURNAL = `
+  ALTER TABLE memories ADD COLUMN is_pregnancy_journal INTEGER NOT NULL DEFAULT 0;
+`;
+
 // Indexes for search performance
 export const CREATE_CHAPTERS_TITLE_INDEX = `
   CREATE INDEX IF NOT EXISTS idx_chapters_title ON chapters (title);
@@ -111,6 +158,7 @@ export const CREATE_TAGS_NAME_INDEX = `
 export const ALL_MIGRATIONS = [
   CREATE_BABY_PROFILES_TABLE,
   CREATE_CHAPTERS_TABLE,
+  CREATE_VAULTS_TABLE,
   CREATE_MEMORIES_TABLE,
   CREATE_TAGS_TABLE,
   CREATE_MEMORY_TAGS_TABLE,
@@ -122,4 +170,15 @@ export const ALL_MIGRATIONS = [
   CREATE_MEMORIES_CHAPTER_ID_INDEX,
   CREATE_MEMORIES_DATE_INDEX,
   CREATE_TAGS_NAME_INDEX,
+  CREATE_VAULTS_BABY_ID_INDEX,
+  CREATE_MEMORIES_VAULT_ID_INDEX,
+  CREATE_MEMORIES_PREGNANCY_JOURNAL_INDEX,
+];
+
+// ALTER migrations for existing installs (run safely — column may already exist)
+export const UPGRADE_MIGRATIONS = [
+  ALTER_BABY_PROFILES_ADD_EDD,
+  ALTER_BABY_PROFILES_ADD_MODE,
+  ALTER_MEMORIES_ADD_VAULT_ID,
+  ALTER_MEMORIES_ADD_IS_PREGNANCY_JOURNAL,
 ];

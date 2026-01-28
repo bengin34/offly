@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import {
   View,
   Text,
+  TextInput,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
@@ -11,10 +12,13 @@ import {
   ActivityIndicator,
   Linking,
   Share,
+  Platform,
+  Keyboard,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
-import { useRouter } from 'expo-router';
+import { useRouter, useFocusEffect } from 'expo-router';
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
 import { Background } from '../../src/components/Background';
 import { DialogHeader } from '../../src/components/DialogHeader';
@@ -24,6 +28,10 @@ import { getLocaleLabel, Locale } from '../../src/localization';
 import { type ThemeMode } from '../../src/stores';
 import { useOnboardingStore } from '../../src/stores/onboardingStore';
 import { pickAndImport } from '../../src/utils/import';
+import { exportToJson } from '../../src/utils/export';
+import { BabyProfileRepository, VaultRepository, ChapterRepository, MemoryRepository } from '../../src/db/repositories';
+import { useBackupStore } from '../../src/stores/backupStore';
+import type { BabyProfile } from '../../src/types';
 
 export default function SettingsScreen() {
   const theme = useTheme();
@@ -33,8 +41,102 @@ export default function SettingsScreen() {
   const [showThemeModal, setShowThemeModal] = useState(false);
   const [showLanguageModal, setShowLanguageModal] = useState(false);
   const [showDataModal, setShowDataModal] = useState(false);
+  const [showModeSwitchModal, setShowModeSwitchModal] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
   const resetOnboarding = useOnboardingStore((state) => state.resetOnboarding);
+  const lastBackupDate = useBackupStore((state) => state.lastBackupDate);
+  const loadBackupState = useBackupStore((state) => state.loadBackupState);
+  const setLastBackupDate = useBackupStore((state) => state.setLastBackupDate);
+
+  // Load backup state on mount
+  useFocusEffect(
+    useCallback(() => {
+      loadBackupState();
+    }, [loadBackupState])
+  );
+
+  const handleBackupExport = async () => {
+    try {
+      await exportToJson();
+      await setLastBackupDate(new Date().toISOString());
+    } catch (error) {
+      console.error('Backup export failed:', error);
+      Alert.alert('Export failed', 'Could not create backup. Please try again.');
+    }
+  };
+
+  // Baby profile state
+  const [profile, setProfile] = useState<BabyProfile | null>(null);
+  const [birthDate, setBirthDate] = useState(new Date());
+  const [showBirthDatePicker, setShowBirthDatePicker] = useState(false);
+  const [isSwitchingMode, setIsSwitchingMode] = useState(false);
+
+  const loadProfile = useCallback(async () => {
+    const p = await BabyProfileRepository.getDefault();
+    setProfile(p);
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadProfile();
+    }, [loadProfile])
+  );
+
+  const handleModeSwitchToBorn = () => {
+    if (!profile || profile.mode !== 'pregnant') return;
+    setShowModeSwitchModal(true);
+  };
+
+  const handleBirthDateChange = (_: DateTimePickerEvent, selectedDate?: Date) => {
+    if (Platform.OS === 'android') {
+      setShowBirthDatePicker(false);
+    }
+    if (!selectedDate) return;
+    setBirthDate(selectedDate);
+  };
+
+  const confirmModeSwitchToBorn = async () => {
+    if (!profile) return;
+    setIsSwitchingMode(true);
+    try {
+      const dobStr = birthDate.toISOString();
+
+      // 1. Update profile: mode → born, set birthdate
+      await BabyProfileRepository.update({
+        id: profile.id,
+        mode: 'born',
+        birthdate: dobStr,
+      });
+
+      // 2. Create a "Before you were born" chapter and move pregnancy journal entries
+      const pregnancyCount = await MemoryRepository.countPregnancyJournal();
+      if (pregnancyCount > 0) {
+        const chapter = await ChapterRepository.create({
+          babyId: profile.id,
+          title: 'Before you were born',
+          startDate: profile.edd || dobStr,
+          description: 'Pregnancy journal entries',
+        });
+        await MemoryRepository.movePregnancyJournalToChapter(chapter.id);
+      }
+
+      // 3. Recalculate vault unlock dates using DOB
+      await VaultRepository.recalculateUnlockDates(profile.id, dobStr);
+
+      setShowModeSwitchModal(false);
+      await loadProfile();
+
+      Alert.alert(
+        'Mode updated',
+        'Your profile has been switched to "Born" mode. Pregnancy journal entries have been moved to a chapter.'
+      );
+    } catch (error) {
+      console.error('Failed to switch mode:', error);
+      Alert.alert('Error', 'Failed to switch mode. Please try again.');
+    } finally {
+      setIsSwitchingMode(false);
+    }
+  };
 
   const themeOptions: { mode: ThemeMode; label: string; icon: keyof typeof Ionicons.glyphMap }[] = [
     { mode: 'light', label: t('settings.themeLight'), icon: 'sunny' },
@@ -172,6 +274,84 @@ export default function SettingsScreen() {
       <Background />
       <ScrollView>
         <ProUpgradeBanner style={styles.proBanner} />
+
+        {/* Baby Profile Section */}
+        {profile && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>BABY PROFILE</Text>
+            <View style={styles.card}>
+              <View style={styles.settingsRow}>
+                <View style={styles.settingsRowLeft}>
+                  <Ionicons name="person-outline" size={22} color={theme.textSecondary} />
+                  <Text style={styles.settingsRowLabel}>
+                    {profile.name || 'Baby'}
+                  </Text>
+                </View>
+                <View style={styles.settingsRowRight}>
+                  <View style={[styles.modeBadge, { backgroundColor: profile.mode === 'pregnant' ? theme.primary + '20' : theme.success + '20' }]}>
+                    <Text style={[styles.modeBadgeText, { color: profile.mode === 'pregnant' ? theme.primary : theme.success }]}>
+                      {profile.mode === 'pregnant' ? 'Pregnant' : 'Born'}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              {profile.mode === 'pregnant' && (
+                <>
+                  <View style={styles.settingsDivider} />
+                  <TouchableOpacity
+                    style={styles.settingsRow}
+                    onPress={handleModeSwitchToBorn}
+                  >
+                    <View style={styles.settingsRowLeft}>
+                      <Ionicons name="happy-outline" size={22} color={theme.success} />
+                      <Text style={[styles.settingsRowLabel, { color: theme.success }]}>
+                        Baby is born!
+                      </Text>
+                    </View>
+                    <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
+                  </TouchableOpacity>
+                </>
+              )}
+              {profile.birthdate && (
+                <>
+                  <View style={styles.settingsDivider} />
+                  <View style={styles.settingsRow}>
+                    <View style={styles.settingsRowLeft}>
+                      <Ionicons name="calendar-outline" size={22} color={theme.textSecondary} />
+                      <Text style={styles.settingsRowLabel}>Birth date</Text>
+                    </View>
+                    <Text style={styles.settingsRowValue}>
+                      {new Date(profile.birthdate).toLocaleDateString(undefined, {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })}
+                    </Text>
+                  </View>
+                </>
+              )}
+              {profile.mode === 'pregnant' && profile.edd && (
+                <>
+                  <View style={styles.settingsDivider} />
+                  <View style={styles.settingsRow}>
+                    <View style={styles.settingsRowLeft}>
+                      <Ionicons name="time-outline" size={22} color={theme.textSecondary} />
+                      <Text style={styles.settingsRowLabel}>Due date</Text>
+                    </View>
+                    <Text style={styles.settingsRowValue}>
+                      {new Date(profile.edd).toLocaleDateString(undefined, {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })}
+                    </Text>
+                  </View>
+                </>
+              )}
+            </View>
+          </View>
+        )}
+
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>
             {t('settings.preferences').toLocaleUpperCase(locale)}
@@ -304,26 +484,53 @@ export default function SettingsScreen() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>
-            {t('settings.dataSection').toLocaleUpperCase(locale)}
-          </Text>
+          <Text style={styles.sectionTitle}>BACKUP & DATA</Text>
           <View style={styles.card}>
             <View style={styles.cardHeader}>
-              <Ionicons name="swap-horizontal-outline" size={24} color={theme.primary} />
+              <Ionicons name="shield-checkmark-outline" size={24} color={theme.primary} />
               <View style={styles.cardHeaderText}>
-                <Text style={styles.cardTitle}>{t('settings.dataTitle')}</Text>
+                <Text style={styles.cardTitle}>Backup your memories</Text>
                 <Text style={styles.cardDescription}>
-                  {t('settings.dataDescription')}
+                  Export your data to keep a safe copy. Your data is stored only on this device.
                 </Text>
               </View>
             </View>
+            {lastBackupDate && (
+              <View style={styles.lastBackupRow}>
+                <Ionicons name="checkmark-circle" size={16} color={theme.success} />
+                <Text style={[styles.lastBackupText, { color: theme.success }]}>
+                  Last backup: {new Date(lastBackupDate).toLocaleDateString(undefined, {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </Text>
+              </View>
+            )}
+            {!lastBackupDate && (
+              <View style={styles.lastBackupRow}>
+                <Ionicons name="warning-outline" size={16} color={theme.warning} />
+                <Text style={[styles.lastBackupText, { color: theme.warning }]}>
+                  No backup yet. We recommend backing up regularly.
+                </Text>
+              </View>
+            )}
+            <TouchableOpacity
+              style={styles.onboardingButton}
+              onPress={handleBackupExport}
+            >
+              <Ionicons name="download-outline" size={20} color={theme.white} />
+              <Text style={styles.onboardingButtonText}>Create Backup</Text>
+            </TouchableOpacity>
             <TouchableOpacity
               style={styles.exportLink}
               onPress={() => setShowDataModal(true)}
               accessibilityRole="button"
               accessibilityLabel={t('settings.dataButton')}
             >
-              <Text style={styles.exportLinkText}>{t('settings.dataButton')}</Text>
+              <Text style={styles.exportLinkText}>More export & import options</Text>
               <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
             </TouchableOpacity>
           </View>
@@ -527,6 +734,80 @@ export default function SettingsScreen() {
               )}
             </TouchableOpacity>
           </View>
+        </Pressable>
+      </Modal>
+
+      {/* Mode Switch Modal (Pregnant → Born) */}
+      <Modal
+        visible={showModeSwitchModal}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowModeSwitchModal(false)}
+      >
+        <Pressable style={styles.modalOverlay} onPress={() => !isSwitchingMode && setShowModeSwitchModal(false)}>
+          <Pressable style={styles.modalContent} onPress={(e) => e.stopPropagation()}>
+            <DialogHeader
+              title="Baby is born!"
+              onClose={() => setShowModeSwitchModal(false)}
+              actionLabel={isSwitchingMode ? 'Saving...' : 'Confirm'}
+              onAction={confirmModeSwitchToBorn}
+              palette={{
+                text: theme.text,
+                textSecondary: theme.textSecondary,
+                textMuted: theme.textMuted,
+                primary: theme.primary,
+                border: theme.border,
+              }}
+              containerStyle={styles.modalHeader}
+            />
+            <Text style={styles.modeSwitchDescription}>
+              Enter the birth date. Your pregnancy journal entries will be moved to a "Before you were born" chapter, and vault unlock dates will be recalculated.
+            </Text>
+
+            <TouchableOpacity
+              style={[styles.modeSwitchDateButton, { backgroundColor: theme.backgroundSecondary, borderColor: theme.borderLight }]}
+              onPress={() => {
+                Keyboard.dismiss();
+                setShowBirthDatePicker(true);
+              }}
+              activeOpacity={0.8}
+            >
+              <Ionicons name="calendar-outline" size={20} color={theme.textSecondary} />
+              <Text style={[styles.modeSwitchDateText, { color: theme.text }]}>
+                {birthDate.toLocaleDateString(undefined, {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                })}
+              </Text>
+            </TouchableOpacity>
+
+            {showBirthDatePicker && (
+              <View style={[styles.modeSwitchPickerContainer, { backgroundColor: theme.card, borderColor: theme.borderLight }]}>
+                <DateTimePicker
+                  value={birthDate}
+                  mode="date"
+                  display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                  onChange={handleBirthDateChange}
+                  themeVariant={theme.isDark ? 'dark' : 'light'}
+                  maximumDate={new Date()}
+                  style={{ height: 200 }}
+                />
+                {Platform.OS === 'ios' && (
+                  <TouchableOpacity
+                    style={[styles.modeSwitchPickerDone, { borderTopColor: theme.borderLight }]}
+                    onPress={() => setShowBirthDatePicker(false)}
+                  >
+                    <Text style={{ color: theme.primary, fontFamily: fonts.ui, fontSize: fontSize.md }}>Done</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            )}
+
+            {isSwitchingMode && (
+              <ActivityIndicator size="small" color={theme.primary} style={{ marginTop: spacing.md }} />
+            )}
+          </Pressable>
         </Pressable>
       </Modal>
     </View>
@@ -744,5 +1025,60 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
     },
     modalOptionDisabled: {
       opacity: 0.6,
+    },
+    // Backup row
+    lastBackupRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.xs,
+      marginBottom: spacing.md,
+      paddingHorizontal: spacing.xs,
+    },
+    lastBackupText: {
+      fontSize: fontSize.sm,
+      fontFamily: fonts.body,
+      flex: 1,
+    },
+    // Mode badge
+    modeBadge: {
+      paddingHorizontal: spacing.sm,
+      paddingVertical: 2,
+      borderRadius: borderRadius.full,
+    },
+    modeBadgeText: {
+      fontSize: fontSize.xs,
+      fontFamily: fonts.ui,
+    },
+    // Mode switch modal
+    modeSwitchDescription: {
+      fontSize: fontSize.sm,
+      fontFamily: fonts.body,
+      color: theme.textSecondary,
+      lineHeight: 20,
+      marginBottom: spacing.md,
+    },
+    modeSwitchDateButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderRadius: borderRadius.lg,
+      padding: spacing.md,
+      borderWidth: 1,
+      gap: spacing.sm,
+      marginBottom: spacing.sm,
+    },
+    modeSwitchDateText: {
+      fontSize: fontSize.md,
+      fontFamily: fonts.body,
+    },
+    modeSwitchPickerContainer: {
+      borderRadius: borderRadius.lg,
+      borderWidth: 1,
+      overflow: 'hidden',
+      marginBottom: spacing.sm,
+    },
+    modeSwitchPickerDone: {
+      alignItems: 'center',
+      padding: spacing.md,
+      borderTopWidth: 1,
     },
   });

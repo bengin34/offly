@@ -1,13 +1,27 @@
 // Core entity types for BabyLegacy
 
-export type MemoryType = "milestone" | "note";
+export type MemoryType = "milestone" | "note" | "letter";
+export type BabyMode = "born" | "pregnant";
+export type VaultStatus = "locked" | "unlocked";
 
 export interface BabyProfile {
   id: string;
   name?: string;
-  birthdate?: string; // ISO date string
+  birthdate?: string; // ISO date string (DOB)
+  edd?: string; // ISO date string (Estimated Due Date)
+  mode: BabyMode;
   avatarUri?: string;
   isDefault: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Vault {
+  id: string;
+  babyId: string;
+  targetAgeYears: number;
+  unlockDate?: string; // ISO date string, derived from DOB/EDD + targetAgeYears
+  status: VaultStatus;
   createdAt: string;
   updatedAt: string;
 }
@@ -27,6 +41,8 @@ export interface Chapter {
 export interface Memory {
   id: string;
   chapterId: string;
+  vaultId?: string; // set when entry belongs to a vault
+  isPregnancyJournal: boolean; // true for pregnancy journal entries (chapterId is empty)
   memoryType: MemoryType;
   title: string;
   description?: string;
@@ -89,11 +105,23 @@ export interface ChapterWithMemories extends ChapterWithTags {
 export interface CreateBabyProfileInput {
   name?: string;
   birthdate?: string;
+  edd?: string;
+  mode?: BabyMode;
   avatarUri?: string;
 }
 
 export interface UpdateBabyProfileInput extends Partial<CreateBabyProfileInput> {
   id: string;
+}
+
+export interface CreateVaultInput {
+  babyId: string;
+  targetAgeYears: number;
+}
+
+export interface VaultWithEntryCount extends Vault {
+  entryCount: number;
+  lastSavedAt?: string;
 }
 
 export interface CreateChapterInput {
@@ -112,6 +140,8 @@ export interface UpdateChapterInput extends Partial<Omit<CreateChapterInput, "ba
 
 export interface CreateMemoryInput {
   chapterId: string;
+  vaultId?: string;
+  isPregnancyJournal?: boolean;
   memoryType: MemoryType;
   title: string;
   description?: string;
@@ -132,19 +162,21 @@ export interface UpdateMemoryInput extends Partial<Omit<CreateMemoryInput, "chap
 
 // Search types
 export interface SearchResult {
-  type: "chapter" | "memory";
+  type: "chapter" | "memory" | "vault";
   id: string;
   title: string;
   matchedField: string;
   matchedText: string;
   chapterId?: string;
   chapterTitle?: string;
+  vaultId?: string;
   memoryType?: MemoryType;
   importance?: number;
+  isPregnancyJournal?: boolean;
 }
 
 export interface SearchFilters {
-  resultType?: "all" | "chapter" | "memory";
+  resultType?: "all" | "chapter" | "memory" | "vault" | "pregnancy_journal";
   memoryType?: MemoryType;
   minImportance?: number;
   tagIds?: string[];
@@ -169,7 +201,13 @@ export interface ExportData {
   exportedAt: string;
   babyProfile: BabyProfile;
   chapters: ExportChapter[];
+  vaults: ExportVault[];
+  pregnancyJournalEntries: ExportMemory[];
   tags: Tag[];
+}
+
+export interface ExportVault extends Vault {
+  entries: ExportMemory[];
 }
 
 export interface ExportChapter extends Chapter {
