@@ -79,7 +79,7 @@ export default function OnboardingScreen() {
       },
       {
         id: 'simple_start',
-        icon: 'airplane-outline',
+        icon: 'sparkles-outline',
         iconColor: theme.primary,
         title: t('onboarding.screens.simpleStart.title'),
         subtitle: t('onboarding.screens.simpleStart.body'),

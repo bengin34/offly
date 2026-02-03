@@ -1,0 +1,5 @@
+Start by shifting the palette to pastel gradients (baby blue → cream → peach / lavender / sage). Use charcoal text on ivory cards with 16–24px radius and gentle drop shadows so high-contrast is preserved without harshness.
+Home, onboarding, paywall, and settings should all adopt layered card layouts: hero gradients with soft parallax, cards “peeking” over blurred background layers, sections separated by generous padding, and rhythmic spacing to keep line lengths short on mobile.
+Typographically, use a rounded sans-serif (medium weight for headings, regular for body) and enlarge key metrics (e.g., milestone numbers, streak counts) with a friendlier weight; body copy should feel airy, not cramped.
+Replace travel iconography with gentle baby/family motifs (rattles, hearts, clouds, silhouettes, leaves), keeping them outline or softly filled; add tiny confetti/stars/botanical accents around headers or CTA edges to reinforce the nurturing tone.
+Describe interactions as soft: cards lift slightly on tap, modals fade + scale, dots pulse in onboarding, gradients shift with subtle parallax, and the “Pro” button glows softly when active.

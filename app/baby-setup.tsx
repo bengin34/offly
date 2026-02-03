@@ -13,7 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme, useSubscription } from '../src/hooks';
+import { useTheme } from '../src/hooks';
 import { useOnboardingStore } from '../src/stores/onboardingStore';
 import { BabyProfileRepository, VaultRepository } from '../src/db/repositories';
 import { Background } from '../src/components/Background';
@@ -25,7 +25,6 @@ export default function BabySetupScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const completeOnboarding = useOnboardingStore((s) => s.completeOnboarding);
-  const { presentPaywall, isPro } = useSubscription();
 
   const [step, setStep] = useState<'mode' | 'details'>('mode');
   const [mode, setMode] = useState<BabyMode | null>(null);
@@ -65,11 +64,6 @@ export default function BabySetupScreen() {
         await VaultRepository.createDefaults(profile.id, referenceDate);
       }
 
-      // Show paywall if not pro
-      if (!isPro) {
-        await presentPaywall();
-      }
-
       await completeOnboarding();
       router.replace('/');
     } catch (error) {
@@ -80,7 +74,7 @@ export default function BabySetupScreen() {
     } finally {
       setIsSaving(false);
     }
-  }, [mode, name, date, isSaving, isPro, presentPaywall, completeOnboarding, router]);
+  }, [mode, name, date, isSaving, completeOnboarding, router]);
 
   const styles = createStyles(theme);
 
