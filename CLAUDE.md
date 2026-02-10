@@ -1,7 +1,7 @@
 this is  that contains a travel memory app named VoyageLog / TravelMemory).
 
 MISSION
-Refactor this code to create a NEW sibling app “BabyLegacy” by reusing the SAME core architecture and logic as the travel app, but adapted to a baby growth memory / family legacy archive domain.
+Refactor this code to create a NEW sibling app “Offly” by reusing the SAME core architecture and logic as the travel app, but adapted to a baby growth memory / family legacy archive domain.
 
 HARD RULES
 - Default to offline-first, local-only storage. No cloud sync, no account.
@@ -19,7 +19,7 @@ now it is a    NEW app, created by cloning/adapting the travel app
 2. Update root configuration so new app can be built/run independently (scripts, paths, workspace settings).
 
 
-TASK 2 — BabyLegacy MVP requirements
+TASK 2 — Offly MVP requirements
 Use the same navigation and UX patterns as travel app:
 - Trip => Chapter (time period)
 - Place/Moment => Memory entry
@@ -48,7 +48,7 @@ SCREENS (MVP)
 5) Search: global search across chapters + entries + notes
 6) Export: basic JSON export (and PDF only if the travel app already supports it cleanly) ( SHould be in the settings )
 
-COPY / BRANDING (BabyLegacy only)
+COPY / BRANDING (Offly only)
 Replace all travel terms in the baby app UI and copy:
 - Trips => Chapters
 - Places => Memories / Milestones
@@ -78,11 +78,11 @@ At the end, provide:
 
 
 
-BabyLegacy Roadmap & MVP Plan (v1.0)
+Offly Roadmap & MVP Plan (v1.0)
 
 Product Summary
 
-BabyLegacy is an offline-first, private family memory archive for capturing a baby’s growth in a structured way.
+Offly is an offline-first, private family memory archive for capturing a baby’s growth in a structured way.
 It is not a social app and not a photo editor. The focus is on context + milestones + notes and making memories easy to find later (search + timeline). Data stays on-device by default, with user-initiated export.
 
 ⸻
@@ -260,14 +260,14 @@ MVP Success Criteria (What “done” means)
 	•	A user can search and find a memory in under 5 seconds
 	•	Data remains private/offline-first by default
 	•	Export works reliably (JSON baseline)
-	•	No travel-domain wording remains in BabyLegacy app UI
+	•	No travel-domain wording remains in Offly app UI
 
 
-	BabyLegacy MVP & Project Roadmap (Updated)
+	Offly MVP & Project Roadmap (Updated)
 
 Product Summary
 
-BabyLegacy is a private, offline-first family legacy archive for capturing a child’s story over time.
+Offly is a private, offline-first family legacy archive for capturing a child’s story over time.
 It is not a social baby app and not a photo editor. The focus is on memories with context (notes + milestones + optional photos), fast retrieval (search), and future-facing writing (age-locked letters).
 
 Core promise:
@@ -280,7 +280,7 @@ Final Concept (Latest Decisions)
 
 One app, two entry modes
 
-BabyLegacy is one app with two onboarding modes:
+Offly is one app with two onboarding modes:
 	1.	Pregnant mode (EDD-based)
 	•	Due date (estimated) anchors pregnancy journaling and estimated age locks.
 	2.	Born mode (DOB-based)

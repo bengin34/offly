@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "BabyLegacy",
+    "appName": "Offly",
     "done": "Fatto",
     "cancel": "Annulla",
     "delete": "Elimina",
@@ -97,7 +97,7 @@
     "supportRate": "Dacci 5 stelle",
     "supportShare": "Condividi l'app",
     "supportContact": "Contattaci",
-    "supportShareMessage": "BabyLegacy - un archivio familiare privato che adoro: {link}",
+    "supportShareMessage": "Offly - un archivio familiare privato che adoro: {link}",
     "onboardingSection": "Introduzione",
     "onboardingTitle": "Mostra di nuovo l'introduzione",
     "onboardingDescription": "Rivedi l'introduzione in 7 schermate in qualsiasi momento.",
@@ -110,11 +110,42 @@
     "storage": "Archiviazione",
     "privacy": "Privacy",
     "storageValue": "I dati restano sul tuo dispositivo.",
-    "privacyValue": "Offline-first",
-    "footer": "BabyLegacy — il tuo archivio familiare privato",
+    "privacyValue": "Prima offline",
+    "footer": "Offly — il tuo archivio familiare privato",
     "themeLight": "Chiaro",
     "themeDark": "Scuro",
-    "themeSystem": "Sistema"
+    "themeSystem": "Sistema",
+    "alertBackupExportFailedMessage": "Impossibile creare il backup. Riprova.",
+    "alertProfileUpdateFailedMessage": "Impossibile aggiornare il profilo. Riprova.",
+    "beforeBirthChapterTitle": "Prima che nascessi",
+    "beforeBirthChapterDescription": "Voci del diario di gravidanza",
+    "alertModeUpdatedTitle": "Modalità aggiornata",
+    "alertModeUpdatedMessage": "Il tuo profilo è stato impostato su \"Nato\". Le voci del diario di gravidanza sono state spostate nel capitolo \"{chapter}\".",
+    "alertModeSwitchFailedMessage": "Impossibile cambiare modalità. Riprova.",
+    "yourBaby": "Il tuo bebè",
+    "modeExpecting": "In attesa",
+    "modeBorn": "Nato",
+    "editAction": "Modifica",
+    "dueDate": "Data prevista",
+    "age": "Età",
+    "daysCount": "{count} giorni",
+    "babyBornButton": "Il bebè è nato!",
+    "colorTheme": "Tema colore",
+    "backupDataSection": "Backup e dati",
+    "backupMemoriesTitle": "Fai il backup dei ricordi",
+    "backupMemoriesDescription": "Esporta i tuoi dati per conservarne una copia sicura. I dati sono memorizzati solo su questo dispositivo.",
+    "lastBackup": "Ultimo backup: {date}",
+    "noBackupYet": "Nessun backup ancora. Ti consigliamo di fare backup regolari.",
+    "createBackup": "Crea backup",
+    "moreExportImportOptions": "Altre opzioni di esportazione e importazione",
+    "chooseColorTheme": "Scegli tema colore",
+    "modeSwitchTitle": "Il bebè è nato!",
+    "modeSwitchConfirm": "Conferma",
+    "modeSwitchDescription": "Inserisci la data di nascita. Le voci del diario di gravidanza verranno spostate nel capitolo \"{chapter}\" e le date di sblocco del caveau verranno ricalcolate.",
+    "editBabyProfileTitle": "Modifica profilo del bebè",
+    "name": "Nome",
+    "namePlaceholder": "Nome o soprannome del bebè",
+    "birthDateLabel": "Data di nascita"
   },
   "proBanner": {
     "title": "Passa a Pro",
@@ -127,7 +158,7 @@
       },
       {
         "title": "Meno scroll, più significato",
-        "subtitle": "Trova i momenti importanti subito."
+        "subtitle": "Trova subito i momenti preferiti."
       },
       {
         "title": "Ricorda tutto",
@@ -151,17 +182,17 @@
     "date": "Data",
     "startDate": "Data di inizio",
     "endDate": "Data di fine",
-    "title": "Title",
-    "notes": "Notes",
-    "optional": "optional",
-    "filled": "Filled",
+    "title": "Titolo",
+    "notes": "Note",
+    "optional": "facoltativo",
+    "filled": "Compilato",
     "milestone": {
-      "pastDue": "Past due",
-      "today": "Today",
-      "tomorrow": "Tomorrow",
-      "empty": "No milestones yet",
-      "emptySubtitle": "Milestones will appear here",
-      "quickAddHelper": "Open full editor to add tags and more"
+      "pastDue": "Scaduto",
+      "today": "Oggi",
+      "tomorrow": "Domani",
+      "empty": "Nessun traguardo ancora",
+      "emptySubtitle": "I traguardi appariranno qui",
+      "quickAddHelper": "Apri l’editor completo per aggiungere tag e altro"
     }
   },
   "placeholders": {
@@ -177,8 +208,8 @@
     "entryNotes": "Aggiungi dettagli...",
     "milestoneListName": "es. Traguardi, Tradizioni di famiglia",
     "locationGroupName": "es. Casa, dai nonni",
-    "memoryTitle": "What happened?",
-    "memoryNotes": "Add details..."
+    "memoryTitle": "Cosa è successo?",
+    "memoryNotes": "Aggiungi dettagli..."
   },
   "chapterForm": {
     "titleLabel": "Titolo capitolo *",
@@ -197,7 +228,6 @@
   "memoryForm": {
     "titleLabel": "Titolo *",
     "locationLabel": "Luogo",
-    "importanceLabel": "IMPORTANZA",
     "descriptionLabel": "Descrizione",
     "tagsLabel": "Tag",
     "milestone": "Traguardo",
@@ -205,7 +235,6 @@
   },
   "entryForm": {
     "titleLabel": "Titolo *",
-    "ratingLabel": "Importanza",
     "notesLabel": "Note",
     "tagsLabel": "Tag",
     "photosLabel": "Foto ({count}/{max})",
@@ -285,9 +314,7 @@
     "noResultsSubtitle": "Prova con parole chiave diverse",
     "showLabel": "Mostra",
     "memoryTypeLabel": "Tipo di ricordo",
-    "minImportanceLabel": "Importanza min.",
     "entryTypeLabel": "Tipo di ricordo",
-    "minRatingLabel": "Importanza min.",
     "tagsLabel": "Tag",
     "clearFilters": "Cancella filtri",
     "filterAll": "Tutti",
@@ -319,15 +346,12 @@
     "statsMilestones": "Luoghi",
     "statsLocations": "Posizioni",
     "statsPhotos": "Foto",
-    "statsImportant": "Importanti",
     "statsChapterDays": "Giorni capitolo",
     "memoriesBreakdown": "{milestones} traguardi, {notes} note",
     "entriesBreakdown": "{milestones} traguardi, {notes} note",
     "highlightMostVisited": "Più visitato",
     "highlightFirstTrip": "Primo capitolo",
     "highlightFirstMemory": "Primo ricordo",
-    "highlightAvgRating": "Importanza media",
-    "highlightImportant": "Più importante",
     "topTags": "Tag principali",
     "milestoneProgress": "Liste traguardi",
     "seeAll": "Vedi tutto",
@@ -445,41 +469,53 @@
       "title": "Esploratore urbano",
       "description": "Visitate 40 città"
     },
-    "tag_pizza": {
-      "title": "Pellegrino della pizza",
-      "description": "Registrate 20 voci pizza"
+    "tag_first_time": {
+      "title": "Prime volte",
+      "description": "Hai registrato 10 ricordi delle prime volte"
     },
-    "tag_cafe": {
-      "title": "Frequentatore di caffè",
-      "description": "Registrate 25 voci caffè"
+    "tag_milestone": {
+      "title": "Esperto di traguardi",
+      "description": "Hai taggato 15 ricordi di traguardi"
     },
-    "tag_museum": {
-      "title": "Esperto di musei",
-      "description": "Registrate 15 voci museo"
+    "tag_funny": {
+      "title": "Momenti da ridere",
+      "description": "Hai registrato 12 momenti divertenti"
     },
-    "tag_beach": {
-      "title": "Cercatore di spiagge",
-      "description": "Registrate 12 voci spiaggia"
+    "tag_sweet": {
+      "title": "Momenti dolci",
+      "description": "Hai registrato 12 ricordi dolci"
     },
-    "tag_nightlife": {
-      "title": "Nottambulo",
-      "description": "Registrate 12 voci vita notturna"
+    "tag_growth": {
+      "title": "Monitor crescita",
+      "description": "Hai registrato 10 voci di crescita"
     },
-    "tag_street_food": {
-      "title": "Leggenda dello street food",
-      "description": "Registrate 25 voci cibo di strada"
+    "tag_health": {
+      "title": "Registro salute",
+      "description": "Hai registrato 10 voci di salute"
     },
-    "tag_market": {
-      "title": "Esperto di mercati",
-      "description": "Registrate 12 voci mercato"
+    "tag_feeding": {
+      "title": "Monitor alimentazione",
+      "description": "Hai registrato 15 voci di alimentazione"
     },
-    "tag_temple": {
-      "title": "Cercatore di templi",
-      "description": "Registrate 10 voci tempio"
+    "tag_sleep": {
+      "title": "Monitor sonno",
+      "description": "Hai registrato 15 voci di sonno"
+    },
+    "tag_play": {
+      "title": "Pro del gioco",
+      "description": "Hai registrato 12 voci di gioco"
+    },
+    "tag_family": {
+      "title": "Momenti in famiglia",
+      "description": "Hai registrato 15 voci in famiglia"
+    },
+    "tag_creator": {
+      "title": "Creatore di tag",
+      "description": "Hai creato 20 tag unici"
     },
     "historian": {
-      "title": "Storico",
-      "description": "Registrate 40 voci di viaggi passati"
+      "title": "Custode dei ricordi",
+      "description": "Hai registrato 40 ricordi del passato"
     },
     "weekend_warrior": {
       "title": "Guerriero del weekend",
@@ -527,35 +563,31 @@
     },
     "note_taker": {
       "title": "Annotatore",
-      "description": "Aggiunte note a 20 voci"
+      "description": "Hai aggiunto descrizioni a 20 ricordi"
     },
     "storyteller": {
       "title": "Narratore",
       "description": "Aggiunte note a 100 voci"
     },
     "visual_logger": {
-      "title": "Diario visivo",
-      "description": "Aggiunte foto a 20 voci"
+      "title": "Registro visivo",
+      "description": "Hai aggiunto foto a 20 ricordi"
     },
     "photo_journalist": {
-      "title": "Fotogiornalista",
-      "description": "Aggiunte foto a 100 voci"
+      "title": "Fotoreporter",
+      "description": "Hai aggiunto foto a 100 ricordi"
     },
     "organizer": {
       "title": "Organizzatore",
-      "description": "Taggate 20 voci"
+      "description": "Hai taggato 20 ricordi"
     },
     "master_organizer": {
-      "title": "Organizzatore esperto",
-      "description": "Taggate 100 voci"
-    },
-    "tag_creator": {
-      "title": "Creatore di tag",
-      "description": "Creati 20 tag unici"
+      "title": "Organizzatore maestro",
+      "description": "Hai taggato 100 ricordi"
     },
     "taxonomy_expert": {
       "title": "Esperto di tassonomia",
-      "description": "Creati 40 tag unici"
+      "description": "Hai creato 40 tag unici"
     },
     "summer_lover": {
       "title": "Amante dell'estate",
@@ -600,34 +632,94 @@
     "city_list_complete": {
       "title": "Conquistatore di liste",
       "description": "Completata una lista di città al 100%"
+    },
+    "first_chapter": {
+      "title": "Primo capitolo",
+      "description": "Hai creato il tuo primo capitolo"
+    },
+    "first_milestone": {
+      "title": "Primo traguardo",
+      "description": "Hai registrato il tuo primo traguardo"
+    },
+    "first_note": {
+      "title": "Prima nota",
+      "description": "Hai scritto la tua prima nota"
+    },
+    "chapters_5": {
+      "title": "Cronista",
+      "description": "Hai creato 5 capitoli"
+    },
+    "chapters_15": {
+      "title": "Narratore",
+      "description": "Hai creato 15 capitoli"
+    },
+    "chapters_30": {
+      "title": "Costruttore di eredità",
+      "description": "Hai creato 30 capitoli"
+    },
+    "milestones_15": {
+      "title": "Monitor traguardi",
+      "description": "Hai registrato 15 traguardi"
+    },
+    "milestones_40": {
+      "title": "Collezionista di traguardi",
+      "description": "Hai registrato 40 traguardi"
+    },
+    "milestones_150": {
+      "title": "Maestro dei traguardi",
+      "description": "Hai registrato 150 traguardi"
+    },
+    "memories_40": {
+      "title": "Custode dei ricordi",
+      "description": "Hai creato 40 ricordi"
+    },
+    "memories_150": {
+      "title": "Archivista",
+      "description": "Hai creato 150 ricordi"
+    },
+    "photos_25": {
+      "title": "Appassionato di foto",
+      "description": "Hai scattato 25 foto"
+    },
+    "photos_100": {
+      "title": "Fotografo",
+      "description": "Hai scattato 100 foto"
+    },
+    "photos_400": {
+      "title": "Archivista fotografico",
+      "description": "Hai scattato 400 foto"
+    },
+    "storyteller_badge": {
+      "title": "Cronista dettagliato",
+      "description": "Hai aggiunto descrizioni a 100 ricordi"
     }
   },
   "tags": {
     "quick": {
-      "firstTime": "Prima volta",
-      "milestone": "Traguardo",
-      "funny": "Divertente",
-      "sweet": "Dolce",
-      "growth": "Crescita",
-      "health": "Salute",
-      "feeding": "Alimentazione",
-      "sleep": "Sonno",
-      "play": "Gioco",
-      "family": "Famiglia",
-      "outdoor": "All'aperto",
-      "learning": "Apprendimento",
-      "birthday": "Compleanno",
-      "holiday": "Festività",
-      "travel": "Viaggio",
-      "doctor": "Visita medica",
-      "bath": "Bagnetto",
-      "teeth": "Denti",
-      "walking": "Camminare",
-      "talking": "Parlare",
-      "crawling": "Strisciare",
-      "friends": "Amici",
-      "pet": "Con animale",
-      "messy": "Disordinato"
+      "restaurant": "Ristorante",
+      "cafe": "Caffè",
+      "hotel": "Hotel",
+      "museum": "Museo",
+      "cityCenter": "Centro città",
+      "beach": "Spiaggia",
+      "sea": "Mare",
+      "park": "Parco",
+      "shopping": "Acquisti",
+      "bar": "Bar",
+      "landmark": "Luogo iconico",
+      "mosque": "Moschea",
+      "ship": "Nave",
+      "temple": "Tempio",
+      "market": "Mercato",
+      "nightlife": "Vita notturna",
+      "nature": "Natura",
+      "adventure": "Avventura",
+      "localFood": "Cucina locale",
+      "streetFood": "Cibo di strada",
+      "viewPoint": "Punto panoramico",
+      "historic": "Storico",
+      "art": "Arte",
+      "transport": "Trasporti"
     }
   },
   "dialogs": {
@@ -750,11 +842,11 @@
     "restoreSuccessMessage": "I tuoi acquisti sono stati ripristinati.",
     "restoreEmptyMessage": "Nessun abbonamento attivo da ripristinare.",
     "restoreFailedMessage": "Ripristino non riuscito. Riprova.",
-    "cameraPermission": "Camera Permission",
-    "cameraPermissionDesc": "Please enable camera access in settings",
-    "maxPhotos": "Max 3 photos",
-    "maxPhotosDesc": "You can add up to 3 photos",
-    "required": "Required"
+    "cameraPermission": "Permesso fotocamera",
+    "cameraPermissionDesc": "Abilita l’accesso alla fotocamera nelle impostazioni",
+    "maxPhotos": "Massimo 3 foto",
+    "maxPhotosDesc": "Puoi aggiungere fino a 3 foto",
+    "required": "Obbligatorio"
   },
   "limitations": {
     "title": "Da sapere",
@@ -778,8 +870,8 @@
         "body": "Cerca tra capitoli, traguardi e note — subito."
       },
       "bestOfList": {
-        "title": "Cattura i momenti importanti",
-        "body": "Segna i ricordi importanti e aggiungi note brevi."
+        "title": "Cattura i momenti più belli",
+        "body": "Conserva i ricordi preferiti e aggiungi note brevi."
       },
       "noCompetition": {
         "title": "Nessun feed. Nessuna competizione.",
@@ -804,7 +896,7 @@
     "summaryLabel": "Riepilogo",
     "noEntries": "Nessuna voce",
     "otherEntries": "Altre voci",
-    "sharedFrom": "Condiviso da BabyLegacy",
+    "sharedFrom": "Condiviso da Offly",
     "chapterHighlights": "Momenti salienti del capitolo",
     "locations": "Posizioni",
     "milestones": "Traguardi",
@@ -819,6 +911,6 @@
     "other": "Altro"
   },
   "buttons": {
-    "save": "Save Memory"
+    "save": "Salva ricordo"
   }
 }

@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "BabyLegacy",
+    "appName": "Offly",
     "done": "Fertig",
     "cancel": "Abbrechen",
     "delete": "Löschen",
@@ -72,7 +72,7 @@
     "language": "Sprache",
     "chooseAppearance": "Erscheinungsbild wählen",
     "chooseLanguage": "Sprache wählen",
-    "exportSection": "Export",
+    "exportSection": "Exportieren",
     "exportTitle": "Alle Daten exportieren",
     "exportDescription": "Lade deine Kapitel, Erinnerungen und Tags als JSON oder XLS herunter",
     "exportButton": "JSON exportieren",
@@ -84,7 +84,7 @@
     "exportPhotosNote": "Fotos werden nicht exportiert.",
     "exportFormatsTitle": "Format auswählen",
     "exportFormatsDescription": "JSON eignet sich für Backups und Re-Import. XLS lässt sich leicht in Excel oder Google Sheets öffnen.",
-    "importSection": "Import",
+    "importSection": "Importieren",
     "importTitle": "Daten importieren",
     "importDescription": "Importiere deine gespeicherten Kapitel und Erinnerungen aus einer JSON-Datei.",
     "importButton": "JSON importieren",
@@ -97,7 +97,7 @@
     "supportRate": "Gib uns 5 Sterne",
     "supportShare": "App teilen",
     "supportContact": "Kontakt",
-    "supportShareMessage": "BabyLegacy - ein privates Familienarchiv, das ich liebe: {link}",
+    "supportShareMessage": "Offly - ein privates Familienarchiv, das ich liebe: {link}",
     "onboardingSection": "Einführung",
     "onboardingTitle": "Einführung erneut anzeigen",
     "onboardingDescription": "Spiele die Einführung mit 7 Screens jederzeit erneut ab.",
@@ -110,16 +110,47 @@
     "storage": "Speicher",
     "privacy": "Datenschutz",
     "storageValue": "Daten bleiben auf deinem Gerät.",
-    "privacyValue": "Offline-first",
-    "footer": "BabyLegacy — dein privates Familienarchiv",
+    "privacyValue": "Offline-zuerst",
+    "footer": "Offly — dein privates Familienarchiv",
     "themeLight": "Hell",
     "themeDark": "Dunkel",
-    "themeSystem": "System"
+    "themeSystem": "System",
+    "alertBackupExportFailedMessage": "Backup konnte nicht erstellt werden. Bitte versuche es erneut.",
+    "alertProfileUpdateFailedMessage": "Profil konnte nicht aktualisiert werden. Bitte versuche es erneut.",
+    "beforeBirthChapterTitle": "Bevor du geboren wurdest",
+    "beforeBirthChapterDescription": "Einträge aus dem Schwangerschaftstagebuch",
+    "alertModeUpdatedTitle": "Modus aktualisiert",
+    "alertModeUpdatedMessage": "Dein Profil wurde in den Modus \"Geboren\" umgestellt. Einträge aus dem Schwangerschaftstagebuch wurden in das Kapitel \"{chapter}\" verschoben.",
+    "alertModeSwitchFailedMessage": "Moduswechsel fehlgeschlagen. Bitte versuche es erneut.",
+    "yourBaby": "Dein Baby",
+    "modeExpecting": "Erwartet",
+    "modeBorn": "Geboren",
+    "editAction": "Bearbeiten",
+    "dueDate": "Errechneter Termin",
+    "age": "Alter",
+    "daysCount": "{count} Tage",
+    "babyBornButton": "Baby ist geboren!",
+    "colorTheme": "Farbthema",
+    "backupDataSection": "Backup & Daten",
+    "backupMemoriesTitle": "Sichere deine Erinnerungen",
+    "backupMemoriesDescription": "Exportiere deine Daten als sichere Kopie. Deine Daten werden nur auf diesem Gerät gespeichert.",
+    "lastBackup": "Letztes Backup: {date}",
+    "noBackupYet": "Noch kein Backup. Wir empfehlen regelmäßige Sicherungen.",
+    "createBackup": "Backup erstellen",
+    "moreExportImportOptions": "Weitere Export- und Importoptionen",
+    "chooseColorTheme": "Farbthema wählen",
+    "modeSwitchTitle": "Baby ist geboren!",
+    "modeSwitchConfirm": "Bestätigen",
+    "modeSwitchDescription": "Gib das Geburtsdatum ein. Deine Schwangerschaftstagebucheinträge werden in das Kapitel \"{chapter}\" verschoben und die Freischaltdaten des Tresors werden neu berechnet.",
+    "editBabyProfileTitle": "Babyprofil bearbeiten",
+    "name": "Name",
+    "namePlaceholder": "Name oder Spitzname des Babys",
+    "birthDateLabel": "Geburtsdatum"
   },
   "proBanner": {
     "title": "Pro freischalten",
     "subtitle": "Schalte alle Funktionen frei.",
-    "cta": "Upgrade",
+    "cta": "Jetzt upgraden",
     "messages": [
       {
         "title": "Pro freischalten",
@@ -151,17 +182,17 @@
     "date": "Datum",
     "startDate": "Startdatum",
     "endDate": "Enddatum",
-    "title": "Title",
-    "notes": "Notes",
+    "title": "Titel",
+    "notes": "Notizen",
     "optional": "optional",
-    "filled": "Filled",
+    "filled": "Ausgefüllt",
     "milestone": {
-      "pastDue": "Past due",
-      "today": "Today",
-      "tomorrow": "Tomorrow",
-      "empty": "No milestones yet",
-      "emptySubtitle": "Milestones will appear here",
-      "quickAddHelper": "Open full editor to add tags and more"
+      "pastDue": "Überfällig",
+      "today": "Heute",
+      "tomorrow": "Morgen",
+      "empty": "Noch keine Meilensteine",
+      "emptySubtitle": "Meilensteine werden hier angezeigt",
+      "quickAddHelper": "Öffne den vollständigen Editor, um Tags und mehr hinzuzufügen"
     }
   },
   "placeholders": {
@@ -177,8 +208,8 @@
     "entryNotes": "Details hinzufügen...",
     "milestoneListName": "z. B. Meilensteine, Familientraditionen",
     "locationGroupName": "z. B. Zuhause, bei Oma",
-    "memoryTitle": "What happened?",
-    "memoryNotes": "Add details..."
+    "memoryTitle": "Was ist passiert?",
+    "memoryNotes": "Details hinzufügen..."
   },
   "chapterForm": {
     "titleLabel": "Kapitel-Titel *",
@@ -197,7 +228,6 @@
   "memoryForm": {
     "titleLabel": "Titel *",
     "locationLabel": "Ort",
-    "importanceLabel": "WICHTIGKEIT",
     "descriptionLabel": "Beschreibung",
     "tagsLabel": "Tags",
     "milestone": "Meilenstein",
@@ -205,7 +235,6 @@
   },
   "entryForm": {
     "titleLabel": "Titel *",
-    "ratingLabel": "Wichtigkeit",
     "notesLabel": "Notizen",
     "tagsLabel": "Tags",
     "photosLabel": "Fotos ({count}/{max})",
@@ -285,9 +314,7 @@
     "noResultsSubtitle": "Versuche andere Suchbegriffe",
     "showLabel": "Anzeigen",
     "memoryTypeLabel": "Erinnerungstyp",
-    "minImportanceLabel": "Min. Wichtigkeit",
     "entryTypeLabel": "Erinnerungstyp",
-    "minRatingLabel": "Min. Wichtigkeit",
     "tagsLabel": "Tags",
     "clearFilters": "Filter zurücksetzen",
     "filterAll": "Alle",
@@ -319,15 +346,12 @@
     "statsMilestones": "Orte",
     "statsLocations": "Standorte",
     "statsPhotos": "Fotos",
-    "statsImportant": "Wichtig",
     "statsChapterDays": "Kapitel-Tage",
     "memoriesBreakdown": "{milestones} Meilensteine, {notes} Notizen",
     "entriesBreakdown": "{milestones} Meilensteine, {notes} Notizen",
     "highlightMostVisited": "Am häufigsten besucht",
     "highlightFirstTrip": "Erstes Kapitel",
     "highlightFirstMemory": "Erste Erinnerung",
-    "highlightAvgRating": "Ø Wichtigkeit",
-    "highlightImportant": "Am wichtigsten",
     "topTags": "Top-Tags",
     "milestoneProgress": "Meilenstein-Listen",
     "seeAll": "Alle ansehen",
@@ -378,8 +402,8 @@
       "description": "Deinen ersten Moment festgehalten"
     },
     "first_tag": {
-      "title": "Erstes Schlagwort",
-      "description": "Dein erstes Schlagwort erstellt"
+      "title": "Erstes Tag",
+      "description": "Dein erstes Tag erstellt"
     },
     "trips_3": {
       "title": "Entdecker",
@@ -445,41 +469,53 @@
       "title": "Stadtentdecker",
       "description": "40 Städte besucht"
     },
-    "tag_pizza": {
-      "title": "Pizza-Pilger",
-      "description": "20 Pizza-Einträge protokolliert"
+    "tag_first_time": {
+      "title": "Erste Male",
+      "description": "10 Erinnerungen an erste Male festgehalten"
     },
-    "tag_cafe": {
-      "title": "Café-Stammgast",
-      "description": "25 Café-Einträge protokolliert"
+    "tag_milestone": {
+      "title": "Meilenstein-Profi",
+      "description": "15 Meilenstein-Erinnerungen getaggt"
     },
-    "tag_museum": {
-      "title": "Museum-Experte",
-      "description": "15 Museum-Einträge protokolliert"
+    "tag_funny": {
+      "title": "Humor-Gold",
+      "description": "12 lustige Momente festgehalten"
     },
-    "tag_beach": {
-      "title": "Strandläufer",
-      "description": "12 Strand-Einträge protokolliert"
+    "tag_sweet": {
+      "title": "Süße Momente",
+      "description": "12 süße Erinnerungen festgehalten"
     },
-    "tag_nightlife": {
-      "title": "Nachtmensch",
-      "description": "12 Nachtleben-Einträge protokolliert"
+    "tag_growth": {
+      "title": "Wachstums-Tracker",
+      "description": "10 Wachstumseinträge festgehalten"
     },
-    "tag_street_food": {
-      "title": "Streetfood-Legende",
-      "description": "25 Streetfood-Einträge protokolliert"
+    "tag_health": {
+      "title": "Gesundheits-Tracker",
+      "description": "10 Gesundheitseinträge festgehalten"
     },
-    "tag_market": {
-      "title": "Markt-Experte",
-      "description": "12 Markt-Einträge protokolliert"
+    "tag_feeding": {
+      "title": "Fütterungs-Tracker",
+      "description": "15 Fütterungseinträge festgehalten"
     },
-    "tag_temple": {
-      "title": "Tempel-Sucher",
-      "description": "10 Tempel-Einträge protokolliert"
+    "tag_sleep": {
+      "title": "Schlaf-Monitor",
+      "description": "15 Schlafeinträge festgehalten"
+    },
+    "tag_play": {
+      "title": "Spielzeit-Profi",
+      "description": "12 Spieleinträge festgehalten"
+    },
+    "tag_family": {
+      "title": "Familienmomente",
+      "description": "15 Familieneinträge festgehalten"
+    },
+    "tag_creator": {
+      "title": "Tag-Ersteller",
+      "description": "20 einzigartige Tags erstellt"
     },
     "historian": {
-      "title": "Historiker",
-      "description": "40 Einträge aus früheren Reisen protokolliert"
+      "title": "Erinnerungswächter",
+      "description": "40 Erinnerungen aus der Vergangenheit festgehalten"
     },
     "weekend_warrior": {
       "title": "Wochenendkrieger",
@@ -527,7 +563,7 @@
     },
     "note_taker": {
       "title": "Notizenschreiber",
-      "description": "Notizen zu 20 Einträgen hinzugefügt"
+      "description": "20 Erinnerungen mit Beschreibungen ergänzt"
     },
     "storyteller": {
       "title": "Geschichtenerzähler",
@@ -535,23 +571,19 @@
     },
     "visual_logger": {
       "title": "Bildchronist",
-      "description": "Fotos zu 20 Einträgen hinzugefügt"
+      "description": "20 Erinnerungen mit Fotos ergänzt"
     },
     "photo_journalist": {
       "title": "Fotojournalist",
-      "description": "Fotos zu 100 Einträgen hinzugefügt"
+      "description": "100 Erinnerungen mit Fotos ergänzt"
     },
     "organizer": {
       "title": "Organisator",
-      "description": "20 Einträge getaggt"
+      "description": "20 Erinnerungen getaggt"
     },
     "master_organizer": {
       "title": "Meister-Organisator",
-      "description": "100 Einträge getaggt"
-    },
-    "tag_creator": {
-      "title": "Tag-Ersteller",
-      "description": "20 einzigartige Tags erstellt"
+      "description": "100 Erinnerungen getaggt"
     },
     "taxonomy_expert": {
       "title": "Taxonomie-Experte",
@@ -600,34 +632,94 @@
     "city_list_complete": {
       "title": "Listenbezwinger",
       "description": "Eine Stadtliste zu 100% abgeschlossen"
+    },
+    "first_chapter": {
+      "title": "Erstes Kapitel",
+      "description": "Dein erstes Kapitel erstellt"
+    },
+    "first_milestone": {
+      "title": "Erster Meilenstein",
+      "description": "Deinen ersten Meilenstein festgehalten"
+    },
+    "first_note": {
+      "title": "Erste Notiz",
+      "description": "Deine erste Notiz geschrieben"
+    },
+    "chapters_5": {
+      "title": "Chronist",
+      "description": "5 Kapitel erstellt"
+    },
+    "chapters_15": {
+      "title": "Geschichtenerzähler",
+      "description": "15 Kapitel erstellt"
+    },
+    "chapters_30": {
+      "title": "Legacy-Erbauer",
+      "description": "30 Kapitel erstellt"
+    },
+    "milestones_15": {
+      "title": "Meilenstein-Tracker",
+      "description": "15 Meilensteine festgehalten"
+    },
+    "milestones_40": {
+      "title": "Meilenstein-Sammler",
+      "description": "40 Meilensteine festgehalten"
+    },
+    "milestones_150": {
+      "title": "Meilenstein-Meister",
+      "description": "150 Meilensteine festgehalten"
+    },
+    "memories_40": {
+      "title": "Erinnerungswächter",
+      "description": "40 Erinnerungen erstellt"
+    },
+    "memories_150": {
+      "title": "Archivar",
+      "description": "150 Erinnerungen erstellt"
+    },
+    "photos_25": {
+      "title": "Schnappschuss-Profi",
+      "description": "25 Fotos aufgenommen"
+    },
+    "photos_100": {
+      "title": "Fotograf",
+      "description": "100 Fotos aufgenommen"
+    },
+    "photos_400": {
+      "title": "Foto-Archivar",
+      "description": "400 Fotos aufgenommen"
+    },
+    "storyteller_badge": {
+      "title": "Detail-Chronist",
+      "description": "100 Erinnerungen mit Beschreibungen ergänzt"
     }
   },
   "tags": {
     "quick": {
-      "firstTime": "Erstes Mal",
-      "milestone": "Meilenstein",
-      "funny": "Lustig",
-      "sweet": "Süß",
-      "growth": "Wachstum",
-      "health": "Gesundheit",
-      "feeding": "Fütterung",
-      "sleep": "Schlaf",
-      "play": "Spiel",
-      "family": "Familie",
-      "outdoor": "Draußen",
-      "learning": "Lernen",
-      "birthday": "Geburtstag",
-      "holiday": "Feiertag",
-      "travel": "Reise",
-      "doctor": "Arztbesuch",
-      "bath": "Badezeit",
-      "teeth": "Zähne",
-      "walking": "Laufen",
-      "talking": "Sprechen",
-      "crawling": "Kriechen",
-      "friends": "Freunde",
-      "pet": "Mit Haustier",
-      "messy": "Unordentlich"
+      "restaurant": "Restaurant",
+      "cafe": "Café",
+      "hotel": "Hotel",
+      "museum": "Museum",
+      "cityCenter": "Stadtzentrum",
+      "beach": "Strand",
+      "sea": "Meer",
+      "park": "Park",
+      "shopping": "Einkaufen",
+      "bar": "Bar",
+      "landmark": "Wahrzeichen",
+      "mosque": "Moschee",
+      "ship": "Schiff",
+      "temple": "Tempel",
+      "market": "Markt",
+      "nightlife": "Nachtleben",
+      "nature": "Natur",
+      "adventure": "Abenteuer",
+      "localFood": "Regionale Küche",
+      "streetFood": "Streetfood",
+      "viewPoint": "Aussichtspunkt",
+      "historic": "Historisch",
+      "art": "Kunst",
+      "transport": "Verkehr"
     }
   },
   "dialogs": {
@@ -750,11 +842,11 @@
     "restoreSuccessMessage": "Deine Käufe wurden erfolgreich wiederhergestellt.",
     "restoreEmptyMessage": "Keine aktiven Abos zum Wiederherstellen.",
     "restoreFailedMessage": "Wiederherstellung fehlgeschlagen. Bitte erneut versuchen.",
-    "cameraPermission": "Camera Permission",
-    "cameraPermissionDesc": "Please enable camera access in settings",
-    "maxPhotos": "Max 3 photos",
-    "maxPhotosDesc": "You can add up to 3 photos",
-    "required": "Required"
+    "cameraPermission": "Kameraberechtigung",
+    "cameraPermissionDesc": "Bitte aktiviere den Kamerazugriff in den Einstellungen",
+    "maxPhotos": "Max. 3 Fotos",
+    "maxPhotosDesc": "Du kannst bis zu 3 Fotos hinzufügen",
+    "required": "Erforderlich"
   },
   "limitations": {
     "title": "Gut zu wissen",
@@ -804,7 +896,7 @@
     "summaryLabel": "Zusammenfassung",
     "noEntries": "Keine Einträge",
     "otherEntries": "Andere Einträge",
-    "sharedFrom": "Geteilt von BabyLegacy",
+    "sharedFrom": "Geteilt von Offly",
     "chapterHighlights": "Kapitel-Highlights",
     "locations": "Standorte",
     "milestones": "Meilensteine",
@@ -819,6 +911,6 @@
     "other": "Andere"
   },
   "buttons": {
-    "save": "Save Memory"
+    "save": "Erinnerung speichern"
   }
 }

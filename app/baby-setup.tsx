@@ -124,7 +124,7 @@ export default function BabySetupScreen() {
       <View style={styles.container}>
         <Background />
         <View style={[styles.content, { paddingTop: insets.top + spacing.xxl }]}>
-          <Text style={styles.title}>Welcome to BabyLegacy</Text>
+          <Text style={styles.title}>Welcome to Offly</Text>
           <Text style={styles.subtitle}>How would you like to start?</Text>
 
           <View style={styles.modeCards}>
@@ -296,14 +296,16 @@ export default function BabySetupScreen() {
               </TouchableOpacity>
             )}
             {showDatePicker && (
-              <DateTimePicker
-                value={date}
-                mode="date"
-                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                onChange={handleDateChange}
-                maximumDate={mode === 'born' ? new Date() : undefined}
-                minimumDate={mode === 'pregnant' ? new Date() : undefined}
-              />
+              <View style={styles.datePickerContainer}>
+                <DateTimePicker
+                  value={date}
+                  mode="date"
+                  display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                  onChange={handleDateChange}
+                  maximumDate={mode === 'born' ? new Date() : undefined}
+                  minimumDate={mode === 'pregnant' ? new Date() : undefined}
+                />
+              </View>
             )}
           </View>
 
@@ -491,6 +493,12 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       fontSize: fontSize.md,
       fontFamily: fonts.body,
       color: theme.text,
+    },
+    datePickerContainer: {
+      alignItems: 'center',
+      width: '100%',
+      marginHorizontal: -spacing.xl,
+      paddingHorizontal: spacing.md,
     },
     finishButton: {
       backgroundColor: theme.primary,

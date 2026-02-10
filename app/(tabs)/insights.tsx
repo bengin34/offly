@@ -7,6 +7,7 @@ import {
   RefreshControl,
   ActivityIndicator,
   TouchableOpacity,
+  useWindowDimensions,
 } from 'react-native';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -23,6 +24,7 @@ import { useI18n, useTheme } from '../../src/hooks';
 import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
 
 export default function InsightsScreen() {
+  const { width: screenWidth } = useWindowDimensions();
   const theme = useTheme();
   const { t, locale } = useI18n();
   const router = useRouter();
@@ -76,6 +78,13 @@ export default function InsightsScreen() {
   };
 
   const styles = createStyles(theme);
+  const badgeColumns = 3;
+  const badgeGap = spacing.sm;
+  const badgeGridHorizontalPadding = spacing.md * 2;
+  const badgeAvailableWidth = Math.max(screenWidth - badgeGridHorizontalPadding, 0);
+  const badgeCardWidth = Math.floor(
+    (badgeAvailableWidth - badgeGap * (badgeColumns - 1)) / badgeColumns
+  );
 
   if (isLoading) {
     return (
@@ -135,16 +144,16 @@ export default function InsightsScreen() {
                 icon="images"
               />
               <StatCard
-                value={stats?.importantMemories ?? 0}
-                label={t('insights.statsImportant')}
-                icon="heart"
+                value={stats?.totalTags ?? 0}
+                label={t('insights.topTags')}
+                icon="pricetag"
               />
             </View>
           </View>
         </View>
 
         {/* Additional Stats */}
-        {stats != null && (stats.firstMemoryDate != null || stats.importantMemories > 0) && (
+        {stats != null && stats.firstMemoryDate != null && (
           <View style={styles.section}>
             <View style={styles.highlightCard}>
               {stats.firstMemoryDate && (
@@ -157,13 +166,6 @@ export default function InsightsScreen() {
                       year: 'numeric',
                     })}
                   </Text>
-                </View>
-              )}
-              {stats.importantMemories > 0 && (
-                <View style={styles.highlightRow}>
-                  <Ionicons name="heart" size={18} color={theme.primary} />
-                  <Text style={styles.highlightLabel}>{t('insights.highlightImportant')}</Text>
-                  <Text style={styles.highlightValue}>{stats.importantMemories}</Text>
                 </View>
               )}
             </View>
@@ -222,6 +224,7 @@ export default function InsightsScreen() {
                       key={badge.id}
                       badge={badge}
                       unlocked={unlocked}
+                      style={{ width: badgeCardWidth }}
                       onPress={() => setSelectedBadge(badge)}
                     />
                   );
@@ -374,7 +377,8 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
     badgesGrid: {
       flexDirection: 'row',
       flexWrap: 'wrap',
-      justifyContent: 'space-between',
+      justifyContent: 'flex-start',
+      columnGap: spacing.sm,
       rowGap: spacing.sm,
     },
     badgesEmpty: {

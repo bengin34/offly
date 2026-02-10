@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "BabyLegacy",
+    "appName": "Offly",
     "done": "Tamam",
     "cancel": "İptal",
     "delete": "Sil",
@@ -97,7 +97,7 @@
     "supportRate": "Bize 5 yıldız ver",
     "supportShare": "Uygulamayı paylaş",
     "supportContact": "Bizimle iletişime geç",
-    "supportShareMessage": "BabyLegacy - özel bir aile arşivi uygulaması buldum, bir bak: {link}",
+    "supportShareMessage": "Offly - özel bir aile arşivi uygulaması buldum, bir bak: {link}",
     "onboardingSection": "Tanıtım",
     "onboardingTitle": "Tanıtımı tekrar göster",
     "onboardingDescription": "7 ekranlık tanıtımı istediğin zaman tekrar oynat.",
@@ -111,10 +111,41 @@
     "privacy": "Gizlilik",
     "storageValue": "Veriler cihazında kalır.",
     "privacyValue": "Çevrimdışı",
-    "footer": "BabyLegacy — özel aile arşivin",
+    "footer": "Offly — özel aile arşivin",
     "themeLight": "Açık",
     "themeDark": "Koyu",
-    "themeSystem": "Sistem"
+    "themeSystem": "Sistem",
+    "alertBackupExportFailedMessage": "Yedek oluşturulamadı. Lütfen tekrar deneyin.",
+    "alertProfileUpdateFailedMessage": "Profil güncellenemedi. Lütfen tekrar deneyin.",
+    "beforeBirthChapterTitle": "Doğmadan önce",
+    "beforeBirthChapterDescription": "Hamilelik günlüğü kayıtları",
+    "alertModeUpdatedTitle": "Mod güncellendi",
+    "alertModeUpdatedMessage": "Profilin \"Doğdu\" moduna geçirildi. Hamilelik günlüğü kayıtları \"{chapter}\" bölümüne taşındı.",
+    "alertModeSwitchFailedMessage": "Mod değiştirilemedi. Lütfen tekrar deneyin.",
+    "yourBaby": "Bebeğin",
+    "modeExpecting": "Bekleniyor",
+    "modeBorn": "Doğdu",
+    "editAction": "Düzenle",
+    "dueDate": "Tahmini doğum tarihi",
+    "age": "Yaş",
+    "daysCount": "{count} gün",
+    "babyBornButton": "Bebek doğdu!",
+    "colorTheme": "Renk Teması",
+    "backupDataSection": "Yedekleme ve Veriler",
+    "backupMemoriesTitle": "Anılarını yedekle",
+    "backupMemoriesDescription": "Güvenli bir kopya için verilerini dışa aktar. Verilerin yalnızca bu cihazda saklanır.",
+    "lastBackup": "Son yedekleme: {date}",
+    "noBackupYet": "Henüz yedek yok. Düzenli yedek almanı öneririz.",
+    "createBackup": "Yedek Oluştur",
+    "moreExportImportOptions": "Daha fazla dışa/içe aktarma seçeneği",
+    "chooseColorTheme": "Renk Temasını Seç",
+    "modeSwitchTitle": "Bebek doğdu!",
+    "modeSwitchConfirm": "Onayla",
+    "modeSwitchDescription": "Doğum tarihini gir. Hamilelik günlüğü kayıtların \"{chapter}\" bölümüne taşınacak ve kasa açılma tarihleri yeniden hesaplanacak.",
+    "editBabyProfileTitle": "Bebek Profilini Düzenle",
+    "name": "İsim",
+    "namePlaceholder": "Bebeğin adı veya takma adı",
+    "birthDateLabel": "Doğum Tarihi"
   },
   "proBanner": {
     "title": "Pro'ya Geç",
@@ -151,17 +182,17 @@
     "date": "Tarih",
     "startDate": "Başlangıç Tarihi",
     "endDate": "Bitiş Tarihi",
-    "title": "Title",
-    "notes": "Notes",
-    "optional": "optional",
-    "filled": "Filled",
+    "title": "Başlık",
+    "notes": "Notlar",
+    "optional": "isteğe bağlı",
+    "filled": "Dolu",
     "milestone": {
-      "pastDue": "Past due",
-      "today": "Today",
-      "tomorrow": "Tomorrow",
-      "empty": "No milestones yet",
-      "emptySubtitle": "Milestones will appear here",
-      "quickAddHelper": "Open full editor to add tags and more"
+      "pastDue": "Gecikmiş",
+      "today": "Bugün",
+      "tomorrow": "Yarın",
+      "empty": "Henüz dönüm noktası yok",
+      "emptySubtitle": "Dönüm noktaları burada görünecek",
+      "quickAddHelper": "Etiket ve daha fazlasını eklemek için tam düzenleyiciyi aç"
     }
   },
   "placeholders": {
@@ -177,8 +208,8 @@
     "entryNotes": "Detay ekle...",
     "milestoneListName": "örn. Kilometre taşları, Aile gelenekleri",
     "locationGroupName": "örn. Ev, anneanne evi",
-    "memoryTitle": "What happened?",
-    "memoryNotes": "Add details..."
+    "memoryTitle": "Ne oldu?",
+    "memoryNotes": "Detay ekle..."
   },
   "chapterForm": {
     "titleLabel": "Bölüm Başlığı *",
@@ -197,7 +228,6 @@
   "memoryForm": {
     "titleLabel": "Başlık *",
     "locationLabel": "Konum",
-    "importanceLabel": "ÖNEM",
     "descriptionLabel": "Açıklama",
     "tagsLabel": "Etiketler",
     "milestone": "Kilometre Taşı",
@@ -205,7 +235,6 @@
   },
   "entryForm": {
     "titleLabel": "Başlık *",
-    "ratingLabel": "Önem",
     "notesLabel": "Notlar",
     "tagsLabel": "Etiketler",
     "photosLabel": "Fotoğraflar ({count}/{max})",
@@ -285,9 +314,7 @@
     "noResultsSubtitle": "Farklı anahtar kelimelerle dene",
     "showLabel": "Göster",
     "memoryTypeLabel": "Anı Türü",
-    "minImportanceLabel": "Min. Önem",
     "entryTypeLabel": "Anı Türü",
-    "minRatingLabel": "Min. Önem",
     "tagsLabel": "Etiketler",
     "clearFilters": "Filtreleri temizle",
     "filterAll": "Tümü",
@@ -319,15 +346,12 @@
     "statsMilestones": "Yerler",
     "statsLocations": "Konumlar",
     "statsPhotos": "Fotoğraflar",
-    "statsImportant": "Önemli",
     "statsChapterDays": "Bölüm Günleri",
     "memoriesBreakdown": "{milestones} kilometre taşı, {notes} not",
     "entriesBreakdown": "{milestones} kilometre taşı, {notes} not",
     "highlightMostVisited": "En Çok Ziyaret",
     "highlightFirstTrip": "İlk Bölüm",
     "highlightFirstMemory": "İlk Anı",
-    "highlightAvgRating": "Ort. Önem",
-    "highlightImportant": "En Önemli",
     "topTags": "Öne Çıkan Etiketler",
     "milestoneProgress": "Kilometre Taşı Listeleri",
     "seeAll": "Tümünü Gör",
@@ -445,41 +469,53 @@
       "title": "Şehir Kaşifi",
       "description": "40 şehir ziyaret ettin"
     },
-    "tag_pizza": {
-      "title": "Pizza Hacısı",
-      "description": "20 pizza kaydı oluşturdun"
+    "tag_first_time": {
+      "title": "İlkler",
+      "description": "10 ilk anıyı kaydettin"
     },
-    "tag_cafe": {
-      "title": "Kafe Müdavimi",
-      "description": "25 kafe kaydı oluşturdun"
+    "tag_milestone": {
+      "title": "Dönüm Noktası Ustası",
+      "description": "15 dönüm noktası anısını etiketledin"
     },
-    "tag_museum": {
-      "title": "Müze Uzmanı",
-      "description": "15 müze kaydı oluşturdun"
+    "tag_funny": {
+      "title": "Kahkaha Ustası",
+      "description": "12 komik an kaydettin"
     },
-    "tag_beach": {
-      "title": "Plaj Gezgini",
-      "description": "12 plaj kaydı oluşturdun"
+    "tag_sweet": {
+      "title": "Tatlı Anlar",
+      "description": "12 tatlı anıyı kaydettin"
     },
-    "tag_nightlife": {
-      "title": "Gece Kuşu",
-      "description": "12 gece hayatı kaydı oluşturdun"
+    "tag_growth": {
+      "title": "Büyüme Takibi",
+      "description": "10 büyüme kaydı oluşturdun"
     },
-    "tag_street_food": {
-      "title": "Sokak Lezzeti Efsanesi",
-      "description": "25 sokak yemeği kaydı oluşturdun"
+    "tag_health": {
+      "title": "Sağlık Takibi",
+      "description": "10 sağlık kaydı oluşturdun"
     },
-    "tag_market": {
-      "title": "Pazar Ustası",
-      "description": "12 pazar kaydı oluşturdun"
+    "tag_feeding": {
+      "title": "Beslenme Takibi",
+      "description": "15 beslenme kaydı oluşturdun"
     },
-    "tag_temple": {
-      "title": "Tapınak Kaşifi",
-      "description": "10 tapınak kaydı oluşturdun"
+    "tag_sleep": {
+      "title": "Uyku Takibi",
+      "description": "15 uyku kaydı oluşturdun"
+    },
+    "tag_play": {
+      "title": "Oyun Zamanı Ustası",
+      "description": "12 oyun kaydı oluşturdun"
+    },
+    "tag_family": {
+      "title": "Aile Anları",
+      "description": "15 aile kaydı oluşturdun"
+    },
+    "tag_creator": {
+      "title": "Etiket Üreticisi",
+      "description": "20 benzersiz etiket oluşturdun"
     },
     "historian": {
-      "title": "Tarihçi",
-      "description": "Geçmiş seyahatlerden 40 kayıt oluşturdun"
+      "title": "Anı Arşivcisi",
+      "description": "Geçmişten 40 anı kaydettin"
     },
     "weekend_warrior": {
       "title": "Hafta Sonu Savaşçısı",
@@ -527,7 +563,7 @@
     },
     "note_taker": {
       "title": "Not Tutucu",
-      "description": "20 kayda not ekledin"
+      "description": "20 anıya açıklama ekledin"
     },
     "storyteller": {
       "title": "Hikâye Anlatıcısı",
@@ -535,23 +571,19 @@
     },
     "visual_logger": {
       "title": "Görsel Günlükçü",
-      "description": "20 kayda fotoğraf ekledin"
+      "description": "20 anıya fotoğraf ekledin"
     },
     "photo_journalist": {
       "title": "Foto Muhabiri",
-      "description": "100 kayda fotoğraf ekledin"
+      "description": "100 anıya fotoğraf ekledin"
     },
     "organizer": {
       "title": "Organizatör",
-      "description": "20 kaydı etiketledin"
+      "description": "20 anıyı etiketledin"
     },
     "master_organizer": {
       "title": "Usta Organizatör",
-      "description": "100 kaydı etiketledin"
-    },
-    "tag_creator": {
-      "title": "Etiket Üreticisi",
-      "description": "20 benzersiz etiket oluşturdun"
+      "description": "100 anıyı etiketledin"
     },
     "taxonomy_expert": {
       "title": "Taksonomi Uzmanı",
@@ -600,34 +632,94 @@
     "city_list_complete": {
       "title": "Liste Fatihi",
       "description": "Bir şehir listesini %100 tamamladın"
+    },
+    "first_chapter": {
+      "title": "İlk Bölüm",
+      "description": "İlk bölümünü oluşturdun"
+    },
+    "first_milestone": {
+      "title": "İlk Dönüm Noktası",
+      "description": "İlk dönüm noktasını kaydettin"
+    },
+    "first_note": {
+      "title": "İlk Not",
+      "description": "İlk notunu yazdın"
+    },
+    "chapters_5": {
+      "title": "Kronikçi",
+      "description": "5 bölüm oluşturdun"
+    },
+    "chapters_15": {
+      "title": "Hikâye Anlatıcısı",
+      "description": "15 bölüm oluşturdun"
+    },
+    "chapters_30": {
+      "title": "Miras Kurucusu",
+      "description": "30 bölüm oluşturdun"
+    },
+    "milestones_15": {
+      "title": "Dönüm Noktası Takibi",
+      "description": "15 dönüm noktası kaydettin"
+    },
+    "milestones_40": {
+      "title": "Dönüm Noktası Koleksiyoncusu",
+      "description": "40 dönüm noktası kaydettin"
+    },
+    "milestones_150": {
+      "title": "Dönüm Noktası Ustası",
+      "description": "150 dönüm noktası kaydettin"
+    },
+    "memories_40": {
+      "title": "Anı Bekçisi",
+      "description": "40 anı oluşturdun"
+    },
+    "memories_150": {
+      "title": "Arşivci",
+      "description": "150 anı oluşturdun"
+    },
+    "photos_25": {
+      "title": "Fotoğraf Meraklısı",
+      "description": "25 fotoğraf çektin"
+    },
+    "photos_100": {
+      "title": "Fotoğrafçı",
+      "description": "100 fotoğraf çektin"
+    },
+    "photos_400": {
+      "title": "Fotoğraf Arşivcisi",
+      "description": "400 fotoğraf çektin"
+    },
+    "storyteller_badge": {
+      "title": "Detaylı Anlatıcı",
+      "description": "100 anıya açıklama ekledin"
     }
   },
   "tags": {
     "quick": {
-      "firstTime": "İlk Kez",
-      "milestone": "Dönüm Noktası",
-      "funny": "Komik",
-      "sweet": "Tatlı",
-      "growth": "Büyüme",
-      "health": "Sağlık",
-      "feeding": "Beslenme",
-      "sleep": "Uyku",
-      "play": "Oyun",
-      "family": "Aile",
-      "outdoor": "Açık Hava",
-      "learning": "Öğrenme",
-      "birthday": "Doğum Günü",
-      "holiday": "Tatil",
-      "travel": "Seyahat",
-      "doctor": "Doktor Ziyareti",
-      "bath": "Banyo Zamanı",
-      "teeth": "Dişler",
-      "walking": "Yürüme",
-      "talking": "Konuşma",
-      "crawling": "Emekleme",
-      "friends": "Arkadaşlar",
-      "pet": "Evcil Hayvanla",
-      "messy": "Dağınık"
+      "restaurant": "Restoran",
+      "cafe": "Kafe",
+      "hotel": "Otel",
+      "museum": "Müze",
+      "cityCenter": "Şehir Merkezi",
+      "beach": "Plaj",
+      "sea": "Deniz",
+      "park": "Park Alanı",
+      "shopping": "Alışveriş",
+      "bar": "Bar Mekânı",
+      "landmark": "Simgesel Yer",
+      "mosque": "Cami",
+      "ship": "Gemi",
+      "temple": "Tapınak",
+      "market": "Pazar",
+      "nightlife": "Gece Hayatı",
+      "nature": "Doğa",
+      "adventure": "Macera",
+      "localFood": "Yöresel Lezzetler",
+      "streetFood": "Sokak Lezzetleri",
+      "viewPoint": "Seyir Noktası",
+      "historic": "Tarihi",
+      "art": "Sanat",
+      "transport": "Ulaşım"
     }
   },
   "dialogs": {
@@ -750,11 +842,11 @@
     "restoreSuccessMessage": "Satın alımların başarıyla geri yüklendi.",
     "restoreEmptyMessage": "Geri yüklenecek aktif abonelik yok.",
     "restoreFailedMessage": "Geri yükleme başarısız oldu. Lütfen tekrar deneyin.",
-    "cameraPermission": "Camera Permission",
-    "cameraPermissionDesc": "Please enable camera access in settings",
-    "maxPhotos": "Max 3 photos",
-    "maxPhotosDesc": "You can add up to 3 photos",
-    "required": "Required"
+    "cameraPermission": "Kamera İzni",
+    "cameraPermissionDesc": "Lütfen ayarlardan kamera erişimini etkinleştir",
+    "maxPhotos": "Maksimum 3 fotoğraf",
+    "maxPhotosDesc": "En fazla 3 fotoğraf ekleyebilirsin",
+    "required": "Zorunlu"
   },
   "limitations": {
     "title": "Bilmenizde Fayda Var",
@@ -804,7 +896,7 @@
     "summaryLabel": "Özet",
     "noEntries": "Kayıt yok",
     "otherEntries": "Diğer kayıtlar",
-    "sharedFrom": "BabyLegacy'den paylaşıldı",
+    "sharedFrom": "Offly'den paylaşıldı",
     "chapterHighlights": "Bölüm Öne Çıkanları",
     "locations": "Konumlar",
     "milestones": "Kilometre Taşları",
@@ -819,6 +911,6 @@
     "other": "Diğer"
   },
   "buttons": {
-    "save": "Save Memory"
+    "save": "Anıyı Kaydet"
   }
 }

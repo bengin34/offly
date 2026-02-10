@@ -35,7 +35,6 @@ export default function SearchScreen() {
   // Filter state
   const [resultTypeFilter, setResultTypeFilter] = useState<ResultTypeFilter>('all');
   const [memoryTypeFilter, setMemoryTypeFilter] = useState<MemoryType | undefined>(undefined);
-  const [minImportanceFilter, setMinImportanceFilter] = useState<number>(0);
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
 
   const getQuickTagLabel = useCallback((tag: { key: string; label: string }) => {
@@ -70,7 +69,7 @@ export default function SearchScreen() {
   );
 
   // Track if filters are active
-  const hasActiveFilters = resultTypeFilter !== 'all' || memoryTypeFilter !== undefined || minImportanceFilter > 0 || selectedTagIds.length > 0;
+  const hasActiveFilters = resultTypeFilter !== 'all' || memoryTypeFilter !== undefined || selectedTagIds.length > 0;
 
   useEffect(() => {
     TagRepository.getAll().then(setAllTags);
@@ -81,10 +80,9 @@ export default function SearchScreen() {
     return {
       resultType: resultTypeFilter,
       memoryType: memoryTypeFilter,
-      minImportance: minImportanceFilter,
       tagIds: selectedTagIds.length > 0 ? selectedTagIds : undefined,
     };
-  }, [resultTypeFilter, memoryTypeFilter, minImportanceFilter, selectedTagIds, hasActiveFilters]);
+  }, [resultTypeFilter, memoryTypeFilter, selectedTagIds, hasActiveFilters]);
 
   const performSearch = useCallback(async (text: string, filters?: SearchFilters) => {
     if (text.trim().length < 2) {
@@ -117,12 +115,11 @@ export default function SearchScreen() {
     if (query.trim().length >= 2) {
       performSearch(query, buildFilters());
     }
-  }, [resultTypeFilter, memoryTypeFilter, minImportanceFilter, selectedTagIds]);
+  }, [resultTypeFilter, memoryTypeFilter, selectedTagIds]);
 
   const clearFilters = () => {
     setResultTypeFilter('all');
     setMemoryTypeFilter(undefined);
-    setMinImportanceFilter(0);
     setSelectedTagIds([]);
   };
 
@@ -375,37 +372,6 @@ export default function SearchScreen() {
                     {t('search.filterNotes')}
                   </Text>
                 </TouchableOpacity>
-              </View>
-            </View>
-          )}
-
-          {/* Minimum Importance Filter */}
-          {resultTypeFilter !== 'chapter' && (
-            <View style={styles.filterSection}>
-              <Text style={styles.filterLabel}>
-                {t('search.minImportanceLabel').toLocaleUpperCase(locale)}
-              </Text>
-              <View style={styles.filterChips}>
-                {[0, 3, 4, 5].map((importance) => (
-                  <TouchableOpacity
-                    key={importance}
-                    style={[
-                      styles.filterChip,
-                      minImportanceFilter === importance && styles.filterChipActive,
-                    ]}
-                    onPress={() => setMinImportanceFilter(importance)}
-                  >
-                    {importance > 0 && <Ionicons name="heart" size={12} color={minImportanceFilter === importance ? theme.white : theme.primary} />}
-                    <Text
-                      style={[
-                        styles.filterChipText,
-                        minImportanceFilter === importance && styles.filterChipTextActive,
-                      ]}
-                    >
-                      {importance === 0 ? t('search.filterAny') : `${importance}+`}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
               </View>
             </View>
           )}

@@ -23,8 +23,7 @@ export type BadgeRuleType =
   | 'memoriesWithDescription'
   | 'memoriesWithPhotos'
   | 'memoriesWithTags'
-  | 'uniqueTags'
-  | 'importantMemories';
+  | 'uniqueTags';
 
 export interface Badge {
   id: string;
@@ -352,15 +351,6 @@ export const BADGES: Badge[] = [
     threshold: 40,
     useTotalStats: true,
   },
-  {
-    id: 'important_collector',
-    title: 'Important Moments',
-    description: 'Marked 10 memories as important',
-    icon: 'star',
-    ruleType: 'importantMemories',
-    threshold: 10,
-    useTotalStats: true,
-  },
 ];
 
 export function getStatValueFromTotal(stats: BabyStats, ruleType: BadgeRuleType): number {
@@ -407,8 +397,6 @@ export function getStatValueFromTotal(stats: BabyStats, ruleType: BadgeRuleType)
       return stats.memoriesWithTags;
     case 'uniqueTags':
       return stats.uniqueTags;
-    case 'importantMemories':
-      return stats.importantMemories;
     default:
       return 0;
   }

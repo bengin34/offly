@@ -2,7 +2,7 @@ import * as SQLite from "expo-sqlite";
 import { ALL_MIGRATIONS, UPGRADE_MIGRATIONS } from "./schema";
 import { v4 as uuidv4 } from "uuid";
 
-const DATABASE_NAME = "BabyLegacy.db";
+const DATABASE_NAME = "Offly.db";
 
 let db: SQLite.SQLiteDatabase | null = null;
 

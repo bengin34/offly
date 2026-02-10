@@ -19,7 +19,6 @@ interface MemoryRow {
   memory_type: MemoryType;
   title: string;
   description: string | null;
-  importance: number | null;
   date: string;
   location_name: string | null;
   latitude: number | null;
@@ -47,7 +46,6 @@ function rowToMemory(row: MemoryRow): Memory {
     memoryType: row.memory_type,
     title: row.title,
     description: row.description ?? undefined,
-    importance: row.importance ?? undefined,
     date: row.date,
     locationName: row.location_name ?? undefined,
     latitude: row.latitude ?? undefined,
@@ -133,8 +131,8 @@ export const MemoryRepository = {
     const now = getTimestamp();
 
     await db.runAsync(
-      `INSERT INTO memories (id, chapter_id, vault_id, is_pregnancy_journal, memory_type, title, description, importance, date, location_name, latitude, longitude, map_url, milestone_template_id, is_custom_milestone, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO memories (id, chapter_id, vault_id, is_pregnancy_journal, memory_type, title, description, date, location_name, latitude, longitude, map_url, milestone_template_id, is_custom_milestone, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         id,
         input.chapterId || null,
@@ -143,7 +141,6 @@ export const MemoryRepository = {
         input.memoryType,
         input.title,
         input.description ?? null,
-        input.importance ?? null,
         input.date,
         input.locationName ?? null,
         input.latitude ?? null,
@@ -193,7 +190,6 @@ export const MemoryRepository = {
          memory_type = ?,
          title = ?,
          description = ?,
-         importance = ?,
          date = ?,
          location_name = ?,
          latitude = ?,
@@ -205,7 +201,6 @@ export const MemoryRepository = {
         input.memoryType ?? existing.memoryType,
         input.title ?? existing.title,
         input.description !== undefined ? input.description ?? null : existing.description ?? null,
-        input.importance !== undefined ? input.importance ?? null : existing.importance ?? null,
         input.date ?? existing.date,
         input.locationName !== undefined ? input.locationName ?? null : existing.locationName ?? null,
         input.latitude !== undefined ? input.latitude ?? null : existing.latitude ?? null,

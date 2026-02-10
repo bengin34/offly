@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, type StyleProp, type ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useI18n } from '../hooks/useI18n';
 import { useTheme } from '../hooks/useTheme';
@@ -15,9 +15,10 @@ interface BadgeCardProps {
     percentage: number;
   };
   onPress?: () => void;
+  style?: StyleProp<ViewStyle>;
 }
 
-export function BadgeCard({ badge, unlocked, progress, onPress }: BadgeCardProps) {
+export function BadgeCard({ badge, unlocked, progress, onPress, style }: BadgeCardProps) {
   const theme = useTheme();
   const { t, locale } = useI18n();
   const isUnlocked = !!unlocked;
@@ -49,6 +50,7 @@ export function BadgeCard({ badge, unlocked, progress, onPress }: BadgeCardProps
       disabled={!onPress}
       style={[
         styles.container,
+        style,
         {
           backgroundColor: isUnlocked ? theme.card : theme.backgroundSecondary,
           borderColor: isUnlocked ? theme.primary : theme.border,

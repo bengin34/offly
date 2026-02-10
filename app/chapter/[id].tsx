@@ -139,6 +139,7 @@ export default function ChapterDetailScreen() {
     date: Date;
     description?: string;
     photoUris: string[];
+    tagIds: string[];
   }) => {
     if (!quickAddMilestone || !id) return;
 
@@ -150,6 +151,7 @@ export default function ChapterDetailScreen() {
         title: data.title,
         description: data.description,
         date: data.date.toISOString(),
+        tagIds: data.tagIds,
         photoUris: data.photoUris,
         milestoneTemplateId: quickAddMilestone.milestoneTemplateId,
         isCustomMilestone: false,
@@ -233,8 +235,6 @@ export default function ChapterDetailScreen() {
     const photoCount = memory.photos.length;
     const tagCount = memory.tags.length;
     const hasDescription = Boolean(memory.description);
-    const importance = memory.importance ?? 0;
-    const hasImportance = importance > 0;
     const isMilestone = memory.memoryType === 'milestone';
 
     return (
@@ -291,12 +291,6 @@ export default function ChapterDetailScreen() {
                   <View style={styles.mediaPill}>
                     <Ionicons name="pricetag-outline" size={12} color={theme.white} />
                     <Text style={styles.mediaPillText}>{tagCount}</Text>
-                  </View>
-                )}
-                {hasImportance && (
-                  <View style={styles.importancePill}>
-                    <Ionicons name="star" size={12} color={theme.white} />
-                    <Text style={styles.mediaPillText}>{importance}</Text>
                   </View>
                 )}
               </View>
@@ -863,16 +857,6 @@ const createStyles = (theme: ThemeColors) =>
       fontSize: fontSize.xs,
       fontFamily: fonts.ui,
       color: theme.white,
-    },
-    importancePill: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 4,
-      paddingHorizontal: spacing.sm,
-      paddingVertical: 4,
-      borderRadius: borderRadius.full,
-      backgroundColor: theme.accent,
-      opacity: 0.95,
     },
     memoryBody: {
       padding: spacing.md,

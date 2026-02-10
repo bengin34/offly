@@ -190,8 +190,6 @@ export default function MemoryDetailScreen() {
   };
 
   const headerTitle = memory?.title || t('navigation.entry');
-  const importanceValue = memory?.importance ?? 0;
-  const hasImportance = memory ? importanceValue > 0 : false;
 
   return (
     <>
@@ -256,7 +254,7 @@ export default function MemoryDetailScreen() {
             )}
 
             <View style={styles.content}>
-            {/* Type Badge, Importance, and Date */}
+            {/* Type Badge and Date */}
             <View style={styles.metaRow}>
               <View style={styles.metaLeft}>
                 <View
@@ -276,12 +274,6 @@ export default function MemoryDetailScreen() {
                       : (t('memoryForm.note') || 'Note')}
                   </Text>
                 </View>
-                {hasImportance && (
-                  <View style={[styles.importanceBadge, { backgroundColor: theme.primary }]}>
-                    <Ionicons name="star" size={14} color={theme.white} />
-                    <Text style={styles.importanceText}>{importanceValue}</Text>
-                  </View>
-                )}
               </View>
               <Text style={styles.date}>
                 {formatDateLabel(memory.date, {
@@ -599,19 +591,6 @@ const createStyles = (theme: ThemeColors) =>
       borderRadius: borderRadius.full,
     },
     typeBadgeText: {
-      fontSize: fontSize.sm,
-      fontFamily: fonts.ui,
-      color: theme.white,
-    },
-    importanceBadge: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: spacing.xs,
-      paddingHorizontal: spacing.sm,
-      paddingVertical: spacing.xs,
-      borderRadius: borderRadius.full,
-    },
-    importanceText: {
       fontSize: fontSize.sm,
       fontFamily: fonts.ui,
       color: theme.white,

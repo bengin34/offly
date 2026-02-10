@@ -1,4 +1,4 @@
-// SQLite schema definitions for BabyLegacy
+// SQLite schema definitions for Offly
 
 export const CREATE_BABY_PROFILES_TABLE = `
   CREATE TABLE IF NOT EXISTS baby_profiles (
@@ -7,7 +7,6 @@ export const CREATE_BABY_PROFILES_TABLE = `
     birthdate TEXT,
     edd TEXT,
     mode TEXT NOT NULL DEFAULT 'born',
-    avatar_uri TEXT,
     is_default INTEGER NOT NULL DEFAULT 0,
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL
@@ -38,7 +37,6 @@ export const CREATE_MEMORIES_TABLE = `
     memory_type TEXT NOT NULL CHECK (memory_type IN ('milestone', 'note', 'letter')),
     title TEXT NOT NULL,
     description TEXT,
-    importance INTEGER,
     date TEXT NOT NULL,
     location_name TEXT,
     latitude REAL,

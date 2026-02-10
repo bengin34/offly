@@ -8,7 +8,6 @@ interface BabyProfileRow {
   birthdate: string | null;
   edd: string | null;
   mode: string;
-  avatar_uri: string | null;
   is_default: number;
   created_at: string;
   updated_at: string;
@@ -21,7 +20,6 @@ function rowToProfile(row: BabyProfileRow): BabyProfile {
     birthdate: row.birthdate ?? undefined,
     edd: row.edd ?? undefined,
     mode: (row.mode as BabyMode) || 'born',
-    avatarUri: row.avatar_uri ?? undefined,
     isDefault: row.is_default === 1,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
@@ -72,15 +70,14 @@ export const BabyProfileRepository = {
     const isDefault = (count?.count ?? 0) === 0 ? 1 : 0;
 
     await db.runAsync(
-      `INSERT INTO baby_profiles (id, name, birthdate, edd, mode, avatar_uri, is_default, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO baby_profiles (id, name, birthdate, edd, mode, is_default, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         id,
         input.name ?? null,
         input.birthdate ?? null,
         input.edd ?? null,
         input.mode ?? 'born',
-        input.avatarUri ?? null,
         isDefault,
         now,
         now,
@@ -103,7 +100,6 @@ export const BabyProfileRepository = {
          birthdate = ?,
          edd = ?,
          mode = ?,
-         avatar_uri = ?,
          updated_at = ?
        WHERE id = ?`,
       [
@@ -111,7 +107,6 @@ export const BabyProfileRepository = {
         input.birthdate !== undefined ? input.birthdate ?? null : existing.birthdate ?? null,
         input.edd !== undefined ? input.edd ?? null : existing.edd ?? null,
         input.mode !== undefined ? input.mode : existing.mode,
-        input.avatarUri !== undefined ? input.avatarUri ?? null : existing.avatarUri ?? null,
         now,
         input.id,
       ]
@@ -147,5 +142,51 @@ export const BabyProfileRepository = {
       'SELECT COUNT(*) as count FROM baby_profiles'
     );
     return result?.count ?? 0;
+  },
+
+  /**
+   * Transition from pregnant to born mode
+   * - Updates profile with birthdate and mode
+   * - Marks pregnancy chapters as archive
+   * - Preserves pregnancy milestones and journal entries
+   * - Born-mode chapters will be auto-generated on next load
+   */
+  async transitionToBornMode(profileId: string, birthdate: string): Promise<void> {
+    const profile = await this.getById(profileId);
+    if (!profile || profile.mode !== 'pregnant') {
+      return;
+    }
+
+    const db = await getDatabase();
+    const now = getTimestamp();
+
+    // Step 1: Update profile to born mode
+    await db.runAsync(
+      `UPDATE baby_profiles SET
+         birthdate = ?,
+         mode = ?,
+         updated_at = ?
+       WHERE id = ?`,
+      [birthdate, 'born', now, profileId]
+    );
+
+    // Step 2: Mark pregnancy chapters as archived
+    // Add "[Before you were born]" to description
+    const { ChapterRepository } = await import('./ChapterRepository');
+    const pregnancyChapters = await ChapterRepository.getAll(profileId);
+
+    for (const chapter of pregnancyChapters) {
+      const updatedDescription = chapter.description
+        ? `${chapter.description} [Before you were born]`
+        : '[Before you were born]';
+
+      await ChapterRepository.update({
+        id: chapter.id,
+        description: updatedDescription,
+      });
+    }
+
+    // Note: Born-mode chapters and milestones will be auto-generated
+    // on next home screen load via existing onboarding logic
   },
 };

@@ -1,4 +1,4 @@
-// Core entity types for BabyLegacy
+// Core entity types for Offly
 
 export type MemoryType = "milestone" | "note" | "letter";
 export type BabyMode = "born" | "pregnant";
@@ -12,7 +12,6 @@ export interface BabyProfile {
   birthdate?: string; // ISO date string (DOB)
   edd?: string; // ISO date string (Estimated Due Date)
   mode: BabyMode;
-  avatarUri?: string;
   isDefault: boolean;
   createdAt: string;
   updatedAt: string;
@@ -72,7 +71,6 @@ export interface Memory {
   memoryType: MemoryType;
   title: string;
   description?: string;
-  importance?: number; // 1-5 scale or boolean (1 = important)
   date: string; // ISO date string
   // Location fields (optional)
   locationName?: string;
@@ -147,7 +145,6 @@ export interface CreateBabyProfileInput {
   birthdate?: string;
   edd?: string;
   mode?: BabyMode;
-  avatarUri?: string;
 }
 
 export interface UpdateBabyProfileInput extends Partial<CreateBabyProfileInput> {
@@ -185,7 +182,6 @@ export interface CreateMemoryInput {
   memoryType: MemoryType;
   title: string;
   description?: string;
-  importance?: number;
   date: string;
   tagIds?: string[];
   photoUris?: string[];
@@ -214,14 +210,12 @@ export interface SearchResult {
   chapterTitle?: string;
   vaultId?: string;
   memoryType?: MemoryType;
-  importance?: number;
   isPregnancyJournal?: boolean;
 }
 
 export interface SearchFilters {
   resultType?: "all" | "chapter" | "memory" | "vault" | "pregnancy_journal";
   memoryType?: MemoryType;
-  minImportance?: number;
   tagIds?: string[];
   chapterId?: string;
 }
@@ -235,7 +229,6 @@ export interface AppStats {
   totalPhotos: number;
   totalTags: number;
   memoriesWithPhotos: number;
-  importantMemories: number;
 }
 
 // Export types

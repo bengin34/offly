@@ -23,7 +23,7 @@
     },
     "android": {
       "versionCode": 1,
-      "package": "com.babylegacy.app",
+      "package": "com.offly.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -43,11 +43,11 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Allow BabyLegacy to access your photos to add memories to your chapters.",
-          "cameraPermission": "Allow BabyLegacy to access your camera to capture precious moments."
+          "photosPermission": "Allow Offly to access your photos to add memories to your chapters.",
+          "cameraPermission": "Allow Offly to access your camera to capture precious moments."
         }
       ]
     ],
-    "scheme": "BabyLegacy"
+    "scheme": "Offly"
   }
 }

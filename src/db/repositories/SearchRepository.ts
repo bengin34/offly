@@ -15,7 +15,6 @@ interface MemorySearchRow {
   memory_type: MemoryType;
   title: string;
   description: string | null;
-  importance: number | null;
   chapter_title: string | null;
 }
 
@@ -81,11 +80,6 @@ export const SearchRepository = {
         memoryParams.push(filters.memoryType);
       }
 
-      if (filters?.minImportance !== undefined && filters.minImportance > 0) {
-        memoryWhereClause += ' AND m.importance >= ?';
-        memoryParams.push(filters.minImportance);
-      }
-
       if (filters?.chapterId) {
         memoryWhereClause += ' AND m.chapter_id = ?';
         memoryParams.push(filters.chapterId);
@@ -101,7 +95,7 @@ export const SearchRepository = {
       }
 
       const memoryRows = await db.getAllAsync<MemorySearchRow>(
-        `SELECT m.id, m.chapter_id, m.vault_id, m.is_pregnancy_journal, m.memory_type, m.title, m.description, m.importance, c.title as chapter_title
+        `SELECT m.id, m.chapter_id, m.vault_id, m.is_pregnancy_journal, m.memory_type, m.title, m.description, c.title as chapter_title
          FROM memories m
          LEFT JOIN chapters c ON m.chapter_id = c.id
          WHERE ${memoryWhereClause}`,
@@ -143,7 +137,6 @@ export const SearchRepository = {
           chapterTitle: row.chapter_title ?? undefined,
           vaultId: row.vault_id ?? undefined,
           memoryType: row.memory_type,
-          importance: row.importance ?? undefined,
           isPregnancyJournal: row.is_pregnancy_journal === 1,
         });
       }

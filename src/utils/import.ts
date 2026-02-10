@@ -302,7 +302,7 @@ async function importMemory(
     await db.runAsync(
       `UPDATE memories SET
         chapter_id = ?, memory_type = ?, title = ?,
-        description = ?, importance = ?, date = ?,
+        description = ?, date = ?,
         location_name = ?, latitude = ?, longitude = ?, map_url = ?,
         updated_at = ?
        WHERE id = ?`,
@@ -311,7 +311,6 @@ async function importMemory(
         memory.memoryType,
         memory.title,
         memory.description ?? null,
-        memory.importance ?? null,
         memory.date,
         memory.locationName ?? null,
         memory.latitude ?? null,
@@ -324,15 +323,14 @@ async function importMemory(
   } else {
     // Insert new memory
     await db.runAsync(
-      `INSERT INTO memories (id, chapter_id, memory_type, title, description, importance, date, location_name, latitude, longitude, map_url, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO memories (id, chapter_id, memory_type, title, description, date, location_name, latitude, longitude, map_url, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         memory.id,
         chapterId,
         memory.memoryType,
         memory.title,
         memory.description ?? null,
-        memory.importance ?? null,
         memory.date,
         memory.locationName ?? null,
         memory.latitude ?? null,

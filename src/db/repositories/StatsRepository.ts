@@ -12,7 +12,6 @@ export interface BabyStats {
   memoriesWithDescription: number;
   memoriesWithPhotos: number;
   memoriesWithTags: number;
-  importantMemories: number;
   uniqueTags: number;
   // Tag group counts for baby-relevant categories
   firstTimeEntries: number;
@@ -168,12 +167,6 @@ export const StatsRepository = {
     );
     const memoriesWithTags = memoriesWithTagsRow?.count ?? 0;
 
-    // Important memories (importance >= 1)
-    const importantMemoriesRow = await db.getFirstAsync<{ count: number }>(
-      'SELECT COUNT(*) as count FROM memories WHERE importance IS NOT NULL AND importance >= 1'
-    );
-    const importantMemories = importantMemoriesRow?.count ?? 0;
-
     // Unique tags used
     const uniqueTagsRow = await db.getFirstAsync<{ count: number }>(
       `SELECT COUNT(DISTINCT tag_id) as count FROM memory_tags`
@@ -199,7 +192,6 @@ export const StatsRepository = {
       memoriesWithDescription,
       memoriesWithPhotos,
       memoriesWithTags,
-      importantMemories,
       uniqueTags,
       ...tagGroupCounts,
     };

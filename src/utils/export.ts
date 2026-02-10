@@ -105,7 +105,7 @@ export async function exportAllData(): Promise<string> {
 export async function exportToJson(): Promise<void> {
   try {
     const jsonData = await exportAllData();
-    const filename = `BabyLegacy_export_${Date.now()}.json`;
+    const filename = `Offly_export_${Date.now()}.json`;
     const file = new File(Paths.cache, filename);
 
     await file.write(jsonData);
@@ -114,7 +114,7 @@ export async function exportToJson(): Promise<void> {
     if (canShare) {
       await Sharing.shareAsync(file.uri, {
         mimeType: "application/json",
-        dialogTitle: "Export BabyLegacy Data",
+        dialogTitle: "Export Offly Data",
         UTI: "public.json",
       });
     } else {
@@ -182,7 +182,6 @@ export async function exportToXls(): Promise<void> {
       "Memory Type",
       "Title",
       "Description",
-      "Importance",
       "Date",
       "Location",
       "Created At",
@@ -198,7 +197,6 @@ export async function exportToXls(): Promise<void> {
         memory.memoryType,
         memory.title,
         memory.description ?? "",
-        memory.importance !== undefined && memory.importance !== null ? String(memory.importance) : "",
         memory.date,
         memory.locationName ?? "",
         memory.createdAt,
@@ -250,7 +248,7 @@ export async function exportToXls(): Promise<void> {
       "</html>",
     ].join("");
 
-    const filename = `BabyLegacy_export_${Date.now()}.xls`;
+    const filename = `Offly_export_${Date.now()}.xls`;
     const file = new File(Paths.cache, filename);
 
     await file.write(html);
@@ -259,7 +257,7 @@ export async function exportToXls(): Promise<void> {
     if (canShare) {
       await Sharing.shareAsync(file.uri, {
         mimeType: "application/vnd.ms-excel",
-        dialogTitle: "Export BabyLegacy Data",
+        dialogTitle: "Export Offly Data",
         UTI: "com.microsoft.excel.xls",
       });
     } else {

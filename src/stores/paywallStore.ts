@@ -22,7 +22,7 @@ export const USAGE_TRIGGERS = {
  */
 export type FeatureGate =
   | 'export'           // JSON/ZIP export
-  | 'advanced_search'  // Search filters (importance, memory type, tags)
+  | 'advanced_search'  // Search filters (memory type, tags)
   | 'insights'         // First visit to insights/stats
   | 'chapter_recap';   // Chapter recap/summary feature
 

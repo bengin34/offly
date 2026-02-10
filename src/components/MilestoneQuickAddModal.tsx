@@ -8,22 +8,28 @@ import {
   ScrollView,
   Image,
   Alert,
-  ActivityIndicator,
   Modal,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import * as ImagePicker from 'expo-image-picker';
 import { ModalWrapper } from './ModalWrapper';
+import { TagPickerDialog } from './TagPickerDialog';
 import { useTheme, useI18n } from '../hooks';
 import { spacing, fontSize, borderRadius, fonts } from '../constants';
-import type { MilestoneInstanceWithTemplate } from '../types';
+import type { MilestoneInstanceWithTemplate, Tag } from '../types';
 
 interface MilestoneQuickAddModalProps {
   visible: boolean;
   milestone: MilestoneInstanceWithTemplate | null;
   onClose: () => void;
-  onSave: (data: { title: string; date: Date; description?: string; photoUris: string[] }) => Promise<void>;
+  onSave: (data: {
+    title: string;
+    date: Date;
+    description?: string;
+    photoUris: string[];
+    tagIds: string[];
+  }) => Promise<void>;
   isLoading?: boolean;
   locale?: string;
 }
@@ -44,6 +50,8 @@ export function MilestoneQuickAddModal({
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [description, setDescription] = useState('');
   const [photos, setPhotos] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
+  const [showTagPicker, setShowTagPicker] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
   const handleDateChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
@@ -99,7 +107,13 @@ export function MilestoneQuickAddModal({
     setPhotos(photos.filter((_, i) => i !== index));
   };
 
+  const handleRemoveTag = (tagId: string) => {
+    setSelectedTags(selectedTags.filter((tag) => tag.id !== tagId));
+  };
+
   const handleSave = async () => {
+    if (isSaving || isLoading) return;
+
     if (!title.trim()) {
       Alert.alert(t('alerts.required') || 'Required', t('alerts.requiredTitle') || 'Please enter a title');
       return;
@@ -112,12 +126,14 @@ export function MilestoneQuickAddModal({
         date,
         description: description.trim() || undefined,
         photoUris: photos,
+        tagIds: selectedTags.map((tag) => tag.id),
       });
       // Reset form
       setTitle('');
       setDate(new Date(milestone?.expectedDate || new Date()));
       setDescription('');
       setPhotos([]);
+      setSelectedTags([]);
     } finally {
       setIsSaving(false);
     }
@@ -147,6 +163,9 @@ export function MilestoneQuickAddModal({
     <ModalWrapper
       onClose={onClose}
       title={milestone.template.label}
+      actionLabel={isSaving ? (t('common.saving') || 'Saving...') : (t('common.save') || 'Save')}
+      onAction={handleSave}
+      actionDisabled={isSaving || isLoading}
     >
       <View style={[styles.container, { backgroundColor: theme.background }]}>
         {/* Title Input */}
@@ -269,29 +288,83 @@ export function MilestoneQuickAddModal({
           />
         </View>
 
-        {/* Save Button */}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={[styles.saveButton, { backgroundColor: theme.primary }]}
-            onPress={handleSave}
-            disabled={isSaving}
-            activeOpacity={0.8}
-          >
-            {isSaving ? (
-              <ActivityIndicator color={theme.white} />
-            ) : (
-              <>
-                <Ionicons name="checkmark" size={20} color={theme.white} />
-                <Text style={[styles.saveButtonText, { color: theme.white }]}>
-                  {t('buttons.save') || 'Save Memory'}
-                </Text>
-              </>
-            )}
-          </TouchableOpacity>
-          <Text style={[styles.helperText, { color: theme.textSecondary }]}>
-            {t('labels.milestone.quickAddHelper') || 'Open full editor to add tags and more'}
+        {/* Tags */}
+        <View style={styles.field}>
+          <Text style={[styles.label, { color: theme.text }]}>
+            {(t('memoryForm.tagsLabel') || t('entryForm.tagsLabel') || 'Tags').toLocaleUpperCase(locale)}
           </Text>
+          <TouchableOpacity
+            style={[
+              styles.tagInputContainer,
+              {
+                backgroundColor: theme.card,
+                borderColor: theme.borderLight,
+              },
+            ]}
+            onPress={() => setShowTagPicker(true)}
+            disabled={isSaving}
+          >
+            {selectedTags.length === 0 ? (
+              <Text style={[styles.tagPlaceholder, { color: theme.textMuted }]}>
+                {t('entryForm.tapToAddTags') || 'Tap to add tags...'}
+              </Text>
+            ) : (
+              <View style={styles.selectedTagsInline}>
+                {selectedTags.slice(0, 3).map((tag) => (
+                  <View
+                    key={tag.id}
+                    style={[
+                      styles.selectedTag,
+                      { backgroundColor: theme.backgroundSecondary, borderColor: theme.borderLight },
+                    ]}
+                  >
+                    <Text style={[styles.selectedTagText, { color: theme.text }]}>{tag.name}</Text>
+                    <TouchableOpacity
+                      onPress={(e) => {
+                        e.stopPropagation();
+                        handleRemoveTag(tag.id);
+                      }}
+                      disabled={isSaving}
+                    >
+                      <Ionicons name="close" size={14} color={theme.textSecondary} />
+                    </TouchableOpacity>
+                  </View>
+                ))}
+                {selectedTags.length > 3 && (
+                  <Text style={[styles.moreTagsText, { color: theme.textSecondary }]}>
+                    {t('entryForm.moreTags', { count: selectedTags.length - 3 })}
+                  </Text>
+                )}
+              </View>
+            )}
+            <Ionicons name="pricetag-outline" size={20} color={theme.textMuted} />
+          </TouchableOpacity>
+          {selectedTags.length > 3 && (
+            <View style={styles.selectedTags}>
+              {selectedTags.slice(3).map((tag) => (
+                <View
+                  key={tag.id}
+                  style={[
+                    styles.selectedTag,
+                    { backgroundColor: theme.backgroundSecondary, borderColor: theme.borderLight },
+                  ]}
+                >
+                  <Text style={[styles.selectedTagText, { color: theme.text }]}>{tag.name}</Text>
+                  <TouchableOpacity onPress={() => handleRemoveTag(tag.id)} disabled={isSaving}>
+                    <Ionicons name="close" size={14} color={theme.textSecondary} />
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
+          )}
         </View>
+
+        <TagPickerDialog
+          visible={showTagPicker}
+          onClose={() => setShowTagPicker(false)}
+          selectedTags={selectedTags}
+          onTagsChange={setSelectedTags}
+        />
       </View>
     </ModalWrapper>
     </Modal>
@@ -381,26 +454,48 @@ const styles = StyleSheet.create({
     right: -8,
     borderRadius: 12,
   },
-  buttonContainer: {
-    marginTop: spacing.lg,
-    gap: spacing.md,
-  },
-  saveButton: {
+  tagInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: spacing.md,
+    justifyContent: 'space-between',
     borderRadius: borderRadius.lg,
-    gap: spacing.sm,
+    borderWidth: 1,
+    padding: spacing.md,
+    minHeight: 52,
   },
-  saveButtonText: {
+  tagPlaceholder: {
     fontSize: fontSize.md,
-    fontFamily: fonts.ui,
-    fontWeight: '600',
+    fontFamily: fonts.body,
   },
-  helperText: {
-    fontSize: fontSize.sm,
+  selectedTagsInline: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.xs,
+    marginRight: spacing.sm,
+  },
+  selectedTags: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.xs,
+    marginTop: spacing.sm,
+  },
+  selectedTag: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 4,
+    borderRadius: borderRadius.full,
+    borderWidth: 1,
+  },
+  selectedTagText: {
+    fontSize: fontSize.xs,
     fontFamily: fonts.ui,
-    textAlign: 'center',
+  },
+  moreTagsText: {
+    fontSize: fontSize.xs,
+    fontFamily: fonts.body,
+    alignSelf: 'center',
   },
 });

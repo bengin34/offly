@@ -247,4 +247,96 @@ export const ChapterRepository = {
     );
     return rows.map(rowToChapter);
   },
+
+  /**
+   * Auto-generate trimester chapters for pregnancy mode
+   * Called when profile mode is 'pregnant' and edd is set
+   */
+  async autoGeneratePregnancyChapters(babyId: string, edd: string): Promise<Chapter[]> {
+    const { PREGNANCY_CHAPTER_TEMPLATES, getPregnancyChapterDates } = await import(
+      '../../constants/pregnancyChapterTemplates'
+    );
+
+    // Backward compatibility: Delete old non-weekly chapters if they exist
+    const existing = await this.getAll(babyId);
+    const hasOldChapters = existing.some((ch) =>
+      ch.title.includes('Trimester') || ch.title.includes('Month')
+    );
+
+    if (hasOldChapters) {
+      // Delete old chapters (trimester or monthly) to migrate to weekly structure
+      for (const chapter of existing) {
+        // Only delete if not already a weekly chapter
+        if (!chapter.title.startsWith('Week ')) {
+          await this.delete(chapter.id);
+        }
+      }
+    }
+
+    const created: Chapter[] = [];
+
+    for (const template of PREGNANCY_CHAPTER_TEMPLATES) {
+      // Check if already exists
+      const updatedExisting = await this.getAll(babyId);
+      const alreadyExists = updatedExisting.some((ch) => ch.title === template.title);
+
+      if (!alreadyExists) {
+        const { startDate, endDate } = getPregnancyChapterDates(edd, template);
+
+        const chapter = await this.create({
+          babyId,
+          title: template.title,
+          startDate,
+          endDate,
+          description: template.description,
+        });
+
+        created.push(chapter);
+
+        // Auto-generate milestones for this trimester
+        await this.autoGenerateMilestonesForPregnancyChapter(babyId, chapter.id, template);
+      }
+    }
+
+    return created;
+  },
+
+  /**
+   * Auto-generate pregnancy milestones for a trimester chapter
+   */
+  async autoGenerateMilestonesForPregnancyChapter(
+    babyId: string,
+    chapterId: string,
+    trimesterTemplate: any
+  ): Promise<void> {
+    const { PREGNANCY_MODE_MILESTONES } = await import('../../constants/milestoneTemplates');
+    const { MilestoneRepository } = await import('./MilestoneRepository');
+    const { getExpectedDate } = await import('../../utils/milestones');
+    const { BabyProfileRepository } = await import('./BabyProfileRepository');
+
+    const profile = await BabyProfileRepository.getById(babyId);
+    if (!profile || !profile.edd) return;
+
+    // Filter milestones that fall within this trimester
+    const applicableMilestones = PREGNANCY_MODE_MILESTONES.filter((template: any) => {
+      const gestationWeek = template.gestationWeeksMin || 0;
+      return (
+        gestationWeek >= trimesterTemplate.gestationWeeksMin &&
+        gestationWeek <= trimesterTemplate.gestationWeeksMax
+      );
+    });
+
+    // Create milestone instances
+    for (const milestoneTemplate of applicableMilestones) {
+      const expectedDate = getExpectedDate(profile, milestoneTemplate);
+      if (expectedDate) {
+        await MilestoneRepository.createInstance(
+          babyId,
+          milestoneTemplate.id,
+          expectedDate,
+          chapterId
+        );
+      }
+    }
+  },
 };

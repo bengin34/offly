@@ -29,10 +29,13 @@ import { type ThemeMode } from '../../src/stores';
 import { useOnboardingStore } from '../../src/stores/onboardingStore';
 import { pickAndImport } from '../../src/utils/import';
 import { exportToJson } from '../../src/utils/export';
+import { autoGenerateTimeline } from '../../src/utils/autoGenerate';
+import { rebaseBornTimelineDates } from '../../src/utils/rebaseBornTimeline';
 import { BabyProfileRepository, VaultRepository, ChapterRepository, MemoryRepository } from '../../src/db/repositories';
 import { useBackupStore } from '../../src/stores/backupStore';
 import type { BabyProfile } from '../../src/types';
 import type { ThemePalette } from '../../src/constants/colors';
+import { BORN_CHAPTER_TEMPLATES } from '../../src/constants/chapterTemplates';
 
 export default function SettingsScreen() {
   const theme = useTheme();
@@ -44,6 +47,7 @@ export default function SettingsScreen() {
   const [showLanguageModal, setShowLanguageModal] = useState(false);
   const [showDataModal, setShowDataModal] = useState(false);
   const [showModeSwitchModal, setShowModeSwitchModal] = useState(false);
+  const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
   const resetOnboarding = useOnboardingStore((state) => state.resetOnboarding);
   const lastBackupDate = useBackupStore((state) => state.lastBackupDate);
@@ -63,7 +67,7 @@ export default function SettingsScreen() {
       await setLastBackupDate(new Date().toISOString());
     } catch (error) {
       console.error('Backup export failed:', error);
-      Alert.alert('Export failed', 'Could not create backup. Please try again.');
+      Alert.alert(t('alerts.exportFailedTitle'), t('settings.alertBackupExportFailedMessage'));
     }
   };
 
@@ -72,6 +76,31 @@ export default function SettingsScreen() {
   const [birthDate, setBirthDate] = useState(new Date());
   const [showBirthDatePicker, setShowBirthDatePicker] = useState(false);
   const [isSwitchingMode, setIsSwitchingMode] = useState(false);
+  const [editName, setEditName] = useState('');
+  const [editDate, setEditDate] = useState(new Date());
+  const [showEditDatePicker, setShowEditDatePicker] = useState(false);
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
+
+  const toLocalDateKey = (value?: string | Date | null): string => {
+    if (!value) return '';
+    const date = value instanceof Date ? value : new Date(value);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  // Persist selected calendar day at local noon to prevent timezone day-shift issues.
+  const toPersistedDateIso = (value: Date): string =>
+    new Date(
+      value.getFullYear(),
+      value.getMonth(),
+      value.getDate(),
+      12,
+      0,
+      0,
+      0
+    ).toISOString();
 
   const loadProfile = useCallback(async () => {
     const p = await BabyProfileRepository.getDefault();
@@ -89,6 +118,15 @@ export default function SettingsScreen() {
     setShowModeSwitchModal(true);
   };
 
+  const handleOpenEditProfile = () => {
+    if (!profile) return;
+    setEditName(profile.name || '');
+    const refDate = profile.mode === 'born' ? profile.birthdate : profile.edd;
+    setEditDate(refDate ? new Date(refDate) : new Date());
+    setShowEditDatePicker(Platform.OS === 'ios');
+    setShowEditProfileModal(true);
+  };
+
   const handleBirthDateChange = (_: DateTimePickerEvent, selectedDate?: Date) => {
     if (Platform.OS === 'android') {
       setShowBirthDatePicker(false);
@@ -97,11 +135,58 @@ export default function SettingsScreen() {
     setBirthDate(selectedDate);
   };
 
+  const handleEditDateChange = (_: DateTimePickerEvent, selectedDate?: Date) => {
+    if (Platform.OS === 'android') {
+      setShowEditDatePicker(false);
+    }
+    if (!selectedDate) return;
+    setEditDate(selectedDate);
+  };
+
+  const handleSaveProfileEdits = async () => {
+    if (!profile) return;
+    setIsSavingProfile(true);
+    try {
+      const trimmedName = editName.trim();
+      const nextDateIso = toPersistedDateIso(editDate);
+      const existingDateIso = profile.mode === 'born' ? profile.birthdate : profile.edd;
+      const existingDateKey = toLocalDateKey(existingDateIso);
+      const nextDateKey = toLocalDateKey(editDate);
+      const dateChanged = existingDateKey !== nextDateKey;
+
+      if (profile.mode === 'born') {
+        await BabyProfileRepository.update({
+          id: profile.id,
+          name: trimmedName || undefined,
+          birthdate: nextDateIso,
+        });
+        if (dateChanged) {
+          await rebaseBornTimelineDates(profile.id, nextDateIso, profile.birthdate);
+        }
+      } else {
+        await BabyProfileRepository.update({
+          id: profile.id,
+          name: trimmedName || undefined,
+          edd: nextDateIso,
+        });
+      }
+
+      await VaultRepository.recalculateUnlockDates(profile.id, nextDateIso);
+      await loadProfile();
+      setShowEditProfileModal(false);
+    } catch (error) {
+      console.error('Failed to update profile:', error);
+      Alert.alert(t('alerts.errorTitle'), t('settings.alertProfileUpdateFailedMessage'));
+    } finally {
+      setIsSavingProfile(false);
+    }
+  };
+
   const confirmModeSwitchToBorn = async () => {
     if (!profile) return;
     setIsSwitchingMode(true);
     try {
-      const dobStr = birthDate.toISOString();
+      const dobStr = toPersistedDateIso(birthDate);
 
       // 1. Update profile: mode → born, set birthdate
       await BabyProfileRepository.update({
@@ -115,26 +200,42 @@ export default function SettingsScreen() {
       if (pregnancyCount > 0) {
         const chapter = await ChapterRepository.create({
           babyId: profile.id,
-          title: 'Before you were born',
+          title: t('settings.beforeBirthChapterTitle'),
           startDate: profile.edd || dobStr,
-          description: 'Pregnancy journal entries',
+          description: t('settings.beforeBirthChapterDescription'),
         });
         await MemoryRepository.movePregnancyJournalToChapter(chapter.id);
       }
 
-      // 3. Recalculate vault unlock dates using DOB
+      // 3. Ensure born timeline exists for users switching from pregnancy mode.
+      // If no standard template chapter is present, generate the default timeline.
+      const existingChapters = await ChapterRepository.getAll(profile.id);
+      const chapterTitles = new Set(existingChapters.map((ch) => ch.title));
+      const hasAnyBornTemplateChapter = BORN_CHAPTER_TEMPLATES.some((template) =>
+        chapterTitles.has(template.title)
+      );
+      if (!hasAnyBornTemplateChapter) {
+        await autoGenerateTimeline({
+          ...profile,
+          mode: 'born',
+          birthdate: dobStr,
+          edd: undefined,
+        });
+      }
+
+      // 4. Recalculate vault unlock dates using DOB
       await VaultRepository.recalculateUnlockDates(profile.id, dobStr);
 
       setShowModeSwitchModal(false);
       await loadProfile();
 
       Alert.alert(
-        'Mode updated',
-        'Your profile has been switched to "Born" mode. Pregnancy journal entries have been moved to a chapter.'
+        t('settings.alertModeUpdatedTitle'),
+        t('settings.alertModeUpdatedMessage', { chapter: t('settings.beforeBirthChapterTitle') })
       );
     } catch (error) {
       console.error('Failed to switch mode:', error);
-      Alert.alert('Error', 'Failed to switch mode. Please try again.');
+      Alert.alert(t('alerts.errorTitle'), t('settings.alertModeSwitchFailedMessage'));
     } finally {
       setIsSwitchingMode(false);
     }
@@ -276,7 +377,7 @@ export default function SettingsScreen() {
 
   const handleContactSupport = async () => {
     try {
-      const subject = `BabyLegacy Support (v${APP_VERSION})`;
+      const subject = `Offly Support (v${APP_VERSION})`;
       const body = `App Version: ${APP_VERSION}\n`;
       const mailtoUrl = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       await Linking.openURL(mailtoUrl);
@@ -296,75 +397,113 @@ export default function SettingsScreen() {
 
         {/* Baby Profile Section */}
         {profile && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>BABY PROFILE</Text>
-            <View style={styles.card}>
-              <View style={styles.settingsRow}>
-                <View style={styles.settingsRowLeft}>
-                  <Ionicons name="person-outline" size={22} color={theme.textSecondary} />
-                  <Text style={styles.settingsRowLabel}>
-                    {profile.name || 'Baby'}
-                  </Text>
-                </View>
-                <View style={styles.settingsRowRight}>
-                  <View style={[styles.modeBadge, { backgroundColor: profile.mode === 'pregnant' ? theme.primary + '20' : theme.success + '20' }]}>
-                    <Text style={[styles.modeBadgeText, { color: profile.mode === 'pregnant' ? theme.primary : theme.success }]}>
-                      {profile.mode === 'pregnant' ? 'Pregnant' : 'Born'}
+          <View style={styles.babyProfileSection}>
+            <View style={[styles.babyProfileCard, { backgroundColor: profile.mode === 'pregnant' ? theme.primary + '08' : theme.success + '08', borderColor: profile.mode === 'pregnant' ? theme.primary + '25' : theme.success + '25' }]}>
+              {/* Header with Name + Edit */}
+              <View style={styles.babyProfileHeader}>
+                <View style={styles.babyProfileHeaderText}>
+                  <Text style={styles.babyProfileNameLarge}>{profile.name || t('settings.yourBaby')}</Text>
+                  <View style={[
+                    styles.modeBadge,
+                    {
+                      backgroundColor: profile.mode === 'pregnant'
+                        ? theme.primary + '22'
+                        : theme.accent + '22'
+                    }
+                    ]}>
+                    <Text style={[
+                      styles.modeBadgeText,
+                      {
+                        color: profile.mode === 'pregnant'
+                          ? theme.primary
+                          : theme.accent
+                      }
+                    ]}>
+                      {profile.mode === 'pregnant' ? t('settings.modeExpecting') : t('settings.modeBorn')}
                     </Text>
                   </View>
                 </View>
+                <TouchableOpacity
+                  style={[styles.babyEditButton, { backgroundColor: theme.accent + '18' }]}
+                  onPress={handleOpenEditProfile}
+                >
+                  <Ionicons name="pencil" size={16} color={theme.accent} />
+                  <Text style={[styles.babyEditButtonText, { color: theme.accent }]}>{t('settings.editAction')}</Text>
+                </TouchableOpacity>
               </View>
-              {profile.mode === 'pregnant' && (
-                <>
-                  <View style={styles.settingsDivider} />
-                  <TouchableOpacity
-                    style={styles.settingsRow}
-                    onPress={handleModeSwitchToBorn}
-                  >
-                    <View style={styles.settingsRowLeft}>
-                      <Ionicons name="happy-outline" size={22} color={theme.success} />
-                      <Text style={[styles.settingsRowLabel, { color: theme.success }]}>
-                        Baby is born!
+
+              {/* Divider */}
+              <View style={[styles.babyDivider, { backgroundColor: theme.border }]} />
+
+              {/* Date + Age Info */}
+              {profile.mode === 'pregnant' && profile.edd && (
+                <View style={styles.babyDateSection}>
+                  <View style={styles.babyDateItem}>
+                    <View style={[styles.babyDateIcon, { backgroundColor: theme.primary + '15' }]}>
+                      <Ionicons name="time-outline" size={18} color={theme.primary} />
+                    </View>
+                    <View>
+                      <Text style={styles.babyDateLabel}>{t('settings.dueDate')}</Text>
+                      <Text style={styles.babyDateValue}>
+                        {new Date(profile.edd).toLocaleDateString(undefined, {
+                          month: 'long',
+                          day: 'numeric',
+                          year: 'numeric',
+                        })}
                       </Text>
                     </View>
-                    <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
+                  </View>
+                </View>
+              )}
+
+              {profile.mode === 'born' && profile.birthdate && (
+                <View style={styles.babyDateSection}>
+                  <View style={styles.babyDateRowContainer}>
+                    <View style={styles.babyDateItem}>
+                      <View style={[styles.babyDateIcon, { backgroundColor: theme.accent + '15' }]}>
+                        <Ionicons name="calendar-outline" size={18} color={theme.accent} />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={styles.babyDateLabel}>{t('settings.modeBorn')}</Text>
+                        <Text style={styles.babyDateValue}>
+                          {new Date(profile.birthdate).toLocaleDateString(undefined, {
+                            month: 'long',
+                            day: 'numeric',
+                            year: 'numeric',
+                          })}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={[styles.babyDateItem, { marginLeft: spacing.md }]}>
+                      <View style={[styles.babyDateIcon, { backgroundColor: theme.milestone + '15' }]}>
+                        <Ionicons name="sparkles-outline" size={18} color={theme.milestone} />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={styles.babyDateLabel}>{t('settings.age')}</Text>
+                        <Text style={styles.babyDateValue}>
+                          {t('settings.daysCount', {
+                            count: Math.floor(
+                              (Date.now() - new Date(profile.birthdate).getTime()) / (1000 * 60 * 60 * 24)
+                            ),
+                          })}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              )}
+
+              {/* Action Button */}
+              {profile.mode === 'pregnant' && (
+                <>
+                  <View style={[styles.babyDivider, { backgroundColor: theme.border, marginVertical: spacing.md }]} />
+                  <TouchableOpacity
+                    style={[styles.babyBornButton, { backgroundColor: theme.success }]}
+                    onPress={handleModeSwitchToBorn}
+                  >
+                    <Ionicons name="happy-outline" size={18} color={theme.white} />
+                    <Text style={styles.babyBornButtonText}>{t('settings.babyBornButton')}</Text>
                   </TouchableOpacity>
-                </>
-              )}
-              {profile.birthdate && (
-                <>
-                  <View style={styles.settingsDivider} />
-                  <View style={styles.settingsRow}>
-                    <View style={styles.settingsRowLeft}>
-                      <Ionicons name="calendar-outline" size={22} color={theme.textSecondary} />
-                      <Text style={styles.settingsRowLabel}>Birth date</Text>
-                    </View>
-                    <Text style={styles.settingsRowValue}>
-                      {new Date(profile.birthdate).toLocaleDateString(undefined, {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })}
-                    </Text>
-                  </View>
-                </>
-              )}
-              {profile.mode === 'pregnant' && profile.edd && (
-                <>
-                  <View style={styles.settingsDivider} />
-                  <View style={styles.settingsRow}>
-                    <View style={styles.settingsRowLeft}>
-                      <Ionicons name="time-outline" size={22} color={theme.textSecondary} />
-                      <Text style={styles.settingsRowLabel}>Due date</Text>
-                    </View>
-                    <Text style={styles.settingsRowValue}>
-                      {new Date(profile.edd).toLocaleDateString(undefined, {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })}
-                    </Text>
-                  </View>
                 </>
               )}
             </View>
@@ -396,7 +535,7 @@ export default function SettingsScreen() {
             >
               <View style={styles.settingsRowLeft}>
                 <Ionicons name="color-wand-outline" size={22} color={theme.textSecondary} />
-                <Text style={styles.settingsRowLabel}>Color Theme</Text>
+                <Text style={styles.settingsRowLabel}>{t('settings.colorTheme')}</Text>
               </View>
               <View style={styles.settingsRowRight}>
                 <Text style={styles.settingsRowValue}>{currentPaletteLabel}</Text>
@@ -517,14 +656,14 @@ export default function SettingsScreen() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>BACKUP & DATA</Text>
+          <Text style={styles.sectionTitle}>{t('settings.backupDataSection').toLocaleUpperCase(locale)}</Text>
           <View style={styles.card}>
             <View style={styles.cardHeader}>
               <Ionicons name="shield-checkmark-outline" size={24} color={theme.primary} />
               <View style={styles.cardHeaderText}>
-                <Text style={styles.cardTitle}>Backup your memories</Text>
+                <Text style={styles.cardTitle}>{t('settings.backupMemoriesTitle')}</Text>
                 <Text style={styles.cardDescription}>
-                  Export your data to keep a safe copy. Your data is stored only on this device.
+                  {t('settings.backupMemoriesDescription')}
                 </Text>
               </View>
             </View>
@@ -532,12 +671,14 @@ export default function SettingsScreen() {
               <View style={styles.lastBackupRow}>
                 <Ionicons name="checkmark-circle" size={16} color={theme.success} />
                 <Text style={[styles.lastBackupText, { color: theme.success }]}>
-                  Last backup: {new Date(lastBackupDate).toLocaleDateString(undefined, {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
+                  {t('settings.lastBackup', {
+                    date: new Date(lastBackupDate).toLocaleDateString(undefined, {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    }),
                   })}
                 </Text>
               </View>
@@ -546,7 +687,7 @@ export default function SettingsScreen() {
               <View style={styles.lastBackupRow}>
                 <Ionicons name="warning-outline" size={16} color={theme.warning} />
                 <Text style={[styles.lastBackupText, { color: theme.warning }]}>
-                  No backup yet. We recommend backing up regularly.
+                  {t('settings.noBackupYet')}
                 </Text>
               </View>
             )}
@@ -555,7 +696,7 @@ export default function SettingsScreen() {
               onPress={handleBackupExport}
             >
               <Ionicons name="download-outline" size={20} color={theme.white} />
-              <Text style={styles.onboardingButtonText}>Create Backup</Text>
+              <Text style={styles.onboardingButtonText}>{t('settings.createBackup')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.exportLink}
@@ -563,7 +704,7 @@ export default function SettingsScreen() {
               accessibilityRole="button"
               accessibilityLabel={t('settings.dataButton')}
             >
-              <Text style={styles.exportLinkText}>More export & import options</Text>
+              <Text style={styles.exportLinkText}>{t('settings.moreExportImportOptions')}</Text>
               <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
             </TouchableOpacity>
           </View>
@@ -664,7 +805,7 @@ export default function SettingsScreen() {
         <Pressable style={styles.modalOverlay} onPress={() => setShowPaletteModal(false)}>
           <View style={styles.modalContent}>
             <DialogHeader
-              title="Choose Color Theme"
+              title={t('settings.chooseColorTheme')}
               onClose={() => setShowPaletteModal(false)}
               actionLabel={t('common.done')}
               onAction={() => setShowPaletteModal(false)}
@@ -848,12 +989,18 @@ export default function SettingsScreen() {
         animationType="fade"
         onRequestClose={() => setShowModeSwitchModal(false)}
       >
-        <Pressable style={styles.modalOverlay} onPress={() => !isSwitchingMode && setShowModeSwitchModal(false)}>
-          <Pressable style={styles.modalContent} onPress={(e) => e.stopPropagation()}>
+        <Pressable
+          style={[styles.modalOverlay, styles.modeSwitchModalOverlay]}
+          onPress={() => !isSwitchingMode && setShowModeSwitchModal(false)}
+        >
+          <Pressable
+            style={[styles.modalContent, styles.modeSwitchModalContent]}
+            onPress={(e) => e.stopPropagation()}
+          >
             <DialogHeader
-              title="Baby is born!"
+              title={t('settings.modeSwitchTitle')}
               onClose={() => setShowModeSwitchModal(false)}
-              actionLabel={isSwitchingMode ? 'Saving...' : 'Confirm'}
+              actionLabel={isSwitchingMode ? t('common.saving') : t('settings.modeSwitchConfirm')}
               onAction={confirmModeSwitchToBorn}
               palette={{
                 text: theme.text,
@@ -865,7 +1012,7 @@ export default function SettingsScreen() {
               containerStyle={styles.modalHeader}
             />
             <Text style={styles.modeSwitchDescription}>
-              Enter the birth date. Your pregnancy journal entries will be moved to a "Before you were born" chapter, and vault unlock dates will be recalculated.
+              {t('settings.modeSwitchDescription', { chapter: t('settings.beforeBirthChapterTitle') })}
             </Text>
 
             <TouchableOpacity
@@ -887,7 +1034,13 @@ export default function SettingsScreen() {
             </TouchableOpacity>
 
             {showBirthDatePicker && (
-              <View style={[styles.modeSwitchPickerContainer, { backgroundColor: theme.card, borderColor: theme.borderLight }]}>
+              <View
+                style={[
+                  styles.modeSwitchPickerContainer,
+                  styles.modeSwitchPickerWideContainer,
+                  { backgroundColor: theme.card, borderColor: theme.borderLight },
+                ]}
+              >
                 <DateTimePicker
                   value={birthDate}
                   mode="date"
@@ -895,20 +1048,105 @@ export default function SettingsScreen() {
                   onChange={handleBirthDateChange}
                   themeVariant={theme.isDark ? 'dark' : 'light'}
                   maximumDate={new Date()}
-                  style={{ height: 200 }}
+                  style={{ height: 200, width: '80%' }}
                 />
                 {Platform.OS === 'ios' && (
                   <TouchableOpacity
                     style={[styles.modeSwitchPickerDone, { borderTopColor: theme.borderLight }]}
                     onPress={() => setShowBirthDatePicker(false)}
                   >
-                    <Text style={{ color: theme.primary, fontFamily: fonts.ui, fontSize: fontSize.md }}>Done</Text>
+                    <Text style={{ color: theme.primary, fontFamily: fonts.ui, fontSize: fontSize.md }}>{t('common.done')}</Text>
                   </TouchableOpacity>
                 )}
               </View>
             )}
 
             {isSwitchingMode && (
+              <ActivityIndicator size="small" color={theme.primary} style={{ marginTop: spacing.md }} />
+            )}
+          </Pressable>
+        </Pressable>
+      </Modal>
+
+      {/* Edit Baby Profile Modal */}
+      <Modal
+        visible={showEditProfileModal}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowEditProfileModal(false)}
+      >
+        <Pressable style={[styles.modalOverlay, styles.editProfileModalOverlay]} onPress={() => !isSavingProfile && setShowEditProfileModal(false)}>
+          <Pressable style={[styles.modalContent, styles.editProfileModalContent]} onPress={(e) => e.stopPropagation()}>
+            <DialogHeader
+              title={t('settings.editBabyProfileTitle')}
+              onClose={() => setShowEditProfileModal(false)}
+              actionLabel={isSavingProfile ? t('common.saving') : t('common.save')}
+              onAction={handleSaveProfileEdits}
+              palette={{
+                text: theme.text,
+                textSecondary: theme.textSecondary,
+                textMuted: theme.textMuted,
+                primary: theme.primary,
+                border: theme.border,
+              }}
+              containerStyle={styles.modalHeader}
+            />
+
+            <Text style={styles.label}>{t('settings.name').toLocaleUpperCase(locale)}</Text>
+            <TextInput
+              style={styles.input}
+              value={editName}
+              onChangeText={setEditName}
+              placeholder={t('settings.namePlaceholder')}
+              placeholderTextColor={theme.textMuted}
+            />
+
+            <View style={{ height: spacing.md }} />
+
+            <Text style={styles.label}>
+              {(profile?.mode === 'born' ? t('settings.birthDateLabel') : t('settings.dueDate')).toLocaleUpperCase(locale)}
+            </Text>
+            <TouchableOpacity
+              style={[styles.modeSwitchDateButton, { backgroundColor: theme.backgroundSecondary, borderColor: theme.borderLight }]}
+              onPress={() => {
+                Keyboard.dismiss();
+                setShowEditDatePicker(true);
+              }}
+              activeOpacity={0.8}
+            >
+              <Ionicons name="calendar-outline" size={20} color={theme.textSecondary} />
+              <Text style={[styles.modeSwitchDateText, { color: theme.text }]}>
+                {editDate.toLocaleDateString(undefined, {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                })}
+              </Text>
+            </TouchableOpacity>
+
+            {showEditDatePicker && (
+              <View style={[styles.modeSwitchPickerContainer, styles.editProfilePickerContainer, { backgroundColor: theme.card, borderColor: theme.borderLight }]}>
+                <DateTimePicker
+                  value={editDate}
+                  mode="date"
+                  display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                  onChange={handleEditDateChange}
+                  themeVariant={theme.isDark ? 'dark' : 'light'}
+                  maximumDate={profile?.mode === 'born' ? new Date() : undefined}
+                  style={{ height: 200, width: '100%' }}
+                />
+                {Platform.OS === 'ios' && (
+                  <TouchableOpacity
+                    style={[styles.modeSwitchPickerDone, { borderTopColor: theme.borderLight }]}
+                    onPress={() => setShowEditDatePicker(false)}
+                  >
+                    <Text style={{ color: theme.primary, fontFamily: fonts.ui, fontSize: fontSize.md }}>{t('common.done')}</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            )}
+
+            {isSavingProfile && (
               <ActivityIndicator size="small" color={theme.primary} style={{ marginTop: spacing.md }} />
             )}
           </Pressable>
@@ -981,6 +1219,24 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       fontSize: fontSize.md,
       fontFamily: fonts.ui,
       color: theme.textSecondary,
+    },
+    label: {
+      fontSize: fontSize.sm,
+      fontFamily: fonts.ui,
+      color: theme.textSecondary,
+      marginBottom: spacing.xs,
+      letterSpacing: 0.6,
+      textTransform: 'uppercase',
+    },
+    input: {
+      backgroundColor: theme.card,
+      borderRadius: borderRadius.lg,
+      padding: spacing.md,
+      fontSize: fontSize.md,
+      fontFamily: fonts.body,
+      color: theme.text,
+      borderWidth: 1,
+      borderColor: theme.borderLight,
     },
     cardHeader: {
       flexDirection: 'row',
@@ -1098,6 +1354,26 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       shadowRadius: 20,
       elevation: 10,
     },
+    editProfileModalOverlay: {
+      paddingHorizontal: Platform.OS === 'ios' ? spacing.sm : spacing.lg,
+    },
+    modeSwitchModalOverlay: {
+      paddingHorizontal: Platform.OS === 'ios' ? spacing.sm : spacing.md,
+    },
+    editProfileModalContent: {
+      maxWidth: 370,
+      paddingHorizontal: Platform.OS === 'ios' ? spacing.md : spacing.lg,
+    },
+    modeSwitchModalContent: {
+      maxWidth: 370,
+      paddingHorizontal: Platform.OS === 'ios' ? spacing.md  : spacing.lg,
+    },
+    editProfilePickerContainer: {
+      marginHorizontal: Platform.OS === 'ios' ? -spacing.xs : -spacing.lg,
+    },
+    modeSwitchPickerWideContainer: {
+      marginHorizontal: Platform.OS === 'ios' ? -spacing.xs : -spacing.lg,
+    },
     modalHeader: {
       marginBottom: spacing.md,
     },
@@ -1174,13 +1450,16 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
     },
     // Mode badge
     modeBadge: {
+      alignSelf: 'flex-start',
       paddingHorizontal: spacing.sm,
-      paddingVertical: 2,
+      paddingVertical: 3,
       borderRadius: borderRadius.full,
     },
     modeBadgeText: {
       fontSize: fontSize.xs,
       fontFamily: fonts.ui,
+      fontWeight: '600',
+      letterSpacing: 0.3,
     },
     // Mode switch modal
     modeSwitchDescription: {
@@ -1208,10 +1487,131 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       borderWidth: 1,
       overflow: 'hidden',
       marginBottom: spacing.sm,
+      alignItems: 'center',
+      width: '100%',
+      marginHorizontal: -spacing.lg,
+      paddingHorizontal: spacing.md,
     },
     modeSwitchPickerDone: {
       alignItems: 'center',
       padding: spacing.md,
       borderTopWidth: 1,
+    },
+    // Baby Profile Styles
+    babyProfileSection: {
+      padding: spacing.md,
+      paddingBottom: spacing.lg,
+    },
+    babyProfileCard: {
+      borderRadius: borderRadius.xl,
+      padding: spacing.lg,
+      borderWidth: 1,
+      shadowColor: theme.shadow,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.08,
+      shadowRadius: 8,
+      elevation: 2,
+    },
+    babyProfileHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: spacing.md,
+    },
+    babyProfileHeaderLeft: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.md,
+      flex: 1,
+    },
+    babyProfileIcon: {
+      width: 56,
+      height: 56,
+      borderRadius: borderRadius.lg,
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexShrink: 0,
+    },
+    babyProfileHeaderText: {
+      flex: 1,
+      gap: spacing.xs,
+    },
+    babyProfileNameLarge: {
+      fontSize: fontSize.xl,
+      fontFamily: fonts.heading,
+      color: theme.text,
+      lineHeight: fontSize.xl * 1.2,
+    },
+    babyEditButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.xs,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      borderRadius: borderRadius.lg,
+      flexShrink: 0,
+    },
+    babyEditButtonText: {
+      fontSize: fontSize.sm,
+      fontFamily: fonts.ui,
+      fontWeight: '500',
+    },
+    babyDivider: {
+      height: 1,
+      marginVertical: spacing.md,
+    },
+    babyDateSection: {
+      marginBottom: spacing.md,
+    },
+    babyDateRowContainer: {
+      flexDirection: 'row',
+      gap: spacing.lg,
+    },
+    babyDateItem: {
+      flex: 1,
+      flexDirection: 'row',
+      gap: spacing.sm,
+      alignItems: 'flex-start',
+    },
+    babyDateIcon: {
+      width: 40,
+      height: 40,
+      borderRadius: borderRadius.md,
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexShrink: 0,
+    },
+    babyDateLabel: {
+      fontSize: fontSize.xs,
+      fontFamily: fonts.ui,
+      color: theme.textSecondary,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
+      marginBottom: 2,
+    },
+    babyDateValue: {
+      fontSize: fontSize.md,
+      fontFamily: fonts.body,
+      color: theme.text,
+    },
+    babyBornButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: spacing.sm,
+      paddingVertical: spacing.md,
+      paddingHorizontal: spacing.lg,
+      borderRadius: borderRadius.lg,
+      shadowColor: theme.shadow,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.15,
+      shadowRadius: 8,
+      elevation: 3,
+    },
+    babyBornButtonText: {
+      fontSize: fontSize.md,
+      fontFamily: fonts.ui,
+      color: theme.white,
+      fontWeight: '600',
     },
   });

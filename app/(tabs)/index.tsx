@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
   Animated,
   Pressable,
 } from 'react-native';
-import { useRouter, useFocusEffect } from 'expo-router';
+import { useRouter, useFocusEffect, useNavigation } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import {
   ChapterRepository,
@@ -20,13 +20,17 @@ import {
 } from '../../src/db/repositories';
 import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
 import { getChapterPlaceholder } from '../../src/constants/chapterTemplates';
+import { getPregnancyChapterPlaceholder, getPregnancyChapterTemplateByTitle } from '../../src/constants/pregnancyChapterTemplates';
+import { calculateGestationWeeks } from '../../src/utils/milestones';
 import { Background } from '../../src/components/Background';
 import { ProUpgradeBanner } from '../../src/components/ProUpgradeBanner';
 import { useI18n, useTheme } from '../../src/hooks';
+import { formatHeaderTitle } from '../../src/utils/ageFormatter';
 import type { ChapterWithMilestoneProgress, BabyProfile, VaultWithEntryCount } from '../../src/types';
 
 export default function HomeScreen() {
   const router = useRouter();
+  const navigation = useNavigation();
   const theme = useTheme();
   const { t, locale } = useI18n();
 
@@ -37,9 +41,34 @@ export default function HomeScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [fabOpen, setFabOpen] = useState(false);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const shouldAutoFocusCurrentChapter = useRef(false);
+  const chapterYByIdRef = useRef<Record<string, number>>({});
   const fabAnim = useRef(new Animated.Value(0)).current;
 
+  const getCurrentChapterIdFromList = useCallback((list: ChapterWithMilestoneProgress[]) => {
+    const now = Date.now();
+    for (const ch of list) {
+      const start = new Date(ch.startDate).getTime();
+      const end = ch.endDate ? new Date(ch.endDate).getTime() : Infinity;
+      if (now >= start && now < end) return ch.id;
+    }
+    return list.length > 0 ? list[list.length - 1].id : null;
+  }, []);
+
+  const scrollToCurrentChapter = useCallback((chapterId: string | null, animated = true) => {
+    if (!chapterId) return false;
+    const y = chapterYByIdRef.current[chapterId];
+    if (typeof y !== 'number') return false;
+    scrollViewRef.current?.scrollTo({
+      y: Math.max(0, y - spacing.xl),
+      animated,
+    });
+    return true;
+  }, []);
+
   const loadData = useCallback(async () => {
+    shouldAutoFocusCurrentChapter.current = true;
     try {
       let babyProfile = await BabyProfileRepository.getDefault();
 
@@ -58,11 +87,36 @@ export default function HomeScreen() {
       await VaultRepository.checkAndUnlock(babyProfile.id);
 
       if (babyProfile.mode === 'pregnant') {
+        // Auto-generate weekly chapters (handles migration from old formats)
+        if (babyProfile.edd) {
+          await ChapterRepository.autoGeneratePregnancyChapters(babyProfile.id, babyProfile.edd);
+        }
+
+        // Load chapters with progress (same as born mode)
+        const chapterData = await ChapterRepository.getAllWithProgress(babyProfile.id);
+        setChapters(chapterData);
+
+        // Also load pregnancy journal count
         const count = await MemoryRepository.countPregnancyJournal();
         setPregnancyEntryCount(count);
+
+        const currentId = getCurrentChapterIdFromList(chapterData);
+        requestAnimationFrame(() => {
+          if (!shouldAutoFocusCurrentChapter.current) return;
+          if (scrollToCurrentChapter(currentId, true)) {
+            shouldAutoFocusCurrentChapter.current = false;
+          }
+        });
       } else {
         const chapterData = await ChapterRepository.getAllWithProgress(babyProfile.id);
         setChapters(chapterData);
+        const currentId = getCurrentChapterIdFromList(chapterData);
+        requestAnimationFrame(() => {
+          if (!shouldAutoFocusCurrentChapter.current) return;
+          if (scrollToCurrentChapter(currentId, true)) {
+            shouldAutoFocusCurrentChapter.current = false;
+          }
+        });
       }
     } catch (error) {
       console.error('Failed to load home data:', error);
@@ -70,7 +124,7 @@ export default function HomeScreen() {
       setIsLoading(false);
       setIsRefreshing(false);
     }
-  }, []);
+  }, [getCurrentChapterIdFromList, scrollToCurrentChapter]);
 
   useFocusEffect(
     useCallback(() => {
@@ -129,57 +183,68 @@ export default function HomeScreen() {
 
   const isPregnant = profile?.mode === 'pregnant';
 
-  // --- Section: Pregnancy Journal Card ---
-  const renderPregnancyJournal = () => (
-    <View style={styles.sectionContainer}>
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Pregnancy Journal</Text>
-      </View>
-      <TouchableOpacity
-        style={styles.journalCard}
-        onPress={() => router.push('/pregnancy-journal')}
-        activeOpacity={0.8}
-      >
-        <View style={styles.journalCardIcon}>
-          <Ionicons name="heart-outline" size={32} color={theme.primary} />
-        </View>
-        <View style={styles.journalCardContent}>
-          <Text style={styles.journalCardTitle}>Your pregnancy journey</Text>
-          <Text style={styles.journalCardSubtitle}>
-            {pregnancyEntryCount === 0
-              ? 'Start writing your first entry'
-              : `${pregnancyEntryCount} ${pregnancyEntryCount === 1 ? 'entry' : 'entries'}`}
-          </Text>
-        </View>
-        <Ionicons name="chevron-forward" size={20} color={theme.textMuted} />
-      </TouchableOpacity>
-    </View>
-  );
+  useEffect(() => {
+    let dynamicTitle = formatHeaderTitle(profile);
 
-  // Determine which chapter is "current" based on today's date
-  const getCurrentChapterId = useCallback(() => {
-    const now = Date.now();
-    for (const ch of chapters) {
-      const start = new Date(ch.startDate).getTime();
-      const end = ch.endDate ? new Date(ch.endDate).getTime() : Infinity;
-      if (now >= start && now < end) return ch.id;
+    // For pregnancy mode, add current week to title
+    if (profile?.mode === 'pregnant' && profile.edd) {
+      const currentWeek = calculateGestationWeeks(profile.edd);
+      dynamicTitle = `Week ${currentWeek} · ${dynamicTitle}`;
     }
-    // If past all chapters, return the last one
-    return chapters.length > 0 ? chapters[chapters.length - 1].id : null;
-  }, [chapters]);
 
-  const currentChapterId = getCurrentChapterId();
+    navigation.setOptions({
+      headerTitle: dynamicTitle || t('tabs.chapters'),
+    });
+  }, [navigation, profile, t]);
+
+  // --- Section: Pregnancy Journal Link (appears below timeline for pregnancy mode) ---
+  const renderPregnancyJournalLink = () => {
+    if (pregnancyEntryCount === 0) return null;
+
+    return (
+      <View style={styles.sectionContainer}>
+        <TouchableOpacity
+          style={styles.journalLinkCard}
+          onPress={() => router.push('/pregnancy-journal')}
+          activeOpacity={0.8}
+        >
+          <Ionicons name="document-text-outline" size={20} color={theme.primary} />
+          <Text style={styles.journalLinkText}>
+            View journal entries ({pregnancyEntryCount})
+          </Text>
+          <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  const currentChapterId = getCurrentChapterIdFromList(chapters);
+
+  // Get week label for pregnancy chapters
+  const getWeekLabelForChapter = useCallback((chapter: ChapterWithMilestoneProgress, edd: string) => {
+    const start = new Date(chapter.startDate);
+    const end = chapter.endDate ? new Date(chapter.endDate) : new Date();
+    const now = Date.now();
+    const isCurrentChapter = now >= start.getTime() && now <= end.getTime();
+
+    if (isCurrentChapter) {
+      const currentWeek = calculateGestationWeeks(edd);
+      return `Week ${currentWeek}`;
+    }
+
+    // For past/future chapters, show week range
+    const template = getPregnancyChapterTemplateByTitle(chapter.title);
+    if (template) {
+      return template.gestationWeeksMin === template.gestationWeeksMax
+        ? `Week ${template.gestationWeeksMin}`
+        : `Weeks ${template.gestationWeeksMin}–${template.gestationWeeksMax}`;
+    }
+    return '';
+  }, []);
 
   // --- Section: Chapters Timeline ---
   const renderChaptersSection = () => (
     <View style={styles.sectionContainer}>
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Timeline</Text>
-        <TouchableOpacity onPress={() => router.push('/chapter/new')}>
-          <Ionicons name="add-circle-outline" size={24} color={theme.primary} />
-        </TouchableOpacity>
-      </View>
-
       {chapters.length === 0 ? (
         <View style={styles.emptySection}>
           <Ionicons name="book-outline" size={48} color={theme.textMuted} />
@@ -197,7 +262,9 @@ export default function HomeScreen() {
           const isPast = endDate ? now >= endDate.getTime() : false;
           const isFuture = now < startDate.getTime();
           const coverImage = item.coverImageUri;
-          const placeholder = getChapterPlaceholder(item.title);
+          const placeholder = isPregnant
+            ? getPregnancyChapterPlaceholder(item.title)
+            : getChapterPlaceholder(item.title);
           const hasMilestones = item.milestoneTotal > 0;
           const hasContent = item.memoryCount > 0 || item.milestoneFilled > 0;
           const progressPct = hasMilestones
@@ -210,6 +277,15 @@ export default function HomeScreen() {
               style={[styles.timelineRow, isFuture && styles.timelineRowFuture]}
               onPress={() => router.push(`/chapter/${item.id}`)}
               activeOpacity={0.8}
+              onLayout={(event) => {
+                chapterYByIdRef.current[item.id] = event.nativeEvent.layout.y;
+                if (!isCurrent || !shouldAutoFocusCurrentChapter.current) return;
+                requestAnimationFrame(() => {
+                  if (scrollToCurrentChapter(item.id, true)) {
+                    shouldAutoFocusCurrentChapter.current = false;
+                  }
+                });
+              }}
             >
               {/* Timeline line + dot */}
               <View style={styles.dateColumn}>
@@ -260,6 +336,15 @@ export default function HomeScreen() {
                       <Ionicons name="camera-outline" size={12} color={theme.textMuted} />
                       <Text style={styles.chapterImageText}>Add photo</Text>
                     </View>
+                    {/* Monthly milestone badge for pregnancy weeks */}
+                    {isPregnant && (() => {
+                      const template = getPregnancyChapterTemplateByTitle(item.title);
+                      return template?.isMonthlyMilestone ? (
+                        <View style={styles.monthlyMilestoneBadge}>
+                          <Ionicons name="star" size={16} color={theme.primary} />
+                        </View>
+                      ) : null;
+                    })()}
                   </View>
                 )}
 
@@ -281,8 +366,13 @@ export default function HomeScreen() {
                     )}
                   </View>
 
-                  {/* Date range */}
+                  {/* Date range with week for pregnancy */}
                   <Text style={[styles.chapterDateRange, isFuture && styles.chapterDateRangeFuture]}>
+                    {isPregnant && profile?.edd && (
+                      <Text style={styles.weekLabel}>
+                        {getWeekLabelForChapter(item, profile.edd)} ·{' '}
+                      </Text>
+                    )}
                     {formatDateRange(item.startDate, item.endDate)}
                   </Text>
 
@@ -386,7 +476,7 @@ export default function HomeScreen() {
   const renderNoProfile = () => (
     <View style={styles.emptyContainer}>
       <Ionicons name="person-outline" size={64} color={theme.textMuted} />
-      <Text style={styles.emptyTitle}>Welcome to BabyLegacy</Text>
+      <Text style={styles.emptyTitle}>Welcome to Offly</Text>
       <Text style={styles.emptySubtitle}>
         Setting up your profile...
       </Text>
@@ -397,6 +487,8 @@ export default function HomeScreen() {
     <View style={styles.container}>
       <Background />
       <ScrollView
+        ref={scrollViewRef}
+        stickyHeaderIndices={[0]}
         contentContainerStyle={styles.scrollContent}
         refreshControl={
           <RefreshControl
@@ -406,12 +498,23 @@ export default function HomeScreen() {
           />
         }
       >
-        <ProUpgradeBanner style={styles.proBanner} />
+        <View style={styles.stickyTopHeader}>
+          <ProUpgradeBanner style={styles.proBanner} />
+          {profile && (
+            <View style={styles.timelineStickyHeader}>
+              <View style={styles.sectionHeader}>
+                <Text style={styles.sectionTitle}>
+                  {isPregnant ? 'Pregnancy Timeline' : 'Timeline'}
+                </Text>
+              </View>
+            </View>
+          )}
+        </View>
 
         {!isLoading && !profile && renderNoProfile()}
 
-        {profile && isPregnant && renderPregnancyJournal()}
-        {profile && !isPregnant && renderChaptersSection()}
+        {profile && renderChaptersSection()}
+        {profile && isPregnant && renderPregnancyJournalLink()}
         {profile && renderVaultsSection()}
       </ScrollView>
 
@@ -545,7 +648,16 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       paddingHorizontal: spacing.md,
     },
     proBanner: {
-      marginBottom: spacing.md,
+      marginBottom: 0,
+    },
+    stickyTopHeader: {
+      backgroundColor: theme.background,
+      paddingBottom: spacing.md,
+      zIndex: 20,
+    },
+    timelineStickyHeader: {
+      backgroundColor: theme.background,
+      paddingTop: spacing.sm,
     },
 
     // Section layout
@@ -607,6 +719,22 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       fontFamily: fonts.body,
       color: theme.textSecondary,
       marginTop: 2,
+    },
+    journalLinkCard: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: theme.card,
+      borderRadius: borderRadius.md,
+      padding: spacing.sm,
+      borderWidth: 1,
+      borderColor: theme.borderLight,
+      gap: spacing.xs,
+    },
+    journalLinkText: {
+      flex: 1,
+      fontSize: fontSize.sm,
+      fontFamily: fonts.body,
+      color: theme.text,
     },
 
     // Vault cards
@@ -764,6 +892,22 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       gap: 4,
       marginTop: spacing.xs,
     },
+    monthlyMilestoneBadge: {
+      position: 'absolute',
+      top: spacing.sm,
+      right: spacing.sm,
+      width: 32,
+      height: 32,
+      borderRadius: 16,
+      backgroundColor: theme.white,
+      alignItems: 'center',
+      justifyContent: 'center',
+      shadowColor: theme.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 4,
+      elevation: 3,
+    },
     mediaOverlayTop: {
       position: 'absolute',
       bottom: spacing.sm,
@@ -825,6 +969,10 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
     },
     chapterDateRangeFuture: {
       color: theme.textMuted,
+    },
+    weekLabel: {
+      fontFamily: fonts.heading,
+      color: theme.primary,
     },
     progressContainer: {
       flexDirection: 'row',
