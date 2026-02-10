@@ -3,6 +3,8 @@
 export type MemoryType = "milestone" | "note" | "letter";
 export type BabyMode = "born" | "pregnant";
 export type VaultStatus = "locked" | "unlocked";
+export type MilestoneCategory = "growth" | "social" | "physical" | "prenatal" | "other";
+export type MilestoneInstanceStatus = "pending" | "filled" | "archived";
 
 export interface BabyProfile {
   id: string;
@@ -22,6 +24,30 @@ export interface Vault {
   targetAgeYears: number;
   unlockDate?: string; // ISO date string, derived from DOB/EDD + targetAgeYears
   status: VaultStatus;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MilestoneTemplate {
+  id: string;
+  label: string;
+  description?: string;
+  category: MilestoneCategory;
+  ageWeeksMin?: number; // For born mode
+  ageWeeksMax?: number;
+  gestationWeeksMin?: number; // For pregnancy mode
+  gestationWeeksMax?: number;
+}
+
+export interface MilestoneInstance {
+  id: string;
+  babyId: string;
+  chapterId?: string;
+  milestoneTemplateId: string;
+  associatedMemoryId?: string; // NULL until filled
+  expectedDate: string; // ISO date string
+  filledDate?: string; // ISO date string, when filled
+  status: MilestoneInstanceStatus;
   createdAt: string;
   updatedAt: string;
 }
@@ -53,6 +79,9 @@ export interface Memory {
   latitude?: number;
   longitude?: number;
   mapUrl?: string;
+  // Milestone fields (optional)
+  milestoneTemplateId?: string; // Links to milestone template if from template
+  isCustomMilestone?: boolean; // True if user-created, false if from template
   createdAt: string;
   updatedAt: string;
 }
@@ -95,6 +124,17 @@ export interface ChapterWithTags extends Chapter {
 export interface MemoryWithRelations extends Memory {
   tags: Tag[];
   photos: MemoryPhoto[];
+}
+
+export interface MilestoneInstanceWithTemplate extends MilestoneInstance {
+  template: MilestoneTemplate;
+  associatedMemory?: MemoryWithRelations;
+}
+
+export interface ChapterWithMilestoneProgress extends ChapterWithTags {
+  milestoneTotal: number;
+  milestoneFilled: number;
+  memoryCount: number;
 }
 
 export interface ChapterWithMemories extends ChapterWithTags {
@@ -154,6 +194,9 @@ export interface CreateMemoryInput {
   latitude?: number;
   longitude?: number;
   mapUrl?: string;
+  // Milestone fields
+  milestoneTemplateId?: string;
+  isCustomMilestone?: boolean;
 }
 
 export interface UpdateMemoryInput extends Partial<Omit<CreateMemoryInput, "chapterId">> {

@@ -121,9 +121,8 @@ export default function EditChapterScreen() {
   const handlePickCoverImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
-      allowsEditing: true,
-      aspect: [16, 9],
-      quality: 0.8,
+      allowsEditing: false,
+      quality: 0.5,
     });
 
     if (!result.canceled) {

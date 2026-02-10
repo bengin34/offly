@@ -405,3 +405,214 @@ Recommendation (trust-first):
 	•	advanced search
 	•	keepsake formats (V2)
 	•	optional encrypted backup (V2)
+
+
+
+Milestone-Based Timeline Implementation Plan
+Context
+Users want a structured milestone-based timeline where predefined milestones (based on baby's age or pregnancy weeks) appear in a timeline, and users "fill them in" with photos and notes rather than creating entries from scratch.
+
+Why this matters:
+
+More guided, less intimidating UX (users know what milestones to capture)
+Prevents missed memory moments ("Oh, I forgot to record first smile!")
+Keeps timeline organized around meaningful moments (1 month, 2 months, first tooth, etc.)
+Supports both born mode (age-based) and pregnancy mode (gestation-week-based)
+Implementation Approach
+Data Model Changes
+New Table: milestone_instances
+
+
+CREATE TABLE milestone_instances (
+  id TEXT PRIMARY KEY,
+  baby_id TEXT NOT NULL,
+  milestone_template_id TEXT NOT NULL,
+  associated_memory_id TEXT,  -- NULL until filled
+  expected_date TEXT,
+  filled_date TEXT,
+  status TEXT CHECK (status IN ('pending', 'filled', 'archived')),
+  created_at TEXT,
+  updated_at TEXT,
+  FOREIGN KEY (baby_id) REFERENCES baby_profiles(id),
+  FOREIGN KEY (associated_memory_id) REFERENCES memories(id)
+);
+Extended Memory Type
+
+
+export interface Memory {
+  // ... existing fields ...
+  milestoneTemplateId?: string;    // Links to template if from milestone
+  isCustomMilestone?: boolean;     // False if from template, true if freeform
+}
+New Types
+
+
+export interface MilestoneTemplate {
+  id: string;
+  label: string;
+  description?: string;
+  category: 'growth' | 'social' | 'physical' | 'prenatal' | 'other';
+  ageWeeksMin?: number;        // Born mode
+  ageWeeksMax?: number;
+  gestationWeeksMin?: number;  // Pregnancy mode
+  gestationWeeksMax?: number;
+}
+
+export interface MilestoneInstance {
+  id: string;
+  babyId: string;
+  milestoneTemplateId: string;
+  associatedMemoryId?: string;
+  expectedDate: string;
+  filledDate?: string;
+  status: 'pending' | 'filled' | 'archived';
+  createdAt: string;
+  updatedAt: string;
+}
+Files to Create
+1. /src/constants/milestoneTemplates.ts (New)
+Define all predefined milestones for born and pregnancy modes.
+
+Born mode examples:
+
+Week 4: "First Month"
+Week 6–8: "First Smile"
+Week 8: "Two Months"
+Week 12–16: "First Laughs"
+Week 26–30: "First Tooth"
+Week 28–36: "First Crawl"
+Week 40–52: "First Steps"
+Week 52: "First Birthday"
+Month 18: "Toddler Milestones"
+Year 2, 3, 5, etc.
+Pregnancy mode examples:
+
+Week 8: "Heartbeat Visible"
+Week 12: "First Trimester Complete"
+Week 20: "Anatomy Scan (Gender Reveal)"
+Week 28: "Third Trimester Begins"
+Week 36: "Full-Term Status"
+Week 40: "Due Date"
+2. /src/db/repositories/MilestoneRepository.ts (New)
+CRUD operations and auto-generation for milestone instances.
+
+Key methods:
+
+createInstance(babyId, templateId, expectedDate) → MilestoneInstance
+getByBabyId(babyId) → MilestoneInstance[]
+getByStatus(babyId, status) → MilestoneInstance[]
+linkMemory(instanceId, memoryId) → void
+unlinkMemory(instanceId) → void (reverts status to 'pending')
+updateStatus(instanceId, status) → void
+autoGenerateForChapter(babyId, chapterId) → creates instances for chapter's date range
+archiveInstance(instanceId) → void (marks old milestones as archived)
+3. /src/utils/milestones.ts (New)
+Helper functions for milestone logic.
+
+Key functions:
+
+calculateAgeInWeeks(birthDate: string): number
+calculateGestationWeeks(edd: string): number
+getApplicableTemplates(babyProfile, mode) → filtered MilestoneTemplate[]
+getExpectedDate(babyProfile, template) → ISO date string
+getTemplateById(id: string) → MilestoneTemplate | null
+4. /src/components/MilestoneTimeline.tsx (New)
+Timeline UI component that displays milestone instances.
+
+Renders:
+
+Grouped by category or chronological order
+Empty milestone: Icon + label + expected date + [+ Add Memory] button
+Filled milestone: Memory preview (title + 1 photo thumbnail) + date + [View] [Edit] [Delete] buttons
+Archived milestone: Faded, with [Restore] option
+5. /src/components/MilestoneQuickAddModal.tsx (New)
+Modal for quickly filling a milestone.
+
+Fields:
+
+Date picker (pre-filled with expected date)
+Photo picker (up to 3 photos for quick add)
+Note field (description)
+[Save] button
+Link to "Open full editor" (to add tags, change type, etc.)
+Files to Modify
+1. /src/db/schema.ts
+Add migration to CREATE TABLE milestone_instances
+Add indices: (baby_id), (status), (expected_date)
+2. /src/types/index.ts
+Extend Memory with optional milestoneTemplateId and isCustomMilestone
+Add MilestoneTemplate, MilestoneInstance, MilestoneInstanceWithTemplate types
+3. /src/db/repositories/MemoryRepository.ts
+Update create() to accept optional milestoneTemplateId
+Update getByChapterIdWithRelations() to optionally join milestone template data
+Update delete() to call MilestoneRepository.unlinkMemory() if memory is linked to milestone
+4. /app/chapter/[id].tsx (Chapter Details Screen)
+Add "Milestone Timeline" tab alongside existing "Memories" tab
+Load milestone instances when tab is active
+Render MilestoneTimeline component
+Wire up "Add Memory" button → MilestoneQuickAddModal
+5. /src/localization/index.ts (or your i18n file)
+Add milestone template labels and descriptions for both modes
+Keep calm, respectful tone (not "cute baby app")
+Implementation Steps (in order)
+Phase 1: Database & Types
+Add milestone_instances table to schema.ts (migration)
+Add MilestoneTemplate, MilestoneInstance types to types/index.ts
+Extend Memory type with milestoneTemplateId
+Create MilestoneRepository with full CRUD
+Phase 2: Utilities & Constants
+Create milestoneTemplates.ts with all templates (born + pregnancy modes)
+Create milestones.ts utility functions (age calculations, template filtering)
+Phase 3: UI Components
+Create MilestoneTimeline.tsx (renders list of instances)
+Create MilestoneQuickAddModal.tsx (add photo + date + note modal)
+Phase 4: Integration
+Update MemoryRepository to handle milestone linking
+Modify chapter/[id].tsx to add milestone timeline tab
+Wire up auto-generation: when chapter is created, auto-generate milestone instances
+Add i18n strings for milestone labels
+Phase 5: Testing & Polish
+Test auto-generation on chapter creation
+Test filling milestone → memory created + instance linked
+Test deleting memory → instance reverted to pending
+Test born vs. pregnancy mode milestones
+Test export/import preserves milestone associations
+Verify Pro tier gatekeeping (limited milestones free, unlimited Pro)
+Key Design Decisions
+Decision	Choice	Why
+Storage	Database table + code constants	Offline-first, versioned, minimal app size
+UX Flow	Tab-based coexistence	Familiar from existing app; users can toggle between "milestone timeline" and "all memories"
+Filling	Quick modal (not full form)	Low friction, fast capture; link to full editor if needed
+Paywall	Limited free, unlimited Pro	Drives upgrade intent without locking away core value
+Auto-Generation	Per-chapter on creation	Not overwhelming on profile setup; scoped to chapter date range
+Status Model	pending/filled/archived (no skip)	MVP simplicity; skip/snooze added in V2
+Monetization Gating
+Free tier: Show milestones for 1 age window (e.g., "0–3 months" only) or limited number of templates (3–5)
+Pro tier: Unlimited predefined milestones + all templates unlocked
+Implement via usePaywallTrigger() hook when accessing "Milestone Timeline" tab or creating a milestone memory
+Verification Checklist
+ Create chapter → milestone instances auto-generated for chapter date range
+ Click empty milestone → quick-add modal appears with correct expected date
+ Add photo + date + note → memory created, milestone marked "filled"
+ Click filled milestone → preview shows memory title + photo
+ Edit filled milestone → memory editor opens, changes persist
+ Delete memory → milestone reverts to "pending" status
+ Pregnancy mode milestones use gestation weeks (not birth-based age)
+ Born mode milestones calculate age correctly from DOB
+ Export includes milestone instances and associations
+ Import restores milestone instances correctly
+ Free tier shows limited milestones; paywall gates full set
+ No copy mentions "trip" / "city" / "travel" terms (all baby-focused)
+Out of Scope (MVP)
+Custom milestone creation
+Multi-memory per milestone ("first tooth" can be filled only once)
+Auto-unlock as baby ages (manual refresh only)
+Milestone-based export templates
+Reminders/notifications for unfilled milestones
+Shared milestone libraries
+Critical Implementation Notes
+Age calculation is critical: Test DOB-to-weeks and EDD-to-weeks conversions thoroughly (affects milestone assignment accuracy)
+Preserve offline-first: All templates must be in code; no server calls for milestone data
+Reversibility: When a memory linked to a milestone is deleted, revert milestone to pending (not deleted)
+Chapter scope: Only generate milestones relevant to the chapter's date range (e.g., "0–3 months" chapter gets "1 month" + "first smile" but not "first steps")
+Localization ready: Structure milestone labels so i18n can translate them later

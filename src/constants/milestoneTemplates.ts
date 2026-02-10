@@ -1,0 +1,320 @@
+import type { MilestoneTemplate } from '../types';
+
+/**
+ * Milestone templates for born mode
+ * Organized by age windows (in weeks)
+ */
+export const BORN_MODE_MILESTONES: MilestoneTemplate[] = [
+  // Early months
+  {
+    id: 'milestone_1_week',
+    label: 'First Week',
+    description: 'Baby\'s first week home',
+    category: 'growth',
+    ageWeeksMin: 0,
+    ageWeeksMax: 1,
+  },
+  {
+    id: 'milestone_1_month',
+    label: 'One Month',
+    description: 'One month milestone',
+    category: 'growth',
+    ageWeeksMin: 3,
+    ageWeeksMax: 5,
+  },
+  {
+    id: 'milestone_first_smile',
+    label: 'First Smile',
+    description: 'Baby\'s first social smile',
+    category: 'social',
+    ageWeeksMin: 6,
+    ageWeeksMax: 8,
+  },
+  {
+    id: 'milestone_2_months',
+    label: 'Two Months',
+    description: 'Two months milestone',
+    category: 'growth',
+    ageWeeksMin: 7,
+    ageWeeksMax: 9,
+  },
+  {
+    id: 'milestone_first_laughs',
+    label: 'First Laughs',
+    description: 'Baby\'s first genuine laughs',
+    category: 'social',
+    ageWeeksMin: 12,
+    ageWeeksMax: 16,
+  },
+  {
+    id: 'milestone_3_months',
+    label: 'Three Months',
+    description: 'Three months milestone',
+    category: 'growth',
+    ageWeeksMin: 11,
+    ageWeeksMax: 13,
+  },
+  {
+    id: 'milestone_4_months',
+    label: 'Four Months',
+    description: 'Four months milestone',
+    category: 'growth',
+    ageWeeksMin: 15,
+    ageWeeksMax: 17,
+  },
+  {
+    id: 'milestone_5_months',
+    label: 'Five Months',
+    description: 'Five months milestone',
+    category: 'growth',
+    ageWeeksMin: 19,
+    ageWeeksMax: 21,
+  },
+  {
+    id: 'milestone_6_months',
+    label: 'Six Months',
+    description: 'Six months milestone - half year!',
+    category: 'growth',
+    ageWeeksMin: 23,
+    ageWeeksMax: 25,
+  },
+  {
+    id: 'milestone_first_tooth',
+    label: 'First Tooth',
+    description: 'Baby\'s first tooth appears',
+    category: 'physical',
+    ageWeeksMin: 26,
+    ageWeeksMax: 30,
+  },
+  {
+    id: 'milestone_sits_up',
+    label: 'Sits Up Alone',
+    description: 'Baby sits up without support',
+    category: 'physical',
+    ageWeeksMin: 26,
+    ageWeeksMax: 30,
+  },
+  {
+    id: 'milestone_crawling',
+    label: 'First Crawl',
+    description: 'Baby starts crawling',
+    category: 'physical',
+    ageWeeksMin: 28,
+    ageWeeksMax: 36,
+  },
+  {
+    id: 'milestone_7_months',
+    label: 'Seven Months',
+    description: 'Seven months milestone',
+    category: 'growth',
+    ageWeeksMin: 27,
+    ageWeeksMax: 29,
+  },
+  {
+    id: 'milestone_8_months',
+    label: 'Eight Months',
+    description: 'Eight months milestone',
+    category: 'growth',
+    ageWeeksMin: 31,
+    ageWeeksMax: 33,
+  },
+  {
+    id: 'milestone_9_months',
+    label: 'Nine Months',
+    description: 'Nine months milestone',
+    category: 'growth',
+    ageWeeksMin: 35,
+    ageWeeksMax: 37,
+  },
+  {
+    id: 'milestone_first_steps',
+    label: 'First Steps',
+    description: 'Baby\'s first steps',
+    category: 'physical',
+    ageWeeksMin: 40,
+    ageWeeksMax: 52,
+  },
+  {
+    id: 'milestone_first_words',
+    label: 'First Words',
+    description: 'Baby\'s first recognizable words',
+    category: 'social',
+    ageWeeksMin: 40,
+    ageWeeksMax: 52,
+  },
+  {
+    id: 'milestone_10_months',
+    label: 'Ten Months',
+    description: 'Ten months milestone',
+    category: 'growth',
+    ageWeeksMin: 39,
+    ageWeeksMax: 41,
+  },
+  {
+    id: 'milestone_11_months',
+    label: 'Eleven Months',
+    description: 'Eleven months milestone',
+    category: 'growth',
+    ageWeeksMin: 43,
+    ageWeeksMax: 45,
+  },
+  {
+    id: 'milestone_1_year',
+    label: 'First Birthday',
+    description: 'One year milestone - Happy Birthday!',
+    category: 'growth',
+    ageWeeksMin: 50,
+    ageWeeksMax: 54,
+  },
+  // Toddler milestones
+  {
+    id: 'milestone_18_months',
+    label: 'Eighteen Months',
+    description: 'Eighteen months milestone',
+    category: 'growth',
+    ageWeeksMin: 78,
+    ageWeeksMax: 82,
+  },
+  {
+    id: 'milestone_2_years',
+    label: 'Second Birthday',
+    description: 'Two years milestone',
+    category: 'growth',
+    ageWeeksMin: 100,
+    ageWeeksMax: 108,
+  },
+  {
+    id: 'milestone_3_years',
+    label: 'Third Birthday',
+    description: 'Three years milestone',
+    category: 'growth',
+    ageWeeksMin: 156,
+    ageWeeksMax: 156,
+  },
+  {
+    id: 'milestone_4_years',
+    label: 'Fourth Birthday',
+    description: 'Four years milestone',
+    category: 'growth',
+    ageWeeksMin: 208,
+    ageWeeksMax: 208,
+  },
+  {
+    id: 'milestone_5_years',
+    label: 'Fifth Birthday',
+    description: 'Five years milestone',
+    category: 'growth',
+    ageWeeksMin: 260,
+    ageWeeksMax: 260,
+  },
+];
+
+/**
+ * Milestone templates for pregnancy mode
+ * Organized by gestation weeks
+ */
+export const PREGNANCY_MODE_MILESTONES: MilestoneTemplate[] = [
+  {
+    id: 'milestone_pregnancy_8_weeks',
+    label: 'Heartbeat Visible',
+    description: 'Baby\'s heartbeat becomes visible on ultrasound',
+    category: 'prenatal',
+    gestationWeeksMin: 8,
+    gestationWeeksMax: 8,
+  },
+  {
+    id: 'milestone_pregnancy_10_weeks',
+    label: 'Ten Weeks',
+    description: 'Ten weeks pregnant',
+    category: 'prenatal',
+    gestationWeeksMin: 10,
+    gestationWeeksMax: 10,
+  },
+  {
+    id: 'milestone_pregnancy_12_weeks',
+    label: 'First Trimester Complete',
+    description: 'End of first trimester',
+    category: 'prenatal',
+    gestationWeeksMin: 12,
+    gestationWeeksMax: 13,
+  },
+  {
+    id: 'milestone_pregnancy_16_weeks',
+    label: 'Quickening Begins',
+    description: 'You may start feeling baby move',
+    category: 'prenatal',
+    gestationWeeksMin: 16,
+    gestationWeeksMax: 20,
+  },
+  {
+    id: 'milestone_pregnancy_20_weeks',
+    label: 'Anatomy Scan',
+    description: 'Midpoint ultrasound and potential gender reveal',
+    category: 'prenatal',
+    gestationWeeksMin: 20,
+    gestationWeeksMax: 21,
+  },
+  {
+    id: 'milestone_pregnancy_24_weeks',
+    label: 'Viability Milestone',
+    description: 'Baby is considered viable',
+    category: 'prenatal',
+    gestationWeeksMin: 24,
+    gestationWeeksMax: 24,
+  },
+  {
+    id: 'milestone_pregnancy_28_weeks',
+    label: 'Third Trimester Begins',
+    description: 'Start of third trimester',
+    category: 'prenatal',
+    gestationWeeksMin: 28,
+    gestationWeeksMax: 28,
+  },
+  {
+    id: 'milestone_pregnancy_32_weeks',
+    label: 'Thirty-Two Weeks',
+    description: 'Thirty-two weeks pregnant',
+    category: 'prenatal',
+    gestationWeeksMin: 32,
+    gestationWeeksMax: 32,
+  },
+  {
+    id: 'milestone_pregnancy_36_weeks',
+    label: 'Full Term',
+    description: 'Baby is considered full term',
+    category: 'prenatal',
+    gestationWeeksMin: 36,
+    gestationWeeksMax: 36,
+  },
+  {
+    id: 'milestone_pregnancy_38_weeks',
+    label: 'Thirty-Eight Weeks',
+    description: 'Thirty-eight weeks pregnant',
+    category: 'prenatal',
+    gestationWeeksMin: 38,
+    gestationWeeksMax: 38,
+  },
+  {
+    id: 'milestone_pregnancy_40_weeks',
+    label: 'Due Date',
+    description: 'Your estimated due date',
+    category: 'prenatal',
+    gestationWeeksMin: 40,
+    gestationWeeksMax: 40,
+  },
+];
+
+/**
+ * Get all milestone templates for a given baby mode
+ */
+export function getMilestoneTemplates(mode: 'born' | 'pregnant'): MilestoneTemplate[] {
+  return mode === 'born' ? BORN_MODE_MILESTONES : PREGNANCY_MODE_MILESTONES;
+}
+
+/**
+ * Get a specific milestone template by ID
+ */
+export function getMilestoneTemplateById(id: string): MilestoneTemplate | null {
+  const allTemplates = [...BORN_MODE_MILESTONES, ...PREGNANCY_MODE_MILESTONES];
+  return allTemplates.find((t) => t.id === id) || null;
+}

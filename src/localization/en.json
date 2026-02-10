@@ -1,0 +1,728 @@
+{
+  "common": {
+    "appName": "BabyLegacy",
+    "done": "Done",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "save": "Save",
+    "add": "Add",
+    "create": "Create",
+    "close": "Close",
+    "saving": "Saving...",
+    "creating": "Creating...",
+    "adding": "Adding...",
+    "entry": "memory",
+    "entries": "memories",
+    "memories": "Memories",
+    "shareChapter": "Share chapter"
+  },
+  "shareDialog": {
+    "title": "Share {name}",
+    "subtitle": "Choose how you want to share this chapter",
+    "hint": "Your data stays private — sharing creates a local file",
+    "optionTextTitle": "Text List",
+    "optionTextDescription": "Simple text format, perfect for messaging apps",
+    "optionImageTitle": "Visual Card",
+    "optionImageDescription": "Beautiful card with your highlights",
+    "optionPdfTitle": "PDF Document",
+    "optionPdfDescription": "Full chapter with all details and notes",
+    "dialogTitleChapter": "Share {name} Chapter",
+    "dialogTitleMemoryHighlights": "Share {name} Highlights",
+    "dialogTitleChapterGuide": "Share {name} Chapter",
+    "dialogTitleCard": "Share {name} Card"
+  },
+  "tabs": {
+    "chapters": "Chapters",
+    "chaptersLegacy": "Chapters",
+    "search": "Search",
+    "insights": "Insights",
+    "settings": "Settings"
+  },
+  "navigation": {
+    "newChapter": "New Chapter",
+    "chapter": "Chapter",
+    "editChapter": "Edit Chapter",
+    "newChapterLegacy": "New Chapter",
+    "chapterLegacy": "Chapter",
+    "editChapterLegacy": "Edit Chapter",
+    "newMemory": "New Memory",
+    "memory": "Memory",
+    "editMemory": "Edit Memory",
+    "newEntry": "New Memory",
+    "entry": "Memory",
+    "editEntry": "Edit Memory"
+  },
+  "chapters": {
+    "addCover": "Add a cover",
+    "days": "{count} days",
+    "emptyTitle": "No chapters yet",
+    "emptySubtitle": "Start recording your baby's memories",
+    "emptyButton": "Create Your First Chapter"
+  },
+  "chaptersLegacy": {
+    "addCover": "Add a cover",
+    "days": "{count} days",
+    "emptyTitle": "No chapters yet",
+    "emptySubtitle": "Start recording your baby's memories",
+    "emptyButton": "Create Your First Chapter"
+  },
+  "settings": {
+    "preferences": "Preferences",
+    "appearance": "Appearance",
+    "language": "Language",
+    "chooseAppearance": "Choose Appearance",
+    "chooseLanguage": "Choose Language",
+    "exportSection": "Export",
+    "exportTitle": "Export All Data",
+    "exportDescription": "Download your chapters, memories, and tags as JSON or XLS",
+    "exportButton": "Export JSON",
+    "exportButtonXls": "Export XLS",
+    "exportOpenButton": "Open export options",
+    "exportInfoTitle": "Why export?",
+    "exportInfoDescription": "Keep a personal backup, move to a new phone, or analyze your memories in a spreadsheet. Exports stay on your device until you share them.",
+    "exportPrivacyNote": "Export files can include personal notes. Share carefully.",
+    "exportPhotosNote": "Photos are not included in exports.",
+    "exportFormatsTitle": "Choose a format",
+    "exportFormatsDescription": "JSON is best for backups and re-import. XLS opens easily in Excel or Google Sheets.",
+    "importSection": "Import",
+    "importTitle": "Import Data",
+    "importDescription": "Bring in your saved chapters and memories from a JSON file.",
+    "importButton": "Import JSON",
+    "importButtonImporting": "Importing...",
+    "dataSection": "Data",
+    "dataTitle": "Export & Import",
+    "dataDescription": "Back up or move your memories using export and import.",
+    "dataButton": "Show options",
+    "supportSection": "Support",
+    "supportRate": "Rate us 5 stars",
+    "supportShare": "Share the app",
+    "supportContact": "Contact us",
+    "supportShareMessage": "BabyLegacy - a private family memory archive I love: {link}",
+    "onboardingSection": "Onboarding",
+    "onboardingTitle": "Show onboarding again",
+    "onboardingDescription": "Replay the 7 screen introduction at any time.",
+    "onboardingButton": "Start onboarding",
+    "onboardingResetTitle": "Start onboarding?",
+    "onboardingResetMessage": "This will show the onboarding flow again. You can skip anytime.",
+    "onboardingResetAction": "Start",
+    "aboutSection": "About",
+    "version": "Version",
+    "storage": "Storage",
+    "privacy": "Privacy",
+    "storageValue": "Data stays on your device.",
+    "privacyValue": "Offline-first",
+    "footer": "BabyLegacy — your private family memory archive",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System"
+  },
+  "proBanner": {
+    "title": "Go Pro",
+    "subtitle": "Unlock all features.",
+    "cta": "Upgrade",
+    "messages": [
+      {
+        "title": "Go Pro",
+        "subtitle": "Unlock all features."
+      },
+      {
+        "title": "Less scrolling, more meaning",
+        "subtitle": "Find the baby moments that matter, instantly."
+      },
+      {
+        "title": "Remember everything",
+        "subtitle": "Keep your baby's little moments safe."
+      },
+      {
+        "title": "Your family archive",
+        "subtitle": "Instant recall for every chapter."
+      },
+      {
+        "title": "Find it in seconds",
+        "subtitle": "Search memories by title, notes, or tags."
+      },
+      {
+        "title": "Grow without limits",
+        "subtitle": "Unlimited chapters. Unlimited memories."
+      }
+    ]
+  },
+  "labels": {
+    "date": "Date",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "title": "Title",
+    "notes": "Notes",
+    "optional": "optional",
+    "filled": "Filled",
+    "milestone": {
+      "pastDue": "Past due",
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "empty": "No milestones yet",
+      "emptySubtitle": "Milestones will appear here",
+      "quickAddHelper": "Open full editor to add tags and more"
+    }
+  },
+  "placeholders": {
+    "search": "Search chapters, memories, notes...",
+    "chapterTitleExample": "e.g., First Year",
+    "chapterSummaryExample": "Brief description of this chapter...",
+    "chapterTitle": "e.g., 0–3 months",
+    "chapterDescription": "Short description of this chapter...",
+    "entryTitleMilestone": "e.g., First smile",
+    "entryTitleMemory": "e.g., A quiet afternoon",
+    "memoryTitleMilestone": "First smile, First steps...",
+    "memoryTitleNote": "A quiet afternoon, Funny moment...",
+    "entryNotes": "Add details...",
+    "milestoneListName": "e.g., Milestone ideas, Family traditions",
+    "locationGroupName": "e.g., Home, Grandma's house",
+    "memoryTitle": "What happened?",
+    "memoryNotes": "Add details..."
+  },
+  "chapterForm": {
+    "titleLabel": "Chapter Title *",
+    "descriptionLabel": "Description (optional)",
+    "coverImageLabel": "Cover Image (optional)",
+    "changeCover": "Change",
+    "addCoverPlaceholder": "Tap to add cover image"
+  },
+  "chapterFormLegacy": {
+    "titleLabel": "Chapter Title *",
+    "summaryLabel": "Description (optional)",
+    "coverImageLabel": "Cover Image (optional)",
+    "changeCover": "Change",
+    "addCoverPlaceholder": "Tap to add cover image"
+  },
+  "memoryForm": {
+    "titleLabel": "Title *",
+    "locationLabel": "Location",
+    "importanceLabel": "IMPORTANCE",
+    "descriptionLabel": "Description",
+    "tagsLabel": "Tags",
+    "milestone": "Milestone",
+    "note": "Note"
+  },
+  "entryForm": {
+    "titleLabel": "Title *",
+    "ratingLabel": "Importance",
+    "notesLabel": "Notes",
+    "tagsLabel": "Tags",
+    "photosLabel": "Photos ({count}/{max})",
+    "gallery": "Gallery",
+    "camera": "Camera",
+    "tapToAddTags": "Tap to add tags...",
+    "milestone": "Milestone",
+    "memory": "Note",
+    "moreTags": "+{count} more",
+    "locationLabel": "Location",
+    "locationPlaceholder": "Add a place (optional)",
+    "locationHint": "Add a location if it helps the memory"
+  },
+  "memoryDetail": {
+    "descriptionTitle": "Description",
+    "tagsTitle": "Tags"
+  },
+  "entryDetail": {
+    "notesTitle": "Notes",
+    "tagsTitle": "Tags",
+    "allPhotos": "All Photos ({count})",
+    "created": "Created: {date}",
+    "updated": "Updated: {date}",
+    "locationTitle": "Location",
+    "openInMaps": "Open in Maps"
+  },
+  "chapterDetail": {
+    "noPhoto": "No photo",
+    "notePill": "Note",
+    "uncategorized": "Uncategorized",
+    "emptyTitle": "No memories yet",
+    "emptySubtitle": "Start adding memories to this chapter",
+    "addFirstMemory": "Add Your First Memory",
+    "addMemory": "Add Memory"
+  },
+  "chapterDetailLegacy": {
+    "noPhoto": "No photo",
+    "notePill": "Note",
+    "uncategorized": "Uncategorized",
+    "emptyTitle": "No memories yet",
+    "emptySubtitle": "Start adding memories to this chapter",
+    "addFirstEntry": "Add Your First Memory",
+    "addEntry": "Add Memory"
+  },
+  "memories": {
+    "memory": "Memory",
+    "milestone": "Milestone",
+    "note": "Note",
+    "notePill": "NOTE",
+    "noPhoto": "No photo"
+  },
+  "milestoneLists": {
+    "title": "City Lists",
+    "listNameLabel": "List Name *",
+    "listTypeLabel": "List Type",
+    "groupLabel": "Country *",
+    "typeCustom": "Custom",
+    "typeCountry": "Country",
+    "typeHintCustom": "Create a custom list of any locations you want to track",
+    "typeHintCountry": "Create a list of locations within a specific country",
+    "emptyTitle": "No City Lists Yet",
+    "emptyDescription": "Create lists of locations you want to visit and track your progress",
+    "createFirstList": "Create Your First List",
+    "progressVisited": "{visited}/{total} visited ({percent}%)",
+    "detailProgress": "{visited} of {total} locations visited ({percent}%)",
+    "detailEmptyTitle": "No Cities Yet",
+    "detailEmptyDescription": "Add locations you want to visit and track your progress",
+    "detailAddCity": "Add City",
+    "detailVisited": "Visited",
+    "notFound": "City list not found",
+    "loading": "Loading..."
+  },
+  "search": {
+    "emptyTitle": "Search your memories",
+    "emptySubtitle": "Find chapters and memories by title, description, notes, or tags",
+    "noResultsTitle": "No results found",
+    "noResultsSubtitle": "Try searching with different keywords",
+    "showLabel": "Show",
+    "memoryTypeLabel": "Memory Type",
+    "minImportanceLabel": "Min Importance",
+    "entryTypeLabel": "Memory Type",
+    "minRatingLabel": "Min Importance",
+    "tagsLabel": "Tags",
+    "clearFilters": "Clear filters",
+    "filterAll": "All",
+    "filterChapters": "Chapters",
+    "filterMemories": "Memories",
+    "filterChapterLegacy": "Chapters",
+    "filterEntries": "Memories",
+    "filterAny": "Any",
+    "filterMilestones": "Milestones",
+    "filterNotes": "Notes",
+    "filterMilestoneLegacy": "Milestones",
+    "filterNoteLegacy": "Notes",
+    "matchedIn": "Matched in {field}:",
+    "inChapter": "in {chapter}",
+    "inChapterLegacy": "in {chapter}",
+    "matchFieldTitle": "title",
+    "matchFieldLocation": "location",
+    "matchFieldSummary": "description",
+    "matchFieldNotes": "notes",
+    "matchFieldTag": "tag",
+    "matchFieldMilestone": "city"
+  },
+  "insights": {
+    "sectionStats": "Your Stats",
+    "statsChapters": "Chapters",
+    "statsMemories": "Memories",
+    "statsChapterLegacy": "Chapters",
+    "statsMemoryLegacy": "Memories",
+    "statsMilestones": "Places",
+    "statsLocations": "Locations",
+    "statsPhotos": "Photos",
+    "statsImportant": "Important",
+    "statsChapterDays": "Chapter Days",
+    "memoriesBreakdown": "{milestones} milestones, {notes} notes",
+    "entriesBreakdown": "{milestones} milestones, {notes} notes",
+    "highlightMostVisited": "Most Visited",
+    "highlightFirstTrip": "First Chapter",
+    "highlightFirstMemory": "First Memory",
+    "highlightAvgRating": "Avg Importance",
+    "highlightImportant": "Most Important",
+    "topTags": "Top Tags",
+    "milestoneProgress": "Milestone Lists",
+    "seeAll": "See All",
+    "createFirstMilestoneList": "Create your first milestone list",
+    "milestoneListsEmptyHint": "Track milestones you want to capture",
+    "milestoneListCount": "{visited}/{total} items",
+    "moreLists": "+{count} more lists",
+    "achievements": "Achievements",
+    "viewAll": "View All",
+    "noBadgesEarned": "No badges earned yet",
+    "badgesEmptyHint": "Keep capturing memories to unlock achievements",
+    "moreBadges": "+{count} more badges",
+    "badgesProgress": "{unlocked} of {total} badges earned"
+  },
+  "badges": {
+    "earned": "Earned",
+    "locked": "Locked",
+    "allBadges": "All Badges",
+    "badgesEarned": "Badges Earned",
+    "special": "Special",
+    "tagAdventures": "Tag Achievements",
+    "firstSteps": "First Steps",
+    "chapterMilestones": "Chapter Milestones",
+    "milestoneAchievements": "Milestone Achievements",
+    "entryMilestones": "Memory Milestones",
+    "consistencyMilestones": "Consistency",
+    "photoMilestones": "Photo Milestones",
+    "tagMilestones": "Tag Tracking",
+    "organizationMilestones": "Organization",
+    "badgeUnlocked": "Badge Unlocked!"
+  },
+  "badgeDetail": {
+    "congratulations": "Congratulations!",
+    "earnedOn": "Earned on {date}",
+    "notYetEarned": "Not yet earned"
+  },
+  "badgeItems": {
+    "historian": {
+      "title": "Memory Keeper",
+      "description": "Logged 40 memories from the past"
+    },
+    "first_chapter": {
+      "title": "First Chapter",
+      "description": "Created your first chapter"
+    },
+    "first_milestone": {
+      "title": "First Milestone",
+      "description": "Recorded your first milestone"
+    },
+    "first_note": {
+      "title": "First Note",
+      "description": "Wrote your first note"
+    },
+    "first_tag": {
+      "title": "First Tag",
+      "description": "Created your first tag"
+    },
+    "chapters_5": {
+      "title": "Chronicler",
+      "description": "Created 5 chapters"
+    },
+    "chapters_15": {
+      "title": "Storyteller",
+      "description": "Created 15 chapters"
+    },
+    "chapters_30": {
+      "title": "Legacy Builder",
+      "description": "Created 30 chapters"
+    },
+    "milestones_15": {
+      "title": "Milestone Tracker",
+      "description": "Recorded 15 milestones"
+    },
+    "milestones_40": {
+      "title": "Milestone Collector",
+      "description": "Recorded 40 milestones"
+    },
+    "milestones_150": {
+      "title": "Milestone Master",
+      "description": "Recorded 150 milestones"
+    },
+    "memories_40": {
+      "title": "Memory Keeper",
+      "description": "Created 40 memories"
+    },
+    "memories_150": {
+      "title": "Archivist",
+      "description": "Created 150 memories"
+    },
+    "photos_25": {
+      "title": "Shutterbug",
+      "description": "Captured 25 photos"
+    },
+    "photos_100": {
+      "title": "Photographer",
+      "description": "Captured 100 photos"
+    },
+    "photos_400": {
+      "title": "Photo Archivist",
+      "description": "Captured 400 photos"
+    },
+    "tag_first_time": {
+      "title": "First Times",
+      "description": "Logged 10 first-time memories"
+    },
+    "tag_milestone": {
+      "title": "Milestone Maven",
+      "description": "Tagged 15 milestone memories"
+    },
+    "tag_funny": {
+      "title": "Comedy Gold",
+      "description": "Logged 12 funny moments"
+    },
+    "tag_sweet": {
+      "title": "Sweet Moments",
+      "description": "Logged 12 sweet memories"
+    },
+    "tag_growth": {
+      "title": "Growth Tracker",
+      "description": "Logged 10 growth entries"
+    },
+    "tag_health": {
+      "title": "Health Logger",
+      "description": "Logged 10 health entries"
+    },
+    "tag_feeding": {
+      "title": "Feeding Tracker",
+      "description": "Logged 15 feeding entries"
+    },
+    "tag_sleep": {
+      "title": "Sleep Monitor",
+      "description": "Logged 15 sleep entries"
+    },
+    "tag_play": {
+      "title": "Playtime Pro",
+      "description": "Logged 12 play entries"
+    },
+    "tag_family": {
+      "title": "Family Moments",
+      "description": "Logged 15 family entries"
+    },
+    "note_taker": {
+      "title": "Note Taker",
+      "description": "Added descriptions to 20 memories"
+    },
+    "storyteller_badge": {
+      "title": "Detailed Chronicler",
+      "description": "Added descriptions to 100 memories"
+    },
+    "visual_logger": {
+      "title": "Visual Logger",
+      "description": "Added photos to 20 memories"
+    },
+    "photo_journalist": {
+      "title": "Photo Journalist",
+      "description": "Added photos to 100 memories"
+    },
+    "organizer": {
+      "title": "Organizer",
+      "description": "Tagged 20 memories"
+    },
+    "master_organizer": {
+      "title": "Master Organizer",
+      "description": "Tagged 100 memories"
+    },
+    "tag_creator": {
+      "title": "Tag Creator",
+      "description": "Created 20 unique tags"
+    },
+    "taxonomy_expert": {
+      "title": "Taxonomy Expert",
+      "description": "Created 40 unique tags"
+    },
+    "important_collector": {
+      "title": "Important Moments",
+      "description": "Marked 10 memories as important"
+    }
+  },
+  "tags": {
+    "quick": {
+      "restaurant": "Restaurant",
+      "cafe": "Cafe",
+      "hotel": "Hotel",
+      "museum": "Museum",
+      "cityCenter": "City Center",
+      "beach": "Beach",
+      "sea": "Sea",
+      "park": "Park",
+      "shopping": "Shopping",
+      "bar": "Bar",
+      "landmark": "Landmark",
+      "mosque": "Mosque",
+      "ship": "Ship",
+      "temple": "Temple",
+      "market": "Market",
+      "nightlife": "Nightlife",
+      "nature": "Nature",
+      "adventure": "Adventure",
+      "localFood": "Local Food",
+      "streetFood": "Street Food",
+      "viewPoint": "View Point",
+      "historic": "Historic",
+      "art": "Art",
+      "transport": "Transport"
+    }
+  },
+  "dialogs": {
+    "tagPicker": {
+      "title": "Add Tags",
+      "selected": "Selected",
+      "addCustom": "Add Custom Tag",
+      "customPlaceholder": "Type a tag name...",
+      "quickTags": "Quick Tags",
+      "yourTags": "Your Tags"
+    },
+    "locationPicker": {
+      "label": "City",
+      "placeholder": "Select a city",
+      "title": "Select City",
+      "addLocation": "Add City",
+      "locationNamePlaceholder": "City name",
+      "noLocation": "No city (uncategorized)",
+      "fromDate": "From {date}",
+      "untilDate": "Until {date}"
+    },
+    "locationEditor": {
+      "label": "Cities",
+      "empty": "No locations added yet",
+      "addLocation": "Add City",
+      "editTitle": "Edit City",
+      "addTitle": "Add City",
+      "locationNameLabel": "City Name *",
+      "locationNamePlaceholder": "e.g., Rome, Florence",
+      "arrivalDateLabel": "Arrival Date (optional)",
+      "departureDateLabel": "Departure Date (optional)",
+      "notSet": "Not set",
+      "fromDate": "From {date}",
+      "untilDate": "Until {date}",
+      "done": "Done"
+    },
+    "milestoneList": {
+      "createTitle": "New City List",
+      "addItemTitle": "Add City",
+      "addItemPlaceholder": "City name",
+      "addItemButton": "Add City",
+      "adding": "Adding...",
+      "linkChapterTitle": "Link to Trip (Optional)",
+      "noChapterLinked": "No chapter linked"
+    }
+  },
+  "alerts": {
+    "exportFailedTitle": "Export Failed",
+    "exportFailedMessage": "Unable to export data. Please try again.",
+    "importComplete": "Import complete",
+    "importCompletedWithErrors": "Import completed with some issues",
+    "importFailed": "Import failed. Please try again.",
+    "errorTitle": "Error",
+    "requiredTitle": "Required",
+    "invalidDateTitle": "Invalid Date",
+    "permissionTitle": "Permission needed",
+    "deleteEntryTitle": "Delete Memory",
+    "deleteEntryMessage": "Are you sure you want to delete this memory?",
+    "deletePhotoTitle": "Delete Photo",
+    "deletePhotoMessage": "Are you sure you want to delete this photo?",
+    "deleteChapterTitle": "Delete Chapter",
+    "deleteChapterMessage": "Are you sure you want to delete this chapter? This will also delete all memories.",
+    "deleteChapterLegacyTitle": "Delete Chapter",
+    "deleteChapterLegacyMessage": "Are you sure you want to delete this chapter? This will also delete all memories.",
+    "deleteListTitle": "Delete List",
+    "deleteListMessage": "Are you sure you want to delete \"{name}\"? This will also delete all locations in this list.",
+    "deleteItemTitle": "Delete {item}",
+    "deleteItemMessage": "Are you sure you want to delete this {item}?",
+    "deleteEntryFailed": "Failed to delete memory",
+    "deleteMemoryFailed": "Failed to delete memory",
+    "deletePhotoFailed": "Failed to delete photo",
+    "deleteChapterFailed": "Failed to delete chapter",
+    "deleteChapterLegacyFailed": "Failed to delete chapter",
+    "deleteListFailed": "Failed to delete list",
+    "createEntryFailed": "Failed to create entry. Please try again.",
+    "updateEntryFailed": "Failed to update entry. Please try again.",
+    "createChapterFailed": "Failed to create chapter. Please try again.",
+    "updateChapterFailed": "Failed to update chapter. Please try again.",
+    "createChapterLegacyFailed": "Failed to create chapter. Please try again.",
+    "updateChapterLegacyFailed": "Failed to update chapter. Please try again.",
+    "createMilestoneListFailed": "Failed to create city list. Please try again.",
+    "createLocationFailed": "Failed to create city. Please try again.",
+    "addLocationFailed": "Failed to add city",
+    "permissionCameraMessage": "Camera access is required to take photos",
+    "invalidDateMessage": "End date cannot be before start date",
+    "entryDateOutOfRangeTitle": "Date out of range",
+    "entryDateOutOfRangeMessage": "Entry date must be between {start} and {end}.",
+    "requiredEntryTitle": "Please enter a title",
+    "requiredChapterTitle": "Please enter a chapter title",
+    "requiredChapterLegacyTitle": "Please enter a chapter title",
+    "requiredMilestoneItem": "Please add at least one city",
+    "requiredListName": "Please enter a list name",
+    "requiredLocationGroup": "Please enter a country name",
+    "requiredLocationName": "Please enter a city name",
+    "noProfileFound": "No baby profile found. Please create one first.",
+    "nothingToShare": "Nothing to Share",
+    "nothingToShareMessage": "This city has no entries to share yet.",
+    "shareFailed": "Failed to share. Please try again.",
+    "chapterLimitTitle": "Chapter Limit Reached",
+    "chapterLimitMessage": "Free users can create up to {limit} chapters. Upgrade to Pro for unlimited chapters.",
+    "chapterLimitUpgrade": "Upgrade to Pro",
+    "chapterLimitLegacyTitle": "Chapter Limit Reached",
+    "chapterLimitLegacyMessage": "Free users can create up to {limit} chapters. Upgrade to Pro for unlimited chapters.",
+    "chapterLimitLegacyUpgrade": "Upgrade to Pro",
+    "backupReminderTitle": "Back Up Your Memories",
+    "backupReminderMessage": "You've created {count} chapters! Consider exporting your data to keep it safe.",
+    "backupReminderExport": "Export Now",
+    "backupReminderLater": "Later",
+    "proFeatureTitle": "Pro Feature",
+    "proFeatureExport": "Export is a Pro feature. Upgrade to export your data.",
+    "proFeatureAdvancedSearch": "Advanced search filters are a Pro feature.",
+    "proFeatureDarkMode": "Dark mode is a Pro feature. Upgrade to unlock all themes.",
+    "purchasesUnavailableTitle": "Purchases unavailable",
+    "purchasesUnavailableMessage": "Purchases are not available in this build.",
+    "purchasesNotReadyTitle": "Purchases not ready",
+    "purchasesNotReadyMessage": "Please try again in a moment.",
+    "purchasesNotConfiguredTitle": "Purchases unavailable",
+    "purchasesNotConfiguredMessage": "RevenueCat is not configured yet.",
+    "restoreTitle": "Restore",
+    "restoreSuccessMessage": "Your purchases were restored successfully.",
+    "restoreEmptyMessage": "No active subscriptions to restore.",
+    "restoreFailedMessage": "Restore failed. Please try again.",
+    "cameraPermission": "Camera Permission",
+    "cameraPermissionDesc": "Please enable camera access in settings",
+    "maxPhotos": "Max 3 photos",
+    "maxPhotosDesc": "You can add up to 3 photos",
+    "required": "Required"
+  },
+  "limitations": {
+    "title": "Good to Know",
+    "photosNotBundled": "Photos are not included in exports - only references to local files",
+    "noCloudSync": "All data is stored locally on your device only",
+    "freeTextCities": "Milestone list names are free text — duplicates are treated as separate lists",
+    "noAutoBackup": "No automatic backups - remember to export your data regularly"
+  },
+  "onboarding": {
+    "screens": {
+      "photoOverload": {
+        "title": "From camera roll to baby's story",
+        "body": "Baby moments get buried in thousands of photos. Save each one with context so moms and families can find it fast."
+      },
+      "structuredArchive": {
+        "title": "Your baby's story, beautifully organized",
+        "body": "Create chapters for each stage, then add milestones, notes, and photos in one calm timeline."
+      },
+      "fastSearch": {
+        "title": "Find it in seconds",
+        "body": "Search baby memories by title, notes, or tags in seconds."
+      },
+      "bestOfList": {
+        "title": "Save the moments you'll retell forever",
+        "body": "Mark meaningful baby moments and add quick notes so they are never lost."
+      },
+      "noCompetition": {
+        "title": "No feed. No competition.",
+        "body": "No likes, no pressure. Just your baby's memories for your family."
+      },
+      "privateOffline": {
+        "title": "Private and offline-first",
+        "body": "No account required. Your data stays on your device and works even when you’re offline."
+      },
+      "simpleStart": {
+        "title": "Start your first chapter now",
+        "body": "Create a chapter in seconds and add your baby's first memory. You can build details over time."
+      }
+    },
+    "createFirstTrip": "Create your baby's first chapter",
+    "next": "Next",
+    "skip": "Skip",
+    "back": "Back"
+  },
+  "shareContent": {
+    "locationLabel": "Location",
+    "summaryLabel": "Summary",
+    "noEntries": "No entries",
+    "otherEntries": "Other Entries",
+    "sharedFrom": "Shared from BabyLegacy",
+    "chapterHighlights": "Chapter Highlights",
+    "locations": "Locations",
+    "milestones": "Milestones",
+    "moments": "Notes",
+    "moreItems": "+ {count} more",
+    "fromTrip": "From chapter",
+    "milestonesSection": "MILESTONES",
+    "otherPlaces": "OTHER MILESTONES",
+    "memoriesSection": "NOTES",
+    "myRecommendations": "My Highlights",
+    "from": "From",
+    "other": "Other"
+  },
+  "buttons": {
+    "save": "Save Memory"
+  }
+}

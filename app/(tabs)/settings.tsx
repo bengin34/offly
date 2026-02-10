@@ -19,7 +19,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import { useRouter, useFocusEffect } from 'expo-router';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
+import { spacing, fontSize, borderRadius, fonts, lightPaletteColors, paletteMetadata } from '../../src/constants';
 import { Background } from '../../src/components/Background';
 import { DialogHeader } from '../../src/components/DialogHeader';
 import { ProUpgradeBanner } from '../../src/components/ProUpgradeBanner';
@@ -32,13 +32,15 @@ import { exportToJson } from '../../src/utils/export';
 import { BabyProfileRepository, VaultRepository, ChapterRepository, MemoryRepository } from '../../src/db/repositories';
 import { useBackupStore } from '../../src/stores/backupStore';
 import type { BabyProfile } from '../../src/types';
+import type { ThemePalette } from '../../src/constants/colors';
 
 export default function SettingsScreen() {
   const theme = useTheme();
   const router = useRouter();
-  const { mode, setMode } = useThemeMode();
+  const { mode, setMode, palette, setPalette } = useThemeMode();
   const { t, locale, setLocale } = useI18n();
   const [showThemeModal, setShowThemeModal] = useState(false);
+  const [showPaletteModal, setShowPaletteModal] = useState(false);
   const [showLanguageModal, setShowLanguageModal] = useState(false);
   const [showDataModal, setShowDataModal] = useState(false);
   const [showModeSwitchModal, setShowModeSwitchModal] = useState(false);
@@ -146,6 +148,18 @@ export default function SettingsScreen() {
   const currentThemeLabel =
     themeOptions.find((o) => o.mode === mode)?.label || themeOptions[0]?.label;
 
+  const paletteOptions: {
+    palette: ThemePalette;
+    label: string;
+    description: string;
+    icon: keyof typeof Ionicons.glyphMap;
+  }[] = (Object.keys(paletteMetadata) as ThemePalette[]).map((value) => ({
+    palette: value,
+    ...paletteMetadata[value],
+  }));
+
+  const currentPaletteLabel = paletteMetadata[palette]?.label ?? paletteMetadata.blush.label;
+
   const languageOptions: { locale: Locale; label: string }[] = [
     { locale: 'en', label: getLocaleLabel('en') },
     { locale: 'de', label: getLocaleLabel('de') },
@@ -160,6 +174,11 @@ export default function SettingsScreen() {
   const handleSelectTheme = (newMode: ThemeMode) => {
     setMode(newMode);
     setShowThemeModal(false);
+  };
+
+  const handleSelectPalette = (newPalette: ThemePalette) => {
+    setPalette(newPalette);
+    setShowPaletteModal(false);
   };
 
   const handleSelectLanguage = (newLocale: Locale) => {
@@ -367,6 +386,20 @@ export default function SettingsScreen() {
               </View>
               <View style={styles.settingsRowRight}>
                 <Text style={styles.settingsRowValue}>{currentThemeLabel}</Text>
+                <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
+              </View>
+            </TouchableOpacity>
+            <View style={styles.settingsDivider} />
+            <TouchableOpacity
+              style={styles.settingsRow}
+              onPress={() => setShowPaletteModal(true)}
+            >
+              <View style={styles.settingsRowLeft}>
+                <Ionicons name="color-wand-outline" size={22} color={theme.textSecondary} />
+                <Text style={styles.settingsRowLabel}>Color Theme</Text>
+              </View>
+              <View style={styles.settingsRowRight}>
+                <Text style={styles.settingsRowValue}>{currentPaletteLabel}</Text>
                 <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
               </View>
             </TouchableOpacity>
@@ -617,6 +650,77 @@ export default function SettingsScreen() {
                 )}
               </TouchableOpacity>
             ))}
+          </View>
+        </Pressable>
+      </Modal>
+
+      {/* Palette Selection Modal */}
+      <Modal
+        visible={showPaletteModal}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowPaletteModal(false)}
+      >
+        <Pressable style={styles.modalOverlay} onPress={() => setShowPaletteModal(false)}>
+          <View style={styles.modalContent}>
+            <DialogHeader
+              title="Choose Color Theme"
+              onClose={() => setShowPaletteModal(false)}
+              actionLabel={t('common.done')}
+              onAction={() => setShowPaletteModal(false)}
+              palette={{
+                text: theme.text,
+                textSecondary: theme.textSecondary,
+                textMuted: theme.textMuted,
+                primary: theme.primary,
+                border: theme.border,
+              }}
+              containerStyle={styles.modalHeader}
+            />
+            {paletteOptions.map((option) => {
+              const preview = lightPaletteColors[option.palette];
+              const isActive = palette === option.palette;
+
+              return (
+                <TouchableOpacity
+                  key={option.palette}
+                  style={[
+                    styles.modalOption,
+                    isActive && styles.modalOptionActive,
+                  ]}
+                  onPress={() => handleSelectPalette(option.palette)}
+                >
+                  <View style={styles.paletteOptionLeft}>
+                    <Ionicons
+                      name={option.icon}
+                      size={22}
+                      color={isActive ? theme.primary : theme.textSecondary}
+                    />
+                    <View>
+                      <Text
+                        style={[
+                          styles.modalOptionText,
+                          isActive && styles.modalOptionTextActive,
+                        ]}
+                      >
+                        {option.label}
+                      </Text>
+                      <Text style={styles.paletteDescription}>{option.description}</Text>
+                    </View>
+                  </View>
+                  <View style={styles.paletteOptionRight}>
+                    <View style={styles.palettePreview}>
+                      <View style={[styles.paletteDot, { backgroundColor: preview.primary }]} />
+                      <View style={[styles.paletteDot, { backgroundColor: preview.accent }]} />
+                      <View style={[styles.paletteDot, { backgroundColor: preview.milestone }]} />
+                    </View>
+                    {isActive && (
+                      <Ionicons name="checkmark" size={22} color={theme.primary} />
+                    )}
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
           </View>
         </Pressable>
       </Modal>
@@ -1013,6 +1117,35 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       flexDirection: 'row',
       alignItems: 'center',
       gap: spacing.md,
+    },
+    paletteOptionLeft: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.md,
+      flex: 1,
+    },
+    paletteOptionRight: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.sm,
+    },
+    paletteDescription: {
+      fontSize: fontSize.xs,
+      fontFamily: fonts.body,
+      color: theme.textSecondary,
+      marginTop: 2,
+    },
+    palettePreview: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+    },
+    paletteDot: {
+      width: 10,
+      height: 10,
+      borderRadius: 5,
+      borderWidth: 1,
+      borderColor: theme.borderLight,
     },
     modalOptionText: {
       fontSize: fontSize.md,

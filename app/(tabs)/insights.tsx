@@ -144,7 +144,7 @@ export default function InsightsScreen() {
         </View>
 
         {/* Additional Stats */}
-        {stats && (stats.firstMemoryDate || stats.importantMemories) && (
+        {stats != null && (stats.firstMemoryDate != null || stats.importantMemories > 0) && (
           <View style={styles.section}>
             <View style={styles.highlightCard}>
               {stats.firstMemoryDate && (

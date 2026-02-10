@@ -20,9 +20,8 @@ import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
 import { Background } from '../../src/components/Background';
 import { ModalWrapper } from '../../src/components/ModalWrapper';
 import { TagPickerDialog } from '../../src/components/TagPickerDialog';
-import { LocationInput } from '../../src/components/LocationInput';
 import { useI18n, useTheme, usePaywallTrigger } from '../../src/hooks';
-import type { MemoryType, Tag, ParsedLocation } from '../../src/types';
+import type { MemoryType, Tag } from '../../src/types';
 
 export default function NewMemoryScreen() {
   const { chapterId } = useLocalSearchParams<{ chapterId: string }>();
@@ -34,24 +33,12 @@ export default function NewMemoryScreen() {
   const [memoryType, setMemoryType] = useState<MemoryType>('milestone');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [importance, setImportance] = useState(0);
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [photos, setPhotos] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [showTagPicker, setShowTagPicker] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [locationName, setLocationName] = useState<string | undefined>();
-  const [latitude, setLatitude] = useState<number | undefined>();
-  const [longitude, setLongitude] = useState<number | undefined>();
-  const [mapUrl, setMapUrl] = useState<string | undefined>();
-
-  const handleLocationChange = (location: ParsedLocation | null) => {
-    setLocationName(location?.name);
-    setLatitude(location?.latitude);
-    setLongitude(location?.longitude);
-    setMapUrl(location?.originalUrl);
-  };
 
   const formatDate = (d: Date) => {
     try {
@@ -124,10 +111,6 @@ export default function NewMemoryScreen() {
     setSelectedTags(selectedTags.filter((tag) => tag.id !== tagId));
   };
 
-  const handleImportancePress = (star: number) => {
-    // Tap same star to clear
-    setImportance(importance === star ? 0 : star);
-  };
 
   const handleSave = async () => {
     if (!title.trim()) {
@@ -142,14 +125,9 @@ export default function NewMemoryScreen() {
         memoryType,
         title: title.trim(),
         description: description.trim() || undefined,
-        importance: importance > 0 ? importance : undefined,
         date: date.toISOString(),
         tagIds: selectedTags.map((tag) => tag.id),
         photoUris: photos,
-        locationName,
-        latitude,
-        longitude,
-        mapUrl,
       });
 
       // Track memory creation (with photos) and check for paywall trigger
@@ -195,7 +173,7 @@ export default function NewMemoryScreen() {
                 <Ionicons
                   name="flag"
                   size={20}
-                  color={memoryType === 'milestone' ? theme.white : theme.place}
+                  color={memoryType === 'milestone' ? theme.white : theme.milestone}
                 />
                 <Text style={[styles.typeButtonText, memoryType === 'milestone' && styles.typeButtonTextActive]}>
                   {t('memoryForm.milestone') || 'Milestone'}
@@ -208,7 +186,7 @@ export default function NewMemoryScreen() {
                 <Ionicons
                   name="document-text"
                   size={20}
-                  color={memoryType === 'note' ? theme.white : theme.moment}
+                  color={memoryType === 'note' ? theme.white : theme.memory}
                 />
                 <Text style={[styles.typeButtonText, memoryType === 'note' && styles.typeButtonTextActive]}>
                   {t('memoryForm.note') || 'Note'}
@@ -232,16 +210,46 @@ export default function NewMemoryScreen() {
               />
             </View>
 
+            {/* Photos - moved right after title */}
             <View style={styles.field}>
-              <Text style={styles.label}>{(t('memoryForm.locationLabel') || t('entryForm.locationLabel')).toLocaleUpperCase(locale)}</Text>
-              <LocationInput
-                locationName={locationName}
-                latitude={latitude}
-                longitude={longitude}
-                mapUrl={mapUrl}
-                onLocationChange={handleLocationChange}
-              />
+              <Text style={styles.label}>
+                {t('entryForm.photosLabel', { count: photos.length, max: 10 }).toLocaleUpperCase(locale)}
+              </Text>
+              <View style={styles.photoButtons}>
+                <TouchableOpacity style={styles.photoButton} onPress={handlePickImage}>
+                  <Ionicons name="images-outline" size={24} color={theme.accent} />
+                  <Text style={styles.photoButtonText}>{t('entryForm.gallery') || 'Gallery'}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.photoButton} onPress={handleTakePhoto}>
+                  <Ionicons name="camera-outline" size={24} color={theme.accent} />
+                  <Text style={styles.photoButtonText}>{t('entryForm.camera') || 'Camera'}</Text>
+                </TouchableOpacity>
+              </View>
+              {photos.length > 0 && (
+                <ScrollView
+                  horizontal
+                  style={styles.photoPreview}
+                  contentContainerStyle={styles.photoPreviewContent}
+                  showsHorizontalScrollIndicator={false}
+                >
+                  {photos.map((uri, index) => (
+                    <View
+                      key={index}
+                      style={[
+                        styles.photoContainer,
+                        index === photos.length - 1 && styles.photoContainerLast,
+                      ]}
+                    >
+                      <Image source={{ uri }} style={styles.photo} />
+                      <TouchableOpacity style={styles.removePhotoButton} onPress={() => handleRemovePhoto(index)}>
+                        <Ionicons name="close-circle" size={24} color={theme.error} />
+                      </TouchableOpacity>
+                    </View>
+                  ))}
+                </ScrollView>
+              )}
             </View>
+
 
             <View style={styles.field}>
               <Text style={styles.label}>{t('labels.date').toLocaleUpperCase(locale)}</Text>
@@ -271,37 +279,13 @@ export default function NewMemoryScreen() {
                     onPress={confirmIOSDate}
                   >
                     <Text style={[styles.datePickerDoneText, { color: theme.primary }]}>
-                      {t('dialogs.cityEditor.done') || 'Done'}
+                      {t('dialogs.locationEditor.done') || 'Done'}
                     </Text>
                   </TouchableOpacity>
                 )}
               </View>
             )}
 
-            {/* Importance (1-5 stars, optional) */}
-            <View style={styles.field}>
-              <Text style={styles.label}>{(t('memoryForm.importanceLabel') || 'IMPORTANCE').toLocaleUpperCase(locale)}</Text>
-              <View style={styles.importanceRow}>
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <TouchableOpacity
-                    key={star}
-                    onPress={() => handleImportancePress(star)}
-                    hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}
-                  >
-                    <Ionicons
-                      name={star <= importance ? 'star' : 'star-outline'}
-                      size={28}
-                      color={star <= importance ? theme.primary : theme.textMuted}
-                    />
-                  </TouchableOpacity>
-                ))}
-                {importance > 0 && (
-                  <TouchableOpacity onPress={() => setImportance(0)} style={styles.clearImportance}>
-                    <Ionicons name="close-circle-outline" size={20} color={theme.textMuted} />
-                  </TouchableOpacity>
-                )}
-              </View>
-            </View>
 
             <View style={styles.field}>
               <Text style={styles.label}>{(t('memoryForm.descriptionLabel') || t('entryForm.notesLabel')).toLocaleUpperCase(locale)}</Text>
@@ -370,46 +354,6 @@ export default function NewMemoryScreen() {
               selectedTags={selectedTags}
               onTagsChange={setSelectedTags}
             />
-
-            {/* Photos */}
-            <View style={styles.field}>
-              <Text style={styles.label}>
-                {t('entryForm.photosLabel', { count: photos.length, max: 10 }).toLocaleUpperCase(locale)}
-              </Text>
-              <View style={styles.photoButtons}>
-                <TouchableOpacity style={styles.photoButton} onPress={handlePickImage}>
-                  <Ionicons name="images-outline" size={24} color={theme.accent} />
-                  <Text style={styles.photoButtonText}>{t('entryForm.gallery') || 'Gallery'}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.photoButton} onPress={handleTakePhoto}>
-                  <Ionicons name="camera-outline" size={24} color={theme.accent} />
-                  <Text style={styles.photoButtonText}>{t('entryForm.camera') || 'Camera'}</Text>
-                </TouchableOpacity>
-              </View>
-            {photos.length > 0 && (
-              <ScrollView
-                horizontal
-                style={styles.photoPreview}
-                contentContainerStyle={styles.photoPreviewContent}
-                showsHorizontalScrollIndicator={false}
-              >
-                {photos.map((uri, index) => (
-                  <View
-                    key={index}
-                    style={[
-                      styles.photoContainer,
-                      index === photos.length - 1 && styles.photoContainerLast,
-                    ]}
-                  >
-                    <Image source={{ uri }} style={styles.photo} />
-                    <TouchableOpacity style={styles.removePhotoButton} onPress={() => handleRemovePhoto(index)}>
-                      <Ionicons name="close-circle" size={24} color={theme.error} />
-                    </TouchableOpacity>
-                  </View>
-                ))}
-              </ScrollView>
-            )}
-          </View>
         </View>
       </ModalWrapper>
     </View>
@@ -452,10 +396,10 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       backgroundColor: theme.backgroundSecondary,
     },
     typeButtonActiveMilestone: {
-      backgroundColor: theme.place,
+      backgroundColor: theme.milestone,
     },
     typeButtonActiveNote: {
-      backgroundColor: theme.moment,
+      backgroundColor: theme.memory,
     },
     typeButtonText: {
       fontSize: fontSize.md,
@@ -535,19 +479,6 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
     datePickerDoneText: {
       fontSize: fontSize.md,
       fontFamily: fonts.ui,
-    },
-    importanceRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: spacing.sm,
-      backgroundColor: theme.card,
-      borderRadius: borderRadius.lg,
-      padding: spacing.md,
-      borderWidth: 1,
-      borderColor: theme.borderLight,
-    },
-    clearImportance: {
-      marginLeft: spacing.sm,
     },
     tagInputContainer: {
       flexDirection: 'row',

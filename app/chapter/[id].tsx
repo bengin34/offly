@@ -14,13 +14,27 @@ import {
 import { useLocalSearchParams, useRouter, useFocusEffect, Stack } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ChapterRepository, MemoryRepository } from '../../src/db/repositories';
+import * as ImagePicker from 'expo-image-picker';
+import {
+  ChapterRepository,
+  MemoryRepository,
+  MilestoneRepository,
+} from '../../src/db/repositories';
 import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
+import { getChapterPlaceholder } from '../../src/constants/chapterTemplates';
+import { persistPhoto } from '../../src/utils/photos';
 import { Background } from '../../src/components/Background';
 import { PageTitle, HEADER_ACTIONS_WIDTH } from '../../src/components/PageTitle';
 import { SwipeableRow } from '../../src/components/SwipeableRow';
+import { MilestoneTimeline } from '../../src/components/MilestoneTimeline';
+import { MilestoneQuickAddModal } from '../../src/components/MilestoneQuickAddModal';
 import { useI18n, useTheme, ThemeColors } from '../../src/hooks';
-import type { ChapterWithTags, MemoryWithRelations, Tag } from '../../src/types';
+import type {
+  ChapterWithTags,
+  MemoryWithRelations,
+  Tag,
+  MilestoneInstanceWithTemplate,
+} from '../../src/types';
 
 export default function ChapterDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -31,19 +45,25 @@ export default function ChapterDetailScreen() {
   const styles = useMemo(() => createStyles(theme), [theme]);
   const [chapter, setChapter] = useState<ChapterWithTags | null>(null);
   const [memories, setMemories] = useState<MemoryWithRelations[]>([]);
+  const [milestones, setMilestones] = useState<MilestoneInstanceWithTemplate[]>([]);
+  const [activeTab, setActiveTab] = useState<'memories' | 'milestones'>('memories');
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [actionMenuVisible, setActionMenuVisible] = useState(false);
+  const [quickAddMilestone, setQuickAddMilestone] = useState<MilestoneInstanceWithTemplate | null>(null);
+  const [quickAddVisible, setQuickAddVisible] = useState(false);
 
   const loadData = useCallback(async () => {
     if (!id) return;
     try {
-      const [chapterData, memoriesData] = await Promise.all([
+      const [chapterData, memoriesData, milestoneData] = await Promise.all([
         ChapterRepository.getWithTags(id),
         MemoryRepository.getByChapterIdWithRelations(id),
+        MilestoneRepository.getByChapterIdWithRelations(id),
       ]);
       setChapter(chapterData);
       setMemories(memoriesData);
+      setMilestones(milestoneData);
     } catch (error) {
       console.error('Failed to load chapter:', error);
     } finally {
@@ -63,29 +83,6 @@ export default function ChapterDetailScreen() {
     loadData();
   };
 
-  const handleDelete = () => {
-    Alert.alert(
-      t('alerts.deleteChapterTitle'),
-      t('alerts.deleteChapterMessage'),
-      [
-        { text: t('common.cancel'), style: 'cancel' },
-        {
-          text: t('common.delete'),
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              await ChapterRepository.delete(id!);
-              router.back();
-            } catch (error) {
-              console.error('Failed to delete chapter:', error);
-              Alert.alert(t('alerts.errorTitle'), t('alerts.deleteChapterFailed'));
-            }
-          },
-        },
-      ]
-    );
-  };
-
   const openActionMenu = () => {
     setActionMenuVisible(true);
   };
@@ -99,9 +96,27 @@ export default function ChapterDetailScreen() {
     router.push(`/chapter/edit/${id}`);
   };
 
-  const handleDeleteChapter = () => {
+  const handleSetCoverPhoto = async () => {
     closeActionMenu();
-    handleDelete();
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsEditing: false,
+        quality: 0.5,
+      });
+      if (result.canceled || !result.assets?.[0]) return;
+
+      const selectedUri = result.assets[0].uri;
+      // Show the new cover immediately for better perceived performance.
+      setChapter((prev) => (prev ? { ...prev, coverImageUri: selectedUri } : prev));
+
+      const persistedUri = await persistPhoto(selectedUri);
+      await ChapterRepository.update({ id: id!, coverImageUri: persistedUri });
+      setChapter((prev) => (prev ? { ...prev, coverImageUri: persistedUri } : prev));
+    } catch (error) {
+      console.error('Failed to set cover photo:', error);
+      loadData();
+    }
   };
 
   const handleDeleteMemory = async (memoryId: string) => {
@@ -112,6 +127,81 @@ export default function ChapterDetailScreen() {
       console.error('Failed to delete memory:', error);
       Alert.alert(t('alerts.errorTitle'), t('alerts.deleteMemoryFailed'));
     }
+  };
+
+  const handleMilestoneAdd = (milestone: MilestoneInstanceWithTemplate) => {
+    setQuickAddMilestone(milestone);
+    setQuickAddVisible(true);
+  };
+
+  const handleMilestoneQuickSave = async (data: {
+    title: string;
+    date: Date;
+    description?: string;
+    photoUris: string[];
+  }) => {
+    if (!quickAddMilestone || !id) return;
+
+    try {
+      const memory = await MemoryRepository.create({
+        chapterId: id,
+        isPregnancyJournal: false,
+        memoryType: 'milestone',
+        title: data.title,
+        description: data.description,
+        date: data.date.toISOString(),
+        photoUris: data.photoUris,
+        milestoneTemplateId: quickAddMilestone.milestoneTemplateId,
+        isCustomMilestone: false,
+      });
+
+      // Link memory to milestone instance
+      await MilestoneRepository.linkMemory(quickAddMilestone.id, memory.id);
+
+      setQuickAddVisible(false);
+      setQuickAddMilestone(null);
+      loadData();
+    } catch (error) {
+      console.error('Failed to save milestone memory:', error);
+      Alert.alert(t('alerts.errorTitle') || 'Error', 'Failed to save milestone memory');
+    }
+  };
+
+  const handleMilestoneView = (milestone: MilestoneInstanceWithTemplate) => {
+    if (milestone.associatedMemory) {
+      router.push(`/memory/${milestone.associatedMemory.id}`);
+    }
+  };
+
+  const handleMilestoneEdit = (milestone: MilestoneInstanceWithTemplate) => {
+    if (milestone.associatedMemory) {
+      router.push(`/memory/edit/${milestone.associatedMemory.id}`);
+    }
+  };
+
+  const handleMilestoneDelete = (milestone: MilestoneInstanceWithTemplate) => {
+    if (!milestone.associatedMemory) return;
+    Alert.alert(
+      'Delete Milestone Memory',
+      'This will remove the memory but keep the milestone for later.',
+      [
+        { text: t('common.cancel'), style: 'cancel' },
+        {
+          text: t('common.delete'),
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await MilestoneRepository.unlinkMemory(milestone.id);
+              await MemoryRepository.delete(milestone.associatedMemory!.id);
+              loadData();
+            } catch (error) {
+              console.error('Failed to delete milestone memory:', error);
+              Alert.alert(t('alerts.errorTitle'), t('alerts.deleteMemoryFailed'));
+            }
+          },
+        },
+      ]
+    );
   };
 
   const formatDatePart = useCallback(
@@ -280,45 +370,116 @@ export default function ChapterDetailScreen() {
     </View>
   );
 
+  const placeholder = chapter ? getChapterPlaceholder(chapter.title) : null;
+
   const renderHeader = () => {
-    if (!chapter) return null;
+    if (!chapter || !placeholder) return null;
     const hasEndDate = Boolean(chapter.endDate);
     return (
       <View style={styles.header}>
-        <View style={styles.headerRow}>
-          <View style={styles.headerDatesPill}>
-            <Ionicons name="calendar-outline" size={12} color={theme.textMuted} />
-            <Text style={styles.headerDates}>
-              {formatDatePart(new Date(chapter.startDate), { month: 'short', day: 'numeric' })}
-              {hasEndDate && (
-                <Text>
-                  {' - '}
-                  {formatDatePart(new Date(chapter.endDate!), {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric',
-                  })}
-                </Text>
-              )}
-            </Text>
-          </View>
-        </View>
-        {chapter.description && <Text style={styles.headerDescription}>{chapter.description}</Text>}
-        {chapter.tags && chapter.tags.length > 0 && (
-          <View style={styles.headerTags}>
-            {chapter.tags.map((tag: Tag) => (
-              <View key={tag.id} style={styles.headerTag}>
-                <Ionicons name="pricetag" size={10} color={theme.accent} />
-                <Text style={styles.headerTagText}>{tag.name}</Text>
+        {/* Cover image or placeholder */}
+        <TouchableOpacity onPress={handleSetCoverPhoto} activeOpacity={0.8}>
+          {chapter.coverImageUri ? (
+            <View style={styles.coverImageContainer}>
+              <Image source={{ uri: chapter.coverImageUri }} style={styles.coverImage} />
+              <View style={styles.coverImageOverlay}>
+                <Ionicons name="camera-outline" size={16} color="#fff" />
               </View>
-            ))}
+            </View>
+          ) : (
+            <View
+              style={[
+                styles.coverPlaceholder,
+                { backgroundColor: placeholder.bgColor + '25' },
+              ]}
+            >
+              <Ionicons name={placeholder.icon as any} size={44} color={placeholder.bgColor} />
+              <View style={styles.coverPlaceholderHint}>
+                <Ionicons name="camera-outline" size={14} color={placeholder.bgColor} />
+                <Text style={[styles.coverPlaceholderText, { color: placeholder.bgColor }]}>
+                  Add cover photo
+                </Text>
+              </View>
+            </View>
+          )}
+        </TouchableOpacity>
+
+        <View style={styles.headerContent}>
+          <View style={styles.headerRow}>
+            <View style={styles.headerDatesPill}>
+              <Ionicons name="calendar-outline" size={12} color={theme.textMuted} />
+              <Text style={styles.headerDates}>
+                {formatDatePart(new Date(chapter.startDate), { month: 'short', day: 'numeric' })}
+                {hasEndDate && (
+                  <Text>
+                    {' - '}
+                    {formatDatePart(new Date(chapter.endDate!), {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })}
+                  </Text>
+                )}
+              </Text>
+            </View>
           </View>
-        )}
+          {chapter.description && <Text style={styles.headerDescription}>{chapter.description}</Text>}
+          {chapter.tags && chapter.tags.length > 0 && (
+            <View style={styles.headerTags}>
+              {chapter.tags.map((tag: Tag) => (
+                <View key={tag.id} style={styles.headerTag}>
+                  <Ionicons name="pricetag" size={10} color={theme.accent} />
+                  <Text style={styles.headerTagText}>{tag.name}</Text>
+                </View>
+              ))}
+            </View>
+          )}
+        </View>
       </View>
     );
   };
 
   const groupedMemories = groupEntriesByDate(memories);
+
+  const renderTabBar = () => (
+    <View style={styles.tabBar}>
+      <TouchableOpacity
+        style={[styles.tab, activeTab === 'memories' && styles.tabActive]}
+        onPress={() => setActiveTab('memories')}
+        activeOpacity={0.7}
+      >
+        <Ionicons
+          name="bookmark-outline"
+          size={18}
+          color={activeTab === 'memories' ? theme.primary : theme.textMuted}
+        />
+        <Text style={[styles.tabText, activeTab === 'memories' && styles.tabTextActive]}>
+          Memories
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.tab, activeTab === 'milestones' && styles.tabActive]}
+        onPress={() => setActiveTab('milestones')}
+        activeOpacity={0.7}
+      >
+        <Ionicons
+          name="star-outline"
+          size={18}
+          color={activeTab === 'milestones' ? theme.primary : theme.textMuted}
+        />
+        <Text style={[styles.tabText, activeTab === 'milestones' && styles.tabTextActive]}>
+          Milestones
+        </Text>
+        {milestones.filter((m) => m.status === 'pending').length > 0 && (
+          <View style={styles.tabBadge}>
+            <Text style={styles.tabBadgeText}>
+              {milestones.filter((m) => m.status === 'pending').length}
+            </Text>
+          </View>
+        )}
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <>
@@ -345,22 +506,61 @@ export default function ChapterDetailScreen() {
       />
       <View style={styles.container}>
         <Background />
-        <FlatList
-          data={groupedMemories}
-          keyExtractor={([date]) => date}
-          renderItem={renderDateGroup}
-          ListHeaderComponent={renderHeader}
-          ListEmptyComponent={!isLoading ? renderEmpty : null}
-          contentContainerStyle={memories.length === 0 ? styles.emptyList : styles.list}
-          refreshControl={
-            <RefreshControl
-              refreshing={isRefreshing}
-              onRefresh={handleRefresh}
-              tintColor={theme.primary}
-            />
-          }
-        />
-        {memories.length > 0 && (
+        {activeTab === 'memories' ? (
+          <FlatList
+            data={groupedMemories}
+            keyExtractor={([date]) => date}
+            renderItem={renderDateGroup}
+            ListHeaderComponent={() => (
+              <>
+                {renderHeader()}
+                {renderTabBar()}
+              </>
+            )}
+            ListEmptyComponent={!isLoading ? renderEmpty : null}
+            contentContainerStyle={memories.length === 0 ? styles.emptyList : styles.list}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={handleRefresh}
+                tintColor={theme.primary}
+              />
+            }
+          />
+        ) : (
+          <FlatList
+            data={[]}
+            keyExtractor={() => 'milestones'}
+            renderItem={() => null}
+            ListHeaderComponent={() => (
+              <>
+                {renderHeader()}
+                {renderTabBar()}
+              </>
+            )}
+            ListFooterComponent={() => (
+              <MilestoneTimeline
+                milestones={milestones}
+                isLoading={isLoading}
+                onRefresh={async () => { await loadData(); }}
+                onAddMemory={handleMilestoneAdd}
+                onViewMemory={handleMilestoneView}
+                onEditMemory={handleMilestoneEdit}
+                onDeleteMemory={handleMilestoneDelete}
+                locale={locale}
+              />
+            )}
+            contentContainerStyle={styles.list}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={handleRefresh}
+                tintColor={theme.primary}
+              />
+            }
+          />
+        )}
+        {activeTab === 'memories' && memories.length > 0 && (
           <TouchableOpacity
             style={styles.fab}
             onPress={() => router.push({ pathname: '/memory/new', params: { chapterId: id } })}
@@ -369,6 +569,13 @@ export default function ChapterDetailScreen() {
           </TouchableOpacity>
         )}
       </View>
+      <MilestoneQuickAddModal
+        visible={quickAddVisible}
+        milestone={quickAddMilestone}
+        onClose={() => { setQuickAddVisible(false); setQuickAddMilestone(null); }}
+        onSave={handleMilestoneQuickSave}
+        locale={locale}
+      />
       <Modal
         visible={actionMenuVisible}
         transparent
@@ -391,12 +598,6 @@ export default function ChapterDetailScreen() {
             <TouchableOpacity style={styles.actionItem} onPress={handleEditChapter}>
               <Ionicons name="pencil" size={18} color={theme.text} />
               <Text style={styles.actionText}>{t('navigation.editChapter')}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.actionItem} onPress={handleDeleteChapter}>
-              <Ionicons name="trash-outline" size={18} color={theme.error} />
-              <Text style={[styles.actionText, styles.actionTextDestructive]}>
-                {t('common.delete')}
-              </Text>
             </TouchableOpacity>
           </Pressable>
         </Pressable>
@@ -424,7 +625,6 @@ const createStyles = (theme: ThemeColors) =>
     },
     header: {
       backgroundColor: theme.card,
-      padding: spacing.lg,
       borderRadius: borderRadius.xl,
       marginBottom: spacing.md,
       borderWidth: 1,
@@ -434,6 +634,46 @@ const createStyles = (theme: ThemeColors) =>
       shadowOpacity: 0.1,
       shadowRadius: 12,
       elevation: 2,
+      overflow: 'hidden',
+    },
+    coverImageContainer: {
+      position: 'relative',
+    },
+    coverImage: {
+      width: '100%',
+      height: 180,
+      resizeMode: 'cover',
+    },
+    coverImageOverlay: {
+      position: 'absolute',
+      bottom: spacing.sm,
+      right: spacing.sm,
+      width: 32,
+      height: 32,
+      borderRadius: 16,
+      backgroundColor: 'rgba(0,0,0,0.45)',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    coverPlaceholder: {
+      width: '100%',
+      height: 150,
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: spacing.xs,
+    },
+    coverPlaceholderHint: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+      marginTop: spacing.xs,
+    },
+    coverPlaceholderText: {
+      fontSize: fontSize.sm,
+      fontFamily: fonts.ui,
+    },
+    headerContent: {
+      padding: spacing.lg,
     },
     headerRow: {
       flexDirection: 'row',
@@ -769,7 +1009,50 @@ const createStyles = (theme: ThemeColors) =>
       fontFamily: fonts.ui,
       color: theme.text,
     },
-    actionTextDestructive: {
-      color: theme.error,
+    tabBar: {
+      flexDirection: 'row',
+      backgroundColor: theme.card,
+      borderRadius: borderRadius.xl,
+      borderWidth: 1,
+      borderColor: theme.borderLight,
+      marginBottom: spacing.md,
+      padding: spacing.xs,
+      gap: spacing.xs,
+    },
+    tab: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: spacing.sm,
+      paddingVertical: spacing.sm,
+      borderRadius: borderRadius.lg,
+    },
+    tabActive: {
+      backgroundColor: theme.primary + '15',
+    },
+    tabText: {
+      fontSize: fontSize.sm,
+      fontFamily: fonts.ui,
+      fontWeight: '600',
+      color: theme.textMuted,
+    },
+    tabTextActive: {
+      color: theme.primary,
+    },
+    tabBadge: {
+      backgroundColor: theme.primary,
+      borderRadius: 10,
+      minWidth: 20,
+      height: 20,
+      paddingHorizontal: 6,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    tabBadgeText: {
+      fontSize: fontSize.xs,
+      fontFamily: fonts.ui,
+      fontWeight: '700',
+      color: theme.white,
     },
   });

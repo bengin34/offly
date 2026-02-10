@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "BabyLegacy",
-    "slug": "BabyLegacy",
+    "name": "Offly",
+    "slug": "Offly",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,7 +14,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.babylegacy.app",
+      "bundleIdentifier": "com.offly.baby.photo.vault",
       "usesAppleSignIn": false,
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false

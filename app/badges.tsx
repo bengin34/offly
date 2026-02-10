@@ -211,12 +211,12 @@ export default function AllBadgesScreen() {
       >
         {renderSection(t('badges.special'), specialBadges)}
         {renderSection(t('badges.firstSteps'), firstBadges)}
-        {renderSection(t('badges.tripMilestones'), tripBadges)}
-        {renderSection(t('badges.placeMilestones'), placeBadges)}
+        {renderSection(t('badges.chapterMilestones'), tripBadges)}
+        {renderSection(t('badges.milestoneAchievements'), placeBadges)}
         {renderSection(t('badges.entryMilestones'), entryBadges)}
-        {renderSection(t('badges.countryMilestones'), countryBadges)}
+        {renderSection(t('badges.consistencyMilestones'), countryBadges)}
         {renderSection(t('badges.photoMilestones'), photoBadges)}
-        {renderSection(t('badges.cityMilestones'), cityBadges)}
+        {renderSection(t('badges.tagMilestones'), cityBadges)}
         {renderSection(t('badges.tagAdventures'), tagBadges)}
       </ScrollView>
 

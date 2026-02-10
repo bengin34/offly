@@ -1,5 +1,5 @@
 import { useColorScheme } from 'react-native';
-import { lightColors, darkColors, ColorScheme } from '../constants/colors';
+import { getPaletteColors, ColorScheme, ThemePalette } from '../constants/colors';
 import { useThemeStore, ThemeMode } from '../stores/themeStore';
 
 export interface ThemeColors extends ColorScheme {
@@ -8,12 +8,12 @@ export interface ThemeColors extends ColorScheme {
 
 export function useTheme(): ThemeColors {
   const systemColorScheme = useColorScheme();
-  const { mode } = useThemeStore();
+  const { mode, palette } = useThemeStore();
 
   const isDark =
     mode === 'dark' || (mode === 'system' && systemColorScheme === 'dark');
 
-  const colors = isDark ? darkColors : lightColors;
+  const colors = getPaletteColors(palette, isDark);
 
   return {
     ...colors,
@@ -24,13 +24,15 @@ export function useTheme(): ThemeColors {
 export function useThemeMode(): {
   mode: ThemeMode;
   setMode: (mode: ThemeMode) => void;
+  palette: ThemePalette;
+  setPalette: (palette: ThemePalette) => void;
   isDark: boolean;
 } {
   const systemColorScheme = useColorScheme();
-  const { mode, setMode } = useThemeStore();
+  const { mode, setMode, palette, setPalette } = useThemeStore();
 
   const isDark =
     mode === 'dark' || (mode === 'system' && systemColorScheme === 'dark');
 
-  return { mode, setMode, isDark };
+  return { mode, setMode, palette, setPalette, isDark };
 }

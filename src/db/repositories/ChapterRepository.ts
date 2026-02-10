@@ -1,6 +1,6 @@
 import { generateUUID } from '../../utils/uuid';
 import { getDatabase, getTimestamp } from '../database';
-import type { Chapter, ChapterWithTags, Tag, CreateChapterInput, UpdateChapterInput } from '../../types';
+import type { Chapter, ChapterWithTags, ChapterWithMilestoneProgress, Tag, CreateChapterInput, UpdateChapterInput } from '../../types';
 
 interface ChapterRow {
   id: string;
@@ -87,6 +87,46 @@ export const ChapterRepository = {
         [row.id]
       );
       chapters.push({ ...rowToChapter(row), tags });
+    }
+    return chapters;
+  },
+
+  async getAllWithProgress(babyId?: string): Promise<ChapterWithMilestoneProgress[]> {
+    const db = await getDatabase();
+    const rows = babyId
+      ? await db.getAllAsync<ChapterRow>(
+          'SELECT * FROM chapters WHERE baby_id = ? ORDER BY start_date ASC',
+          [babyId]
+        )
+      : await db.getAllAsync<ChapterRow>('SELECT * FROM chapters ORDER BY start_date ASC');
+
+    const chapters: ChapterWithMilestoneProgress[] = [];
+    for (const row of rows) {
+      const tags = await db.getAllAsync<Tag>(
+        `SELECT t.* FROM tags t
+         INNER JOIN chapter_tags ct ON t.id = ct.tag_id
+         WHERE ct.chapter_id = ?`,
+        [row.id]
+      );
+      const milestoneTotal = await db.getFirstAsync<{ count: number }>(
+        'SELECT COUNT(*) as count FROM milestone_instances WHERE chapter_id = ?',
+        [row.id]
+      );
+      const milestoneFilled = await db.getFirstAsync<{ count: number }>(
+        "SELECT COUNT(*) as count FROM milestone_instances WHERE chapter_id = ? AND status = 'filled'",
+        [row.id]
+      );
+      const memoryCount = await db.getFirstAsync<{ count: number }>(
+        'SELECT COUNT(*) as count FROM memories WHERE chapter_id = ?',
+        [row.id]
+      );
+      chapters.push({
+        ...rowToChapter(row),
+        tags,
+        milestoneTotal: milestoneTotal?.count ?? 0,
+        milestoneFilled: milestoneFilled?.count ?? 0,
+        memoryCount: memoryCount?.count ?? 0,
+      });
     }
     return chapters;
   },

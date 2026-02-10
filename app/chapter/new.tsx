@@ -15,7 +15,9 @@ import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { ChapterRepository, BabyProfileRepository } from '../../src/db/repositories';
+import { ChapterRepository, BabyProfileRepository, MilestoneRepository } from '../../src/db/repositories';
+import { getMilestoneTemplates } from '../../src/constants/milestoneTemplates';
+import { getExpectedDate, getMilestonesForChapter } from '../../src/utils/milestones';
 import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
 import { Background } from '../../src/components/Background';
 import { ModalWrapper } from '../../src/components/ModalWrapper';
@@ -126,9 +128,8 @@ export default function NewChapterScreen() {
   const handlePickCoverImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
-      allowsEditing: true,
-      aspect: [16, 9],
-      quality: 0.8,
+      allowsEditing: false,
+      quality: 0.5,
     });
 
     if (!result.canceled) {
@@ -166,7 +167,7 @@ export default function NewChapterScreen() {
         return;
       }
 
-      await ChapterRepository.create({
+      const newChapter = await ChapterRepository.create({
         babyId: babyProfile.id,
         title: title.trim(),
         startDate: startDate.toISOString(),
@@ -174,6 +175,22 @@ export default function NewChapterScreen() {
         description: description.trim() || undefined,
         coverImageUri: coverImage,
       });
+
+      // Auto-generate milestone instances for this chapter
+      try {
+        const chapterStartDate = startDate.toISOString();
+        const chapterEndDate = hasEndDate && endDate ? endDate.toISOString() : undefined;
+        const templates = getMilestonesForChapter(babyProfile, chapterStartDate, chapterEndDate);
+
+        for (const template of templates) {
+          const expectedDate = getExpectedDate(babyProfile, template);
+          if (expectedDate) {
+            await MilestoneRepository.createInstance(babyProfile.id, template.id, expectedDate);
+          }
+        }
+      } catch (milestoneError) {
+        console.warn('Failed to auto-generate milestones:', milestoneError);
+      }
 
       // Track chapter creation and check for paywall trigger
       await onChapterCreated();

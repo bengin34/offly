@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,8 @@ import {
   StyleSheet,
   RefreshControl,
   Image,
+  Animated,
+  Pressable,
 } from 'react-native';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,10 +19,11 @@ import {
   MemoryRepository,
 } from '../../src/db/repositories';
 import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
+import { getChapterPlaceholder } from '../../src/constants/chapterTemplates';
 import { Background } from '../../src/components/Background';
 import { ProUpgradeBanner } from '../../src/components/ProUpgradeBanner';
 import { useI18n, useTheme } from '../../src/hooks';
-import type { ChapterWithTags, BabyProfile, VaultWithEntryCount } from '../../src/types';
+import type { ChapterWithMilestoneProgress, BabyProfile, VaultWithEntryCount } from '../../src/types';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -28,18 +31,24 @@ export default function HomeScreen() {
   const { t, locale } = useI18n();
 
   const [profile, setProfile] = useState<BabyProfile | null>(null);
-  const [chapters, setChapters] = useState<ChapterWithTags[]>([]);
+  const [chapters, setChapters] = useState<ChapterWithMilestoneProgress[]>([]);
   const [vaults, setVaults] = useState<VaultWithEntryCount[]>([]);
   const [pregnancyEntryCount, setPregnancyEntryCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [fabOpen, setFabOpen] = useState(false);
+  const fabAnim = useRef(new Animated.Value(0)).current;
 
   const loadData = useCallback(async () => {
     try {
-      const babyProfile = await BabyProfileRepository.getDefault();
-      setProfile(babyProfile);
+      let babyProfile = await BabyProfileRepository.getDefault();
 
-      if (!babyProfile) return;
+      // Auto-create a default profile if none exists
+      if (!babyProfile) {
+        babyProfile = await BabyProfileRepository.create({ mode: 'born' });
+      }
+
+      setProfile(babyProfile);
 
       // Load vaults for all modes
       const vaultData = await VaultRepository.getAllWithEntryCounts(babyProfile.id);
@@ -52,7 +61,7 @@ export default function HomeScreen() {
         const count = await MemoryRepository.countPregnancyJournal();
         setPregnancyEntryCount(count);
       } else {
-        const chapterData = await ChapterRepository.getAllWithTags();
+        const chapterData = await ChapterRepository.getAllWithProgress(babyProfile.id);
         setChapters(chapterData);
       }
     } catch (error) {
@@ -72,6 +81,25 @@ export default function HomeScreen() {
   const handleRefresh = () => {
     setIsRefreshing(true);
     loadData();
+  };
+
+  const toggleFab = () => {
+    const toValue = fabOpen ? 0 : 1;
+    setFabOpen(!fabOpen);
+    Animated.spring(fabAnim, {
+      toValue,
+      useNativeDriver: true,
+      friction: 6,
+    }).start();
+  };
+
+  const closeFab = () => {
+    setFabOpen(false);
+    Animated.spring(fabAnim, {
+      toValue: 0,
+      useNativeDriver: true,
+      friction: 6,
+    }).start();
   };
 
   const formatDatePart = useCallback(
@@ -128,16 +156,28 @@ export default function HomeScreen() {
     </View>
   );
 
+  // Determine which chapter is "current" based on today's date
+  const getCurrentChapterId = useCallback(() => {
+    const now = Date.now();
+    for (const ch of chapters) {
+      const start = new Date(ch.startDate).getTime();
+      const end = ch.endDate ? new Date(ch.endDate).getTime() : Infinity;
+      if (now >= start && now < end) return ch.id;
+    }
+    // If past all chapters, return the last one
+    return chapters.length > 0 ? chapters[chapters.length - 1].id : null;
+  }, [chapters]);
+
+  const currentChapterId = getCurrentChapterId();
+
   // --- Section: Chapters Timeline ---
   const renderChaptersSection = () => (
     <View style={styles.sectionContainer}>
       <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Chapters</Text>
-        {chapters.length > 0 && (
-          <TouchableOpacity onPress={() => router.push('/chapter/new')}>
-            <Ionicons name="add-circle-outline" size={24} color={theme.primary} />
-          </TouchableOpacity>
-        )}
+        <Text style={styles.sectionTitle}>Timeline</Text>
+        <TouchableOpacity onPress={() => router.push('/chapter/new')}>
+          <Ionicons name="add-circle-outline" size={24} color={theme.primary} />
+        </TouchableOpacity>
       </View>
 
       {chapters.length === 0 ? (
@@ -145,86 +185,130 @@ export default function HomeScreen() {
           <Ionicons name="book-outline" size={48} color={theme.textMuted} />
           <Text style={styles.emptySectionTitle}>No chapters yet</Text>
           <Text style={styles.emptySectionSubtitle}>
-            Create your first chapter to start recording memories
+            Complete onboarding to generate your baby's timeline
           </Text>
-          <TouchableOpacity
-            style={styles.emptySectionButton}
-            onPress={() => router.push('/chapter/new')}
-          >
-            <Text style={styles.emptySectionButtonText}>Create first chapter</Text>
-          </TouchableOpacity>
         </View>
       ) : (
-        chapters.map((item) => {
+        chapters.map((item, index) => {
           const startDate = new Date(item.startDate);
+          const endDate = item.endDate ? new Date(item.endDate) : null;
+          const now = Date.now();
+          const isCurrent = item.id === currentChapterId;
+          const isPast = endDate ? now >= endDate.getTime() : false;
+          const isFuture = now < startDate.getTime();
           const coverImage = item.coverImageUri;
+          const placeholder = getChapterPlaceholder(item.title);
+          const hasMilestones = item.milestoneTotal > 0;
+          const hasContent = item.memoryCount > 0 || item.milestoneFilled > 0;
+          const progressPct = hasMilestones
+            ? Math.round((item.milestoneFilled / item.milestoneTotal) * 100)
+            : 0;
 
           return (
             <TouchableOpacity
               key={item.id}
-              style={styles.timelineRow}
+              style={[styles.timelineRow, isFuture && styles.timelineRowFuture]}
               onPress={() => router.push(`/chapter/${item.id}`)}
               activeOpacity={0.8}
             >
+              {/* Timeline line + dot */}
               <View style={styles.dateColumn}>
-                <View style={styles.dateLine} />
-                <View style={styles.datePill}>
-                  <Text style={styles.dateMonth}>
-                    {formatDatePart(startDate, { month: 'short' }).toLocaleUpperCase(locale)}
-                  </Text>
-                  <Text style={styles.dateDay}>
-                    {formatDatePart(startDate, { day: 'numeric' })}
-                  </Text>
-                  <Text style={styles.dateYear}>
-                    {formatDatePart(startDate, { year: 'numeric' })}
-                  </Text>
+                {index > 0 && <View style={styles.dateLine} />}
+                <View
+                  style={[
+                    styles.timelineDot,
+                    isCurrent && styles.timelineDotCurrent,
+                    isPast && hasContent && styles.timelineDotFilled,
+                    isFuture && styles.timelineDotFuture,
+                  ]}
+                >
+                  {isCurrent ? (
+                    <Ionicons name="ellipse" size={10} color={theme.white} />
+                  ) : isPast && hasContent ? (
+                    <Ionicons name="checkmark" size={12} color={theme.white} />
+                  ) : null}
                 </View>
+                {index < chapters.length - 1 && <View style={styles.dateLineBottom} />}
               </View>
 
-              <View style={styles.chapterCard}>
-                <View style={styles.chapterMedia}>
-                  {coverImage ? (
+              {/* Chapter card */}
+              <View
+                style={[
+                  styles.chapterCard,
+                  isCurrent && styles.chapterCardCurrent,
+                  isFuture && styles.chapterCardFuture,
+                ]}
+              >
+                {/* Cover image or placeholder */}
+                {coverImage ? (
+                  <View style={styles.chapterMedia}>
                     <Image source={{ uri: coverImage }} style={styles.chapterImage} />
-                  ) : (
-                    <View style={styles.chapterImagePlaceholder}>
-                      <Ionicons name="image-outline" size={28} color={theme.textMuted} />
-                      <Text style={styles.chapterImageText}>Add cover</Text>
-                    </View>
-                  )}
-                  <View style={styles.mediaOverlayTop}>
-                    <View style={styles.mediaPill}>
-                      <Ionicons name="calendar-outline" size={12} color={theme.white} />
-                      <Text style={styles.mediaPillText}>
-                        {formatDateRange(item.startDate, item.endDate)}
-                      </Text>
+                  </View>
+                ) : (
+                  <View
+                    style={[
+                      styles.chapterImagePlaceholder,
+                      { backgroundColor: placeholder.bgColor + '25' },
+                    ]}
+                  >
+                    <Ionicons
+                      name={placeholder.icon as any}
+                      size={36}
+                      color={placeholder.bgColor}
+                    />
+                    <View style={styles.addPhotoHint}>
+                      <Ionicons name="camera-outline" size={12} color={theme.textMuted} />
+                      <Text style={styles.chapterImageText}>Add photo</Text>
                     </View>
                   </View>
-                </View>
+                )}
 
                 <View style={styles.chapterBody}>
                   <View style={styles.chapterTitleRow}>
-                    <Text style={styles.chapterTitle} numberOfLines={1}>
+                    <Text
+                      style={[
+                        styles.chapterTitle,
+                        isFuture && styles.chapterTitleFuture,
+                      ]}
+                      numberOfLines={1}
+                    >
                       {item.title}
                     </Text>
+                    {isCurrent && (
+                      <View style={styles.currentBadge}>
+                        <Text style={styles.currentBadgeText}>Now</Text>
+                      </View>
+                    )}
                   </View>
-                  {item.description && (
-                    <Text style={styles.chapterNotes} numberOfLines={2}>
-                      {item.description}
-                    </Text>
-                  )}
-                  {item.tags.length > 0 && (
-                    <View style={styles.tagContainer}>
-                      {item.tags.slice(0, 4).map((tag) => (
-                        <View key={tag.id} style={styles.tag}>
-                          <Text style={styles.tagText}>{tag.name}</Text>
-                        </View>
-                      ))}
-                      {item.tags.length > 4 && (
-                        <View style={styles.tagMore}>
-                          <Text style={styles.tagMoreText}>+{item.tags.length - 4}</Text>
-                        </View>
-                      )}
+
+                  {/* Date range */}
+                  <Text style={[styles.chapterDateRange, isFuture && styles.chapterDateRangeFuture]}>
+                    {formatDateRange(item.startDate, item.endDate)}
+                  </Text>
+
+                  {/* Milestone progress bar */}
+                  {hasMilestones && (
+                    <View style={styles.progressContainer}>
+                      <View style={styles.progressBar}>
+                        <View
+                          style={[
+                            styles.progressFill,
+                            { width: `${progressPct}%` },
+                            isFuture && styles.progressFillFuture,
+                          ]}
+                        />
+                      </View>
+                      <Text style={[styles.progressText, isFuture && styles.progressTextFuture]}>
+                        {item.milestoneFilled}/{item.milestoneTotal}
+                      </Text>
                     </View>
+                  )}
+
+                  {/* Memory count for past chapters */}
+                  {isPast && item.memoryCount > 0 && (
+                    <Text style={styles.memoryCountText}>
+                      {item.memoryCount} {item.memoryCount === 1 ? 'memory' : 'memories'}
+                    </Text>
                   )}
                 </View>
               </View>
@@ -298,13 +382,13 @@ export default function HomeScreen() {
     );
   };
 
-  // --- Empty state (no profile) ---
+  // --- Empty state (no profile — should rarely show since we auto-create) ---
   const renderNoProfile = () => (
     <View style={styles.emptyContainer}>
       <Ionicons name="person-outline" size={64} color={theme.textMuted} />
       <Text style={styles.emptyTitle}>Welcome to BabyLegacy</Text>
       <Text style={styles.emptySubtitle}>
-        Set up your baby profile to get started
+        Setting up your profile...
       </Text>
     </View>
   );
@@ -333,18 +417,117 @@ export default function HomeScreen() {
 
       {/* FAB for quick add */}
       {profile && !isLoading && (
-        <TouchableOpacity
-          style={styles.fab}
-          onPress={() => {
-            if (isPregnant) {
-              router.push('/pregnancy-journal/new-entry');
-            } else {
-              router.push('/chapter/new');
-            }
-          }}
-        >
-          <Ionicons name="add" size={28} color={theme.white} />
-        </TouchableOpacity>
+        <>
+          {/* Backdrop when FAB menu is open */}
+          {fabOpen && (
+            <Pressable style={styles.fabBackdrop} onPress={closeFab} />
+          )}
+
+          {/* Speed-dial options (born mode only, when chapters exist) */}
+          {!isPregnant && chapters.length > 0 && (
+            <>
+              {/* New Memory option */}
+              <Animated.View
+                style={[
+                  styles.fabOption,
+                  {
+                    bottom: spacing.md + 56 + 12 + 56 + 12,
+                    opacity: fabAnim,
+                    transform: [
+                      {
+                        translateY: fabAnim.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [40, 0],
+                        }),
+                      },
+                    ],
+                  },
+                ]}
+                pointerEvents={fabOpen ? 'auto' : 'none'}
+              >
+                <TouchableOpacity
+                  style={styles.fabOptionRow}
+                  onPress={() => {
+                    closeFab();
+                    const lastChapter = chapters[0];
+                    router.push(`/memory/new?chapterId=${lastChapter.id}`);
+                  }}
+                >
+                  <View style={styles.fabOptionLabel}>
+                    <Text style={styles.fabOptionText}>New Memory</Text>
+                  </View>
+                  <View style={[styles.fabOptionIcon, { backgroundColor: theme.accent }]}>
+                    <Ionicons name="star-outline" size={22} color={theme.white} />
+                  </View>
+                </TouchableOpacity>
+              </Animated.View>
+
+              {/* New Chapter option */}
+              <Animated.View
+                style={[
+                  styles.fabOption,
+                  {
+                    bottom: spacing.md + 56 + 12,
+                    opacity: fabAnim,
+                    transform: [
+                      {
+                        translateY: fabAnim.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [20, 0],
+                        }),
+                      },
+                    ],
+                  },
+                ]}
+                pointerEvents={fabOpen ? 'auto' : 'none'}
+              >
+                <TouchableOpacity
+                  style={styles.fabOptionRow}
+                  onPress={() => {
+                    closeFab();
+                    router.push('/chapter/new');
+                  }}
+                >
+                  <View style={styles.fabOptionLabel}>
+                    <Text style={styles.fabOptionText}>New Chapter</Text>
+                  </View>
+                  <View style={[styles.fabOptionIcon, { backgroundColor: theme.primary }]}>
+                    <Ionicons name="book-outline" size={22} color={theme.white} />
+                  </View>
+                </TouchableOpacity>
+              </Animated.View>
+            </>
+          )}
+
+          {/* Main FAB */}
+          <TouchableOpacity
+            style={styles.fab}
+            onPress={() => {
+              if (isPregnant) {
+                router.push('/pregnancy-journal/new-entry');
+              } else if (chapters.length === 0) {
+                router.push('/chapter/new');
+              } else {
+                toggleFab();
+              }
+            }}
+          >
+            <Animated.View
+              style={{
+                transform: [
+                  {
+                    rotate: fabAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: ['0deg', '45deg'],
+                    }),
+                  },
+                ],
+              }}
+            >
+              <Ionicons name="add" size={28} color={theme.white} />
+            </Animated.View>
+          </TouchableOpacity>
+        </>
       )}
     </View>
   );
@@ -488,38 +671,43 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       backgroundColor: theme.borderLight,
       borderRadius: 2,
     },
-    datePill: {
-      backgroundColor: theme.card,
-      borderRadius: borderRadius.lg,
-      paddingVertical: spacing.sm,
-      paddingHorizontal: spacing.sm,
-      width: '100%',
+    timelineRowFuture: {
+      opacity: 0.55,
+    },
+    timelineDot: {
+      width: 24,
+      height: 24,
+      borderRadius: 12,
+      backgroundColor: theme.borderLight,
       alignItems: 'center',
-      borderWidth: 1,
-      borderColor: theme.borderLight,
-      shadowColor: theme.shadow,
-      shadowOffset: { width: 0, height: 6 },
-      shadowOpacity: 0.12,
-      shadowRadius: 10,
-      elevation: 2,
+      justifyContent: 'center',
+      zIndex: 2,
     },
-    dateMonth: {
-      fontSize: fontSize.xs,
-      fontFamily: fonts.ui,
-      color: theme.textMuted,
-      textTransform: 'uppercase',
-      letterSpacing: 0.8,
+    timelineDotCurrent: {
+      backgroundColor: theme.primary,
+      shadowColor: theme.primary,
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: 0.4,
+      shadowRadius: 6,
+      elevation: 3,
     },
-    dateDay: {
-      fontSize: fontSize.xl,
-      fontFamily: fonts.display,
-      color: theme.text,
-      lineHeight: 28,
+    timelineDotFilled: {
+      backgroundColor: theme.success,
     },
-    dateYear: {
-      fontSize: fontSize.xs,
-      fontFamily: fonts.body,
-      color: theme.textMuted,
+    timelineDotFuture: {
+      backgroundColor: theme.borderLight,
+      borderWidth: 2,
+      borderColor: theme.border,
+    },
+    dateLineBottom: {
+      position: 'absolute',
+      top: 30,
+      bottom: -spacing.lg,
+      width: 2,
+      left: '50%',
+      marginLeft: -1,
+      backgroundColor: theme.borderLight,
+      borderRadius: 2,
     },
     chapterCard: {
       flex: 1,
@@ -534,8 +722,23 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       elevation: 3,
       overflow: 'hidden',
     },
+    chapterCardCurrent: {
+      borderColor: theme.primary,
+      borderWidth: 1.5,
+      shadowColor: theme.primary,
+      shadowOpacity: 0.15,
+    },
+    chapterCardFuture: {
+      backgroundColor: theme.backgroundSecondary,
+      borderColor: theme.border,
+      shadowOpacity: 0.04,
+    },
     chapterMedia: {
       position: 'relative',
+    },
+    chapterMediaCompact: {
+      paddingTop: spacing.md,
+      paddingLeft: spacing.md,
     },
     chapterImage: {
       width: '100%',
@@ -554,6 +757,12 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       fontSize: fontSize.xs,
       fontFamily: fonts.ui,
       color: theme.textMuted,
+    },
+    addPhotoHint: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+      marginTop: spacing.xs,
     },
     mediaOverlayTop: {
       position: 'absolute',
@@ -592,6 +801,66 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       fontFamily: fonts.heading,
       color: theme.text,
       flex: 1,
+    },
+    chapterTitleFuture: {
+      color: theme.textMuted,
+    },
+    currentBadge: {
+      backgroundColor: theme.primary,
+      paddingHorizontal: spacing.sm,
+      paddingVertical: 2,
+      borderRadius: borderRadius.full,
+      marginLeft: spacing.sm,
+    },
+    currentBadgeText: {
+      fontSize: fontSize.xs,
+      fontFamily: fonts.ui,
+      color: theme.white,
+    },
+    chapterDateRange: {
+      fontSize: fontSize.sm,
+      fontFamily: fonts.body,
+      color: theme.textSecondary,
+      marginTop: 4,
+    },
+    chapterDateRangeFuture: {
+      color: theme.textMuted,
+    },
+    progressContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: spacing.sm,
+      gap: spacing.sm,
+    },
+    progressBar: {
+      flex: 1,
+      height: 6,
+      backgroundColor: theme.borderLight,
+      borderRadius: 3,
+      overflow: 'hidden',
+    },
+    progressFill: {
+      height: '100%',
+      backgroundColor: theme.success,
+      borderRadius: 3,
+    },
+    progressFillFuture: {
+      backgroundColor: theme.border,
+    },
+    progressText: {
+      fontSize: fontSize.xs,
+      fontFamily: fonts.ui,
+      color: theme.textSecondary,
+      minWidth: 30,
+    },
+    progressTextFuture: {
+      color: theme.textMuted,
+    },
+    memoryCountText: {
+      fontSize: fontSize.xs,
+      fontFamily: fonts.body,
+      color: theme.textMuted,
+      marginTop: 4,
     },
     chapterNotes: {
       fontSize: fontSize.sm,
@@ -704,5 +973,49 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       shadowOpacity: 0.3,
       shadowRadius: 8,
       elevation: 5,
+      zIndex: 10,
+    },
+    fabBackdrop: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: 'rgba(0,0,0,0.3)',
+      zIndex: 5,
+    },
+    fabOption: {
+      position: 'absolute',
+      right: spacing.md,
+      zIndex: 10,
+    },
+    fabOptionRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    fabOptionLabel: {
+      backgroundColor: theme.card,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      borderRadius: borderRadius.lg,
+      marginRight: spacing.sm,
+      shadowColor: theme.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.15,
+      shadowRadius: 4,
+      elevation: 3,
+    },
+    fabOptionText: {
+      fontSize: fontSize.sm,
+      fontFamily: fonts.ui,
+      color: theme.text,
+    },
+    fabOptionIcon: {
+      width: 44,
+      height: 44,
+      borderRadius: 22,
+      justifyContent: 'center',
+      alignItems: 'center',
+      shadowColor: theme.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 4,
+      elevation: 3,
     },
   });

@@ -262,7 +262,7 @@ export default function MemoryDetailScreen() {
                 <View
                   style={[
                     styles.typeBadge,
-                    { backgroundColor: memory.memoryType === 'milestone' ? theme.place : theme.moment },
+                    { backgroundColor: memory.memoryType === 'milestone' ? theme.milestone : theme.memory },
                   ]}
                 >
                   <Ionicons

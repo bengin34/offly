@@ -113,6 +113,36 @@ export const CREATE_MEMORIES_PREGNANCY_JOURNAL_INDEX = `
   CREATE INDEX IF NOT EXISTS idx_memories_pregnancy_journal ON memories (is_pregnancy_journal);
 `;
 
+export const CREATE_MILESTONE_INSTANCES_TABLE = `
+  CREATE TABLE IF NOT EXISTS milestone_instances (
+    id TEXT PRIMARY KEY NOT NULL,
+    baby_id TEXT NOT NULL,
+    chapter_id TEXT,
+    milestone_template_id TEXT NOT NULL,
+    associated_memory_id TEXT,
+    expected_date TEXT NOT NULL,
+    filled_date TEXT,
+    status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'filled', 'archived')),
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL,
+    FOREIGN KEY (baby_id) REFERENCES baby_profiles (id) ON DELETE CASCADE,
+    FOREIGN KEY (chapter_id) REFERENCES chapters (id) ON DELETE CASCADE,
+    FOREIGN KEY (associated_memory_id) REFERENCES memories (id) ON DELETE SET NULL
+  );
+`;
+
+export const CREATE_MILESTONE_INSTANCES_BABY_ID_INDEX = `
+  CREATE INDEX IF NOT EXISTS idx_milestone_instances_baby_id ON milestone_instances (baby_id);
+`;
+
+export const CREATE_MILESTONE_INSTANCES_STATUS_INDEX = `
+  CREATE INDEX IF NOT EXISTS idx_milestone_instances_status ON milestone_instances (status);
+`;
+
+export const CREATE_MILESTONE_INSTANCES_EXPECTED_DATE_INDEX = `
+  CREATE INDEX IF NOT EXISTS idx_milestone_instances_expected_date ON milestone_instances (expected_date);
+`;
+
 // Migration: add columns to existing tables for upgrades
 export const ALTER_BABY_PROFILES_ADD_EDD = `
   ALTER TABLE baby_profiles ADD COLUMN edd TEXT;
@@ -128,6 +158,18 @@ export const ALTER_MEMORIES_ADD_VAULT_ID = `
 
 export const ALTER_MEMORIES_ADD_IS_PREGNANCY_JOURNAL = `
   ALTER TABLE memories ADD COLUMN is_pregnancy_journal INTEGER NOT NULL DEFAULT 0;
+`;
+
+export const ALTER_MEMORIES_ADD_MILESTONE_TEMPLATE_ID = `
+  ALTER TABLE memories ADD COLUMN milestone_template_id TEXT;
+`;
+
+export const ALTER_MEMORIES_ADD_IS_CUSTOM_MILESTONE = `
+  ALTER TABLE memories ADD COLUMN is_custom_milestone INTEGER DEFAULT 0;
+`;
+
+export const ALTER_MILESTONE_INSTANCES_ADD_CHAPTER_ID = `
+  ALTER TABLE milestone_instances ADD COLUMN chapter_id TEXT REFERENCES chapters(id) ON DELETE CASCADE;
 `;
 
 // Indexes for search performance
@@ -164,6 +206,7 @@ export const ALL_MIGRATIONS = [
   CREATE_MEMORY_TAGS_TABLE,
   CREATE_CHAPTER_TAGS_TABLE,
   CREATE_MEMORY_PHOTOS_TABLE,
+  CREATE_MILESTONE_INSTANCES_TABLE,
   CREATE_CHAPTERS_TITLE_INDEX,
   CREATE_CHAPTERS_BABY_ID_INDEX,
   CREATE_MEMORIES_TITLE_INDEX,
@@ -173,6 +216,9 @@ export const ALL_MIGRATIONS = [
   CREATE_VAULTS_BABY_ID_INDEX,
   CREATE_MEMORIES_VAULT_ID_INDEX,
   CREATE_MEMORIES_PREGNANCY_JOURNAL_INDEX,
+  CREATE_MILESTONE_INSTANCES_BABY_ID_INDEX,
+  CREATE_MILESTONE_INSTANCES_STATUS_INDEX,
+  CREATE_MILESTONE_INSTANCES_EXPECTED_DATE_INDEX,
 ];
 
 // ALTER migrations for existing installs (run safely — column may already exist)
@@ -181,4 +227,7 @@ export const UPGRADE_MIGRATIONS = [
   ALTER_BABY_PROFILES_ADD_MODE,
   ALTER_MEMORIES_ADD_VAULT_ID,
   ALTER_MEMORIES_ADD_IS_PREGNANCY_JOURNAL,
+  ALTER_MEMORIES_ADD_MILESTONE_TEMPLATE_ID,
+  ALTER_MEMORIES_ADD_IS_CUSTOM_MILESTONE,
+  ALTER_MILESTONE_INSTANCES_ADD_CHAPTER_ID,
 ];

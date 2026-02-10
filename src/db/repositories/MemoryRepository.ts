@@ -25,6 +25,8 @@ interface MemoryRow {
   latitude: number | null;
   longitude: number | null;
   map_url: string | null;
+  milestone_template_id: string | null;
+  is_custom_milestone: number | null;
   created_at: string;
   updated_at: string;
 }
@@ -51,6 +53,8 @@ function rowToMemory(row: MemoryRow): Memory {
     latitude: row.latitude ?? undefined,
     longitude: row.longitude ?? undefined,
     mapUrl: row.map_url ?? undefined,
+    milestoneTemplateId: row.milestone_template_id ?? undefined,
+    isCustomMilestone: row.is_custom_milestone === 1 ? true : undefined,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -129,8 +133,8 @@ export const MemoryRepository = {
     const now = getTimestamp();
 
     await db.runAsync(
-      `INSERT INTO memories (id, chapter_id, vault_id, is_pregnancy_journal, memory_type, title, description, importance, date, location_name, latitude, longitude, map_url, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO memories (id, chapter_id, vault_id, is_pregnancy_journal, memory_type, title, description, importance, date, location_name, latitude, longitude, map_url, milestone_template_id, is_custom_milestone, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         id,
         input.chapterId || null,
@@ -145,6 +149,8 @@ export const MemoryRepository = {
         input.latitude ?? null,
         input.longitude ?? null,
         input.mapUrl ?? null,
+        input.milestoneTemplateId ?? null,
+        input.isCustomMilestone ? 1 : 0,
         now,
         now,
       ]
@@ -258,6 +264,13 @@ export const MemoryRepository = {
     const photos = await db.getAllAsync<PhotoRow>(
       'SELECT * FROM memory_photos WHERE memory_id = ?',
       [id]
+    );
+
+    // Revert any linked milestone instances to pending
+    await db.runAsync(
+      `UPDATE milestone_instances SET associated_memory_id = NULL, status = 'pending', filled_date = NULL, updated_at = ?
+       WHERE associated_memory_id = ?`,
+      [getTimestamp(), id]
     );
 
     const result = await db.runAsync('DELETE FROM memories WHERE id = ?', [id]);

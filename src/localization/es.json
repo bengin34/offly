@@ -1,0 +1,824 @@
+{
+  "common": {
+    "appName": "BabyLegacy",
+    "done": "Listo",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "save": "Guardar",
+    "add": "Agregar",
+    "create": "Crear",
+    "close": "Cerrar",
+    "saving": "Guardando...",
+    "creating": "Creando...",
+    "adding": "Agregando...",
+    "entry": "recuerdo",
+    "entries": "recuerdos",
+    "memories": "Recuerdos",
+    "shareChapter": "Compartir capítulo"
+  },
+  "shareDialog": {
+    "title": "Compartir {name}",
+    "subtitle": "Elige cómo quieres compartir este capítulo",
+    "hint": "Tus datos se mantienen privados — compartir crea un archivo local",
+    "optionTextTitle": "Lista de texto",
+    "optionTextDescription": "Formato de texto simple, perfecto para mensajería",
+    "optionImageTitle": "Tarjeta visual",
+    "optionImageDescription": "Una tarjeta bonita con tus momentos destacados",
+    "optionPdfTitle": "Documento PDF",
+    "optionPdfDescription": "Capítulo completo con todos los detalles y notas",
+    "dialogTitleChapter": "Compartir capítulo {name}",
+    "dialogTitleMemoryHighlights": "Compartir momentos de {name}",
+    "dialogTitleChapterGuide": "Compartir capítulo de {name}",
+    "dialogTitleCard": "Compartir tarjeta de {name}"
+  },
+  "tabs": {
+    "chapters": "Capítulos",
+    "chaptersLegacy": "Capítulos",
+    "search": "Buscar",
+    "insights": "Estadísticas",
+    "settings": "Ajustes"
+  },
+  "navigation": {
+    "newChapter": "Nuevo capítulo",
+    "chapter": "Capítulo",
+    "editChapter": "Editar capítulo",
+    "newChapterLegacy": "Nuevo capítulo",
+    "chapterLegacy": "Capítulo",
+    "editChapterLegacy": "Editar capítulo",
+    "newMemory": "Nuevo recuerdo",
+    "memory": "Recuerdo",
+    "editMemory": "Editar recuerdo",
+    "newEntry": "Nuevo recuerdo",
+    "entry": "Recuerdo",
+    "editEntry": "Editar recuerdo"
+  },
+  "chapters": {
+    "addCover": "Agregar portada",
+    "days": "{count} días",
+    "emptyTitle": "Aún no hay capítulos",
+    "emptySubtitle": "Comienza a registrar los recuerdos de tu bebé",
+    "emptyButton": "Crea tu primer capítulo"
+  },
+  "chaptersLegacy": {
+    "addCover": "Agregar portada",
+    "days": "{count} días",
+    "emptyTitle": "Aún no hay capítulos",
+    "emptySubtitle": "Comienza a registrar los recuerdos de tu bebé",
+    "emptyButton": "Crea tu primer capítulo"
+  },
+  "settings": {
+    "preferences": "Preferencias",
+    "appearance": "Apariencia",
+    "language": "Idioma",
+    "chooseAppearance": "Elegir apariencia",
+    "chooseLanguage": "Elegir idioma",
+    "exportSection": "Exportación",
+    "exportTitle": "Exportar todos los datos",
+    "exportDescription": "Descarga tus capítulos, recuerdos y etiquetas en JSON o XLS",
+    "exportButton": "Exportar JSON",
+    "exportButtonXls": "Exportar XLS",
+    "exportOpenButton": "Abrir opciones de exportación",
+    "exportInfoTitle": "¿Por qué exportar?",
+    "exportInfoDescription": "Mantén una copia de seguridad, cambia de teléfono o analiza tus recuerdos en una hoja de cálculo. Las exportaciones se quedan en tu dispositivo hasta que las compartas.",
+    "exportPrivacyNote": "Los archivos exportados pueden incluir notas personales. Comparte con cuidado.",
+    "exportPhotosNote": "Las fotos no se incluyen en la exportación.",
+    "exportFormatsTitle": "Elige un formato",
+    "exportFormatsDescription": "JSON es ideal para copias de seguridad y reimportación. XLS se abre fácilmente en Excel o Google Sheets.",
+    "importSection": "Importación",
+    "importTitle": "Importar datos",
+    "importDescription": "Importa tus capítulos y recuerdos desde un archivo JSON.",
+    "importButton": "Importar JSON",
+    "importButtonImporting": "Importando...",
+    "dataSection": "Datos",
+    "dataTitle": "Exportar e importar",
+    "dataDescription": "Haz copia o traslada tus recuerdos con exportación e importación.",
+    "dataButton": "Ver opciones",
+    "supportSection": "Soporte",
+    "supportRate": "Danos 5 estrellas",
+    "supportShare": "Compartir la app",
+    "supportContact": "Contáctanos",
+    "supportShareMessage": "BabyLegacy - un archivo familiar privado que me encanta: {link}",
+    "onboardingSection": "Introducción",
+    "onboardingTitle": "Mostrar la introducción de nuevo",
+    "onboardingDescription": "Reproduce la introducción de 7 pantallas en cualquier momento.",
+    "onboardingButton": "Iniciar introducción",
+    "onboardingResetTitle": "¿Iniciar la introducción?",
+    "onboardingResetMessage": "Esto mostrará de nuevo el flujo de introducción. Puedes omitirlo en cualquier momento.",
+    "onboardingResetAction": "Iniciar",
+    "aboutSection": "Acerca de",
+    "version": "Versión",
+    "storage": "Almacenamiento",
+    "privacy": "Privacidad",
+    "storageValue": "Los datos permanecen en tu dispositivo.",
+    "privacyValue": "Sin conexión",
+    "footer": "BabyLegacy — tu archivo familiar privado",
+    "themeLight": "Claro",
+    "themeDark": "Oscuro",
+    "themeSystem": "Sistema"
+  },
+  "proBanner": {
+    "title": "Hazte Pro",
+    "subtitle": "Desbloquea todas las funciones.",
+    "cta": "Hazte Pro",
+    "messages": [
+      {
+        "title": "Hazte Pro",
+        "subtitle": "Desbloquea todas las funciones."
+      },
+      {
+        "title": "Menos scroll, más significado",
+        "subtitle": "Encuentra los momentos importantes al instante."
+      },
+      {
+        "title": "Recuerda todo",
+        "subtitle": "Guarda los pequeños momentos con seguridad."
+      },
+      {
+        "title": "Tu archivo familiar",
+        "subtitle": "Acceso instantáneo a cada capítulo."
+      },
+      {
+        "title": "Encuentra en segundos",
+        "subtitle": "Busca por título, notas o etiquetas."
+      },
+      {
+        "title": "Crece sin límites",
+        "subtitle": "Capítulos ilimitados. Recuerdos ilimitados."
+      }
+    ]
+  },
+  "labels": {
+    "date": "Fecha",
+    "startDate": "Fecha de inicio",
+    "endDate": "Fecha de fin",
+    "title": "Title",
+    "notes": "Notes",
+    "optional": "optional",
+    "filled": "Filled",
+    "milestone": {
+      "pastDue": "Past due",
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "empty": "No milestones yet",
+      "emptySubtitle": "Milestones will appear here",
+      "quickAddHelper": "Open full editor to add tags and more"
+    }
+  },
+  "placeholders": {
+    "search": "Buscar capítulos, recuerdos, notas...",
+    "chapterTitleExample": "p. ej., Primer año",
+    "chapterSummaryExample": "Breve descripción de este capítulo...",
+    "chapterTitle": "p. ej., 0–3 meses",
+    "chapterDescription": "Breve descripción de este capítulo...",
+    "entryTitleMilestone": "p. ej., Primera sonrisa",
+    "entryTitleMemory": "p. ej., Una tarde tranquila",
+    "memoryTitleMilestone": "Primera sonrisa, Primeros pasos...",
+    "memoryTitleNote": "Una tarde tranquila, Momento divertido...",
+    "entryNotes": "Agregar detalles...",
+    "milestoneListName": "p. ej., Hitos, Tradiciones familiares",
+    "locationGroupName": "p. ej., Casa, con la abuela",
+    "memoryTitle": "What happened?",
+    "memoryNotes": "Add details..."
+  },
+  "chapterForm": {
+    "titleLabel": "Título del capítulo *",
+    "descriptionLabel": "Descripción (opcional)",
+    "coverImageLabel": "Imagen de portada (opcional)",
+    "changeCover": "Cambiar",
+    "addCoverPlaceholder": "Toca para agregar una portada"
+  },
+  "chapterFormLegacy": {
+    "titleLabel": "Título del capítulo *",
+    "summaryLabel": "Descripción (opcional)",
+    "coverImageLabel": "Imagen de portada (opcional)",
+    "changeCover": "Cambiar",
+    "addCoverPlaceholder": "Toca para agregar una portada"
+  },
+  "memoryForm": {
+    "titleLabel": "Título *",
+    "locationLabel": "Lugar",
+    "importanceLabel": "IMPORTANCIA",
+    "descriptionLabel": "Descripción",
+    "tagsLabel": "Etiquetas",
+    "milestone": "Hito",
+    "note": "Nota"
+  },
+  "entryForm": {
+    "titleLabel": "Título *",
+    "ratingLabel": "Importancia",
+    "notesLabel": "Notas",
+    "tagsLabel": "Etiquetas",
+    "photosLabel": "Fotos ({count}/{max})",
+    "gallery": "Galería",
+    "camera": "Cámara",
+    "tapToAddTags": "Toca para agregar etiquetas...",
+    "milestone": "Hito",
+    "memory": "Nota",
+    "moreTags": "+{count} más",
+    "locationLabel": "Lugar",
+    "locationPlaceholder": "Agregar lugar (opcional)",
+    "locationHint": "Agrega un lugar si ayuda al recuerdo"
+  },
+  "memoryDetail": {
+    "descriptionTitle": "Descripción",
+    "tagsTitle": "Etiquetas"
+  },
+  "entryDetail": {
+    "notesTitle": "Notas",
+    "tagsTitle": "Etiquetas",
+    "allPhotos": "Todas las fotos ({count})",
+    "created": "Creado: {date}",
+    "updated": "Actualizado: {date}",
+    "locationTitle": "Ubicación",
+    "openInMaps": "Abrir en Mapas"
+  },
+  "chapterDetail": {
+    "noPhoto": "Sin foto",
+    "notePill": "Nota",
+    "uncategorized": "Sin categoría",
+    "emptyTitle": "Aún no hay recuerdos",
+    "emptySubtitle": "Empieza a añadir recuerdos a este capítulo",
+    "addFirstMemory": "Agregar el primer recuerdo",
+    "addMemory": "Agregar recuerdo"
+  },
+  "chapterDetailLegacy": {
+    "noPhoto": "Sin foto",
+    "notePill": "Nota",
+    "uncategorized": "Sin categoría",
+    "emptyTitle": "Aún no hay recuerdos",
+    "emptySubtitle": "Empieza a añadir recuerdos a este capítulo",
+    "addFirstEntry": "Agregar el primer recuerdo",
+    "addEntry": "Agregar recuerdo"
+  },
+  "memories": {
+    "memory": "Recuerdo",
+    "milestone": "Hito",
+    "note": "Nota",
+    "notePill": "NOTA",
+    "noPhoto": "Sin foto"
+  },
+  "milestoneLists": {
+    "title": "Listas de ciudades",
+    "listNameLabel": "Nombre de la lista *",
+    "listTypeLabel": "Tipo de lista",
+    "groupLabel": "País *",
+    "typeCustom": "Personalizada",
+    "typeCountry": "País",
+    "typeHintCustom": "Crea una lista personalizada de ciudades que quieres seguir",
+    "typeHintCountry": "Crea una lista de ciudades dentro de un país específico",
+    "emptyTitle": "Aún no hay listas de ciudades",
+    "emptyDescription": "Crea listas de ciudades que quieras visitar y sigue tu progreso",
+    "createFirstList": "Crea tu primera lista",
+    "progressVisited": "{visited}/{total} visitadas ({percent}%)",
+    "detailProgress": "{visited} de {total} ciudades visitadas ({percent}%)",
+    "detailEmptyTitle": "Aún no hay ciudades",
+    "detailEmptyDescription": "Agrega ciudades que quieras visitar y sigue tu progreso",
+    "detailAddCity": "Agregar ciudad",
+    "detailVisited": "Visitadas",
+    "notFound": "Lista de ciudades no encontrada",
+    "loading": "Cargando..."
+  },
+  "search": {
+    "emptyTitle": "Busca tus recuerdos",
+    "emptySubtitle": "Encuentra capítulos y recuerdos por título, descripción, notas o etiquetas",
+    "noResultsTitle": "No se encontraron resultados",
+    "noResultsSubtitle": "Prueba con otras palabras clave",
+    "showLabel": "Mostrar",
+    "memoryTypeLabel": "Tipo de recuerdo",
+    "minImportanceLabel": "Importancia mín.",
+    "entryTypeLabel": "Tipo de recuerdo",
+    "minRatingLabel": "Importancia mín.",
+    "tagsLabel": "Etiquetas",
+    "clearFilters": "Limpiar filtros",
+    "filterAll": "Todos",
+    "filterChapters": "Capítulos",
+    "filterMemories": "Recuerdos",
+    "filterChapterLegacy": "Capítulos",
+    "filterEntries": "Recuerdos",
+    "filterAny": "Cualquiera",
+    "filterMilestones": "Hitos",
+    "filterNotes": "Notas",
+    "filterMilestoneLegacy": "Hitos",
+    "filterNoteLegacy": "Notas",
+    "matchedIn": "Coincidencia en {field}:",
+    "inChapter": "en {chapter}",
+    "inChapterLegacy": "en {chapter}",
+    "matchFieldTitle": "título",
+    "matchFieldLocation": "ubicación",
+    "matchFieldSummary": "descripción",
+    "matchFieldNotes": "notas",
+    "matchFieldTag": "etiqueta",
+    "matchFieldMilestone": "ciudad"
+  },
+  "insights": {
+    "sectionStats": "Tus estadísticas",
+    "statsChapters": "Capítulos",
+    "statsMemories": "Recuerdos",
+    "statsChapterLegacy": "Capítulos",
+    "statsMemoryLegacy": "Recuerdos",
+    "statsMilestones": "Lugares",
+    "statsLocations": "Ubicaciones",
+    "statsPhotos": "Fotos",
+    "statsImportant": "Importantes",
+    "statsChapterDays": "Días de capítulo",
+    "memoriesBreakdown": "{milestones} hitos, {notes} notas",
+    "entriesBreakdown": "{milestones} hitos, {notes} notas",
+    "highlightMostVisited": "Más visitado",
+    "highlightFirstTrip": "Primer capítulo",
+    "highlightFirstMemory": "Primer recuerdo",
+    "highlightAvgRating": "Importancia media",
+    "highlightImportant": "Más importante",
+    "topTags": "Etiquetas principales",
+    "milestoneProgress": "Listas de hitos",
+    "seeAll": "Ver todo",
+    "createFirstMilestoneList": "Crea tu primera lista de hitos",
+    "milestoneListsEmptyHint": "Sigue los hitos que quieres recordar",
+    "milestoneListCount": "{visited}/{total} elementos",
+    "moreLists": "+{count} listas más",
+    "achievements": "Logros",
+    "viewAll": "Ver todo",
+    "noBadgesEarned": "Aún no has ganado insignias",
+    "badgesEmptyHint": "Sigue guardando recuerdos para desbloquear logros",
+    "moreBadges": "+{count} insignias más",
+    "badgesProgress": "{unlocked} de {total} insignias obtenidas"
+  },
+  "badges": {
+    "earned": "Obtenidas",
+    "locked": "Bloqueadas",
+    "allBadges": "Todas las insignias",
+    "badgesEarned": "Insignias obtenidas",
+    "special": "Especial",
+    "tagAdventures": "Objetivos de etiquetas",
+    "firstSteps": "Primeros pasos",
+    "chapterMilestones": "Hitos de capítulos",
+    "milestoneAchievements": "Objetivos de hitos",
+    "entryMilestones": "Hitos de recuerdos",
+    "consistencyMilestones": "Consistencia",
+    "photoMilestones": "Hitos de fotos",
+    "tagMilestones": "Seguimiento de etiquetas",
+    "organizationMilestones": "Organización",
+    "badgeUnlocked": "¡Insignia desbloqueada!"
+  },
+  "badgeDetail": {
+    "congratulations": "¡Felicidades!",
+    "earnedOn": "Obtenida el {date}",
+    "notYetEarned": "Aún no obtenida"
+  },
+  "badgeItems": {
+    "first_trip": {
+      "title": "Primer viaje",
+      "description": "Creaste tu primer viaje"
+    },
+    "first_place": {
+      "title": "Primer lugar",
+      "description": "Guardaste tu primer lugar"
+    },
+    "first_moment": {
+      "title": "Primer momento",
+      "description": "Capturaste tu primer momento"
+    },
+    "first_tag": {
+      "title": "Primera etiqueta",
+      "description": "Creaste tu primera etiqueta"
+    },
+    "trips_3": {
+      "title": "Explorador",
+      "description": "Registraste 5 viajes"
+    },
+    "trips_10": {
+      "title": "Aventurero",
+      "description": "Registraste 15 viajes"
+    },
+    "trips_25": {
+      "title": "Trotamundos",
+      "description": "Registraste 30 viajes"
+    },
+    "places_10": {
+      "title": "Cazador de lugares",
+      "description": "Guardaste 15 lugares"
+    },
+    "places_25": {
+      "title": "Coleccionista de lugares",
+      "description": "Guardaste 40 lugares"
+    },
+    "places_100": {
+      "title": "Maestro de lugares",
+      "description": "Guardaste 150 lugares"
+    },
+    "entries_25": {
+      "title": "Guardián de recuerdos",
+      "description": "Creaste 40 entradas"
+    },
+    "entries_100": {
+      "title": "Historiador",
+      "description": "Creaste 150 entradas"
+    },
+    "countries_3": {
+      "title": "Cruza fronteras",
+      "description": "Visitaste 5 países"
+    },
+    "countries_5": {
+      "title": "Viajero del mundo",
+      "description": "Visitaste 8 países"
+    },
+    "countries_10": {
+      "title": "Continental",
+      "description": "Visitaste 15 países"
+    },
+    "photos_10": {
+      "title": "Aficionado a la cámara",
+      "description": "Tomaste 25 fotos"
+    },
+    "photos_50": {
+      "title": "Fotógrafo",
+      "description": "Tomaste 100 fotos"
+    },
+    "photos_200": {
+      "title": "Archivista de fotos",
+      "description": "Tomaste 400 fotos"
+    },
+    "cities_5": {
+      "title": "Saltador de ciudades",
+      "description": "Visitaste 10 ciudades"
+    },
+    "cities_20": {
+      "title": "Explorador urbano",
+      "description": "Visitaste 40 ciudades"
+    },
+    "tag_pizza": {
+      "title": "Peregrino de la pizza",
+      "description": "Registraste 20 entradas de pizza"
+    },
+    "tag_cafe": {
+      "title": "Cliente habitual del café",
+      "description": "Registraste 25 entradas de café"
+    },
+    "tag_museum": {
+      "title": "Experto en museos",
+      "description": "Registraste 15 entradas de museo"
+    },
+    "tag_beach": {
+      "title": "Explorador de playas",
+      "description": "Registraste 12 entradas de playa"
+    },
+    "tag_nightlife": {
+      "title": "Noctámbulo",
+      "description": "Registraste 12 entradas de vida nocturna"
+    },
+    "tag_street_food": {
+      "title": "Leyenda del street food",
+      "description": "Registraste 25 entradas de comida callejera"
+    },
+    "tag_market": {
+      "title": "Experto en mercados",
+      "description": "Registraste 12 entradas de mercado"
+    },
+    "tag_temple": {
+      "title": "Buscador de templos",
+      "description": "Registraste 10 entradas de templo"
+    },
+    "historian": {
+      "title": "Historiador",
+      "description": "Registraste 40 entradas de viajes pasados"
+    },
+    "weekend_warrior": {
+      "title": "Guerrero de fin de semana",
+      "description": "Iniciaste 8 viajes en fin de semana"
+    },
+    "weekend_master": {
+      "title": "Maestro del fin de semana",
+      "description": "Iniciaste 25 viajes en fin de semana"
+    },
+    "long_haul": {
+      "title": "Largo recorrido",
+      "description": "Completaste 5 viajes de 7+ días"
+    },
+    "marathon_traveler": {
+      "title": "Viajero maratonista",
+      "description": "Completaste 15 viajes de 7+ días"
+    },
+    "quick_escape": {
+      "title": "Escape rápido",
+      "description": "Completaste 5 viajes de 2 días o menos"
+    },
+    "express_traveler": {
+      "title": "Viajero exprés",
+      "description": "Completaste 20 viajes de 2 días o menos"
+    },
+    "critic": {
+      "title": "Crítico",
+      "description": "Valoraste 20 entradas"
+    },
+    "taste_maker": {
+      "title": "Creador de gusto",
+      "description": "Valoraste 100 entradas"
+    },
+    "five_star_finder": {
+      "title": "Buscador de cinco estrellas",
+      "description": "Encontraste 10 experiencias de cinco estrellas"
+    },
+    "gold_standard": {
+      "title": "Estándar de oro",
+      "description": "Encontraste 40 experiencias de cinco estrellas"
+    },
+    "high_standards": {
+      "title": "Altos estándares",
+      "description": "Mantén una puntuación media de 4+"
+    },
+    "note_taker": {
+      "title": "Tomador de notas",
+      "description": "Añadiste notas a 20 entradas"
+    },
+    "storyteller": {
+      "title": "Narrador",
+      "description": "Añadiste notas a 100 entradas"
+    },
+    "visual_logger": {
+      "title": "Diario visual",
+      "description": "Añadiste fotos a 20 entradas"
+    },
+    "photo_journalist": {
+      "title": "Fotoperiodista",
+      "description": "Añadiste fotos a 100 entradas"
+    },
+    "organizer": {
+      "title": "Organizador",
+      "description": "Etiquetaste 20 entradas"
+    },
+    "master_organizer": {
+      "title": "Organizador experto",
+      "description": "Etiquetaste 100 entradas"
+    },
+    "tag_creator": {
+      "title": "Creador de etiquetas",
+      "description": "Creaste 20 etiquetas únicas"
+    },
+    "taxonomy_expert": {
+      "title": "Experto en taxonomía",
+      "description": "Creaste 40 etiquetas únicas"
+    },
+    "summer_lover": {
+      "title": "Amante del verano",
+      "description": "Hiciste 5 viajes en meses de verano"
+    },
+    "sun_chaser": {
+      "title": "Cazador del sol",
+      "description": "Hiciste 15 viajes en meses de verano"
+    },
+    "winter_explorer": {
+      "title": "Explorador de invierno",
+      "description": "Hiciste 5 viajes en meses de invierno"
+    },
+    "frost_seeker": {
+      "title": "Cazador de escarcha",
+      "description": "Hiciste 15 viajes en meses de invierno"
+    },
+    "city_hopper_trip": {
+      "title": "Saltador de ciudades",
+      "description": "Completaste 2 viajes con 3+ ciudades"
+    },
+    "grand_tour": {
+      "title": "Gran tour",
+      "description": "Completaste 10 viajes con 3+ ciudades"
+    },
+    "focused_traveler": {
+      "title": "Viajero enfocado",
+      "description": "Completaste 10 viajes de una sola ciudad"
+    },
+    "deep_diver": {
+      "title": "Explorador profundo",
+      "description": "Completaste 25 viajes de una sola ciudad"
+    },
+    "city_list_first": {
+      "title": "Creador de listas",
+      "description": "Creaste tu primera lista de ciudades"
+    },
+    "city_list_halfway": {
+      "title": "A mitad de camino",
+      "description": "Completaste el 50% de una lista de ciudades"
+    },
+    "city_list_complete": {
+      "title": "Conquistador de listas",
+      "description": "Completaste una lista de ciudades al 100%"
+    }
+  },
+  "tags": {
+    "quick": {
+      "firstTime": "Primera vez",
+      "milestone": "Hito",
+      "funny": "Divertido",
+      "sweet": "Dulce",
+      "growth": "Crecimiento",
+      "health": "Salud",
+      "feeding": "Alimentación",
+      "sleep": "Sueño",
+      "play": "Juego",
+      "family": "Familia",
+      "outdoor": "Aire libre",
+      "learning": "Aprendizaje",
+      "birthday": "Cumpleaños",
+      "holiday": "Vacaciones",
+      "travel": "Viaje",
+      "doctor": "Doctor",
+      "bath": "Baño",
+      "teeth": "Dientes",
+      "walking": "Caminar",
+      "talking": "Hablar",
+      "crawling": "Gatear",
+      "friends": "Amigos",
+      "pet": "Con mascota",
+      "messy": "Desordenado"
+    }
+  },
+  "dialogs": {
+    "tagPicker": {
+      "title": "Agregar etiquetas",
+      "selected": "Seleccionadas",
+      "addCustom": "Agregar etiqueta personalizada",
+      "customPlaceholder": "Escribe un nombre de etiqueta...",
+      "quickTags": "Etiquetas rápidas",
+      "yourTags": "Tus etiquetas"
+    },
+    "locationPicker": {
+      "label": "Ciudad",
+      "placeholder": "Selecciona una ciudad",
+      "title": "Seleccionar ciudad",
+      "addLocation": "Agregar ciudad",
+      "locationNamePlaceholder": "Nombre de la ciudad",
+      "noLocation": "Sin ciudad (sin categoría)",
+      "fromDate": "Desde {date}",
+      "untilDate": "Hasta {date}"
+    },
+    "locationEditor": {
+      "label": "Ciudades",
+      "empty": "Aún no hay ciudades",
+      "addLocation": "Agregar ciudad",
+      "editTitle": "Editar ciudad",
+      "addTitle": "Agregar ciudad",
+      "locationNameLabel": "Nombre de la ciudad *",
+      "locationNamePlaceholder": "p. ej., Roma, Florencia",
+      "arrivalDateLabel": "Fecha de llegada (opcional)",
+      "departureDateLabel": "Fecha de salida (opcional)",
+      "notSet": "No establecido",
+      "fromDate": "Desde {date}",
+      "untilDate": "Hasta {date}",
+      "done": "Listo"
+    },
+    "milestoneList": {
+      "createTitle": "Nueva lista de ciudades",
+      "addItemTitle": "Agregar ciudad",
+      "addItemPlaceholder": "Nombre de la ciudad",
+      "addItemButton": "Agregar ciudad",
+      "adding": "Agregando...",
+      "linkChapterTitle": "Vincular al viaje (opcional)",
+      "noChapterLinked": "Ningún viaje vinculado"
+    }
+  },
+  "alerts": {
+    "exportFailedTitle": "Error de exportación",
+    "exportFailedMessage": "No se pudieron exportar los datos. Inténtalo de nuevo.",
+    "importComplete": "Importación completada",
+    "importCompletedWithErrors": "Importación completada con algunos problemas",
+    "importFailed": "Error en la importación. Inténtalo de nuevo.",
+    "errorTitle": "Error",
+    "requiredTitle": "Obligatorio",
+    "invalidDateTitle": "Fecha inválida",
+    "permissionTitle": "Permiso necesario",
+    "deleteEntryTitle": "Eliminar recuerdo",
+    "deleteEntryMessage": "¿Seguro que quieres eliminar este recuerdo?",
+    "deletePhotoTitle": "Eliminar foto",
+    "deletePhotoMessage": "¿Seguro que quieres eliminar esta foto?",
+    "deleteChapterTitle": "Eliminar capítulo",
+    "deleteChapterMessage": "¿Seguro que quieres eliminar este capítulo? Esto también eliminará todos los recuerdos.",
+    "deleteChapterLegacyTitle": "Eliminar capítulo",
+    "deleteChapterLegacyMessage": "¿Seguro que quieres eliminar este capítulo? Esto también eliminará todos los recuerdos.",
+    "deleteListTitle": "Eliminar lista",
+    "deleteListMessage": "¿Seguro que quieres eliminar \"{name}\"? Esto también eliminará todas las ciudades de esta lista.",
+    "deleteItemTitle": "Eliminar {item}",
+    "deleteItemMessage": "¿Seguro que quieres eliminar este {item}?",
+    "deleteEntryFailed": "No se pudo eliminar el recuerdo",
+    "deleteMemoryFailed": "No se pudo eliminar el recuerdo",
+    "deletePhotoFailed": "No se pudo eliminar la foto",
+    "deleteChapterFailed": "No se pudo eliminar el capítulo",
+    "deleteChapterLegacyFailed": "No se pudo eliminar el capítulo",
+    "deleteListFailed": "No se pudo eliminar la lista",
+    "createEntryFailed": "No se pudo crear el recuerdo. Inténtalo de nuevo.",
+    "updateEntryFailed": "No se pudo actualizar el recuerdo. Inténtalo de nuevo.",
+    "createChapterFailed": "No se pudo crear el capítulo. Inténtalo de nuevo.",
+    "updateChapterFailed": "No se pudo actualizar el capítulo. Inténtalo de nuevo.",
+    "createChapterLegacyFailed": "No se pudo crear el capítulo. Inténtalo de nuevo.",
+    "updateChapterLegacyFailed": "No se pudo actualizar el capítulo. Inténtalo de nuevo.",
+    "createMilestoneListFailed": "No se pudo crear la lista de ciudades. Inténtalo de nuevo.",
+    "createLocationFailed": "No se pudo crear la ciudad. Inténtalo de nuevo.",
+    "addLocationFailed": "No se pudo agregar la ciudad",
+    "permissionCameraMessage": "Se requiere acceso a la cámara para tomar fotos",
+    "invalidDateMessage": "La fecha de fin no puede ser anterior a la fecha de inicio",
+    "entryDateOutOfRangeTitle": "Fecha fuera de rango",
+    "entryDateOutOfRangeMessage": "La fecha de la entrada debe estar entre {start} y {end}.",
+    "requiredEntryTitle": "Por favor, introduce un título",
+    "requiredChapterTitle": "Por favor, introduce un título del capítulo",
+    "requiredChapterLegacyTitle": "Por favor, introduce un título del capítulo",
+    "requiredMilestoneItem": "Por favor, agrega al menos una ciudad",
+    "requiredListName": "Por favor, introduce un nombre de lista",
+    "requiredLocationGroup": "Por favor, introduce un nombre de país",
+    "requiredLocationName": "Por favor, introduce un nombre de ciudad",
+    "noProfileFound": "No se encontró un perfil de bebé. Crea uno primero.",
+    "nothingToShare": "Nada que compartir",
+    "nothingToShareMessage": "Esta ciudad aún no tiene entradas para compartir.",
+    "shareFailed": "Error al compartir. Inténtalo de nuevo.",
+    "chapterLimitTitle": "Límite de capítulos alcanzado",
+    "chapterLimitMessage": "Los usuarios gratuitos pueden crear hasta {limit} capítulos. Mejora a Pro para capítulos ilimitados.",
+    "chapterLimitUpgrade": "Mejorar a Pro",
+    "chapterLimitLegacyTitle": "Límite de capítulos alcanzado",
+    "chapterLimitLegacyMessage": "Los usuarios gratuitos pueden crear hasta {limit} capítulos. Mejora a Pro para capítulos ilimitados.",
+    "chapterLimitLegacyUpgrade": "Mejorar a Pro",
+    "backupReminderTitle": "Guarda tus recuerdos",
+    "backupReminderMessage": "¡Has creado {count} capítulos! Considera exportar tus datos para mantenerlos seguros.",
+    "backupReminderExport": "Exportar ahora",
+    "backupReminderLater": "Más tarde",
+    "proFeatureTitle": "Función Pro",
+    "proFeatureExport": "La exportación es una función Pro. Mejora a Pro para exportar tus datos.",
+    "proFeatureAdvancedSearch": "Los filtros de búsqueda avanzados son una función Pro.",
+    "proFeatureDarkMode": "El modo oscuro es una función Pro. Mejora a Pro para desbloquear todos los temas.",
+    "purchasesUnavailableTitle": "Compras no disponibles",
+    "purchasesUnavailableMessage": "Las compras no están disponibles en esta build.",
+    "purchasesNotReadyTitle": "Compras no listas",
+    "purchasesNotReadyMessage": "Inténtalo de nuevo en un momento.",
+    "purchasesNotConfiguredTitle": "Compras no disponibles",
+    "purchasesNotConfiguredMessage": "RevenueCat aún no está configurado.",
+    "restoreTitle": "Restaurar",
+    "restoreSuccessMessage": "Tus compras se restauraron correctamente.",
+    "restoreEmptyMessage": "No hay suscripciones activas para restaurar.",
+    "restoreFailedMessage": "Falló la restauración. Inténtalo de nuevo.",
+    "cameraPermission": "Camera Permission",
+    "cameraPermissionDesc": "Please enable camera access in settings",
+    "maxPhotos": "Max 3 photos",
+    "maxPhotosDesc": "You can add up to 3 photos",
+    "required": "Required"
+  },
+  "limitations": {
+    "title": "Bueno saber",
+    "photosNotBundled": "Las fotos no se incluyen en las exportaciones - solo referencias a archivos locales",
+    "noCloudSync": "Todos los datos se almacenan solo localmente en tu dispositivo",
+    "freeTextCities": "Los nombres de las listas de hitos son texto libre — los duplicados son listas separadas",
+    "noAutoBackup": "Sin copias de seguridad automáticas - recuerda exportar tus datos regularmente"
+  },
+  "onboarding": {
+    "screens": {
+      "photoOverload": {
+        "title": "Deja de buscar entre fotos",
+        "body": "Los recuerdos se pierden entre miles de fotos. Guarda momentos y detalles en un archivo ordenado."
+      },
+      "structuredArchive": {
+        "title": "La historia de tu bebé, organizada",
+        "body": "Crea un capítulo y luego añade hitos y notas. Todo queda estructurado y fácil de volver a ver."
+      },
+      "fastSearch": {
+        "title": "Encuéntralo en segundos",
+        "body": "Busca en capítulos, hitos y notas — al instante."
+      },
+      "bestOfList": {
+        "title": "Captura los momentos importantes",
+        "body": "Marca recuerdos importantes y añade notas breves."
+      },
+      "noCompetition": {
+        "title": "Sin feed. Sin competencia.",
+        "body": "Este es tu archivo privado. Tus recuerdos — solo para ti."
+      },
+      "privateOffline": {
+        "title": "Privado y sin conexión",
+        "body": "No se requiere cuenta. Tus datos se quedan en tu dispositivo y funcionan incluso sin conexión."
+      },
+      "simpleStart": {
+        "title": "Empieza tu primer capítulo",
+        "body": "Crea un capítulo en segundos y añade tu primer recuerdo."
+      }
+    },
+    "createFirstTrip": "Crea tu primer capítulo",
+    "next": "Siguiente",
+    "skip": "Omitir",
+    "back": "Atrás"
+  },
+  "shareContent": {
+    "locationLabel": "Ubicación",
+    "summaryLabel": "Resumen",
+    "noEntries": "Sin entradas",
+    "otherEntries": "Otras entradas",
+    "sharedFrom": "Compartido desde BabyLegacy",
+    "chapterHighlights": "Momentos destacados del capítulo",
+    "locations": "Ubicaciones",
+    "milestones": "Hitos",
+    "moments": "Notas",
+    "moreItems": "+ {count} más",
+    "fromTrip": "Del capítulo",
+    "milestonesSection": "HITOS",
+    "otherPlaces": "OTROS HITOS",
+    "memoriesSection": "NOTAS",
+    "myRecommendations": "Mis momentos",
+    "from": "De",
+    "other": "Otro"
+  },
+  "buttons": {
+    "save": "Save Memory"
+  }
+}

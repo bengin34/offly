@@ -1,0 +1,824 @@
+{
+  "common": {
+    "appName": "BabyLegacy",
+    "done": "Tamam",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "save": "Kaydet",
+    "add": "Ekle",
+    "create": "Oluştur",
+    "close": "Kapat",
+    "saving": "Kaydediliyor...",
+    "creating": "Oluşturuluyor...",
+    "adding": "Ekleniyor...",
+    "entry": "Anı",
+    "entries": "Anılar",
+    "memories": "Anılar",
+    "shareChapter": "Bölümü paylaş"
+  },
+  "shareDialog": {
+    "title": "{name} paylaş",
+    "subtitle": "Bu bölümü nasıl paylaşmak istediğini seç",
+    "hint": "Verilerin gizli kalır — paylaşım yerel bir dosya oluşturur",
+    "optionTextTitle": "Metin listesi",
+    "optionTextDescription": "Basit metin formatı, mesajlaşma için ideal",
+    "optionImageTitle": "Görsel kart",
+    "optionImageDescription": "Öne çıkan anılarla şık bir kart",
+    "optionPdfTitle": "PDF belgesi",
+    "optionPdfDescription": "Tüm detaylar ve notlarla tam bölüm",
+    "dialogTitleChapter": "{name} bölümünü paylaş",
+    "dialogTitleMemoryHighlights": "{name} öne çıkanlarını paylaş",
+    "dialogTitleChapterGuide": "{name} bölümünü paylaş",
+    "dialogTitleCard": "{name} kartını paylaş"
+  },
+  "tabs": {
+    "chapters": "Bölümler",
+    "chaptersLegacy": "Bölümler",
+    "search": "Arama",
+    "insights": "İstatistikler",
+    "settings": "Ayarlar"
+  },
+  "navigation": {
+    "newChapter": "Yeni Bölüm",
+    "chapter": "Bölüm",
+    "editChapter": "Bölümü Düzenle",
+    "newChapterLegacy": "Yeni Bölüm",
+    "chapterLegacy": "Bölüm",
+    "editChapterLegacy": "Bölümü Düzenle",
+    "newMemory": "Yeni Anı",
+    "memory": "Anı",
+    "editMemory": "Anıyı Düzenle",
+    "newEntry": "Yeni Anı",
+    "entry": "Anı",
+    "editEntry": "Anıyı Düzenle"
+  },
+  "chapters": {
+    "addCover": "Kapak ekle",
+    "days": "{count} gün",
+    "emptyTitle": "Henüz bölüm yok",
+    "emptySubtitle": "Bebeğinizin anılarını kaydetmeye başlayın",
+    "emptyButton": "İlk Bölümünü Oluştur"
+  },
+  "chaptersLegacy": {
+    "addCover": "Kapak ekle",
+    "days": "{count} gün",
+    "emptyTitle": "Henüz bölüm yok",
+    "emptySubtitle": "Bebeğinizin anılarını kaydetmeye başlayın",
+    "emptyButton": "İlk Bölümünü Oluştur"
+  },
+  "settings": {
+    "preferences": "Tercihler",
+    "appearance": "Görünüm",
+    "language": "Dil",
+    "chooseAppearance": "Görünümü Seç",
+    "chooseLanguage": "Dili Seç",
+    "exportSection": "Dışa Aktar",
+    "exportTitle": "Tüm Verileri Dışa Aktar",
+    "exportDescription": "Bölümlerini, anılarını ve etiketlerini JSON veya XLS olarak indir",
+    "exportButton": "JSON Dışa Aktar",
+    "exportButtonXls": "XLS Dışa Aktar",
+    "exportOpenButton": "Dışa aktarma seçenekleri",
+    "exportInfoTitle": "Neden dışa aktar?",
+    "exportInfoDescription": "Kişisel bir yedek oluştur, yeni telefona geç ya da anılarını bir tabloda analiz et. Dışa aktarımlar sen paylaşana kadar cihazında kalır.",
+    "exportPrivacyNote": "Dışa aktarma dosyaları kişisel notlar içerebilir. Dikkatli paylaş.",
+    "exportPhotosNote": "Fotoğrafların kendisi dışa aktarıma dahil edilmez.",
+    "exportFormatsTitle": "Bir format seç",
+    "exportFormatsDescription": "JSON yedekleme ve yeniden içe aktarma için idealdir. XLS Excel veya Google Sheets’te kolayca açılır.",
+    "importSection": "İçe Aktar",
+    "importTitle": "Verileri İçe Aktar",
+    "importDescription": "JSON dosyasından kayıtlı bölümlerini ve anılarını içe aktar.",
+    "importButton": "JSON İçe Aktar",
+    "importButtonImporting": "İçe aktarılıyor...",
+    "dataSection": "Veriler",
+    "dataTitle": "Dışa Aktar ve İçe Aktar",
+    "dataDescription": "Anılarını dışa/içe aktarma ile yedekle veya taşı.",
+    "dataButton": "Seçenekleri gör",
+    "supportSection": "Destek",
+    "supportRate": "Bize 5 yıldız ver",
+    "supportShare": "Uygulamayı paylaş",
+    "supportContact": "Bizimle iletişime geç",
+    "supportShareMessage": "BabyLegacy - özel bir aile arşivi uygulaması buldum, bir bak: {link}",
+    "onboardingSection": "Tanıtım",
+    "onboardingTitle": "Tanıtımı tekrar göster",
+    "onboardingDescription": "7 ekranlık tanıtımı istediğin zaman tekrar oynat.",
+    "onboardingButton": "Tanıtımı başlat",
+    "onboardingResetTitle": "Tanıtım başlatılsın mı?",
+    "onboardingResetMessage": "Bu, tanıtım akışını yeniden gösterecek. İstediğin zaman atlayabilirsin.",
+    "onboardingResetAction": "Başlat",
+    "aboutSection": "Hakkında",
+    "version": "Sürüm",
+    "storage": "Depolama",
+    "privacy": "Gizlilik",
+    "storageValue": "Veriler cihazında kalır.",
+    "privacyValue": "Çevrimdışı",
+    "footer": "BabyLegacy — özel aile arşivin",
+    "themeLight": "Açık",
+    "themeDark": "Koyu",
+    "themeSystem": "Sistem"
+  },
+  "proBanner": {
+    "title": "Pro'ya Geç",
+    "subtitle": "Tüm özelliklerin kilidini aç.",
+    "cta": "Pro'ya Geç",
+    "messages": [
+      {
+        "title": "Pro'ya Geç",
+        "subtitle": "Tüm özelliklerin kilidini aç."
+      },
+      {
+        "title": "Daha az kaydır, daha çok anlam",
+        "subtitle": "Önemli anıları anında bul."
+      },
+      {
+        "title": "Her şeyi hatırla",
+        "subtitle": "Küçük anları güvenle sakla."
+      },
+      {
+        "title": "Aile arşivin",
+        "subtitle": "Her bölüme anında erişim."
+      },
+      {
+        "title": "Saniyeler içinde bul",
+        "subtitle": "Başlık, not veya etiketle ara."
+      },
+      {
+        "title": "Sınırsız büyü",
+        "subtitle": "Sınırsız bölüm. Sınırsız anı."
+      }
+    ]
+  },
+  "labels": {
+    "date": "Tarih",
+    "startDate": "Başlangıç Tarihi",
+    "endDate": "Bitiş Tarihi",
+    "title": "Title",
+    "notes": "Notes",
+    "optional": "optional",
+    "filled": "Filled",
+    "milestone": {
+      "pastDue": "Past due",
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "empty": "No milestones yet",
+      "emptySubtitle": "Milestones will appear here",
+      "quickAddHelper": "Open full editor to add tags and more"
+    }
+  },
+  "placeholders": {
+    "search": "Bölümleri, anıları, notları ara...",
+    "chapterTitleExample": "örn. İlk Yıl",
+    "chapterSummaryExample": "Bu bölümün kısa açıklaması...",
+    "chapterTitle": "örn. 0–3 Ay",
+    "chapterDescription": "Bu bölümün kısa açıklaması...",
+    "entryTitleMilestone": "örn. İlk gülümseme",
+    "entryTitleMemory": "örn. Sakin bir öğleden sonra",
+    "memoryTitleMilestone": "İlk gülümseme, İlk adım...",
+    "memoryTitleNote": "Sakin bir öğleden sonra, Komik bir an...",
+    "entryNotes": "Detay ekle...",
+    "milestoneListName": "örn. Kilometre taşları, Aile gelenekleri",
+    "locationGroupName": "örn. Ev, anneanne evi",
+    "memoryTitle": "What happened?",
+    "memoryNotes": "Add details..."
+  },
+  "chapterForm": {
+    "titleLabel": "Bölüm Başlığı *",
+    "descriptionLabel": "Açıklama (isteğe bağlı)",
+    "coverImageLabel": "Kapak Görseli (isteğe bağlı)",
+    "changeCover": "Değiştir",
+    "addCoverPlaceholder": "Kapak görseli eklemek için dokun"
+  },
+  "chapterFormLegacy": {
+    "titleLabel": "Bölüm Başlığı *",
+    "summaryLabel": "Açıklama (isteğe bağlı)",
+    "coverImageLabel": "Kapak Görseli (isteğe bağlı)",
+    "changeCover": "Değiştir",
+    "addCoverPlaceholder": "Kapak görseli eklemek için dokun"
+  },
+  "memoryForm": {
+    "titleLabel": "Başlık *",
+    "locationLabel": "Konum",
+    "importanceLabel": "ÖNEM",
+    "descriptionLabel": "Açıklama",
+    "tagsLabel": "Etiketler",
+    "milestone": "Kilometre Taşı",
+    "note": "Not"
+  },
+  "entryForm": {
+    "titleLabel": "Başlık *",
+    "ratingLabel": "Önem",
+    "notesLabel": "Notlar",
+    "tagsLabel": "Etiketler",
+    "photosLabel": "Fotoğraflar ({count}/{max})",
+    "gallery": "Galeri",
+    "camera": "Kamera",
+    "tapToAddTags": "Etiket eklemek için dokun...",
+    "milestone": "Kilometre Taşı",
+    "memory": "Not",
+    "moreTags": "+{count} daha",
+    "locationLabel": "Konum",
+    "locationPlaceholder": "İsteğe bağlı konum ekle",
+    "locationHint": "Anıya yardımcı olacaksa konum ekle"
+  },
+  "memoryDetail": {
+    "descriptionTitle": "Açıklama",
+    "tagsTitle": "Etiketler"
+  },
+  "entryDetail": {
+    "notesTitle": "Notlar",
+    "tagsTitle": "Etiketler",
+    "allPhotos": "Tüm Fotoğraflar ({count})",
+    "created": "Oluşturuldu: {date}",
+    "updated": "Güncellendi: {date}",
+    "locationTitle": "Konum",
+    "openInMaps": "Haritada Aç"
+  },
+  "chapterDetail": {
+    "noPhoto": "Fotoğraf yok",
+    "notePill": "Not",
+    "uncategorized": "Kategorisiz",
+    "emptyTitle": "Henüz anı yok",
+    "emptySubtitle": "Bu bölüme anılar eklemeye başla",
+    "addFirstMemory": "İlk Anıyı Ekle",
+    "addMemory": "Anı Ekle"
+  },
+  "chapterDetailLegacy": {
+    "noPhoto": "Fotoğraf yok",
+    "notePill": "Not",
+    "uncategorized": "Kategorisiz",
+    "emptyTitle": "Henüz anı yok",
+    "emptySubtitle": "Bu bölüme anılar eklemeye başla",
+    "addFirstEntry": "İlk Anıyı Ekle",
+    "addEntry": "Anı Ekle"
+  },
+  "memories": {
+    "memory": "Anı",
+    "milestone": "Kilometre Taşı",
+    "note": "Not",
+    "notePill": "NOT",
+    "noPhoto": "Fotoğraf yok"
+  },
+  "milestoneLists": {
+    "title": "Şehir Listeleri",
+    "listNameLabel": "Liste Adı *",
+    "listTypeLabel": "Liste Türü",
+    "groupLabel": "Ülke *",
+    "typeCustom": "Özel",
+    "typeCountry": "Ülke",
+    "typeHintCustom": "Takip etmek istediğin şehirler için özel bir liste oluştur",
+    "typeHintCountry": "Belirli bir ülke içindeki şehirler için liste oluştur",
+    "emptyTitle": "Henüz şehir listesi yok",
+    "emptyDescription": "Ziyaret etmek istediğin şehirlerin listesini oluştur ve ilerlemeni takip et",
+    "createFirstList": "İlk Listeyi Oluştur",
+    "progressVisited": "{visited}/{total} ziyaret edildi ({percent}%)",
+    "detailProgress": "{visited} / {total} şehir ziyaret edildi ({percent}%)",
+    "detailEmptyTitle": "Henüz şehir yok",
+    "detailEmptyDescription": "Ziyaret etmek istediğin şehirleri ekle ve ilerlemeni takip et",
+    "detailAddCity": "Şehir Ekle",
+    "detailVisited": "Ziyaret Edilenler",
+    "notFound": "Şehir listesi bulunamadı",
+    "loading": "Yükleniyor..."
+  },
+  "search": {
+    "emptyTitle": "Anılarını ara",
+    "emptySubtitle": "Bölümleri ve anıları başlık, açıklama, not veya etiketle bul",
+    "noResultsTitle": "Sonuç bulunamadı",
+    "noResultsSubtitle": "Farklı anahtar kelimelerle dene",
+    "showLabel": "Göster",
+    "memoryTypeLabel": "Anı Türü",
+    "minImportanceLabel": "Min. Önem",
+    "entryTypeLabel": "Anı Türü",
+    "minRatingLabel": "Min. Önem",
+    "tagsLabel": "Etiketler",
+    "clearFilters": "Filtreleri temizle",
+    "filterAll": "Tümü",
+    "filterChapters": "Bölümler",
+    "filterMemories": "Anılar",
+    "filterChapterLegacy": "Bölümler",
+    "filterEntries": "Anılar",
+    "filterAny": "Herhangi",
+    "filterMilestones": "Kilometre Taşları",
+    "filterNotes": "Notlar",
+    "filterMilestoneLegacy": "Kilometre Taşları",
+    "filterNoteLegacy": "Notlar",
+    "matchedIn": "Eşleştiği alan: {field}",
+    "inChapter": "{chapter} içinde",
+    "inChapterLegacy": "{chapter} içinde",
+    "matchFieldTitle": "başlık",
+    "matchFieldLocation": "konum",
+    "matchFieldSummary": "açıklama",
+    "matchFieldNotes": "notlar",
+    "matchFieldTag": "etiket",
+    "matchFieldMilestone": "şehir"
+  },
+  "insights": {
+    "sectionStats": "İstatistiklerin",
+    "statsChapters": "Bölümler",
+    "statsMemories": "Anılar",
+    "statsChapterLegacy": "Bölümler",
+    "statsMemoryLegacy": "Anılar",
+    "statsMilestones": "Yerler",
+    "statsLocations": "Konumlar",
+    "statsPhotos": "Fotoğraflar",
+    "statsImportant": "Önemli",
+    "statsChapterDays": "Bölüm Günleri",
+    "memoriesBreakdown": "{milestones} kilometre taşı, {notes} not",
+    "entriesBreakdown": "{milestones} kilometre taşı, {notes} not",
+    "highlightMostVisited": "En Çok Ziyaret",
+    "highlightFirstTrip": "İlk Bölüm",
+    "highlightFirstMemory": "İlk Anı",
+    "highlightAvgRating": "Ort. Önem",
+    "highlightImportant": "En Önemli",
+    "topTags": "Öne Çıkan Etiketler",
+    "milestoneProgress": "Kilometre Taşı Listeleri",
+    "seeAll": "Tümünü Gör",
+    "createFirstMilestoneList": "İlk kilometre taşı listeni oluştur",
+    "milestoneListsEmptyHint": "Kaydetmek istediğin kilometre taşlarını takip et",
+    "milestoneListCount": "{visited}/{total} öğe",
+    "moreLists": "+{count} liste daha",
+    "achievements": "Başarılar",
+    "viewAll": "Tümünü Gör",
+    "noBadgesEarned": "Henüz rozet kazanılmadı",
+    "badgesEmptyHint": "Başarıların kilidini açmak için anı eklemeye devam et",
+    "moreBadges": "+{count} rozet daha",
+    "badgesProgress": "{unlocked} / {total} rozet kazanıldı"
+  },
+  "badges": {
+    "earned": "Kazanıldı",
+    "locked": "Kilitli",
+    "allBadges": "Tüm Rozetler",
+    "badgesEarned": "Kazanılan Rozetler",
+    "special": "Özel",
+    "tagAdventures": "Etiket Hedefleri",
+    "firstSteps": "İlk Adımlar",
+    "chapterMilestones": "Bölüm Kilometre Taşları",
+    "milestoneAchievements": "Kilometre Taşı Başarıları",
+    "entryMilestones": "Anı Kilometre Taşları",
+    "consistencyMilestones": "Tutarlılık",
+    "photoMilestones": "Fotoğraf Kilometre Taşları",
+    "tagMilestones": "Etiket Takibi",
+    "organizationMilestones": "Organizasyon",
+    "badgeUnlocked": "Rozet Açıldı!"
+  },
+  "badgeDetail": {
+    "congratulations": "Tebrikler!",
+    "earnedOn": "{date} tarihinde kazanıldı",
+    "notYetEarned": "Henüz kazanılmadı"
+  },
+  "badgeItems": {
+    "first_trip": {
+      "title": "İlk Seyahat",
+      "description": "İlk seyahatini oluşturdun"
+    },
+    "first_place": {
+      "title": "İlk Yer",
+      "description": "İlk yerini kaydettin"
+    },
+    "first_moment": {
+      "title": "İlk An",
+      "description": "İlk anını yakaladın"
+    },
+    "first_tag": {
+      "title": "İlk Etiket",
+      "description": "İlk etiketini oluşturdun"
+    },
+    "trips_3": {
+      "title": "Kaşif",
+      "description": "5 seyahat kaydettin"
+    },
+    "trips_10": {
+      "title": "Maceracı",
+      "description": "15 seyahat kaydettin"
+    },
+    "trips_25": {
+      "title": "Dünya Gezgini",
+      "description": "30 seyahat kaydettin"
+    },
+    "places_10": {
+      "title": "Yer Avcısı",
+      "description": "15 yer kaydettin"
+    },
+    "places_25": {
+      "title": "Yer Koleksiyoncusu",
+      "description": "40 yer kaydettin"
+    },
+    "places_100": {
+      "title": "Yer Ustası",
+      "description": "150 yer kaydettin"
+    },
+    "entries_25": {
+      "title": "Anı Bekçisi",
+      "description": "40 kayıt oluşturdun"
+    },
+    "entries_100": {
+      "title": "Tarihçi",
+      "description": "150 kayıt oluşturdun"
+    },
+    "countries_3": {
+      "title": "Sınır Aşan",
+      "description": "5 ülke ziyaret ettin"
+    },
+    "countries_5": {
+      "title": "Dünya Gezgini",
+      "description": "8 ülke ziyaret ettin"
+    },
+    "countries_10": {
+      "title": "Kıtasal",
+      "description": "15 ülke ziyaret ettin"
+    },
+    "photos_10": {
+      "title": "Fotoğraf Meraklısı",
+      "description": "25 fotoğraf çektin"
+    },
+    "photos_50": {
+      "title": "Fotoğrafçı",
+      "description": "100 fotoğraf çektin"
+    },
+    "photos_200": {
+      "title": "Fotoğraf Arşivcisi",
+      "description": "400 fotoğraf çektin"
+    },
+    "cities_5": {
+      "title": "Şehir Gezgini",
+      "description": "10 şehir ziyaret ettin"
+    },
+    "cities_20": {
+      "title": "Şehir Kaşifi",
+      "description": "40 şehir ziyaret ettin"
+    },
+    "tag_pizza": {
+      "title": "Pizza Hacısı",
+      "description": "20 pizza kaydı oluşturdun"
+    },
+    "tag_cafe": {
+      "title": "Kafe Müdavimi",
+      "description": "25 kafe kaydı oluşturdun"
+    },
+    "tag_museum": {
+      "title": "Müze Uzmanı",
+      "description": "15 müze kaydı oluşturdun"
+    },
+    "tag_beach": {
+      "title": "Plaj Gezgini",
+      "description": "12 plaj kaydı oluşturdun"
+    },
+    "tag_nightlife": {
+      "title": "Gece Kuşu",
+      "description": "12 gece hayatı kaydı oluşturdun"
+    },
+    "tag_street_food": {
+      "title": "Sokak Lezzeti Efsanesi",
+      "description": "25 sokak yemeği kaydı oluşturdun"
+    },
+    "tag_market": {
+      "title": "Pazar Ustası",
+      "description": "12 pazar kaydı oluşturdun"
+    },
+    "tag_temple": {
+      "title": "Tapınak Kaşifi",
+      "description": "10 tapınak kaydı oluşturdun"
+    },
+    "historian": {
+      "title": "Tarihçi",
+      "description": "Geçmiş seyahatlerden 40 kayıt oluşturdun"
+    },
+    "weekend_warrior": {
+      "title": "Hafta Sonu Savaşçısı",
+      "description": "Hafta sonu başlayan 8 seyahat yaptın"
+    },
+    "weekend_master": {
+      "title": "Hafta Sonu Ustası",
+      "description": "Hafta sonu başlayan 25 seyahat yaptın"
+    },
+    "long_haul": {
+      "title": "Uzun Yolcu",
+      "description": "7+ gün süren 5 seyahati tamamladın"
+    },
+    "marathon_traveler": {
+      "title": "Maraton Gezgin",
+      "description": "7+ gün süren 15 seyahati tamamladın"
+    },
+    "quick_escape": {
+      "title": "Hızlı Kaçış",
+      "description": "2 gün veya daha kısa 5 seyahati tamamladın"
+    },
+    "express_traveler": {
+      "title": "Ekspres Gezgin",
+      "description": "2 gün veya daha kısa 20 seyahati tamamladın"
+    },
+    "critic": {
+      "title": "Eleştirmen",
+      "description": "20 kaydı puanladın"
+    },
+    "taste_maker": {
+      "title": "Zevk Belirleyici",
+      "description": "100 kaydı puanladın"
+    },
+    "five_star_finder": {
+      "title": "Beş Yıldız Avcısı",
+      "description": "10 beş yıldızlı deneyim buldun"
+    },
+    "gold_standard": {
+      "title": "Altın Standart",
+      "description": "40 beş yıldızlı deneyim buldun"
+    },
+    "high_standards": {
+      "title": "Yüksek Standartlar",
+      "description": "Ortalama puanı 4+ seviyesinde tut"
+    },
+    "note_taker": {
+      "title": "Not Tutucu",
+      "description": "20 kayda not ekledin"
+    },
+    "storyteller": {
+      "title": "Hikâye Anlatıcısı",
+      "description": "100 kayda not ekledin"
+    },
+    "visual_logger": {
+      "title": "Görsel Günlükçü",
+      "description": "20 kayda fotoğraf ekledin"
+    },
+    "photo_journalist": {
+      "title": "Foto Muhabiri",
+      "description": "100 kayda fotoğraf ekledin"
+    },
+    "organizer": {
+      "title": "Organizatör",
+      "description": "20 kaydı etiketledin"
+    },
+    "master_organizer": {
+      "title": "Usta Organizatör",
+      "description": "100 kaydı etiketledin"
+    },
+    "tag_creator": {
+      "title": "Etiket Üreticisi",
+      "description": "20 benzersiz etiket oluşturdun"
+    },
+    "taxonomy_expert": {
+      "title": "Taksonomi Uzmanı",
+      "description": "40 benzersiz etiket oluşturdun"
+    },
+    "summer_lover": {
+      "title": "Yaz Sever",
+      "description": "Yaz aylarında 5 seyahat yaptın"
+    },
+    "sun_chaser": {
+      "title": "Güneş Avcısı",
+      "description": "Yaz aylarında 15 seyahat yaptın"
+    },
+    "winter_explorer": {
+      "title": "Kış Kaşifi",
+      "description": "Kış aylarında 5 seyahat yaptın"
+    },
+    "frost_seeker": {
+      "title": "Ayaz Avcısı",
+      "description": "Kış aylarında 15 seyahat yaptın"
+    },
+    "city_hopper_trip": {
+      "title": "Şehir Atlama",
+      "description": "3+ şehirli 2 seyahati tamamladın"
+    },
+    "grand_tour": {
+      "title": "Büyük Tur",
+      "description": "3+ şehirli 10 seyahati tamamladın"
+    },
+    "focused_traveler": {
+      "title": "Odaklı Gezgin",
+      "description": "10 tek şehirlik seyahati tamamladın"
+    },
+    "deep_diver": {
+      "title": "Derin Dalış",
+      "description": "25 tek şehirlik seyahati tamamladın"
+    },
+    "city_list_first": {
+      "title": "Liste Oluşturucu",
+      "description": "İlk şehir listesini oluşturdun"
+    },
+    "city_list_halfway": {
+      "title": "Yarı Yolda",
+      "description": "Bir şehir listesinin %50'sini tamamladın"
+    },
+    "city_list_complete": {
+      "title": "Liste Fatihi",
+      "description": "Bir şehir listesini %100 tamamladın"
+    }
+  },
+  "tags": {
+    "quick": {
+      "firstTime": "İlk Kez",
+      "milestone": "Dönüm Noktası",
+      "funny": "Komik",
+      "sweet": "Tatlı",
+      "growth": "Büyüme",
+      "health": "Sağlık",
+      "feeding": "Beslenme",
+      "sleep": "Uyku",
+      "play": "Oyun",
+      "family": "Aile",
+      "outdoor": "Açık Hava",
+      "learning": "Öğrenme",
+      "birthday": "Doğum Günü",
+      "holiday": "Tatil",
+      "travel": "Seyahat",
+      "doctor": "Doktor Ziyareti",
+      "bath": "Banyo Zamanı",
+      "teeth": "Dişler",
+      "walking": "Yürüme",
+      "talking": "Konuşma",
+      "crawling": "Emekleme",
+      "friends": "Arkadaşlar",
+      "pet": "Evcil Hayvanla",
+      "messy": "Dağınık"
+    }
+  },
+  "dialogs": {
+    "tagPicker": {
+      "title": "Etiket Ekle",
+      "selected": "Seçilenler",
+      "addCustom": "Özel Etiket Ekle",
+      "customPlaceholder": "Etiket adı yaz...",
+      "quickTags": "Hızlı Etiketler",
+      "yourTags": "Etiketlerin"
+    },
+    "locationPicker": {
+      "label": "Şehir",
+      "placeholder": "Şehir seç",
+      "title": "Şehir Seç",
+      "addLocation": "Şehir Ekle",
+      "locationNamePlaceholder": "Şehir adı",
+      "noLocation": "Şehir yok (sınıflandırılmamış)",
+      "fromDate": "{date} tarihinden",
+      "untilDate": "{date} tarihine kadar"
+    },
+    "locationEditor": {
+      "label": "Şehirler",
+      "empty": "Henüz şehir eklenmedi",
+      "addLocation": "Şehir Ekle",
+      "editTitle": "Şehri Düzenle",
+      "addTitle": "Şehir Ekle",
+      "locationNameLabel": "Şehir Adı *",
+      "locationNamePlaceholder": "örn. Roma, Floransa",
+      "arrivalDateLabel": "Varış Tarihi (isteğe bağlı)",
+      "departureDateLabel": "Ayrılış Tarihi (isteğe bağlı)",
+      "notSet": "Belirlenmedi",
+      "fromDate": "{date} tarihinden",
+      "untilDate": "{date} tarihine kadar",
+      "done": "Tamam"
+    },
+    "milestoneList": {
+      "createTitle": "Yeni Şehir Listesi",
+      "addItemTitle": "Şehir Ekle",
+      "addItemPlaceholder": "Şehir adı",
+      "addItemButton": "Şehir Ekle",
+      "adding": "Ekleniyor...",
+      "linkChapterTitle": "Seyahate Bağla (İsteğe bağlı)",
+      "noChapterLinked": "Bağlı seyahat yok"
+    }
+  },
+  "alerts": {
+    "exportFailedTitle": "Dışa aktarma başarısız",
+    "exportFailedMessage": "Veriler dışa aktarılamadı. Lütfen tekrar deneyin.",
+    "importComplete": "İçe aktarma tamamlandı",
+    "importCompletedWithErrors": "İçe aktarma bazı sorunlarla tamamlandı",
+    "importFailed": "İçe aktarma başarısız oldu. Lütfen tekrar dene.",
+    "errorTitle": "Hata",
+    "requiredTitle": "Gerekli",
+    "invalidDateTitle": "Geçersiz Tarih",
+    "permissionTitle": "İzin gerekli",
+    "deleteEntryTitle": "Anıyı Sil",
+    "deleteEntryMessage": "Bu anıyı silmek istediğinize emin misiniz?",
+    "deletePhotoTitle": "Fotoğrafı Sil",
+    "deletePhotoMessage": "Bu fotoğrafı silmek istediğinize emin misiniz?",
+    "deleteChapterTitle": "Bölümü Sil",
+    "deleteChapterMessage": "Bu bölümü silmek istediğinize emin misiniz? Bu işlem tüm anıları da silecektir.",
+    "deleteChapterLegacyTitle": "Bölümü Sil",
+    "deleteChapterLegacyMessage": "Bu bölümü silmek istediğinize emin misiniz? Bu işlem tüm anıları da silecektir.",
+    "deleteListTitle": "Listeyi Sil",
+    "deleteListMessage": "\"{name}\" listesini silmek istediğinize emin misiniz? Bu işlem listedeki tüm şehirleri de silecektir.",
+    "deleteItemTitle": "{item} Sil",
+    "deleteItemMessage": "Bu {item} öğesini silmek istediğinize emin misiniz?",
+    "deleteEntryFailed": "Anı silinemedi",
+    "deleteMemoryFailed": "Anı silinemedi",
+    "deletePhotoFailed": "Fotoğraf silinemedi",
+    "deleteChapterFailed": "Bölüm silinemedi",
+    "deleteChapterLegacyFailed": "Bölüm silinemedi",
+    "deleteListFailed": "Liste silinemedi",
+    "createEntryFailed": "Anı oluşturulamadı. Lütfen tekrar deneyin.",
+    "updateEntryFailed": "Anı güncellenemedi. Lütfen tekrar deneyin.",
+    "createChapterFailed": "Bölüm oluşturulamadı. Lütfen tekrar deneyin.",
+    "updateChapterFailed": "Bölüm güncellenemedi. Lütfen tekrar deneyin.",
+    "createChapterLegacyFailed": "Bölüm oluşturulamadı. Lütfen tekrar deneyin.",
+    "updateChapterLegacyFailed": "Bölüm güncellenemedi. Lütfen tekrar deneyin.",
+    "createMilestoneListFailed": "Şehir listesi oluşturulamadı. Lütfen tekrar deneyin.",
+    "createLocationFailed": "Şehir oluşturulamadı. Lütfen tekrar deneyin.",
+    "addLocationFailed": "Şehir eklenemedi",
+    "permissionCameraMessage": "Fotoğraf çekmek için kamera izni gerekli",
+    "invalidDateMessage": "Bitiş tarihi başlangıç tarihinden önce olamaz",
+    "entryDateOutOfRangeTitle": "Tarih aralık dışında",
+    "entryDateOutOfRangeMessage": "Kayıt tarihi {start} ile {end} arasında olmalı.",
+    "requiredEntryTitle": "Lütfen bir başlık girin",
+    "requiredChapterTitle": "Lütfen bir bölüm başlığı girin",
+    "requiredChapterLegacyTitle": "Lütfen bir bölüm başlığı girin",
+    "requiredMilestoneItem": "Lütfen en az bir şehir ekleyin",
+    "requiredListName": "Lütfen bir liste adı girin",
+    "requiredLocationGroup": "Lütfen bir ülke adı girin",
+    "requiredLocationName": "Lütfen bir şehir adı girin",
+    "noProfileFound": "Bebek profili bulunamadı. Lütfen önce oluşturun.",
+    "nothingToShare": "Paylaşılacak bir şey yok",
+    "nothingToShareMessage": "Bu şehirde henüz paylaşılacak kayıt yok.",
+    "shareFailed": "Paylaşma başarısız oldu. Lütfen tekrar deneyin.",
+    "chapterLimitTitle": "Bölüm Limitine Ulaşıldı",
+    "chapterLimitMessage": "Ücretsiz kullanıcılar en fazla {limit} bölüm oluşturabilir. Sınırsız bölüm için Pro'ya yükseltin.",
+    "chapterLimitUpgrade": "Pro'ya Yükselt",
+    "chapterLimitLegacyTitle": "Bölüm Limitine Ulaşıldı",
+    "chapterLimitLegacyMessage": "Ücretsiz kullanıcılar en fazla {limit} bölüm oluşturabilir. Sınırsız bölüm için Pro'ya yükseltin.",
+    "chapterLimitLegacyUpgrade": "Pro'ya Yükselt",
+    "backupReminderTitle": "Anılarını Yedekle",
+    "backupReminderMessage": "{count} bölüm oluşturdun! Verilerini güvende tutmak için dışa aktarmayı düşün.",
+    "backupReminderExport": "Şimdi Dışa Aktar",
+    "backupReminderLater": "Daha Sonra",
+    "proFeatureTitle": "Pro Özellik",
+    "proFeatureExport": "Dışa aktarma bir Pro özelliğidir. Verilerini dışa aktarmak için Pro'ya yükseltin.",
+    "proFeatureAdvancedSearch": "Gelişmiş arama filtreleri bir Pro özelliğidir.",
+    "proFeatureDarkMode": "Karanlık mod bir Pro özelliğidir. Tüm temaları açmak için Pro'ya yükseltin.",
+    "purchasesUnavailableTitle": "Satın alımlar kullanılamıyor",
+    "purchasesUnavailableMessage": "Bu sürümde satın alımlar kullanılamıyor.",
+    "purchasesNotReadyTitle": "Satın alımlar hazır değil",
+    "purchasesNotReadyMessage": "Lütfen biraz sonra tekrar deneyin.",
+    "purchasesNotConfiguredTitle": "Satın alımlar kullanılamıyor",
+    "purchasesNotConfiguredMessage": "RevenueCat henüz yapılandırılmadı.",
+    "restoreTitle": "Geri Yükle",
+    "restoreSuccessMessage": "Satın alımların başarıyla geri yüklendi.",
+    "restoreEmptyMessage": "Geri yüklenecek aktif abonelik yok.",
+    "restoreFailedMessage": "Geri yükleme başarısız oldu. Lütfen tekrar deneyin.",
+    "cameraPermission": "Camera Permission",
+    "cameraPermissionDesc": "Please enable camera access in settings",
+    "maxPhotos": "Max 3 photos",
+    "maxPhotosDesc": "You can add up to 3 photos",
+    "required": "Required"
+  },
+  "limitations": {
+    "title": "Bilmenizde Fayda Var",
+    "photosNotBundled": "Fotoğraflar dışa aktarmalara dahil değildir - sadece yerel dosya referansları",
+    "noCloudSync": "Tüm veriler yalnızca cihazınızda yerel olarak depolanır",
+    "freeTextCities": "Kilometre taşı listeleri serbest metin — yinelenenler ayrı listeler olarak değerlendirilir",
+    "noAutoBackup": "Otomatik yedekleme yok - verilerinizi düzenli olarak dışa aktarmayı unutmayın"
+  },
+  "onboarding": {
+    "screens": {
+      "photoOverload": {
+        "title": "Fotoğraflarda kaybolmaya son",
+        "body": "Anılar binlerce fotoğraf arasında kaybolur. Anları ve detayları düzenli bir arşivde topla."
+      },
+      "structuredArchive": {
+        "title": "Bebeğinin hikayesi, düzenli",
+        "body": "Bir bölüm oluştur, sonra kilometre taşları ve notlar ekle. Her şey düzenli kalır ve kolayca geri dönülür."
+      },
+      "fastSearch": {
+        "title": "Saniyeler içinde bul",
+        "body": "Bölümlerde, kilometre taşlarında ve notlarda anında ara."
+      },
+      "bestOfList": {
+        "title": "Önemli anları yakala",
+        "body": "Önemli anıları işaretle ve kısa notlar ekle."
+      },
+      "noCompetition": {
+        "title": "Akış yok. Rekabet yok.",
+        "body": "Bu senin özel arşivin. Anıların — yalnızca sana ait."
+      },
+      "privateOffline": {
+        "title": "Özel ve çevrimdışı",
+        "body": "Hesap gerekmez. Verilerin cihazında kalır ve çevrimdışıyken bile çalışır."
+      },
+      "simpleStart": {
+        "title": "İlk bölümüne şimdi başla",
+        "body": "Birkaç saniyede bir bölüm oluştur ve ilk anını ekle."
+      }
+    },
+    "createFirstTrip": "İlk bölümünü oluştur",
+    "next": "İleri",
+    "skip": "Atla",
+    "back": "Geri"
+  },
+  "shareContent": {
+    "locationLabel": "Konum",
+    "summaryLabel": "Özet",
+    "noEntries": "Kayıt yok",
+    "otherEntries": "Diğer kayıtlar",
+    "sharedFrom": "BabyLegacy'den paylaşıldı",
+    "chapterHighlights": "Bölüm Öne Çıkanları",
+    "locations": "Konumlar",
+    "milestones": "Kilometre Taşları",
+    "moments": "Notlar",
+    "moreItems": "+ {count} daha",
+    "fromTrip": "Bölümden",
+    "milestonesSection": "KİLOMETRE TAŞLARI",
+    "otherPlaces": "DİĞER KİLOMETRE TAŞLARI",
+    "memoriesSection": "NOTLAR",
+    "myRecommendations": "Öne Çıkanlarım",
+    "from": "Kaynak",
+    "other": "Diğer"
+  },
+  "buttons": {
+    "save": "Save Memory"
+  }
+}

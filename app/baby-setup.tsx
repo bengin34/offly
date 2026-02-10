@@ -13,23 +13,27 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme } from '../src/hooks';
+import { useTheme, useThemeMode } from '../src/hooks';
 import { useOnboardingStore } from '../src/stores/onboardingStore';
 import { BabyProfileRepository, VaultRepository } from '../src/db/repositories';
+import { autoGenerateTimeline } from '../src/utils/autoGenerate';
 import { Background } from '../src/components/Background';
-import { spacing, fontSize, fonts, borderRadius } from '../src/constants';
+import { spacing, fontSize, fonts, borderRadius, lightPaletteColors, paletteMetadata } from '../src/constants';
 import type { BabyMode } from '../src/types';
+import type { ThemePalette } from '../src/constants/colors';
 
 export default function BabySetupScreen() {
   const theme = useTheme();
+  const { palette, setPalette } = useThemeMode();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const completeOnboarding = useOnboardingStore((s) => s.completeOnboarding);
 
-  const [step, setStep] = useState<'mode' | 'details'>('mode');
+  const [step, setStep] = useState<'mode' | 'details' | 'theme'>('mode');
   const [mode, setMode] = useState<BabyMode | null>(null);
   const [name, setName] = useState('');
   const [date, setDate] = useState<Date>(new Date());
+  const [selectedPalette, setSelectedPalette] = useState<ThemePalette>(palette);
   const [showDatePicker, setShowDatePicker] = useState(Platform.OS === 'ios');
   const [isSaving, setIsSaving] = useState(false);
 
@@ -43,11 +47,26 @@ export default function BabySetupScreen() {
     if (selectedDate) setDate(selectedDate);
   }, []);
 
+  const handleContinueFromDetails = useCallback(() => {
+    if (!mode) return;
+    setStep('theme');
+  }, [mode]);
+
+  const handleSelectPalette = useCallback(
+    (nextPalette: ThemePalette) => {
+      setSelectedPalette(nextPalette);
+      setPalette(nextPalette);
+    },
+    [setPalette]
+  );
+
   const handleFinish = useCallback(async () => {
     if (!mode || isSaving) return;
     setIsSaving(true);
 
     try {
+      setPalette(selectedPalette);
+
       // Update the default profile with mode + date info
       const profile = await BabyProfileRepository.getDefault();
       if (profile) {
@@ -62,6 +81,18 @@ export default function BabySetupScreen() {
         // Create default vaults
         const referenceDate = date.toISOString();
         await VaultRepository.createDefaults(profile.id, referenceDate);
+
+        // Auto-generate chapters + milestones for born mode
+        if (mode === 'born') {
+          try {
+            const updatedProfile = await BabyProfileRepository.getDefault();
+            if (updatedProfile) {
+              await autoGenerateTimeline(updatedProfile);
+            }
+          } catch (err) {
+            console.warn('Failed to auto-generate timeline:', err);
+          }
+        }
       }
 
       await completeOnboarding();
@@ -74,7 +105,17 @@ export default function BabySetupScreen() {
     } finally {
       setIsSaving(false);
     }
-  }, [mode, name, date, isSaving, completeOnboarding, router]);
+  }, [mode, name, date, isSaving, selectedPalette, setPalette, completeOnboarding, router]);
+
+  const paletteOptions: {
+    palette: ThemePalette;
+    label: string;
+    description: string;
+    icon: keyof typeof Ionicons.glyphMap;
+  }[] = (Object.keys(paletteMetadata) as ThemePalette[]).map((value) => ({
+    palette: value,
+    ...paletteMetadata[value],
+  }));
 
   const styles = createStyles(theme);
 
@@ -116,6 +157,89 @@ export default function BabySetupScreen() {
             </TouchableOpacity>
           </View>
         </View>
+      </View>
+    );
+  }
+
+  if (step === 'theme') {
+    return (
+      <View style={styles.container}>
+        <Background />
+        <KeyboardAvoidingView
+          style={styles.flex}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        >
+          <ScrollView
+            contentContainerStyle={[
+              styles.detailsContent,
+              { paddingTop: insets.top + spacing.xl, paddingBottom: insets.bottom + spacing.xxl },
+            ]}
+            keyboardShouldPersistTaps="handled"
+          >
+            <TouchableOpacity style={styles.backButton} onPress={() => setStep('details')}>
+              <Ionicons name="arrow-back" size={22} color={theme.textSecondary} />
+            </TouchableOpacity>
+
+            <Text style={styles.title}>Choose your color theme</Text>
+            <Text style={styles.subtitle}>
+              Pick a look for your baby's timeline. You can change this anytime in Settings.
+            </Text>
+
+            <View style={styles.paletteList}>
+              {paletteOptions.map((option) => {
+                const preview = lightPaletteColors[option.palette];
+                const isSelected = selectedPalette === option.palette;
+
+                return (
+                  <TouchableOpacity
+                    key={option.palette}
+                    style={[
+                      styles.paletteCard,
+                      isSelected && styles.paletteCardSelected,
+                    ]}
+                    onPress={() => handleSelectPalette(option.palette)}
+                    activeOpacity={0.85}
+                  >
+                    <View style={styles.paletteCardLeft}>
+                      <View style={[styles.paletteIconWrap, { backgroundColor: preview.accentSoft }]}>
+                        <Ionicons
+                          name={option.icon}
+                          size={20}
+                          color={isSelected ? theme.primary : theme.textSecondary}
+                        />
+                      </View>
+                      <View>
+                        <Text style={styles.paletteTitle}>{option.label}</Text>
+                        <Text style={styles.paletteSubtitle}>{option.description}</Text>
+                      </View>
+                    </View>
+                    <View style={styles.paletteRight}>
+                      <View style={styles.paletteSwatches}>
+                        <View style={[styles.paletteSwatch, { backgroundColor: preview.primary }]} />
+                        <View style={[styles.paletteSwatch, { backgroundColor: preview.accent }]} />
+                        <View style={[styles.paletteSwatch, { backgroundColor: preview.milestone }]} />
+                      </View>
+                      {isSelected && (
+                        <Ionicons name="checkmark-circle" size={22} color={theme.primary} />
+                      )}
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+
+            <TouchableOpacity
+              style={[styles.finishButton, isSaving && styles.finishButtonDisabled]}
+              onPress={handleFinish}
+              disabled={isSaving}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.finishButtonText}>
+                {isSaving ? 'Setting up...' : 'Get started'}
+              </Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </View>
     );
   }
@@ -185,12 +309,12 @@ export default function BabySetupScreen() {
 
           <TouchableOpacity
             style={[styles.finishButton, isSaving && styles.finishButtonDisabled]}
-            onPress={handleFinish}
+            onPress={handleContinueFromDetails}
             disabled={isSaving}
             activeOpacity={0.8}
           >
             <Text style={styles.finishButtonText}>
-              {isSaving ? 'Setting up...' : 'Get started'}
+              Continue
             </Text>
           </TouchableOpacity>
         </ScrollView>
@@ -267,6 +391,70 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       fontFamily: fonts.body,
       color: theme.textSecondary,
       lineHeight: 20,
+    },
+    paletteList: {
+      gap: spacing.sm,
+      marginTop: spacing.sm,
+    },
+    paletteCard: {
+      backgroundColor: theme.card,
+      borderRadius: borderRadius.lg,
+      borderWidth: 1,
+      borderColor: theme.borderLight,
+      padding: spacing.md,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      shadowColor: theme.shadow,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.08,
+      shadowRadius: 8,
+      elevation: 2,
+    },
+    paletteCardSelected: {
+      borderColor: theme.primary,
+      backgroundColor: theme.backgroundSecondary,
+    },
+    paletteCardLeft: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.md,
+      flex: 1,
+    },
+    paletteIconWrap: {
+      width: 36,
+      height: 36,
+      borderRadius: 18,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    paletteTitle: {
+      fontSize: fontSize.md,
+      fontFamily: fonts.ui,
+      color: theme.text,
+    },
+    paletteSubtitle: {
+      fontSize: fontSize.xs,
+      fontFamily: fonts.body,
+      color: theme.textSecondary,
+      marginTop: 2,
+    },
+    paletteRight: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.sm,
+    },
+    paletteSwatches: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+    },
+    paletteSwatch: {
+      width: 10,
+      height: 10,
+      borderRadius: 5,
+      borderWidth: 1,
+      borderColor: theme.borderLight,
     },
     formSection: {
       marginBottom: spacing.lg,

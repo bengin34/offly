@@ -52,14 +52,14 @@ export default function OnboardingScreen() {
       {
         id: 'fast_search',
         icon: 'search-outline',
-        iconColor: theme.place,
+        iconColor: theme.milestone,
         title: t('onboarding.screens.fastSearch.title'),
         subtitle: t('onboarding.screens.fastSearch.body'),
       },
       {
         id: 'best_of_list',
         icon: 'star-outline',
-        iconColor: theme.moment,
+        iconColor: theme.memory,
         title: t('onboarding.screens.bestOfList.title'),
         subtitle: t('onboarding.screens.bestOfList.body'),
       },

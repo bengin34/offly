@@ -126,7 +126,7 @@ export default function NewPregnancyJournalEntryScreen() {
               <Ionicons
                 name="document-text"
                 size={20}
-                color={memoryType === 'note' ? theme.white : theme.moment}
+                color={memoryType === 'note' ? theme.white : theme.memory}
               />
               <Text style={[styles.typeButtonText, memoryType === 'note' && styles.typeButtonTextActive]}>
                 Note
@@ -139,7 +139,7 @@ export default function NewPregnancyJournalEntryScreen() {
               <Ionicons
                 name="flag"
                 size={20}
-                color={memoryType === 'milestone' ? theme.white : theme.place}
+                color={memoryType === 'milestone' ? theme.white : theme.milestone}
               />
               <Text style={[styles.typeButtonText, memoryType === 'milestone' && styles.typeButtonTextActive]}>
                 Milestone
@@ -290,10 +290,10 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       backgroundColor: theme.backgroundSecondary,
     },
     typeButtonActiveMilestone: {
-      backgroundColor: theme.place,
+      backgroundColor: theme.milestone,
     },
     typeButtonActiveNote: {
-      backgroundColor: theme.moment,
+      backgroundColor: theme.memory,
     },
     typeButtonText: {
       fontSize: fontSize.md,

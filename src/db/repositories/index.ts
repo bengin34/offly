@@ -1,6 +1,7 @@
 export { BabyProfileRepository } from './BabyProfileRepository';
 export { ChapterRepository } from './ChapterRepository';
 export { MemoryRepository } from './MemoryRepository';
+export { MilestoneRepository } from './MilestoneRepository';
 export { TagRepository } from './TagRepository';
 export { SearchRepository } from './SearchRepository';
 export { StatsRepository } from './StatsRepository';
