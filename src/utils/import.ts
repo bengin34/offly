@@ -1,8 +1,14 @@
 import * as DocumentPicker from "expo-document-picker";
-import { File } from "expo-file-system/next";
+import { File, Directory, Paths } from "expo-file-system/next";
 import { getDatabase, getTimestamp } from "../db/database";
 import { generateUUID } from "./uuid";
-import type { ExportData, ExportChapter, ExportMemory } from "./export";
+import { persistPhoto } from "./photos";
+import type {
+  ExportData,
+  ExportChapter,
+  ExportMemory,
+  ExportVault,
+} from "./export";
 
 export interface ImportResult {
   success: boolean;
@@ -10,6 +16,7 @@ export interface ImportResult {
   memoriesImported: number;
   tagsImported: number;
   photosImported: number;
+  photosRestored: number;
   skipped: {
     chapters: number;
     memories: number;
@@ -44,12 +51,30 @@ function validateExportData(data: unknown): data is ExportData {
 }
 
 /**
- * Opens a file picker for the user to select a JSON file
+ * Strips file:// scheme from a URI to get a raw filesystem path.
  */
-export async function pickImportFile(): Promise<string | null> {
+function uriToPath(uri: string): string {
+  if (uri.startsWith("file://")) {
+    return uri.replace("file://", "");
+  }
+  return uri;
+}
+
+/**
+ * Opens a file picker for the user to select a JSON or ZIP file
+ */
+export async function pickImportFile(): Promise<{
+  uri: string;
+  isZip: boolean;
+} | null> {
   try {
     const result = await DocumentPicker.getDocumentAsync({
-      type: "application/json",
+      type: [
+        "application/json",
+        "application/zip",
+        "application/x-zip-compressed",
+        "application/octet-stream",
+      ],
       copyToCacheDirectory: true,
     });
 
@@ -57,7 +82,13 @@ export async function pickImportFile(): Promise<string | null> {
       return null;
     }
 
-    return result.assets[0].uri;
+    const asset = result.assets[0];
+    const isZip =
+      asset.mimeType?.includes("zip") ||
+      asset.name?.endsWith(".zip") ||
+      false;
+
+    return { uri: asset.uri, isZip };
   } catch (error) {
     console.error("Failed to pick file:", error);
     return null;
@@ -80,10 +111,10 @@ async function readJsonFile(uri: string): Promise<ExportData> {
 }
 
 /**
- * Imports data from a JSON export file
+ * Imports data from parsed ExportData (shared logic for JSON and ZIP import)
  */
-export async function importFromJson(
-  fileUri: string,
+export async function importFromParsedData(
+  data: ExportData,
   options: ImportOptions = {}
 ): Promise<ImportResult> {
   const { duplicateHandling = "skip" } = options;
@@ -94,6 +125,7 @@ export async function importFromJson(
     memoriesImported: 0,
     tagsImported: 0,
     photosImported: 0,
+    photosRestored: 0,
     skipped: {
       chapters: 0,
       memories: 0,
@@ -103,7 +135,6 @@ export async function importFromJson(
   };
 
   try {
-    const data = await readJsonFile(fileUri);
     const db = await getDatabase();
     const now = getTimestamp();
 
@@ -175,7 +206,15 @@ export async function importFromJson(
     // 3. Import chapters and their memories
     for (const chapter of data.chapters) {
       try {
-        await importChapter(db, chapter, babyId, tagIdMap, duplicateHandling, result, now);
+        await importChapter(
+          db,
+          chapter,
+          babyId,
+          tagIdMap,
+          duplicateHandling,
+          result,
+          now
+        );
       } catch (error) {
         result.errors.push(`Chapter "${chapter.title}": ${String(error)}`);
       }
@@ -187,6 +226,135 @@ export async function importFromJson(
   }
 
   return result;
+}
+
+/**
+ * Imports data from a JSON export file
+ */
+export async function importFromJson(
+  fileUri: string,
+  options: ImportOptions = {}
+): Promise<ImportResult> {
+  const data = await readJsonFile(fileUri);
+  return importFromParsedData(data, options);
+}
+
+/**
+ * Imports data + photos from a ZIP backup file.
+ * Extracts photos to the app's persistent photos directory,
+ * then rewrites URIs in the data before importing.
+ */
+export async function importFromZip(
+  zipUri: string,
+  options: ImportOptions = {},
+  onProgress?: (progress: number) => void
+): Promise<ImportResult> {
+  const { unzip, subscribe } = require("react-native-zip-archive") as typeof import("react-native-zip-archive");
+
+  const extractDirName = `Offly_import_${Date.now()}`;
+  const extractPath = uriToPath(Paths.cache.uri) + `/${extractDirName}`;
+
+  // Subscribe to unzip progress
+  const progressSubscription = subscribe(({ progress }: { progress: number }) => {
+    // Unzip phase is 0-30% of total
+    onProgress?.(progress * 0.3);
+  });
+
+  try {
+    // 1. Unzip to cache
+    await unzip(uriToPath(zipUri), extractPath);
+    progressSubscription.remove();
+
+    // 2. Read data.json from extracted files
+    const dataJsonPath = `file://${extractPath}/data.json`;
+    const dataJsonFile = new File(dataJsonPath);
+
+    if (!dataJsonFile.exists) {
+      throw new Error("Invalid backup: data.json not found in ZIP");
+    }
+
+    const jsonContent = await dataJsonFile.text();
+    const data = JSON.parse(jsonContent);
+
+    if (!validateExportData(data)) {
+      throw new Error("Invalid backup: data.json has wrong format");
+    }
+
+    // 3. Restore photos: copy from extracted photos/ to app's persistent photos dir
+    const uriRewriteMap = new Map<string, string>();
+    const extractedPhotosDir = new Directory(
+      `file://${extractPath}`,
+      "photos"
+    );
+
+    let photosRestored = 0;
+
+    if (extractedPhotosDir.exists) {
+      const photoItems = extractedPhotosDir.list();
+      const photoFiles = photoItems.filter(
+        (item): item is File => item instanceof File
+      );
+
+      for (let i = 0; i < photoFiles.length; i++) {
+        const photoFile = photoFiles[i];
+        try {
+          // persistPhoto copies to the app's permanent photos/ directory
+          const persistedUri = await persistPhoto(photoFile.uri);
+          const filename = photoFile.uri.split("/").pop() || "";
+          uriRewriteMap.set(`photos/${filename}`, persistedUri);
+          photosRestored++;
+        } catch (error) {
+          console.warn(`Failed to restore photo ${photoFile.uri}:`, error);
+        }
+        // Photo restore is 30%-80% of total
+        onProgress?.(0.3 + ((i + 1) / photoFiles.length) * 0.5);
+      }
+    } else {
+      onProgress?.(0.8);
+    }
+
+    // 4. Rewrite photo URIs in data before importing
+    const rewritePhotos = (memory: ExportMemory): ExportMemory => ({
+      ...memory,
+      photos: memory.photos.map((photo) => ({
+        ...photo,
+        uri: uriRewriteMap.get(photo.uri) || photo.uri,
+      })),
+    });
+
+    const rewrittenData: ExportData = {
+      ...data,
+      chapters: data.chapters.map((ch: ExportChapter) => ({
+        ...ch,
+        memories: ch.memories.map(rewritePhotos),
+      })),
+      vaults: (data.vaults || []).map((v: ExportVault) => ({
+        ...v,
+        entries: v.entries.map(rewritePhotos),
+      })),
+      pregnancyJournalEntries: (data.pregnancyJournalEntries || []).map(
+        rewritePhotos
+      ),
+    };
+
+    // 5. Import data using shared logic
+    onProgress?.(0.8);
+    const result = await importFromParsedData(rewrittenData, options);
+    result.photosRestored = photosRestored;
+
+    onProgress?.(1);
+    return result;
+  } finally {
+    progressSubscription.remove();
+
+    // Clean up extraction directory
+    try {
+      const extractDir = new Directory(`file://${extractPath}`);
+      if (extractDir.exists) extractDir.delete();
+    } catch {
+      // Non-fatal cleanup
+    }
+  }
 }
 
 async function importChapter(
@@ -211,7 +379,15 @@ async function importChapter(
       result.skipped.chapters++;
       // Still import memories that don't exist
       for (const memory of chapter.memories) {
-        await importMemory(db, memory, chapterId, tagIdMap, duplicateHandling, result, now);
+        await importMemory(
+          db,
+          memory,
+          chapterId,
+          tagIdMap,
+          duplicateHandling,
+          result,
+          now
+        );
       }
       return;
     }
@@ -256,7 +432,9 @@ async function importChapter(
 
   // Import chapter tags
   if (chapter.tags?.length) {
-    await db.runAsync("DELETE FROM chapter_tags WHERE chapter_id = ?", [chapterId]);
+    await db.runAsync("DELETE FROM chapter_tags WHERE chapter_id = ?", [
+      chapterId,
+    ]);
 
     for (const tag of chapter.tags) {
       const mappedTagId = tagIdMap.get(tag.id) ?? tag.id;
@@ -273,7 +451,15 @@ async function importChapter(
 
   // Import memories
   for (const memory of chapter.memories) {
-    await importMemory(db, memory, chapterId, tagIdMap, duplicateHandling, result, now);
+    await importMemory(
+      db,
+      memory,
+      chapterId,
+      tagIdMap,
+      duplicateHandling,
+      result,
+      now
+    );
   }
 }
 
@@ -346,7 +532,9 @@ async function importMemory(
 
   // Update memory tags
   if (memory.tags?.length) {
-    await db.runAsync("DELETE FROM memory_tags WHERE memory_id = ?", [memory.id]);
+    await db.runAsync("DELETE FROM memory_tags WHERE memory_id = ?", [
+      memory.id,
+    ]);
 
     for (const tag of memory.tags) {
       const mappedTagId = tagIdMap.get(tag.id) ?? tag.id;
@@ -361,9 +549,11 @@ async function importMemory(
     }
   }
 
-  // Update photos (note: photo files are NOT imported, only references)
+  // Update photos
   if (memory.photos?.length) {
-    await db.runAsync("DELETE FROM memory_photos WHERE memory_id = ?", [memory.id]);
+    await db.runAsync("DELETE FROM memory_photos WHERE memory_id = ?", [
+      memory.id,
+    ]);
 
     for (const photo of memory.photos) {
       const photoId = photo.id || generateUUID();
@@ -381,15 +571,20 @@ async function importMemory(
 }
 
 /**
- * Full import flow: pick file and import
+ * Full import flow: pick file and import (handles both JSON and ZIP)
  */
 export async function pickAndImport(
-  options: ImportOptions = {}
+  options: ImportOptions = {},
+  onProgress?: (progress: number) => void
 ): Promise<ImportResult | null> {
-  const fileUri = await pickImportFile();
-  if (!fileUri) {
+  const picked = await pickImportFile();
+  if (!picked) {
     return null; // User cancelled
   }
 
-  return importFromJson(fileUri, options);
+  if (picked.isZip) {
+    return importFromZip(picked.uri, options, onProgress);
+  } else {
+    return importFromJson(picked.uri, options);
+  }
 }

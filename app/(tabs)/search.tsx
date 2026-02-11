@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -25,7 +26,7 @@ export default function SearchScreen() {
   const router = useRouter();
   const theme = useTheme();
   const { t, locale } = useI18n();
-  const { onSearchPerformed } = usePaywallTrigger();
+  const { onSearchPerformed, checkFeaturePaywall, isPro } = usePaywallTrigger();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
@@ -75,14 +76,22 @@ export default function SearchScreen() {
     TagRepository.getAll().then(setAllTags);
   }, []);
 
+  useEffect(() => {
+    if (isPro) return;
+    setShowFilters(false);
+    setResultTypeFilter('all');
+    setMemoryTypeFilter(undefined);
+    setSelectedTagIds([]);
+  }, [isPro]);
+
   const buildFilters = useCallback((): SearchFilters | undefined => {
-    if (!hasActiveFilters) return undefined;
+    if (!isPro || !hasActiveFilters) return undefined;
     return {
       resultType: resultTypeFilter,
       memoryType: memoryTypeFilter,
       tagIds: selectedTagIds.length > 0 ? selectedTagIds : undefined,
     };
-  }, [resultTypeFilter, memoryTypeFilter, selectedTagIds, hasActiveFilters]);
+  }, [resultTypeFilter, memoryTypeFilter, selectedTagIds, hasActiveFilters, isPro]);
 
   const performSearch = useCallback(async (text: string, filters?: SearchFilters) => {
     if (text.trim().length < 2) {
@@ -135,8 +144,22 @@ export default function SearchScreen() {
     );
   };
 
-  const handleToggleFilters = () => {
-    setShowFilters(!showFilters);
+  const handleToggleFilters = async () => {
+    if (showFilters) {
+      setShowFilters(false);
+      return;
+    }
+
+    if (!isPro) {
+      Alert.alert(t('alerts.proFeatureTitle'), t('alerts.proFeatureAdvancedSearch'));
+      const purchased = await checkFeaturePaywall('advanced_search');
+      if (purchased) {
+        setShowFilters(true);
+      }
+      return;
+    }
+
+    setShowFilters(true);
   };
 
   const handleResultPress = (result: SearchResult) => {
@@ -257,11 +280,11 @@ export default function SearchScreen() {
           </TouchableOpacity>
         )}
         <TouchableOpacity
-          onPress={handleToggleFilters}
+          onPress={() => void handleToggleFilters()}
           style={[styles.filterToggle, hasActiveFilters && styles.filterToggleActive]}
         >
           <Ionicons
-            name="options-outline"
+            name={isPro ? 'options-outline' : 'lock-closed-outline'}
             size={20}
             color={hasActiveFilters ? theme.white : theme.textMuted}
           />

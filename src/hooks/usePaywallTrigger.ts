@@ -172,6 +172,34 @@ export function usePaywallTrigger() {
     []
   );
 
+  /**
+   * Check if user can create an age-locked letter based on current letter count.
+   * Free users are limited to APP_LIMITS.FREE_MAX_AGE_LOCKED_LETTERS letters.
+   */
+  const checkAgeLockedLetterLimit = useCallback(
+    async (currentLetterCount: number): Promise<{
+      canCreate: boolean;
+      shouldShowPaywall: boolean;
+      currentCount: number;
+      limit: number;
+    }> => {
+      const limit = APP_LIMITS.FREE_MAX_AGE_LOCKED_LETTERS;
+
+      if (isPro) {
+        return { canCreate: true, shouldShowPaywall: false, currentCount: currentLetterCount, limit };
+      }
+
+      const atLimit = currentLetterCount >= limit;
+      return {
+        canCreate: !atLimit,
+        shouldShowPaywall: atLimit,
+        currentCount: currentLetterCount,
+        limit,
+      };
+    },
+    [isPro]
+  );
+
   return {
     // State
     isPro,
@@ -191,6 +219,7 @@ export function usePaywallTrigger() {
 
     // Chapter limit checks
     checkChapterLimit,
+    checkAgeLockedLetterLimit,
     shouldShowBackupReminder,
 
     // Re-export config for reference

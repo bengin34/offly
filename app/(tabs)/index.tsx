@@ -27,12 +27,14 @@ import { ProUpgradeBanner } from '../../src/components/ProUpgradeBanner';
 import { useI18n, useTheme } from '../../src/hooks';
 import { formatHeaderTitle } from '../../src/utils/ageFormatter';
 import type { ChapterWithMilestoneProgress, BabyProfile, VaultWithEntryCount } from '../../src/types';
+import { useMockData } from '../../src/mocks/useMockData';
 
 export default function HomeScreen() {
   const router = useRouter();
   const navigation = useNavigation();
   const theme = useTheme();
   const { t, locale } = useI18n();
+  const mockData = useMockData(locale, 'baby'); // Try 'pregnancy' to see pregnancy mocks
 
   const [profile, setProfile] = useState<BabyProfile | null>(null);
   const [chapters, setChapters] = useState<ChapterWithMilestoneProgress[]>([]);
@@ -93,7 +95,18 @@ export default function HomeScreen() {
         }
 
         // Load chapters with progress (same as born mode)
-        const chapterData = await ChapterRepository.getAllWithProgress(babyProfile.id);
+        let chapterData = await ChapterRepository.getAllWithProgress(babyProfile.id);
+
+        // Apply mock data if active
+        if (mockData) {
+          chapterData = chapterData.map((chapter, index) => ({
+            ...chapter,
+            coverImageUri: mockData.milestones[index % mockData.milestones.length]?.imageUrl,
+            milestoneFilled: Math.min(index + 2, chapter.milestoneTotal),
+            memoryCount: index + 3,
+          }));
+        }
+
         setChapters(chapterData);
 
         // Also load pregnancy journal count
@@ -108,7 +121,18 @@ export default function HomeScreen() {
           }
         });
       } else {
-        const chapterData = await ChapterRepository.getAllWithProgress(babyProfile.id);
+        let chapterData = await ChapterRepository.getAllWithProgress(babyProfile.id);
+
+        // Apply mock data if active
+        if (mockData) {
+          chapterData = chapterData.map((chapter, index) => ({
+            ...chapter,
+            coverImageUri: mockData.milestones[index % mockData.milestones.length]?.imageUrl,
+            milestoneFilled: Math.min(index + 2, chapter.milestoneTotal),
+            memoryCount: index + 3,
+          }));
+        }
+
         setChapters(chapterData);
         const currentId = getCurrentChapterIdFromList(chapterData);
         requestAnimationFrame(() => {
@@ -124,7 +148,7 @@ export default function HomeScreen() {
       setIsLoading(false);
       setIsRefreshing(false);
     }
-  }, [getCurrentChapterIdFromList, scrollToCurrentChapter]);
+  }, [getCurrentChapterIdFromList, scrollToCurrentChapter, mockData]);
 
   useFocusEffect(
     useCallback(() => {

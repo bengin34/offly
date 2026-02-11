@@ -355,6 +355,14 @@ export const MemoryRepository = {
     return result?.count ?? 0;
   },
 
+  async countAgeLockedLetters(): Promise<number> {
+    const db = await getDatabase();
+    const result = await db.getFirstAsync<{ count: number }>(
+      "SELECT COUNT(*) as count FROM memories WHERE vault_id IS NOT NULL AND memory_type = 'letter'"
+    );
+    return result?.count ?? 0;
+  },
+
   // Pregnancy journal entries
   async getPregnancyJournalEntries(): Promise<Memory[]> {
     const db = await getDatabase();

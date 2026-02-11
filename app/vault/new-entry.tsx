@@ -22,7 +22,7 @@ export default function NewVaultEntryScreen() {
   const { vaultId } = useLocalSearchParams<{ vaultId: string }>();
   const router = useRouter();
   const theme = useTheme();
-  const { onMemoryCreated } = usePaywallTrigger();
+  const { onMemoryCreated, checkAgeLockedLetterLimit, showPaywall } = usePaywallTrigger();
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -67,6 +67,20 @@ export default function NewVaultEntryScreen() {
 
     if (!vaultId) {
       Alert.alert('Error', 'No vault selected.');
+      return;
+    }
+
+    const currentLetterCount = await MemoryRepository.countAgeLockedLetters();
+    const { canCreate, shouldShowPaywall, limit } = await checkAgeLockedLetterLimit(currentLetterCount);
+    if (shouldShowPaywall && !canCreate) {
+      Alert.alert(
+        'Age-Locked Letter Limit Reached',
+        `Free users can create up to ${limit} age-locked letters. Upgrade to Pro for unlimited letters.`,
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Upgrade to Pro', onPress: () => void showPaywall() },
+        ]
+      );
       return;
     }
 

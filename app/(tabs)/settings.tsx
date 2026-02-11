@@ -28,7 +28,7 @@ import { getLocaleLabel, Locale } from '../../src/localization';
 import { type ThemeMode } from '../../src/stores';
 import { useOnboardingStore } from '../../src/stores/onboardingStore';
 import { pickAndImport } from '../../src/utils/import';
-import { exportToJson } from '../../src/utils/export';
+import { exportToZip } from '../../src/utils/export';
 import { autoGenerateTimeline } from '../../src/utils/autoGenerate';
 import { rebaseBornTimelineDates } from '../../src/utils/rebaseBornTimeline';
 import { BabyProfileRepository, VaultRepository, ChapterRepository, MemoryRepository } from '../../src/db/repositories';
@@ -49,6 +49,7 @@ export default function SettingsScreen() {
   const [showModeSwitchModal, setShowModeSwitchModal] = useState(false);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
+  const [backupProgress, setBackupProgress] = useState<number | null>(null);
   const resetOnboarding = useOnboardingStore((state) => state.resetOnboarding);
   const lastBackupDate = useBackupStore((state) => state.lastBackupDate);
   const loadBackupState = useBackupStore((state) => state.loadBackupState);
@@ -63,11 +64,14 @@ export default function SettingsScreen() {
 
   const handleBackupExport = async () => {
     try {
-      await exportToJson();
+      setBackupProgress(0);
+      await exportToZip((progress) => setBackupProgress(progress));
       await setLastBackupDate(new Date().toISOString());
     } catch (error) {
       console.error('Backup export failed:', error);
       Alert.alert(t('alerts.exportFailedTitle'), t('settings.alertBackupExportFailedMessage'));
+    } finally {
+      setBackupProgress(null);
     }
   };
 
@@ -692,11 +696,23 @@ export default function SettingsScreen() {
               </View>
             )}
             <TouchableOpacity
-              style={styles.onboardingButton}
+              style={[styles.onboardingButton, backupProgress !== null && { opacity: 0.6 }]}
               onPress={handleBackupExport}
+              disabled={backupProgress !== null}
             >
-              <Ionicons name="download-outline" size={20} color={theme.white} />
-              <Text style={styles.onboardingButtonText}>{t('settings.createBackup')}</Text>
+              {backupProgress !== null ? (
+                <>
+                  <ActivityIndicator color={theme.white} size="small" />
+                  <Text style={styles.onboardingButtonText}>
+                    {Math.round(backupProgress * 100)}%
+                  </Text>
+                </>
+              ) : (
+                <>
+                  <Ionicons name="download-outline" size={20} color={theme.white} />
+                  <Text style={styles.onboardingButtonText}>{t('settings.createBackup')}</Text>
+                </>
+              )}
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.exportLink}

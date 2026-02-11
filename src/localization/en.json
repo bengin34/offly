@@ -81,7 +81,7 @@
     "exportInfoTitle": "Why export?",
     "exportInfoDescription": "Keep a personal backup, move to a new phone, or analyze your memories in a spreadsheet. Exports stay on your device until you share them.",
     "exportPrivacyNote": "Export files can include personal notes. Share carefully.",
-    "exportPhotosNote": "Photos are not included in exports.",
+    "exportPhotosNote": "Full Backup (ZIP) includes photos. JSON/XLS exports include data only.",
     "exportFormatsTitle": "Choose a format",
     "exportFormatsDescription": "JSON is best for backups and re-import. XLS opens easily in Excel or Google Sheets.",
     "importSection": "Import",
