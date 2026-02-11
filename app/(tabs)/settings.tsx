@@ -24,7 +24,7 @@ import { Background } from '../../src/components/Background';
 import { DialogHeader } from '../../src/components/DialogHeader';
 import { ProUpgradeBanner } from '../../src/components/ProUpgradeBanner';
 import { useI18n, useTheme, useThemeMode } from '../../src/hooks';
-import { getLocaleLabel, Locale } from '../../src/localization';
+import { getLocaleLabel, Locale, supportedLocales } from '../../src/localization';
 import { type ThemeMode } from '../../src/stores';
 import { useOnboardingStore } from '../../src/stores/onboardingStore';
 import { pickAndImport } from '../../src/utils/import';
@@ -265,14 +265,10 @@ export default function SettingsScreen() {
 
   const currentPaletteLabel = paletteMetadata[palette]?.label ?? paletteMetadata.blush.label;
 
-  const languageOptions: { locale: Locale; label: string }[] = [
-    { locale: 'en', label: getLocaleLabel('en') },
-    { locale: 'de', label: getLocaleLabel('de') },
-    { locale: 'it', label: getLocaleLabel('it') },
-    { locale: 'fr', label: getLocaleLabel('fr') },
-    { locale: 'es', label: getLocaleLabel('es') },
-    { locale: 'tr', label: getLocaleLabel('tr') },
-  ];
+  const languageOptions: { locale: Locale; label: string }[] = supportedLocales.map((language) => ({
+    locale: language,
+    label: getLocaleLabel(language),
+  }));
 
   const currentLanguageLabel = getLocaleLabel(locale);
 

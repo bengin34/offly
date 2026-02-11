@@ -13,6 +13,33 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 # Available Actions
 
+### upload_metadata
+
+```sh
+[bundle exec] fastlane upload_metadata
+```
+
+Upload screenshots and metadata to App Store Connect
+
+### upload_screenshots
+
+```sh
+[bundle exec] fastlane upload_screenshots
+```
+
+Upload screenshots only
+
+### upload_metadata_only
+
+```sh
+[bundle exec] fastlane upload_metadata_only
+```
+
+Upload metadata only (no screenshots)
+
+----
+
+
 ## iOS
 
 ### ios beta

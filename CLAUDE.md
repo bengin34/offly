@@ -1,4 +1,4 @@
-this is that contains a travel memory app named VoyageLog / TravelMemory).
+this is that contains a travel memory app named offly / TravelMemory).
 
 MISSION
 Refactor this code to create a NEW sibling app “Offly” by reusing the SAME core architecture and logic as the travel app, but adapted to a baby growth memory / family legacy archive domain.
@@ -144,15 +144,14 @@ What’s Out of Scope (MVP)
 
 - DO NOT HANDLE LOCALIZATION.... JUST IMPLEMENT ENGLISH I WILL DO IT LATER MY SELF
 
-
-    •	Cloud sync or account system
-    •	Family collaboration / shared live albums
-    •	Social feed, likes, followers, public sharing
-    •	Photo editing, templates, stickers, “IG story” creation
-    •	Complex media library management (bulk import, auto-tagging)
-    •	Reminders, push notifications (unless trivial)
-    •	Encrypted backup/sync (V2)
-    •	Full multi-baby profile UX (V2; MVP keeps model ready)
+  • Cloud sync or account system
+  • Family collaboration / shared live albums
+  • Social feed, likes, followers, public sharing
+  • Photo editing, templates, stickers, “IG story” creation
+  • Complex media library management (bulk import, auto-tagging)
+  • Reminders, push notifications (unless trivial)
+  • Encrypted backup/sync (V2)
+  • Full multi-baby profile UX (V2; MVP keeps model ready)
 
 ⸻
 
