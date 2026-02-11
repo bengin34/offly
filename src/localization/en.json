@@ -687,6 +687,32 @@
     "freeTextCities": "Milestone list names are free text — duplicates are treated as separate lists",
     "noAutoBackup": "No automatic backups - remember to export your data regularly"
   },
+  "home": {
+    "noProfileTitle": "Welcome to Offly",
+    "noProfileSubtitle": "Setting up your profile..."
+  },
+  "babySetup": {
+    "welcomeTitle": "Welcome to Offly",
+    "welcomeSubtitle": "How would you like to start?",
+    "modeBornTitle": "Baby is born",
+    "modeBornDescription": "Start capturing milestones and memories from birth",
+    "modePregnantTitle": "I'm pregnant",
+    "modePregnantDescription": "Start a pregnancy journal and write letters for the future",
+    "detailsBornTitle": "Tell us about your baby",
+    "detailsBornSubtitle": "You can always update this later in Settings",
+    "detailsPregnantTitle": "When are you due?",
+    "detailsPregnantSubtitle": "This helps us set up your timeline",
+    "nameLabel": "Name (optional)",
+    "namePlaceholderBorn": "Baby's name or nickname",
+    "namePlaceholderPregnant": "A name or nickname",
+    "dateOfBirthLabel": "Date of birth",
+    "estimatedDueDateLabel": "Estimated due date",
+    "continue": "Continue",
+    "themeTitle": "Choose your color theme",
+    "themeSubtitle": "Pick a look for your baby's timeline. You can change this anytime in Settings.",
+    "getStarted": "Get started",
+    "settingUp": "Setting up..."
+  },
   "onboarding": {
     "screens": {
       "photoOverload": {

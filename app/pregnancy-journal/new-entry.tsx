@@ -17,13 +17,13 @@ import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
 import { Background } from '../../src/components/Background';
 import { ModalWrapper } from '../../src/components/ModalWrapper';
 import { TagPickerDialog } from '../../src/components/TagPickerDialog';
-import { useTheme, usePaywallTrigger } from '../../src/hooks';
+import { useTheme, useSubscription } from '../../src/hooks';
 import type { MemoryType, Tag } from '../../src/types';
 
 export default function NewPregnancyJournalEntryScreen() {
   const router = useRouter();
   const theme = useTheme();
-  const { onMemoryCreated } = usePaywallTrigger();
+  const { isPro } = useSubscription();
 
   const [memoryType, setMemoryType] = useState<MemoryType>('note');
   const [title, setTitle] = useState('');
@@ -85,7 +85,6 @@ export default function NewPregnancyJournalEntryScreen() {
         tagIds: selectedTags.map((tag) => tag.id),
       });
 
-      await onMemoryCreated(0);
       router.back();
     } catch (error) {
       console.error('Failed to create pregnancy journal entry:', error);

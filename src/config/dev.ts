@@ -1,1 +1,1 @@
-export const hideProUpgradeBanner = __DEV__ && true;
+export const hideProUpgradeBanner = __DEV__ && false;

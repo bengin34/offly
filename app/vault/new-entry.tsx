@@ -16,13 +16,13 @@ import { MemoryRepository } from '../../src/db/repositories';
 import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
 import { Background } from '../../src/components/Background';
 import { ModalWrapper } from '../../src/components/ModalWrapper';
-import { useTheme, usePaywallTrigger } from '../../src/hooks';
+import { useTheme, useSubscription } from '../../src/hooks';
 
 export default function NewVaultEntryScreen() {
   const { vaultId } = useLocalSearchParams<{ vaultId: string }>();
   const router = useRouter();
   const theme = useTheme();
-  const { onMemoryCreated, checkAgeLockedLetterLimit, showPaywall } = usePaywallTrigger();
+  const { isPro, presentPaywall } = useSubscription();
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -70,15 +70,15 @@ export default function NewVaultEntryScreen() {
       return;
     }
 
+    // Simple check: if not pro and letter count >= 5, show paywall
     const currentLetterCount = await MemoryRepository.countAgeLockedLetters();
-    const { canCreate, shouldShowPaywall, limit } = await checkAgeLockedLetterLimit(currentLetterCount);
-    if (shouldShowPaywall && !canCreate) {
+    if (!isPro && currentLetterCount >= 5) {
       Alert.alert(
         'Age-Locked Letter Limit Reached',
-        `Free users can create up to ${limit} age-locked letters. Upgrade to Pro for unlimited letters.`,
+        'Free users can create up to 5 age-locked letters. Upgrade to Pro for unlimited letters.',
         [
           { text: 'Cancel', style: 'cancel' },
-          { text: 'Upgrade to Pro', onPress: () => void showPaywall() },
+          { text: 'Upgrade to Pro', onPress: async () => await presentPaywall() },
         ]
       );
       return;
@@ -95,7 +95,6 @@ export default function NewVaultEntryScreen() {
         date: date.toISOString(),
       });
 
-      await onMemoryCreated(0);
       router.back();
     } catch (error) {
       console.error('Failed to create vault entry:', error);

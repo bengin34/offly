@@ -687,6 +687,32 @@
     "freeTextCities": "마일스톤 목록 이름은 자유 입력이며, 동일한 이름이라도 별도의 목록으로 처리됩니다",
     "noAutoBackup": "자동 백업은 제공되지 않습니다 — 정기적으로 데이터를 내보내세요"
   },
+  "home": {
+    "noProfileTitle": "Offly에 오신 것을 환영해요",
+    "noProfileSubtitle": "프로필을 설정하는 중..."
+  },
+  "babySetup": {
+    "welcomeTitle": "Offly에 오신 것을 환영해요",
+    "welcomeSubtitle": "어떻게 시작할까요?",
+    "modeBornTitle": "아기가 태어났어요",
+    "modeBornDescription": "출생부터의 마일스톤과 추억을 기록해 보세요",
+    "modePregnantTitle": "임신 중이에요",
+    "modePregnantDescription": "임신 저널을 시작하고 미래를 위한 편지를 써보세요",
+    "detailsBornTitle": "아기에 대해 알려주세요",
+    "detailsBornSubtitle": "나중에 설정에서 언제든 수정할 수 있어요",
+    "detailsPregnantTitle": "예정일이 언제인가요?",
+    "detailsPregnantSubtitle": "타임라인을 설정하는 데 도움이 돼요",
+    "nameLabel": "이름(선택)",
+    "namePlaceholderBorn": "이름 또는 애칭",
+    "namePlaceholderPregnant": "이름 또는 애칭",
+    "dateOfBirthLabel": "출생일",
+    "estimatedDueDateLabel": "출산 예정일",
+    "continue": "계속",
+    "themeTitle": "컬러 테마를 선택하세요",
+    "themeSubtitle": "타임라인의 스타일을 고르세요. 설정에서 언제든 변경할 수 있어요.",
+    "getStarted": "시작하기",
+    "settingUp": "설정 중..."
+  },
   "onboarding": {
     "screens": {
       "photoOverload": {

@@ -687,6 +687,32 @@
     "freeTextCities": "マイルストーンリスト名は自由入力です。同じ名前でも別リストとして扱われます",
     "noAutoBackup": "自動バックアップはありません。定期的にデータをエクスポートしてください"
   },
+  "home": {
+    "noProfileTitle": "Offlyへようこそ",
+    "noProfileSubtitle": "プロフィールを設定しています..."
+  },
+  "babySetup": {
+    "welcomeTitle": "Offlyへようこそ",
+    "welcomeSubtitle": "どこから始めますか？",
+    "modeBornTitle": "赤ちゃんが生まれました",
+    "modeBornDescription": "誕生からのマイルストーンや思い出を記録しましょう",
+    "modePregnantTitle": "妊娠中です",
+    "modePregnantDescription": "妊娠ジャーナルを始め、未来への手紙を書きましょう",
+    "detailsBornTitle": "赤ちゃんについて教えてください",
+    "detailsBornSubtitle": "あとから設定でいつでも変更できます",
+    "detailsPregnantTitle": "出産予定日はいつですか？",
+    "detailsPregnantSubtitle": "タイムラインの準備に役立ちます",
+    "nameLabel": "名前(任意)",
+    "namePlaceholderBorn": "名前またはニックネーム",
+    "namePlaceholderPregnant": "名前またはニックネーム",
+    "dateOfBirthLabel": "生年月日",
+    "estimatedDueDateLabel": "出産予定日",
+    "continue": "続ける",
+    "themeTitle": "カラーテーマを選ぶ",
+    "themeSubtitle": "タイムラインの見た目を選びましょう。設定からいつでも変更できます。",
+    "getStarted": "はじめる",
+    "settingUp": "設定中..."
+  },
   "onboarding": {
     "screens": {
       "photoOverload": {

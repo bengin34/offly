@@ -855,6 +855,32 @@
     "freeTextCities": "Kilometre taşı listeleri serbest metin — yinelenenler ayrı listeler olarak değerlendirilir",
     "noAutoBackup": "Otomatik yedekleme yok - verilerinizi düzenli olarak dışa aktarmayı unutmayın"
   },
+  "home": {
+    "noProfileTitle": "Offly'ye hoş geldiniz",
+    "noProfileSubtitle": "Profiliniz hazırlanıyor..."
+  },
+  "babySetup": {
+    "welcomeTitle": "Offly'ye hoş geldiniz",
+    "welcomeSubtitle": "Nasıl başlamak istersiniz?",
+    "modeBornTitle": "Bebek doğdu",
+    "modeBornDescription": "Doğumdan itibaren dönüm noktalarını ve anıları kaydetmeye başlayın",
+    "modePregnantTitle": "Hamileyim",
+    "modePregnantDescription": "Bir hamilelik günlüğü başlatın ve geleceğe mektuplar yazın",
+    "detailsBornTitle": "Bebeğiniz hakkında bilgi verin",
+    "detailsBornSubtitle": "Bunu daha sonra Ayarlar'dan değiştirebilirsiniz",
+    "detailsPregnantTitle": "Doğum tarihiniz ne zaman?",
+    "detailsPregnantSubtitle": "Bu, zaman çizelgenizi hazırlamamıza yardımcı olur",
+    "nameLabel": "İsim (isteğe bağlı)",
+    "namePlaceholderBorn": "İsim veya lakap",
+    "namePlaceholderPregnant": "Bir isim veya lakap",
+    "dateOfBirthLabel": "Doğum tarihi",
+    "estimatedDueDateLabel": "Tahmini doğum tarihi",
+    "continue": "Devam",
+    "themeTitle": "Renk temanı seç",
+    "themeSubtitle": "Zaman çizelgesi için bir görünüm seçin. Ayarlar'dan istediğiniz zaman değiştirebilirsiniz.",
+    "getStarted": "Başla",
+    "settingUp": "Hazırlanıyor..."
+  },
   "onboarding": {
     "screens": {
       "photoOverload": {

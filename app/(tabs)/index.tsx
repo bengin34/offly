@@ -500,9 +500,9 @@ export default function HomeScreen() {
   const renderNoProfile = () => (
     <View style={styles.emptyContainer}>
       <Ionicons name="person-outline" size={64} color={theme.textMuted} />
-      <Text style={styles.emptyTitle}>Welcome to Offly</Text>
+      <Text style={styles.emptyTitle}>{t('home.noProfileTitle')}</Text>
       <Text style={styles.emptySubtitle}>
-        Setting up your profile...
+        {t('home.noProfileSubtitle')}
       </Text>
     </View>
   );

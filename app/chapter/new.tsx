@@ -21,7 +21,7 @@ import { getExpectedDate, getMilestonesForChapter } from '../../src/utils/milest
 import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
 import { Background } from '../../src/components/Background';
 import { ModalWrapper } from '../../src/components/ModalWrapper';
-import { useI18n, useTheme, usePaywallTrigger } from '../../src/hooks';
+import { useI18n, useTheme, useSubscription } from '../../src/hooks';
 
 type DatePickerTarget = 'start' | 'end' | null;
 
@@ -29,7 +29,7 @@ export default function NewChapterScreen() {
   const router = useRouter();
   const theme = useTheme();
   const { t, locale } = useI18n();
-  const { onChapterCreated, checkChapterLimit, showPaywall, shouldShowBackupReminder } = usePaywallTrigger();
+  const { isPro, presentPaywall } = useSubscription();
   const [title, setTitle] = useState('');
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
@@ -47,18 +47,18 @@ export default function NewChapterScreen() {
     const checkLimit = async () => {
       const count = await ChapterRepository.count();
       setChapterCount(count);
-      const { canCreate, shouldShowPaywall, limit } = await checkChapterLimit(count);
 
-      if (shouldShowPaywall && !canCreate) {
+      // Simple check: if not pro and count >= 3, show paywall
+      if (!isPro && count >= 3) {
         Alert.alert(
           t('alerts.chapterLimitTitle'),
-          t('alerts.chapterLimitMessage', { limit: String(limit) }),
+          t('alerts.chapterLimitMessage', { limit: '3' }),
           [
             { text: t('common.cancel'), style: 'cancel', onPress: () => router.back() },
             {
               text: t('alerts.chapterLimitUpgrade'),
               onPress: async () => {
-                const purchased = await showPaywall();
+                const purchased = await presentPaywall();
                 if (!purchased) {
                   router.back();
                 }
@@ -70,7 +70,7 @@ export default function NewChapterScreen() {
       setLimitChecked(true);
     };
     checkLimit();
-  }, [checkChapterLimit, showPaywall, t, router]);
+  }, [isPro, presentPaywall, t, router]);
 
   const formatDate = (date: Date) => {
     try {
@@ -190,29 +190,6 @@ export default function NewChapterScreen() {
         }
       } catch (milestoneError) {
         console.warn('Failed to auto-generate milestones:', milestoneError);
-      }
-
-      // Track chapter creation and check for paywall trigger
-      await onChapterCreated();
-
-      // Check if we should show backup reminder
-      const newChapterCount = chapterCount + 1;
-      if (shouldShowBackupReminder(newChapterCount)) {
-        Alert.alert(
-          t('alerts.backupReminderTitle'),
-          t('alerts.backupReminderMessage', { count: String(newChapterCount) }),
-          [
-            { text: t('alerts.backupReminderLater'), style: 'cancel', onPress: () => router.back() },
-            {
-              text: t('alerts.backupReminderExport'),
-              onPress: () => {
-                router.back();
-                setTimeout(() => router.push('/export'), 300);
-              }
-            },
-          ]
-        );
-        return;
       }
 
       router.back();

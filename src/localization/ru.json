@@ -687,6 +687,32 @@
     "freeTextCities": "Имена списков вех вводятся вручную — дубликаты считаются разными списками",
     "noAutoBackup": "Автоматического бэкапа нет — не забывайте экспортировать"
   },
+  "home": {
+    "noProfileTitle": "Добро пожаловать в Offly",
+    "noProfileSubtitle": "Настраиваем ваш профиль..."
+  },
+  "babySetup": {
+    "welcomeTitle": "Добро пожаловать в Offly",
+    "welcomeSubtitle": "С чего хотите начать?",
+    "modeBornTitle": "Малыш родился",
+    "modeBornDescription": "Начните сохранять вехи и воспоминания с момента рождения",
+    "modePregnantTitle": "Я беременна",
+    "modePregnantDescription": "Начните дневник беременности и пишите письма в будущее",
+    "detailsBornTitle": "Расскажите о вашем малыше",
+    "detailsBornSubtitle": "Вы всегда сможете изменить это позже в Настройках",
+    "detailsPregnantTitle": "Когда у вас срок?",
+    "detailsPregnantSubtitle": "Это поможет настроить вашу хронику",
+    "nameLabel": "Имя (необязательно)",
+    "namePlaceholderBorn": "Имя или прозвище",
+    "namePlaceholderPregnant": "Имя или прозвище",
+    "dateOfBirthLabel": "Дата рождения",
+    "estimatedDueDateLabel": "Предполагаемая дата родов",
+    "continue": "Далее",
+    "themeTitle": "Выберите цветовую тему",
+    "themeSubtitle": "Выберите стиль для хроники. Вы сможете изменить его в Настройках в любое время.",
+    "getStarted": "Начать",
+    "settingUp": "Настраиваем..."
+  },
   "onboarding": {
     "screens": {
       "photoOverload": {

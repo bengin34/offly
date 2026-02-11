@@ -687,6 +687,32 @@
     "freeTextCities": "Mijlpalenlijsten hebben vrije tekstnamen — duplicaten worden als aparte lijsten behandeld",
     "noAutoBackup": "Geen automatische back-ups - vergeet niet regelmatig te exporteren"
   },
+  "home": {
+    "noProfileTitle": "Welkom bij Offly",
+    "noProfileSubtitle": "Je profiel wordt ingesteld..."
+  },
+  "babySetup": {
+    "welcomeTitle": "Welkom bij Offly",
+    "welcomeSubtitle": "Hoe wil je beginnen?",
+    "modeBornTitle": "Baby is geboren",
+    "modeBornDescription": "Begin met het vastleggen van mijlpalen en herinneringen vanaf de geboorte",
+    "modePregnantTitle": "Ik ben zwanger",
+    "modePregnantDescription": "Start een zwangerschapsjournal en schrijf brieven voor later",
+    "detailsBornTitle": "Vertel ons over je baby",
+    "detailsBornSubtitle": "Je kunt dit later altijd aanpassen in Instellingen",
+    "detailsPregnantTitle": "Wanneer ben je uitgerekend?",
+    "detailsPregnantSubtitle": "Dit helpt ons je tijdlijn in te stellen",
+    "nameLabel": "Naam (optioneel)",
+    "namePlaceholderBorn": "Naam of bijnaam",
+    "namePlaceholderPregnant": "Een naam of bijnaam",
+    "dateOfBirthLabel": "Geboortedatum",
+    "estimatedDueDateLabel": "Uitgerekende datum",
+    "continue": "Doorgaan",
+    "themeTitle": "Kies je kleurenthema",
+    "themeSubtitle": "Kies een look voor de tijdlijn. Je kunt dit altijd wijzigen in Instellingen.",
+    "getStarted": "Aan de slag",
+    "settingUp": "Bezig met instellen..."
+  },
   "onboarding": {
     "screens": {
       "photoOverload": {

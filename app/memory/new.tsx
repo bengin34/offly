@@ -20,7 +20,7 @@ import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
 import { Background } from '../../src/components/Background';
 import { ModalWrapper } from '../../src/components/ModalWrapper';
 import { TagPickerDialog } from '../../src/components/TagPickerDialog';
-import { useI18n, useTheme, usePaywallTrigger } from '../../src/hooks';
+import { useI18n, useTheme, useSubscription } from '../../src/hooks';
 import type { MemoryType, Tag } from '../../src/types';
 
 export default function NewMemoryScreen() {
@@ -28,7 +28,7 @@ export default function NewMemoryScreen() {
   const router = useRouter();
   const theme = useTheme();
   const { t, locale } = useI18n();
-  const { onMemoryCreated } = usePaywallTrigger();
+  const { isPro } = useSubscription();
 
   const [memoryType, setMemoryType] = useState<MemoryType>('milestone');
   const [title, setTitle] = useState('');
@@ -129,9 +129,6 @@ export default function NewMemoryScreen() {
         tagIds: selectedTags.map((tag) => tag.id),
         photoUris: photos,
       });
-
-      // Track memory creation (with photos) and check for paywall trigger
-      await onMemoryCreated(photos.length);
 
       router.back();
     } catch (error) {

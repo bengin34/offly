@@ -855,6 +855,32 @@
     "freeTextCities": "Les noms des listes d’étapes sont en texte libre — les doublons sont des listes distinctes",
     "noAutoBackup": "Pas de sauvegarde automatique - pensez à exporter vos données régulièrement"
   },
+  "home": {
+    "noProfileTitle": "Bienvenue sur Offly",
+    "noProfileSubtitle": "Configuration de votre profil..."
+  },
+  "babySetup": {
+    "welcomeTitle": "Bienvenue sur Offly",
+    "welcomeSubtitle": "Comment souhaitez-vous commencer ?",
+    "modeBornTitle": "Bébé est né",
+    "modeBornDescription": "Commencez à enregistrer les étapes et souvenirs dès la naissance",
+    "modePregnantTitle": "Je suis enceinte",
+    "modePregnantDescription": "Démarrez un journal de grossesse et écrivez des lettres pour le futur",
+    "detailsBornTitle": "Parlez-nous de votre bébé",
+    "detailsBornSubtitle": "Vous pourrez modifier cela plus tard dans les réglages",
+    "detailsPregnantTitle": "Quelle est votre date prévue ?",
+    "detailsPregnantSubtitle": "Cela nous aide à configurer votre timeline",
+    "nameLabel": "Prénom (facultatif)",
+    "namePlaceholderBorn": "Prénom ou surnom",
+    "namePlaceholderPregnant": "Un prénom ou un surnom",
+    "dateOfBirthLabel": "Date de naissance",
+    "estimatedDueDateLabel": "Date prévue d'accouchement",
+    "continue": "Continuer",
+    "themeTitle": "Choisissez votre thème de couleur",
+    "themeSubtitle": "Choisissez un style pour la timeline. Vous pourrez le changer à tout moment dans les réglages.",
+    "getStarted": "Commencer",
+    "settingUp": "Configuration..."
+  },
   "onboarding": {
     "screens": {
       "photoOverload": {

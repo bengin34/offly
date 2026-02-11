@@ -13,7 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme, useThemeMode } from '../src/hooks';
+import { useI18n, useTheme, useThemeMode } from '../src/hooks';
 import { useOnboardingStore } from '../src/stores/onboardingStore';
 import { BabyProfileRepository, VaultRepository } from '../src/db/repositories';
 import { autoGenerateTimeline } from '../src/utils/autoGenerate';
@@ -25,6 +25,7 @@ import type { ThemePalette } from '../src/constants/colors';
 export default function BabySetupScreen() {
   const theme = useTheme();
   const { palette, setPalette } = useThemeMode();
+  const { t } = useI18n();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const completeOnboarding = useOnboardingStore((s) => s.completeOnboarding);
@@ -124,8 +125,8 @@ export default function BabySetupScreen() {
       <View style={styles.container}>
         <Background />
         <View style={[styles.content, { paddingTop: insets.top + spacing.xxl }]}>
-          <Text style={styles.title}>Welcome to Offly</Text>
-          <Text style={styles.subtitle}>How would you like to start?</Text>
+          <Text style={styles.title}>{t('babySetup.welcomeTitle')}</Text>
+          <Text style={styles.subtitle}>{t('babySetup.welcomeSubtitle')}</Text>
 
           <View style={styles.modeCards}>
             <TouchableOpacity
@@ -136,9 +137,9 @@ export default function BabySetupScreen() {
               <View style={[styles.modeIcon, { backgroundColor: theme.accentSoft }]}>
                 <Ionicons name="happy-outline" size={32} color={theme.accent} />
               </View>
-              <Text style={styles.modeTitle}>Baby is born</Text>
+              <Text style={styles.modeTitle}>{t('babySetup.modeBornTitle')}</Text>
               <Text style={styles.modeDescription}>
-                Start capturing milestones and memories from birth
+                {t('babySetup.modeBornDescription')}
               </Text>
             </TouchableOpacity>
 
@@ -150,9 +151,9 @@ export default function BabySetupScreen() {
               <View style={[styles.modeIcon, { backgroundColor: theme.accentSoft }]}>
                 <Ionicons name="heart-outline" size={32} color={theme.primary} />
               </View>
-              <Text style={styles.modeTitle}>I'm pregnant</Text>
+              <Text style={styles.modeTitle}>{t('babySetup.modePregnantTitle')}</Text>
               <Text style={styles.modeDescription}>
-                Start a pregnancy journal and write letters for the future
+                {t('babySetup.modePregnantDescription')}
               </Text>
             </TouchableOpacity>
           </View>
@@ -180,10 +181,8 @@ export default function BabySetupScreen() {
               <Ionicons name="arrow-back" size={22} color={theme.textSecondary} />
             </TouchableOpacity>
 
-            <Text style={styles.title}>Choose your color theme</Text>
-            <Text style={styles.subtitle}>
-              Pick a look for your baby's timeline. You can change this anytime in Settings.
-            </Text>
+            <Text style={styles.title}>{t('babySetup.themeTitle')}</Text>
+            <Text style={styles.subtitle}>{t('babySetup.themeSubtitle')}</Text>
 
             <View style={styles.paletteList}>
               {paletteOptions.map((option) => {
@@ -235,7 +234,7 @@ export default function BabySetupScreen() {
               activeOpacity={0.8}
             >
               <Text style={styles.finishButtonText}>
-                {isSaving ? 'Setting up...' : 'Get started'}
+                {isSaving ? t('babySetup.settingUp') : t('babySetup.getStarted')}
               </Text>
             </TouchableOpacity>
           </ScrollView>
@@ -263,28 +262,34 @@ export default function BabySetupScreen() {
           </TouchableOpacity>
 
           <Text style={styles.title}>
-            {mode === 'born' ? 'Tell us about your baby' : 'When are you due?'}
+            {mode === 'born' ? t('babySetup.detailsBornTitle') : t('babySetup.detailsPregnantTitle')}
           </Text>
           <Text style={styles.subtitle}>
             {mode === 'born'
-              ? 'You can always update this later in Settings'
-              : 'This helps us set up your timeline'}
+              ? t('babySetup.detailsBornSubtitle')
+              : t('babySetup.detailsPregnantSubtitle')}
           </Text>
 
           <View style={styles.formSection}>
-            <Text style={styles.label}>Name (optional)</Text>
+            <Text style={styles.label}>{t('babySetup.nameLabel')}</Text>
             <TextInput
               style={styles.input}
               value={name}
               onChangeText={setName}
-              placeholder={mode === 'born' ? 'Baby\'s name or nickname' : 'A name or nickname'}
+              placeholder={
+                mode === 'born'
+                  ? t('babySetup.namePlaceholderBorn')
+                  : t('babySetup.namePlaceholderPregnant')
+              }
               placeholderTextColor={theme.textMuted}
             />
           </View>
 
           <View style={styles.formSection}>
             <Text style={styles.label}>
-              {mode === 'born' ? 'Date of birth' : 'Estimated due date'}
+              {mode === 'born'
+                ? t('babySetup.dateOfBirthLabel')
+                : t('babySetup.estimatedDueDateLabel')}
             </Text>
             {Platform.OS === 'android' && (
               <TouchableOpacity
@@ -316,7 +321,7 @@ export default function BabySetupScreen() {
             activeOpacity={0.8}
           >
             <Text style={styles.finishButtonText}>
-              Continue
+              {t('babySetup.continue')}
             </Text>
           </TouchableOpacity>
         </ScrollView>

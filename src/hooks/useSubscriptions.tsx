@@ -1,12 +1,11 @@
-import { useState, useEffect, useContext, createContext, useRef, useCallback } from 'react';
+import { useState, useEffect, useContext, createContext, useRef } from 'react';
 import { Alert, Platform } from 'react-native';
 import Purchases, {
   CustomerInfo,
   LOG_LEVEL,
   PurchasesOfferings,
 } from 'react-native-purchases';
-import { PAYWALL_RESULT } from "react-native-purchases-ui";
-import { TimedPaywall } from '../components/TimedPaywall';
+import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import { useI18n } from './useI18n';
 
 const REVENUECAT_API_KEY = Platform.select({
@@ -31,11 +30,9 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
   const [isLoading, setIsLoading] = useState(true);
   const [isConfigured, setIsConfigured] = useState(false);
   const [configError, setConfigError] = useState<string | null>(null);
-  const [paywallVisible, setPaywallVisible] = useState(false);
   const configuredRef = useRef(false);
   const offeringsRef = useRef<PurchasesOfferings | null>(null);
   const customerInfoListenerRef = useRef<ReturnType<typeof Purchases.addCustomerInfoUpdateListener> | null>(null);
-  const paywallResolveRef = useRef<((purchased: boolean) => void) | null>(null);
   
   // 3. BAĞLANTI VE ABONELİK DURUMU KONTROLÜ
   useEffect(() => {
@@ -101,23 +98,7 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
       }
   }
 
-  // 4. PAYWALL CLOSE HANDLER
-  const handlePaywallClose = useCallback(async (result: PAYWALL_RESULT) => {
-    setPaywallVisible(false);
-
-    let purchased = false;
-    if (result === PAYWALL_RESULT.PURCHASED || result === PAYWALL_RESULT.RESTORED) {
-      await fetchCustomerInfo();
-      purchased = true;
-    }
-
-    if (paywallResolveRef.current) {
-      paywallResolveRef.current(purchased);
-      paywallResolveRef.current = null;
-    }
-  }, []);
-
-  // 5. PAYWALL'U SUNMA FONKSİYONU
+  // 4. PAYWALL PRESENTATION
   const presentPaywall = async (): Promise<boolean> => {
     if (!REVENUECAT_API_KEY) {
         Alert.alert(
@@ -156,11 +137,20 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
         }
     }
 
-    // Show the timed paywall and wait for result
-    return new Promise<boolean>((resolve) => {
-      paywallResolveRef.current = resolve;
-      setPaywallVisible(true);
-    });
+    // Present RevenueCat UI Paywall directly
+    try {
+      const result = await RevenueCatUI.presentPaywall();
+
+      if (result === PAYWALL_RESULT.PURCHASED || result === PAYWALL_RESULT.RESTORED) {
+        await fetchCustomerInfo();
+        return true;
+      }
+
+      return false;
+    } catch (error) {
+      console.error("Paywall presentation failed:", error);
+      return false;
+    }
   }
 
   // 5. SATIN ALIMLARI GERİ YÜKLEME FONKSİYONU (Aynı kalır)
@@ -197,10 +187,6 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
   return (
     <SubscriptionContext.Provider value={contextValue}>
       {children}
-      <TimedPaywall
-        visible={paywallVisible}
-        onClose={handlePaywallClose}
-      />
     </SubscriptionContext.Provider>
   );
 };

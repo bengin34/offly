@@ -687,6 +687,32 @@
     "freeTextCities": "Nazwy list miast można wpisywać dowolnie — duplikaty traktowane są jako osobne listy",
     "noAutoBackup": "Brak automatycznego backupu — pamiętaj o regularnym eksporcie danych"
   },
+  "home": {
+    "noProfileTitle": "Witaj w Offly",
+    "noProfileSubtitle": "Konfigurujemy Twój profil..."
+  },
+  "babySetup": {
+    "welcomeTitle": "Witaj w Offly",
+    "welcomeSubtitle": "Jak chcesz zacząć?",
+    "modeBornTitle": "Dziecko już się urodziło",
+    "modeBornDescription": "Zacznij zapisywać kamienie milowe i wspomnienia od narodzin",
+    "modePregnantTitle": "Jestem w ciąży",
+    "modePregnantDescription": "Zacznij dziennik ciąży i pisz listy na przyszłość",
+    "detailsBornTitle": "Opowiedz nam o swoim dziecku",
+    "detailsBornSubtitle": "Zawsze możesz to zmienić później w Ustawieniach",
+    "detailsPregnantTitle": "Kiedy masz termin?",
+    "detailsPregnantSubtitle": "To pomaga nam przygotować oś czasu",
+    "nameLabel": "Imię (opcjonalnie)",
+    "namePlaceholderBorn": "Imię lub ksywka",
+    "namePlaceholderPregnant": "Imię lub ksywka",
+    "dateOfBirthLabel": "Data urodzenia",
+    "estimatedDueDateLabel": "Przewidywany termin porodu",
+    "continue": "Dalej",
+    "themeTitle": "Wybierz motyw kolorów",
+    "themeSubtitle": "Wybierz wygląd osi czasu. Zawsze możesz to zmienić w Ustawieniach.",
+    "getStarted": "Zaczynamy",
+    "settingUp": "Konfigurujemy..."
+  },
   "onboarding": {
     "screens": {
       "photoOverload": {

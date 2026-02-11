@@ -855,6 +855,32 @@
     "freeTextCities": "I nomi delle liste di traguardi sono testo libero — i duplicati sono liste separate",
     "noAutoBackup": "Nessun backup automatico - ricordati di esportare i dati regolarmente"
   },
+  "home": {
+    "noProfileTitle": "Benvenuto in Offly",
+    "noProfileSubtitle": "Configurazione del profilo..."
+  },
+  "babySetup": {
+    "welcomeTitle": "Benvenuto in Offly",
+    "welcomeSubtitle": "Come vuoi iniziare?",
+    "modeBornTitle": "Il bambino è nato",
+    "modeBornDescription": "Inizia a registrare traguardi e ricordi dalla nascita",
+    "modePregnantTitle": "Sono incinta",
+    "modePregnantDescription": "Avvia un diario di gravidanza e scrivi lettere per il futuro",
+    "detailsBornTitle": "Raccontaci del tuo bambino",
+    "detailsBornSubtitle": "Puoi sempre cambiarlo più tardi nelle Impostazioni",
+    "detailsPregnantTitle": "Quando è la data prevista?",
+    "detailsPregnantSubtitle": "Ci aiuta a configurare la tua timeline",
+    "nameLabel": "Nome (opzionale)",
+    "namePlaceholderBorn": "Nome o soprannome",
+    "namePlaceholderPregnant": "Un nome o soprannome",
+    "dateOfBirthLabel": "Data di nascita",
+    "estimatedDueDateLabel": "Data presunta del parto",
+    "continue": "Continua",
+    "themeTitle": "Scegli il tuo tema colori",
+    "themeSubtitle": "Scegli uno stile per la timeline. Puoi cambiarlo in qualsiasi momento nelle Impostazioni.",
+    "getStarted": "Inizia",
+    "settingUp": "Configurazione..."
+  },
   "onboarding": {
     "screens": {
       "photoOverload": {

@@ -13,12 +13,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { exportToJson, exportToXls, exportToZip, getExportStats } from '../src/utils/export';
 import { spacing, fontSize, borderRadius, fonts } from '../src/constants';
 import { Background } from '../src/components/Background';
-import { useI18n, useTheme, usePaywallTrigger, ThemeColors } from '../src/hooks';
+import { useI18n, useTheme, useSubscription, ThemeColors } from '../src/hooks';
 
 export default function ExportScreen() {
   const theme = useTheme();
   const { t, locale } = useI18n();
-  const { checkFeaturePaywall, isPro } = usePaywallTrigger();
+  const { isPro, presentPaywall } = useSubscription();
   const [exportingFormat, setExportingFormat] = useState<'json' | 'xls' | 'zip' | null>(null);
   const [zipProgress, setZipProgress] = useState<number | null>(null);
   const [photoCount, setPhotoCount] = useState(0);
@@ -40,17 +40,10 @@ export default function ExportScreen() {
   }, []);
 
   const handleExport = async (format: 'json' | 'xls' | 'zip') => {
-    // Check if user is Pro or show paywall
+    // Simple check: if not pro, show paywall
     if (!isPro) {
-      const purchased = await checkFeaturePaywall('export');
-      if (!purchased) {
-        // User dismissed paywall and didn't purchase - block export
-        Alert.alert(
-          t('alerts.proFeatureTitle'),
-          t('alerts.proFeatureExport')
-        );
-        return;
-      }
+      await presentPaywall();
+      return;
     }
 
     setExportingFormat(format);

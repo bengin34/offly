@@ -855,6 +855,32 @@
     "freeTextCities": "Los nombres de las listas de hitos son texto libre — los duplicados son listas separadas",
     "noAutoBackup": "Sin copias de seguridad automáticas - recuerda exportar tus datos regularmente"
   },
+  "home": {
+    "noProfileTitle": "Bienvenido a Offly",
+    "noProfileSubtitle": "Configurando tu perfil..."
+  },
+  "babySetup": {
+    "welcomeTitle": "Bienvenido a Offly",
+    "welcomeSubtitle": "¿Cómo quieres empezar?",
+    "modeBornTitle": "El bebé ya nació",
+    "modeBornDescription": "Empieza a guardar hitos y recuerdos desde el nacimiento",
+    "modePregnantTitle": "Estoy embarazada",
+    "modePregnantDescription": "Inicia un diario de embarazo y escribe cartas para el futuro",
+    "detailsBornTitle": "Cuéntanos sobre tu bebé",
+    "detailsBornSubtitle": "Siempre puedes cambiarlo más tarde en Ajustes",
+    "detailsPregnantTitle": "¿Para cuándo es tu fecha?",
+    "detailsPregnantSubtitle": "Esto nos ayuda a preparar tu línea de tiempo",
+    "nameLabel": "Nombre (opcional)",
+    "namePlaceholderBorn": "Nombre o apodo del bebé",
+    "namePlaceholderPregnant": "Un nombre o apodo",
+    "dateOfBirthLabel": "Fecha de nacimiento",
+    "estimatedDueDateLabel": "Fecha prevista de parto",
+    "continue": "Continuar",
+    "themeTitle": "Elige tu tema de color",
+    "themeSubtitle": "Elige un estilo para la línea de tiempo. Puedes cambiarlo cuando quieras en Ajustes.",
+    "getStarted": "Empezar",
+    "settingUp": "Configurando..."
+  },
   "onboarding": {
     "screens": {
       "photoOverload": {

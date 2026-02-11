@@ -687,6 +687,32 @@
     "freeTextCities": "Nomes das listas de marcos são livres — duplicatas são tratadas como listas separadas",
     "noAutoBackup": "Não há backups automáticos — lembre-se de exportar seus dados regularmente"
   },
+  "home": {
+    "noProfileTitle": "Bem-vindo ao Offly",
+    "noProfileSubtitle": "Configurando seu perfil..."
+  },
+  "babySetup": {
+    "welcomeTitle": "Bem-vindo ao Offly",
+    "welcomeSubtitle": "Como você quer começar?",
+    "modeBornTitle": "O bebê nasceu",
+    "modeBornDescription": "Comece a registrar marcos e lembranças desde o nascimento",
+    "modePregnantTitle": "Estou grávida",
+    "modePregnantDescription": "Inicie um diário de gravidez e escreva cartas para o futuro",
+    "detailsBornTitle": "Conte para a gente sobre seu bebê",
+    "detailsBornSubtitle": "Você pode alterar isso depois nas Configurações",
+    "detailsPregnantTitle": "Qual é a sua data prevista?",
+    "detailsPregnantSubtitle": "Isso ajuda a configurar sua linha do tempo",
+    "nameLabel": "Nome (opcional)",
+    "namePlaceholderBorn": "Nome ou apelido",
+    "namePlaceholderPregnant": "Um nome ou apelido",
+    "dateOfBirthLabel": "Data de nascimento",
+    "estimatedDueDateLabel": "Data prevista do parto",
+    "continue": "Continuar",
+    "themeTitle": "Escolha seu tema de cores",
+    "themeSubtitle": "Escolha um visual para a linha do tempo. Você pode alterar isso a qualquer momento nas Configurações.",
+    "getStarted": "Começar",
+    "settingUp": "Configurando..."
+  },
   "onboarding": {
     "screens": {
       "photoOverload": {

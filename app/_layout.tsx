@@ -6,7 +6,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { getDatabase } from '../src/db/database';
 import { colors, fonts } from '../src/constants';
 import { useI18n, useTheme, SubscriptionProvider } from '../src/hooks';
-import { useLocaleStore, useThemeStore, usePaywallStore, useBackupStore } from '../src/stores';
+import { useLocaleStore, useThemeStore, useBackupStore } from '../src/stores';
 import { useOnboardingStore } from '../src/stores/onboardingStore';
 
 function AppContent() {
@@ -164,13 +164,12 @@ export default function RootLayout() {
   const loadTheme = useThemeStore((state) => state.loadTheme);
   const loadLocale = useLocaleStore((state) => state.loadLocale);
   const loadOnboardingState = useOnboardingStore((state) => state.loadOnboardingState);
-  const loadPaywallState = usePaywallStore((state) => state.loadPaywallState);
   const loadBackupState = useBackupStore((state) => state.loadBackupState);
 
   useEffect(() => {
     async function initializeApp() {
       try {
-        await Promise.all([getDatabase(), loadTheme(), loadLocale(), loadOnboardingState(), loadPaywallState(), loadBackupState()]);
+        await Promise.all([getDatabase(), loadTheme(), loadLocale(), loadOnboardingState(), loadBackupState()]);
         setIsReady(true);
       } catch (error) {
         console.error('Failed to initialize app:', error);
@@ -179,7 +178,7 @@ export default function RootLayout() {
     }
 
     initializeApp();
-  }, [loadTheme, loadLocale, loadPaywallState, loadBackupState]);
+  }, [loadTheme, loadLocale, loadBackupState]);
 
   if (!isReady) {
     return (

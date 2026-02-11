@@ -1,0 +1,68 @@
+{
+  "identifier" : "4D3F8B2A",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "49.99",
+      "familyShareable" : false,
+      "internalID" : "6739108257",
+      "localizations" : [
+        {
+          "description" : "Unlock unlimited chapters, entries, and advanced features forever",
+          "displayName" : "Offly Pro Lifetime",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "offly_pro_lifetime",
+      "referenceName" : "Offly Pro Lifetime",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6739108250",
+    "_developerTeamID" : "WLKHQPA32F",
+    "_lastSynchronizedDate" : 760104736.42828703
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "21594229",
+      "localizations" : [
+
+      ],
+      "name" : "Offly Pro Subscription",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "19.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6739108258",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Unlock unlimited chapters, entries, and advanced features",
+              "displayName" : "Offly Pro Yearly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "offly_yearly_pro",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Offly Pro Yearly",
+          "subscriptionGroupID" : "21594229",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

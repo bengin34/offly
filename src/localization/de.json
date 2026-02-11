@@ -855,6 +855,32 @@
     "freeTextCities": "Meilenstein-Listennamen sind Freitext — Duplikate gelten als separate Listen",
     "noAutoBackup": "Keine automatischen Backups - denke daran, deine Daten regelmäßig zu exportieren"
   },
+  "home": {
+    "noProfileTitle": "Willkommen bei Offly",
+    "noProfileSubtitle": "Dein Profil wird eingerichtet..."
+  },
+  "babySetup": {
+    "welcomeTitle": "Willkommen bei Offly",
+    "welcomeSubtitle": "Wie möchtest du starten?",
+    "modeBornTitle": "Baby ist geboren",
+    "modeBornDescription": "Erfasse Meilensteine und Erinnerungen ab der Geburt",
+    "modePregnantTitle": "Ich bin schwanger",
+    "modePregnantDescription": "Starte ein Schwangerschaftstagebuch und schreibe Briefe für die Zukunft",
+    "detailsBornTitle": "Erzähl uns von deinem Baby",
+    "detailsBornSubtitle": "Du kannst das später jederzeit in den Einstellungen ändern",
+    "detailsPregnantTitle": "Wann ist dein Termin?",
+    "detailsPregnantSubtitle": "So können wir deine Timeline einrichten",
+    "nameLabel": "Name (optional)",
+    "namePlaceholderBorn": "Name oder Spitzname",
+    "namePlaceholderPregnant": "Ein Name oder Spitzname",
+    "dateOfBirthLabel": "Geburtsdatum",
+    "estimatedDueDateLabel": "Voraussichtlicher Termin",
+    "continue": "Weiter",
+    "themeTitle": "Wähle dein Farbschema",
+    "themeSubtitle": "Wähle einen Look für die Timeline. Du kannst das jederzeit in den Einstellungen ändern.",
+    "getStarted": "Los geht's",
+    "settingUp": "Wird eingerichtet..."
+  },
   "onboarding": {
     "screens": {
       "photoOverload": {

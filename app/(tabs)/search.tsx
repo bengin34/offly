@@ -17,7 +17,7 @@ import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
 import { QUICK_TAGS } from '../../src/constants/quickTags';
 import { Background } from '../../src/components/Background';
 import { ProUpgradeBanner } from '../../src/components/ProUpgradeBanner';
-import { useI18n, useTheme, usePaywallTrigger } from '../../src/hooks';
+import { useI18n, useTheme, useSubscription } from '../../src/hooks';
 import type { SearchResult, Tag, MemoryType } from '../../src/types';
 
 type ResultTypeFilter = 'all' | 'chapter' | 'memory';
@@ -26,7 +26,7 @@ export default function SearchScreen() {
   const router = useRouter();
   const theme = useTheme();
   const { t, locale } = useI18n();
-  const { onSearchPerformed, checkFeaturePaywall, isPro } = usePaywallTrigger();
+  const { isPro, presentPaywall } = useSubscription();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
@@ -104,15 +104,10 @@ export default function SearchScreen() {
       const searchResults = await SearchRepository.search(text.trim(), filters);
       setResults(searchResults);
       setHasSearched(true);
-
-      // Track search for paywall trigger (only on successful search with results)
-      if (searchResults.length > 0) {
-        await onSearchPerformed();
-      }
     } catch (error) {
       console.error('Search failed:', error);
     }
-  }, [onSearchPerformed]);
+  }, []);
 
   const handleSearch = useCallback((text: string) => {
     setQuery(text);
@@ -150,12 +145,10 @@ export default function SearchScreen() {
       return;
     }
 
+    // Simple check: if not pro, show paywall
     if (!isPro) {
       Alert.alert(t('alerts.proFeatureTitle'), t('alerts.proFeatureAdvancedSearch'));
-      const purchased = await checkFeaturePaywall('advanced_search');
-      if (purchased) {
-        setShowFilters(true);
-      }
+      await presentPaywall();
       return;
     }
 
