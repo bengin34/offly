@@ -1,0 +1,748 @@
+{
+  "common": {
+    "appName": "Offly",
+    "done": "Готово",
+    "cancel": "Отмена",
+    "delete": "Удалить",
+    "save": "Сохранить",
+    "add": "Добавить",
+    "create": "Создать",
+    "close": "Закрыть",
+    "saving": "Сохраняется...",
+    "creating": "Создается...",
+    "adding": "Добавляется...",
+    "entry": "воспоминание",
+    "entries": "воспоминания",
+    "memories": "Воспоминания",
+    "shareChapter": "Поделиться главой"
+  },
+  "shareDialog": {
+    "title": "Поделиться {name}",
+    "subtitle": "Выберите способ отправки этой главы",
+    "hint": "Данные остаются приватными — при обмене создается локальный файл",
+    "optionTextTitle": "Текстовый список",
+    "optionTextDescription": "Простой формат текста, идеально подходит для чатов",
+    "optionImageTitle": "Визуальная карточка",
+    "optionImageDescription": "Красивый слайд с лучшими воспоминаниями",
+    "optionPdfTitle": "PDF-документ",
+    "optionPdfDescription": "Полная глава со всеми деталями и заметками",
+    "dialogTitleChapter": "Поделиться главой {name}",
+    "dialogTitleMemoryHighlights": "Поделиться подборкой {name}",
+    "dialogTitleChapterGuide": "Поделиться главой {name}",
+    "dialogTitleCard": "Поделиться карточкой {name}"
+  },
+  "tabs": {
+    "chapters": "Главы",
+    "chaptersLegacy": "Главы",
+    "search": "Поиск",
+    "insights": "Статистика",
+    "settings": "Настройки"
+  },
+  "navigation": {
+    "newChapter": "Новая глава",
+    "chapter": "Глава",
+    "editChapter": "Изменить главу",
+    "newChapterLegacy": "Новая глава",
+    "chapterLegacy": "Глава",
+    "editChapterLegacy": "Изменить главу",
+    "newMemory": "Новая память",
+    "memory": "Память",
+    "editMemory": "Редактировать память",
+    "newEntry": "Новая память",
+    "entry": "Память",
+    "editEntry": "Редактировать память"
+  },
+  "chapters": {
+    "addCover": "Добавить обложку",
+    "days": "{count} дней",
+    "emptyTitle": "Пока нет глав",
+    "emptySubtitle": "Начните сохранять воспоминания о малыше",
+    "emptyButton": "Создать первую главу"
+  },
+  "chaptersLegacy": {
+    "addCover": "Добавить обложку",
+    "days": "{count} дней",
+    "emptyTitle": "Пока нет глав",
+    "emptySubtitle": "Начните сохранять воспоминания о малыше",
+    "emptyButton": "Создать первую главу"
+  },
+  "settings": {
+    "preferences": "Настройки",
+    "appearance": "Внешний вид",
+    "language": "Язык",
+    "chooseAppearance": "Выбрать внешний вид",
+    "chooseLanguage": "Выбрать язык",
+    "exportSection": "Экспорт",
+    "exportTitle": "Экспорт всех данных",
+    "exportDescription": "Скачайте главы, воспоминания и теги в формате JSON или XLS",
+    "exportButton": "Экспортировать JSON",
+    "exportButtonXls": "Экспортировать XLS",
+    "exportOpenButton": "Открыть параметры экспорта",
+    "exportInfoTitle": "Зачем экспортировать?",
+    "exportInfoDescription": "Создайте личную копию, перенесите данные на новый телефон или проанализируйте воспоминания в таблице. Экспорт остается на устройстве, пока вы не поделитесь.",
+    "exportPrivacyNote": "Файлы экспорта могут содержать личные заметки. Будьте осторожны при обмене.",
+    "exportPhotosNote": "Фотографии не включены в экспорт.",
+    "exportFormatsTitle": "Выберите формат",
+    "exportFormatsDescription": "JSON идеально подходит для бэкапов и повторного импорта. XLS легко открыть в Excel или Google Sheets.",
+    "importSection": "Импорт",
+    "importTitle": "Импорт данных",
+    "importDescription": "Загрузите сохраненные главы и воспоминания из JSON-файла.",
+    "importButton": "Импортировать JSON",
+    "importButtonImporting": "Импорт...",
+    "dataSection": "Данные",
+    "dataTitle": "Экспорт и импорт",
+    "dataDescription": "Сделайте бэкап или перенесите воспоминания через экспорт и импорт.",
+    "dataButton": "Показать опции",
+    "supportSection": "Поддержка",
+    "supportRate": "Оцените нас на 5 звезд",
+    "supportShare": "Поделиться приложением",
+    "supportContact": "Связаться с нами",
+    "supportShareMessage": "Offly — частное семейное хранилище воспоминаний, которое мне нравится: {link}",
+    "onboardingSection": "С чего начать",
+    "onboardingTitle": "Повторно показать вводный экран",
+    "onboardingDescription": "Вы можете заново пройти короткую 7-экранную инструкцию.",
+    "onboardingButton": "Запустить вводный курс",
+    "onboardingResetTitle": "Начать заново вводный курс?",
+    "onboardingResetMessage": "Приложение снова покажет инструктаж. Вы всегда можете пропустить.",
+    "onboardingResetAction": "Начать",
+    "aboutSection": "О приложении",
+    "version": "Версия",
+    "storage": "Хранилище",
+    "privacy": "Конфиденциальность",
+    "storageValue": "Данные остаются на устройстве.",
+    "privacyValue": "Работает офлайн",
+    "footer": "Offly — ваше приватное семейное хранилище воспоминаний",
+    "themeLight": "Светлая",
+    "themeDark": "Темная",
+    "themeSystem": "Системная",
+    "alertBackupExportFailedMessage": "Не удалось создать бэкап. Попробуйте снова.",
+    "alertProfileUpdateFailedMessage": "Не удалось обновить профиль. Попробуйте снова.",
+    "beforeBirthChapterTitle": "До рождения",
+    "beforeBirthChapterDescription": "Записи беременности",
+    "alertModeUpdatedTitle": "Режим обновлен",
+    "alertModeUpdatedMessage": "Профиль переключен в режим «Родился». Записи беременности перемещены в главу «{chapter}».",
+    "alertModeSwitchFailedMessage": "Не удалось сменить режим. Попробуйте снова.",
+    "yourBaby": "Ваш малыш",
+    "modeExpecting": "Ожидается",
+    "modeBorn": "Родился",
+    "editAction": "Изменить",
+    "dueDate": "Дата родов",
+    "age": "Возраст",
+    "daysCount": "{count} дней",
+    "babyBornButton": "Ребенок родился!",
+    "colorTheme": "Цветовая тема",
+    "backupDataSection": "Бэкап и данные",
+    "backupMemoriesTitle": "Сделайте бэкап воспоминаний",
+    "backupMemoriesDescription": "Экспортируйте данные ради безопасной копии. Данные хранятся только на устройстве.",
+    "lastBackup": "Последний бэкап: {date}",
+    "noBackupYet": "Нет бэкапа. Рекомендуем делать их регулярно.",
+    "createBackup": "Создать бэкап",
+    "moreExportImportOptions": "Дополнительные параметры экспорта/импорта",
+    "chooseColorTheme": "Выбрать цветовую тему",
+    "modeSwitchTitle": "Ребенок родился!",
+    "modeSwitchConfirm": "Подтвердить",
+    "modeSwitchDescription": "Введите дату рождения. Записи беременности переместятся в главу «{chapter}», а даты открытия хранилища пересчитаются.",
+    "editBabyProfileTitle": "Редактировать профиль малыша",
+    "name": "Имя",
+    "namePlaceholder": "Имя или ласковое прозвище",
+    "birthDateLabel": "Дата рождения"
+  },
+  "proBanner": {
+    "title": "Перейти на Pro",
+    "subtitle": "Откройте все функции",
+    "cta": "Обновить",
+    "messages": [
+      {
+        "title": "Перейти на Pro",
+        "subtitle": "Откройте все функции"
+      },
+      {
+        "title": "Меньше скролла, больше смысла",
+        "subtitle": "Найдите важные моменты ребенка одним движением"
+      },
+      {
+        "title": "Запомнить всё",
+        "subtitle": "Сохраняйте маленькие моменты безопасно"
+      },
+      {
+        "title": "Ваш семейный архив",
+        "subtitle": "Мгновенный доступ к каждой главе"
+      },
+      {
+        "title": "Найдите за секунды",
+        "subtitle": "Ищите воспоминания по заголовку, заметкам или тегам"
+      },
+      {
+        "title": "Расти без ограничений",
+        "subtitle": "Неограниченное число глав. Неограниченное число воспоминаний"
+      }
+    ]
+  },
+  "labels": {
+    "date": "Дата",
+    "startDate": "Дата начала",
+    "endDate": "Дата окончания",
+    "title": "Заголовок",
+    "notes": "Заметки",
+    "optional": "необязательно",
+    "filled": "Заполнено",
+    "milestone": {
+      "pastDue": "Просрочено",
+      "today": "Сегодня",
+      "tomorrow": "Завтра",
+      "empty": "Пока нет важных событий",
+      "emptySubtitle": "Здесь появятся важные моменты",
+      "quickAddHelper": "Откройте полный редактор, чтобы добавить теги и др."
+    }
+  },
+  "placeholders": {
+    "search": "Ищите главы, воспоминания, заметки...",
+    "chapterTitleExample": "напр., Первый год",
+    "chapterSummaryExample": "Краткое описание этой главы...",
+    "chapterTitle": "напр., 0–3 месяца",
+    "chapterDescription": "Короткое описание этой главы...",
+    "entryTitleMilestone": "напр., Первый смех",
+    "entryTitleMemory": "напр., Спокойный день",
+    "memoryTitleMilestone": "Первый смех, Первые шаги...",
+    "memoryTitleNote": "Спокойный день, Веселый момент...",
+    "entryNotes": "Добавьте подробности...",
+    "milestoneListName": "напр., Идеи важных дат, Семейные традиции",
+    "locationGroupName": "напр., Дом, Дом бабушки",
+    "memoryTitle": "Что произошло?",
+    "memoryNotes": "Добавьте подробности..."
+  },
+  "chapterForm": {
+    "titleLabel": "Название главы *",
+    "descriptionLabel": "Описание (по желанию)",
+    "coverImageLabel": "Обложка (по желанию)",
+    "changeCover": "Изменить",
+    "addCoverPlaceholder": "Нажмите, чтобы добавить обложку"
+  },
+  "chapterFormLegacy": {
+    "titleLabel": "Название главы *",
+    "summaryLabel": "Описание (по желанию)",
+    "coverImageLabel": "Обложка (по желанию)",
+    "changeCover": "Изменить",
+    "addCoverPlaceholder": "Нажмите, чтобы добавить обложку"
+  },
+  "memoryForm": {
+    "titleLabel": "Название *",
+    "locationLabel": "Место",
+    "descriptionLabel": "Описание",
+    "tagsLabel": "Теги",
+    "milestone": "Веха",
+    "note": "Заметка"
+  },
+  "entryForm": {
+    "titleLabel": "Название *",
+    "notesLabel": "Заметки",
+    "tagsLabel": "Теги",
+    "photosLabel": "Фотографии ({count}/{max})",
+    "gallery": "Галерея",
+    "camera": "Камера",
+    "tapToAddTags": "Нажмите, чтобы добавить теги...",
+    "milestone": "Веха",
+    "memory": "Заметка",
+    "moreTags": "+{count} еще",
+    "locationLabel": "Место",
+    "locationPlaceholder": "Добавьте место (необязательно)",
+    "locationHint": "Добавьте локацию, если это помогает вспомнить событие"
+  },
+  "memoryDetail": {
+    "descriptionTitle": "Описание",
+    "tagsTitle": "Теги"
+  },
+  "entryDetail": {
+    "notesTitle": "Заметки",
+    "tagsTitle": "Теги",
+    "allPhotos": "Все фото ({count})",
+    "created": "Создано: {date}",
+    "updated": "Обновлено: {date}",
+    "locationTitle": "Место",
+    "openInMaps": "Открыть в картах"
+  },
+  "chapterDetail": {
+    "noPhoto": "Фото отсутствует",
+    "notePill": "Заметка",
+    "uncategorized": "Без категории",
+    "emptyTitle": "Пока нет воспоминаний",
+    "emptySubtitle": "Добавьте воспоминания в эту главу",
+    "addFirstMemory": "Добавить первую память",
+    "addMemory": "Добавить воспоминание"
+  },
+  "chapterDetailLegacy": {
+    "noPhoto": "Фото отсутствует",
+    "notePill": "Заметка",
+    "uncategorized": "Без категории",
+    "emptyTitle": "Пока нет воспоминаний",
+    "emptySubtitle": "Добавьте воспоминания в эту главу",
+    "addFirstEntry": "Добавить первую память",
+    "addEntry": "Добавить воспоминание"
+  },
+  "memories": {
+    "memory": "Память",
+    "milestone": "Веха",
+    "note": "Заметка",
+    "notePill": "ЗАМЕТКА",
+    "noPhoto": "Фото отсутствует"
+  },
+  "milestoneLists": {
+    "title": "Списки городов",
+    "listNameLabel": "Название списка *",
+    "listTypeLabel": "Тип списка",
+    "groupLabel": "Страна *",
+    "typeCustom": "Своя",
+    "typeCountry": "Страна",
+    "typeHintCustom": "Создайте собственный список мест, которые хотите отслеживать",
+    "typeHintCountry": "Создайте список мест в конкретной стране",
+    "emptyTitle": "Пока нет списков городов",
+    "emptyDescription": "Добавьте города, которые хотите посетить, и отслеживайте прогресс",
+    "createFirstList": "Создать первый список",
+    "progressVisited": "{visited}/{total} посещено ({percent}%)",
+    "detailProgress": "Посещено {visited} из {total} мест ({percent}%)",
+    "detailEmptyTitle": "Пока нет городов",
+    "detailEmptyDescription": "Добавьте город, который хотите посетить",
+    "detailAddCity": "Добавить город",
+    "detailVisited": "Посещено",
+    "notFound": "Список городов не найден",
+    "loading": "Загрузка..."
+  },
+  "search": {
+    "emptyTitle": "Ищите воспоминания",
+    "emptySubtitle": "Поиск по главам и заметкам по названию, описанию, тегам",
+    "noResultsTitle": "Результаты не найдены",
+    "noResultsSubtitle": "Попробуйте другие ключевики",
+    "showLabel": "Показать",
+    "memoryTypeLabel": "Тип воспоминания",
+    "entryTypeLabel": "Тип воспоминания",
+    "tagsLabel": "Теги",
+    "clearFilters": "Сбросить фильтры",
+    "filterAll": "Все",
+    "filterChapters": "Главы",
+    "filterMemories": "Воспоминания",
+    "filterChapterLegacy": "Главы",
+    "filterEntries": "Воспоминания",
+    "filterAny": "Любые",
+    "filterMilestones": "Вехи",
+    "filterNotes": "Заметки",
+    "filterMilestoneLegacy": "Вехи",
+    "filterNoteLegacy": "Заметки",
+    "matchedIn": "Совпадение в {field}:",
+    "inChapter": "в {chapter}",
+    "inChapterLegacy": "в {chapter}",
+    "matchFieldTitle": "заголовке",
+    "matchFieldLocation": "месте",
+    "matchFieldSummary": "описании",
+    "matchFieldNotes": "заметках",
+    "matchFieldTag": "теге",
+    "matchFieldMilestone": "городе"
+  },
+  "insights": {
+    "sectionStats": "Ваши показатели",
+    "statsChapters": "Главы",
+    "statsMemories": "Воспоминания",
+    "statsChapterLegacy": "Главы",
+    "statsMemoryLegacy": "Воспоминания",
+    "statsMilestones": "Места",
+    "statsLocations": "Локации",
+    "statsPhotos": "Фото",
+    "statsChapterDays": "Дней в главе",
+    "memoriesBreakdown": "{milestones} вех, {notes} заметок",
+    "entriesBreakdown": "{milestones} вех, {notes} заметок",
+    "highlightMostVisited": "Самые посещаемые",
+    "highlightFirstTrip": "Первая глава",
+    "highlightFirstMemory": "Первое воспоминание",
+    "topTags": "Топ-теги",
+    "milestoneProgress": "Списки вех",
+    "seeAll": "Посмотреть все",
+    "createFirstMilestoneList": "Создайте первый список вех",
+    "milestoneListsEmptyHint": "Отслеживайте важные события",
+    "milestoneListCount": "{visited}/{total} элементов",
+    "moreLists": "+{count} списков",
+    "achievements": "Достижения",
+    "viewAll": "Посмотреть все",
+    "noBadgesEarned": "Еще нет значков",
+    "badgesEmptyHint": "Продолжайте сохранять воспоминания, чтобы получить значки",
+    "moreBadges": "+{count} значков",
+    "badgesProgress": "Получено {unlocked} из {total} значков"
+  },
+  "badges": {
+    "earned": "Получено",
+    "locked": "Закрыто",
+    "allBadges": "Все значки",
+    "badgesEarned": "Полученные значки",
+    "special": "Специальное",
+    "tagAdventures": "Теговые достижения",
+    "firstSteps": "Первые шаги",
+    "chapterMilestones": "Достижения главы",
+    "milestoneAchievements": "Достижения вех",
+    "entryMilestones": "Достижения воспоминаний",
+    "consistencyMilestones": "Последовательность",
+    "photoMilestones": "Фото-достижения",
+    "tagMilestones": "Теговые трекеры",
+    "organizationMilestones": "Организация",
+    "badgeUnlocked": "Значок разблокирован!"
+  },
+  "badgeDetail": {
+    "congratulations": "Поздравляем!",
+    "earnedOn": "Получено: {date}",
+    "notYetEarned": "Еще не получено"
+  },
+  "badgeItems": {
+    "historian": {
+      "title": "Хранитель воспоминаний",
+      "description": "Сохранили 40 прошлых воспоминаний"
+    },
+    "first_chapter": {
+      "title": "Первая глава",
+      "description": "Создали первую главу"
+    },
+    "first_milestone": {
+      "title": "Первая веха",
+      "description": "Записали первую веху"
+    },
+    "first_note": {
+      "title": "Первая заметка",
+      "description": "Написали первую заметку"
+    },
+    "first_tag": {
+      "title": "Первый тег",
+      "description": "Создали первый тег"
+    },
+    "chapters_5": {
+      "title": "Хроникер",
+      "description": "Создали 5 глав"
+    },
+    "chapters_15": {
+      "title": "Рассказчик",
+      "description": "Создали 15 глав"
+    },
+    "chapters_30": {
+      "title": "Создатель наследия",
+      "description": "Создали 30 глав"
+    },
+    "milestones_15": {
+      "title": "Следопыт вех",
+      "description": "Записали 15 вех"
+    },
+    "milestones_40": {
+      "title": "Коллекционер вех",
+      "description": "Записали 40 вех"
+    },
+    "milestones_150": {
+      "title": "Мастер вех",
+      "description": "Записали 150 вех"
+    },
+    "memories_40": {
+      "title": "Хранитель воспоминаний",
+      "description": "Создали 40 воспоминаний"
+    },
+    "memories_150": {
+      "title": "Архивариус",
+      "description": "Создали 150 воспоминаний"
+    },
+    "photos_25": {
+      "title": "Фотолюбитель",
+      "description": "Сделали 25 фото"
+    },
+    "photos_100": {
+      "title": "Фотограф",
+      "description": "Сделали 100 фото"
+    },
+    "photos_400": {
+      "title": "Фотоархивист",
+      "description": "Сделали 400 фото"
+    },
+    "tag_first_time": {
+      "title": "Первые разы",
+      "description": "Записали 10 первых моментов"
+    },
+    "tag_milestone": {
+      "title": "Мастер вех",
+      "description": "Добавили 15 тегов к важным моментам"
+    },
+    "tag_funny": {
+      "title": "Комический капитал",
+      "description": "Записали 12 забавных моментов"
+    },
+    "tag_sweet": {
+      "title": "Сладкие мгновения",
+      "description": "Записали 12 трогательных моментов"
+    },
+    "tag_growth": {
+      "title": "Трекер роста",
+      "description": "Записали 10 моментов роста"
+    },
+    "tag_health": {
+      "title": "Журнал здоровья",
+      "description": "Записали 10 медицинских наблюдений"
+    },
+    "tag_feeding": {
+      "title": "Трекер кормлений",
+      "description": "Записали 15 кормлений"
+    },
+    "tag_sleep": {
+      "title": "Монитор сна",
+      "description": "Записали 15 снов"
+    },
+    "tag_play": {
+      "title": "Профи игр",
+      "description": "Записали 12 игровых моментов"
+    },
+    "tag_family": {
+      "title": "Семейные мгновения",
+      "description": "Записали 15 семейных событий"
+    },
+    "note_taker": {
+      "title": "Записывающий",
+      "description": "Добавили описания к 20 воспоминаниям"
+    },
+    "storyteller_badge": {
+      "title": "Детальный рассказчик",
+      "description": "Добавили описания к 100 воспоминаниям"
+    },
+    "visual_logger": {
+      "title": "Визуальный журнал",
+      "description": "Добавили фотографии к 20 воспоминаниям"
+    },
+    "photo_journalist": {
+      "title": "Фото журналист",
+      "description": "Добавили фотографии к 100 воспоминаниям"
+    },
+    "organizer": {
+      "title": "Организатор",
+      "description": "Пометили 20 воспоминаний тегами"
+    },
+    "master_organizer": {
+      "title": "Мастер организации",
+      "description": "Пометили 100 воспоминаний тегами"
+    },
+    "tag_creator": {
+      "title": "Создатель тегов",
+      "description": "Создали 20 уникальных тегов"
+    },
+    "taxonomy_expert": {
+      "title": "Эксперт по классификации",
+      "description": "Создали 40 уникальных тегов"
+    }
+  },
+  "tags": {
+    "quick": {
+      "restaurant": "Ресторан",
+      "cafe": "Кафе",
+      "hotel": "Отель",
+      "museum": "Музей",
+      "cityCenter": "Центр города",
+      "beach": "Пляж",
+      "sea": "Море",
+      "park": "Парк",
+      "shopping": "Шопинг",
+      "bar": "Бар",
+      "landmark": "Достопримечательность",
+      "mosque": "Мечеть",
+      "ship": "Корабль",
+      "temple": "Храм",
+      "market": "Рынок",
+      "nightlife": "Ночная жизнь",
+      "nature": "Природа",
+      "adventure": "Приключение",
+      "localFood": "Местная еда",
+      "streetFood": "Уличная еда",
+      "viewPoint": "Смотровая площадка",
+      "historic": "Историческое",
+      "art": "Искусство",
+      "transport": "Транспорт"
+    }
+  },
+  "dialogs": {
+    "tagPicker": {
+      "title": "Добавить теги",
+      "selected": "Выбрано",
+      "addCustom": "Добавить свой тег",
+      "customPlaceholder": "Введите название тега...",
+      "quickTags": "Быстрые теги",
+      "yourTags": "Ваши теги"
+    },
+    "locationPicker": {
+      "label": "Город",
+      "placeholder": "Выберите город",
+      "title": "Выбрать город",
+      "addLocation": "Добавить город",
+      "locationNamePlaceholder": "Название города",
+      "noLocation": "Без города (без категории)",
+      "fromDate": "С {date}",
+      "untilDate": "По {date}"
+    },
+    "locationEditor": {
+      "label": "Города",
+      "empty": "Пока нет добавленных мест",
+      "addLocation": "Добавить город",
+      "editTitle": "Изменить город",
+      "addTitle": "Добавить город",
+      "locationNameLabel": "Название города *",
+      "locationNamePlaceholder": "напр., Рим, Флоренция",
+      "arrivalDateLabel": "Дата прибытия (опционально)",
+      "departureDateLabel": "Дата отъезда (опционально)",
+      "notSet": "Не указано",
+      "fromDate": "С {date}",
+      "untilDate": "По {date}",
+      "done": "Готово"
+    },
+    "milestoneList": {
+      "createTitle": "Новый список городов",
+      "addItemTitle": "Добавить город",
+      "addItemPlaceholder": "Название города",
+      "addItemButton": "Добавить город",
+      "adding": "Добавление...",
+      "linkChapterTitle": "Связать с главой (необязательно)",
+      "noChapterLinked": "Нет связанных глав"
+    }
+  },
+  "alerts": {
+    "exportFailedTitle": "Ошибка экспорта",
+    "exportFailedMessage": "Не удалось экспортировать данные. Повторите попытку.",
+    "importComplete": "Импорт завершен",
+    "importCompletedWithErrors": "Импорт завершен с некоторыми проблемами",
+    "importFailed": "Импорт не удался. Повторите попытку.",
+    "errorTitle": "Ошибка",
+    "requiredTitle": "Обязательно",
+    "invalidDateTitle": "Неверная дата",
+    "permissionTitle": "Требуется доступ",
+    "deleteEntryTitle": "Удалить воспоминание",
+    "deleteEntryMessage": "Вы уверены, что хотите удалить это воспоминание?",
+    "deletePhotoTitle": "Удалить фото",
+    "deletePhotoMessage": "Вы уверены, что хотите удалить это фото?",
+    "deleteChapterTitle": "Удалить главу",
+    "deleteChapterMessage": "Вы уверены, что хотите удалить эту главу? Это удалит все связанные воспоминания.",
+    "deleteChapterLegacyTitle": "Удалить главу",
+    "deleteChapterLegacyMessage": "Вы уверены, что хотите удалить эту главу? Это удалит все связанные воспоминания.",
+    "deleteListTitle": "Удалить список",
+    "deleteListMessage": "Вы уверены, что хотите удалить «{name}»? Будут удалены все города из списка.",
+    "deleteItemTitle": "Удалить {item}",
+    "deleteItemMessage": "Вы уверены, что хотите удалить {item}?",
+    "deleteEntryFailed": "Не удалось удалить воспоминание",
+    "deleteMemoryFailed": "Не удалось удалить воспоминание",
+    "deletePhotoFailed": "Не удалось удалить фото",
+    "deleteChapterFailed": "Не удалось удалить главу",
+    "deleteChapterLegacyFailed": "Не удалось удалить главу",
+    "deleteListFailed": "Не удалось удалить список",
+    "createEntryFailed": "Не удалось создать запись. Повторите попытку.",
+    "updateEntryFailed": "Не удалось обновить запись. Повторите попытку.",
+    "createChapterFailed": "Не удалось создать главу. Повторите попытку.",
+    "updateChapterFailed": "Не удалось обновить главу. Повторите попытку.",
+    "createChapterLegacyFailed": "Не удалось создать главу. Повторите попытку.",
+    "updateChapterLegacyFailed": "Не удалось обновить главу. Повторите попытку.",
+    "createMilestoneListFailed": "Не удалось создать список городов. Повторите попытку.",
+    "createLocationFailed": "Не удалось создать город. Повторите попытку.",
+    "addLocationFailed": "Не удалось добавить город",
+    "permissionCameraMessage": "Требуется доступ к камере, чтобы сделать фото",
+    "invalidDateMessage": "Дата окончания не может быть раньше даты начала",
+    "entryDateOutOfRangeTitle": "Дата вне диапазона",
+    "entryDateOutOfRangeMessage": "Дата должна быть между {start} и {end}.",
+    "requiredEntryTitle": "Введите название",
+    "requiredChapterTitle": "Введите название главы",
+    "requiredChapterLegacyTitle": "Введите название главы",
+    "requiredMilestoneItem": "Добавьте хотя бы один город",
+    "requiredListName": "Введите название списка",
+    "requiredLocationGroup": "Введите название страны",
+    "requiredLocationName": "Введите название города",
+    "noProfileFound": "Профиль малыша не найден. Создайте его сначала.",
+    "nothingToShare": "Нечего поделиться",
+    "nothingToShareMessage": "У этого города пока нет записей для обмена.",
+    "shareFailed": "Не удалось поделиться. Повторите попытку.",
+    "chapterLimitTitle": "Достигнут лимит глав",
+    "chapterLimitMessage": "Бесплатные пользователи могут создать до {limit} глав. Обновитесь до Pro для неограниченного количества.",
+    "chapterLimitUpgrade": "Обновить до Pro",
+    "chapterLimitLegacyTitle": "Достигнут лимит глав",
+    "chapterLimitLegacyMessage": "Бесплатные пользователи могут создать до {limit} глав. Обновитесь до Pro для неограниченного количества.",
+    "chapterLimitLegacyUpgrade": "Обновить до Pro",
+    "backupReminderTitle": "Сделайте бэкап воспоминаний",
+    "backupReminderMessage": "Вы создали {count} глав! Подумайте об экспорте данных для безопасности.",
+    "backupReminderExport": "Экспортировать сейчас",
+    "backupReminderLater": "Позже",
+    "proFeatureTitle": "Функция Pro",
+    "proFeatureExport": "Экспорт доступен только в Pro. Обновитесь, чтобы выгрузить данные.",
+    "proFeatureAdvancedSearch": "Расширенный поиск доступен только в Pro.",
+    "proFeatureDarkMode": "Темная тема — функция Pro. Обновитесь, чтобы открыть все темы.",
+    "purchasesUnavailableTitle": "Покупки недоступны",
+    "purchasesUnavailableMessage": "Покупки недоступны в этой сборке.",
+    "purchasesNotReadyTitle": "Покупки пока недоступны",
+    "purchasesNotReadyMessage": "Повторите попытку чуть позже.",
+    "purchasesNotConfiguredTitle": "Покупки недоступны",
+    "purchasesNotConfiguredMessage": "RevenueCat еще не настроен.",
+    "restoreTitle": "Восстановить",
+    "restoreSuccessMessage": "Покупки успешно восстановлены.",
+    "restoreEmptyMessage": "Нет активных подписок для восстановления.",
+    "restoreFailedMessage": "Не удалось восстановить. Повторите попытку.",
+    "cameraPermission": "Доступ к камере",
+    "cameraPermissionDesc": "Включите доступ к камере в настройках",
+    "maxPhotos": "Максимум 3 фото",
+    "maxPhotosDesc": "Можно добавить не больше 3 фото",
+    "required": "Обязательно"
+  },
+  "limitations": {
+    "title": "Важно знать",
+    "photosNotBundled": "Фотографии не входят в экспорт — только ссылки на локальные файлы",
+    "noCloudSync": "Данные хранятся только на устройстве",
+    "freeTextCities": "Имена списков вех вводятся вручную — дубликаты считаются разными списками",
+    "noAutoBackup": "Автоматического бэкапа нет — не забывайте экспортировать"
+  },
+  "onboarding": {
+    "screens": {
+      "photoOverload": {
+        "title": "От камеры к истории малыша",
+        "body": "Моменты ребенка теряются среди тысяч фото. Сохраните их с контекстом, чтобы семья могла быстро найти важное."
+      },
+      "structuredArchive": {
+        "title": "История малыша, красиво организованная",
+        "body": "Создайте главы для каждого этапа, добавьте вехи, заметки и фото в одну спокойную хронику."
+      },
+      "fastSearch": {
+        "title": "Найти за секунды",
+        "body": "Ищите воспоминания по заголовкам, заметкам или тегам за пару секунд."
+      },
+      "bestOfList": {
+        "title": "Сохраняйте моменты, которые захотите рассказывать снова",
+        "body": "Отмечайте важные моменты малыша и добавляйте быстрые заметки, чтобы они не потерялись."
+      },
+      "noCompetition": {
+        "title": "Никакой ленты. Никакой гонки.",
+        "body": "Без лайков, без давления. Только воспоминания вашего малыша для семьи."
+      },
+      "privateOffline": {
+        "title": "Приватно и офлайн",
+        "body": "Аккаунт не нужен. Данные остаются на устройстве и работают без интернета."
+      },
+      "simpleStart": {
+        "title": "Начните первую главу прямо сейчас",
+        "body": "Создайте главу за секунду и добавьте первое воспоминание малыша. Детали можно дополнять позже."
+      }
+    },
+    "createFirstTrip": "Создайте первую главу малыша",
+    "next": "Далее",
+    "skip": "Пропустить",
+    "back": "Назад"
+  },
+  "shareContent": {
+    "locationLabel": "Место",
+    "summaryLabel": "Резюме",
+    "noEntries": "Записей нет",
+    "otherEntries": "Другие записи",
+    "sharedFrom": "Поделиться из Offly",
+    "chapterHighlights": "Лучшие моменты главы",
+    "locations": "Локации",
+    "milestones": "Вехи",
+    "moments": "Заметки",
+    "moreItems": "+ {count} еще",
+    "fromTrip": "Из главы",
+    "milestonesSection": "ВЕХИ",
+    "otherPlaces": "ДРУГИЕ ВЕХИ",
+    "memoriesSection": "ЗАМЕТКИ",
+    "myRecommendations": "Мои подборки",
+    "from": "От",
+    "other": "Другие"
+  },
+  "buttons": {
+    "save": "Сохранить воспоминание"
+  }
+}

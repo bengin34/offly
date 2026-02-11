@@ -338,4 +338,7 @@ buck-out/
 
 # End of https://www.toptal.com/developers/gitignore/api/react,fastlane,reactnative
 
+fastlane
 fastlane/Fastfile
+fastlane/screenshots
+fastlane/metadata

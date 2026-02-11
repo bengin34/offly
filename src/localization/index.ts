@@ -1,4 +1,17 @@
-export const supportedLocales = ['en', 'de', 'it', 'fr', 'es', 'tr'] as const;
+export const supportedLocales = [
+  'en',
+  'de',
+  'it',
+  'fr',
+  'es',
+  'tr',
+  'ja',
+  'ko',
+  'nl',
+  'pl',
+  'pt',
+  'ru',
+] as const;
 export type Locale = (typeof supportedLocales)[number];
 
 export type TranslationParams = Record<string, string | number>;
@@ -12,6 +25,12 @@ const translations: Record<Locale, TranslationTree> = {
   fr: require('./fr.json'),
   es: require('./es.json'),
   tr: require('./tr.json'),
+  ja: require('./ja.json'),
+  ko: require('./ko.json'),
+  nl: require('./nl.json'),
+  pl: require('./pl.json'),
+  pt: require('./pt.json'),
+  ru: require('./ru.json'),
 };
 
 const fallbackLocale: Locale = 'en';
@@ -84,6 +103,12 @@ export function getLocaleLabel(locale: Locale): string {
     fr: 'Français',
     es: 'Español',
     tr: 'Türkçe',
+    ja: '日本語',
+    ko: '한국어',
+    nl: 'Nederlands',
+    pl: 'Polski',
+    pt: 'Português (Brasil)',
+    ru: 'Русский',
   };
 
   return labels[locale];

@@ -350,7 +350,7 @@ export default function SettingsScreen() {
     );
   };
 
-  const APP_STORE_ID = '6758159402';
+  const APP_STORE_ID = '6758960256';
   const APP_STORE_URL = `https://apps.apple.com/app/id${APP_STORE_ID}`;
   const APP_STORE_REVIEW_URL = `${APP_STORE_URL}?action=write-review`;
   const SUPPORT_EMAIL = 'support@qrodesk.com';

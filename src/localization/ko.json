@@ -1,0 +1,748 @@
+{
+  "common": {
+    "appName": "Offly",
+    "done": "완료",
+    "cancel": "취소",
+    "delete": "삭제",
+    "save": "저장",
+    "add": "추가",
+    "create": "생성",
+    "close": "닫기",
+    "saving": "저장 중...",
+    "creating": "생성 중...",
+    "adding": "추가 중...",
+    "entry": "추억",
+    "entries": "추억",
+    "memories": "추억",
+    "shareChapter": "챕터 공유"
+  },
+  "shareDialog": {
+    "title": "{name} 공유",
+    "subtitle": "이 챕터를 어떻게 공유할지 선택하세요",
+    "hint": "데이터는 비공개로 유지됩니다 — 공유하면 로컬 파일이 생성됩니다",
+    "optionTextTitle": "텍스트 목록",
+    "optionTextDescription": "간단한 텍스트 형식으로 메시지 앱에 적합합니다",
+    "optionImageTitle": "비주얼 카드",
+    "optionImageDescription": "하이라이트를 담은 세련된 카드",
+    "optionPdfTitle": "PDF 문서",
+    "optionPdfDescription": "모든 세부 사항과 메모가 포함된 전체 챕터",
+    "dialogTitleChapter": "{name} 챕터 공유",
+    "dialogTitleMemoryHighlights": "{name} 하이라이트 공유",
+    "dialogTitleChapterGuide": "{name} 챕터 공유",
+    "dialogTitleCard": "{name} 카드 공유"
+  },
+  "tabs": {
+    "chapters": "챕터",
+    "chaptersLegacy": "챕터",
+    "search": "검색",
+    "insights": "인사이트",
+    "settings": "설정"
+  },
+  "navigation": {
+    "newChapter": "새 챕터",
+    "chapter": "챕터",
+    "editChapter": "챕터 편집",
+    "newChapterLegacy": "새 챕터",
+    "chapterLegacy": "챕터",
+    "editChapterLegacy": "챕터 편집",
+    "newMemory": "새 추억",
+    "memory": "추억",
+    "editMemory": "추억 편집",
+    "newEntry": "새 추억",
+    "entry": "추억",
+    "editEntry": "추억 편집"
+  },
+  "chapters": {
+    "addCover": "표지 추가",
+    "days": "{count}일",
+    "emptyTitle": "아직 챕터가 없어요",
+    "emptySubtitle": "아기의 추억을 기록하기 시작해보세요",
+    "emptyButton": "첫 챕터 만들기"
+  },
+  "chaptersLegacy": {
+    "addCover": "표지 추가",
+    "days": "{count}일",
+    "emptyTitle": "아직 챕터가 없어요",
+    "emptySubtitle": "아기의 추억을 기록하기 시작해보세요",
+    "emptyButton": "첫 챕터 만들기"
+  },
+  "settings": {
+    "preferences": "기본 설정",
+    "appearance": "표시",
+    "language": "언어",
+    "chooseAppearance": "표시 선택",
+    "chooseLanguage": "언어 선택",
+    "exportSection": "내보내기",
+    "exportTitle": "모든 데이터 내보내기",
+    "exportDescription": "챕터, 추억, 태그를 JSON 또는 XLS로 다운로드하세요",
+    "exportButton": "JSON 내보내기",
+    "exportButtonXls": "XLS 내보내기",
+    "exportOpenButton": "내보내기 옵션 열기",
+    "exportInfoTitle": "왜 내보내나요?",
+    "exportInfoDescription": "개인 백업을 만들거나 새 기기로 이동하거나 표에서 추억을 분석하세요. 내보낸 파일은 공유할 때까지 기기에 유지됩니다.",
+    "exportPrivacyNote": "내보낸 파일에는 개인 메모가 포함될 수 있으니 주의해서 공유하세요.",
+    "exportPhotosNote": "사진 자체는 내보내기에 포함되지 않습니다.",
+    "exportFormatsTitle": "형식 선택",
+    "exportFormatsDescription": "JSON은 백업 및 다시 가져오기에 이상적입니다. XLS는 Excel이나 Google Sheets에서 쉽게 열 수 있습니다.",
+    "importSection": "가져오기",
+    "importTitle": "데이터 가져오기",
+    "importDescription": "저장한 챕터와 추억을 JSON 파일에서 가져오세요.",
+    "importButton": "JSON 가져오기",
+    "importButtonImporting": "가져오는 중...",
+    "dataSection": "데이터",
+    "dataTitle": "내보내기 및 가져오기",
+    "dataDescription": "추억을 내보내기/가져오기 기능으로 백업하거나 이동하세요.",
+    "dataButton": "옵션 보기",
+    "supportSection": "지원",
+    "supportRate": "별점 5점 주기",
+    "supportShare": "앱 공유",
+    "supportContact": "문의하기",
+    "supportShareMessage": "Offly — 제가 좋아하는 가족 추억 아카이브 앱이에요: {link}",
+    "onboardingSection": "온보딩",
+    "onboardingTitle": "온보딩 다시 보기",
+    "onboardingDescription": "7개 화면으로 구성된 소개를 언제든 다시 재생할 수 있어요.",
+    "onboardingButton": "온보딩 시작",
+    "onboardingResetTitle": "온보딩을 다시 시작할까요?",
+    "onboardingResetMessage": "소개 흐름을 다시 표시합니다. 언제든 건너뛸 수 있어요.",
+    "onboardingResetAction": "시작",
+    "aboutSection": "앱 정보",
+    "version": "버전",
+    "storage": "저장 공간",
+    "privacy": "개인 정보",
+    "storageValue": "데이터는 기기에만 저장됩니다.",
+    "privacyValue": "오프라인 우선",
+    "footer": "Offly — 가족의 프라이빗 추억 아카이브",
+    "themeLight": "라이트",
+    "themeDark": "다크",
+    "themeSystem": "시스템",
+    "alertBackupExportFailedMessage": "백업을 생성하지 못했습니다. 다시 시도해 주세요.",
+    "alertProfileUpdateFailedMessage": "프로필을 업데이트하지 못했습니다. 다시 시도해 주세요.",
+    "beforeBirthChapterTitle": "출생 전",
+    "beforeBirthChapterDescription": "임신 일지 기록",
+    "alertModeUpdatedTitle": "모드가 업데이트되었습니다",
+    "alertModeUpdatedMessage": "프로필이 ‘태어남’ 모드로 전환되었습니다. 임신 기간 기록은 ‘{chapter}’ 챕터로 이동했습니다.",
+    "alertModeSwitchFailedMessage": "모드 전환에 실패했습니다. 다시 시도해 주세요.",
+    "yourBaby": "아기",
+    "modeExpecting": "예정",
+    "modeBorn": "탄생",
+    "editAction": "편집",
+    "dueDate": "출산 예정일",
+    "age": "나이",
+    "daysCount": "{count}일",
+    "babyBornButton": "아기가 태어났어요!",
+    "colorTheme": "색상 테마",
+    "backupDataSection": "백업 및 데이터",
+    "backupMemoriesTitle": "추억 백업",
+    "backupMemoriesDescription": "안전한 복사본을 위해 데이터를 내보내세요. 데이터는 이 기기에만 저장됩니다.",
+    "lastBackup": "마지막 백업: {date}",
+    "noBackupYet": "아직 백업이 없습니다. 정기적으로 백업하세요.",
+    "createBackup": "백업 생성",
+    "moreExportImportOptions": "추가 내보내기/가져오기 옵션",
+    "chooseColorTheme": "색상 테마 선택",
+    "modeSwitchTitle": "아기가 태어났어요!",
+    "modeSwitchConfirm": "확인",
+    "modeSwitchDescription": "출생일을 입력하세요. 임신 기간 기록은 ‘{chapter}’ 챕터로 이동하고 금고 열림 날짜가 재계산됩니다.",
+    "editBabyProfileTitle": "아기 프로필 편집",
+    "name": "이름",
+    "namePlaceholder": "아기 이름 또는 별명",
+    "birthDateLabel": "출생일"
+  },
+  "proBanner": {
+    "title": "Pro로 이동",
+    "subtitle": "모든 기능을 잠금 해제합니다.",
+    "cta": "업그레이드",
+    "messages": [
+      {
+        "title": "Pro로 이동",
+        "subtitle": "모든 기능을 잠금 해제합니다."
+      },
+      {
+        "title": "스와이프는 줄이고 의미는 늘리고",
+        "subtitle": "중요한 아기 순간을 즉시 찾습니다."
+      },
+      {
+        "title": "모든 것을 기억해요",
+        "subtitle": "작은 순간도 안전하게 보관합니다."
+      },
+      {
+        "title": "가족 아카이브",
+        "subtitle": "모든 챕터를 즉시 조회합니다."
+      },
+      {
+        "title": "몇 초면 찾을 수 있어요",
+        "subtitle": "제목, 메모, 태그로 추억을 검색하세요."
+      },
+      {
+        "title": "제한 없이 성장하세요",
+        "subtitle": "챕터 무제한. 추억 무제한."
+      }
+    ]
+  },
+  "labels": {
+    "date": "날짜",
+    "startDate": "시작일",
+    "endDate": "종료일",
+    "title": "제목",
+    "notes": "메모",
+    "optional": "선택 사항",
+    "filled": "작성됨",
+    "milestone": {
+      "pastDue": "기한 지남",
+      "today": "오늘",
+      "tomorrow": "내일",
+      "empty": "아직 마일스톤이 없습니다",
+      "emptySubtitle": "마일스톤은 여기에 표시됩니다",
+      "quickAddHelper": "태그 등을 추가하려면 전체 편집기를 여세요"
+    }
+  },
+  "placeholders": {
+    "search": "챕터, 추억, 메모 검색...",
+    "chapterTitleExample": "예: 첫해",
+    "chapterSummaryExample": "이 챕터에 대한 간단한 설명...",
+    "chapterTitle": "예: 0–3개월",
+    "chapterDescription": "이 챕터에 대한 짧은 설명...",
+    "entryTitleMilestone": "예: 첫 미소",
+    "entryTitleMemory": "예: 고요한 오후",
+    "memoryTitleMilestone": "첫 미소, 첫걸음...",
+    "memoryTitleNote": "고요한 오후, 재미있는 순간...",
+    "entryNotes": "상세 내용 추가...",
+    "milestoneListName": "예: 마일스톤 아이디어, 가족 전통",
+    "locationGroupName": "예: 집, 할머니 집",
+    "memoryTitle": "무슨 일이 있었나요?",
+    "memoryNotes": "상세 내용 추가..."
+  },
+  "chapterForm": {
+    "titleLabel": "챕터 제목 *",
+    "descriptionLabel": "설명 (선택 사항)",
+    "coverImageLabel": "표지 이미지 (선택 사항)",
+    "changeCover": "변경",
+    "addCoverPlaceholder": "표지 이미지를 추가하려면 탭하세요"
+  },
+  "chapterFormLegacy": {
+    "titleLabel": "챕터 제목 *",
+    "summaryLabel": "설명 (선택 사항)",
+    "coverImageLabel": "표지 이미지 (선택 사항)",
+    "changeCover": "변경",
+    "addCoverPlaceholder": "표지 이미지를 추가하려면 탭하세요"
+  },
+  "memoryForm": {
+    "titleLabel": "제목 *",
+    "locationLabel": "위치",
+    "descriptionLabel": "설명",
+    "tagsLabel": "태그",
+    "milestone": "마일스톤",
+    "note": "메모"
+  },
+  "entryForm": {
+    "titleLabel": "제목 *",
+    "notesLabel": "메모",
+    "tagsLabel": "태그",
+    "photosLabel": "사진 ({count}/{max})",
+    "gallery": "갤러리",
+    "camera": "카메라",
+    "tapToAddTags": "태그 추가하려면 탭...",
+    "milestone": "마일스톤",
+    "memory": "메모",
+    "moreTags": "+{count}개 더",
+    "locationLabel": "위치",
+    "locationPlaceholder": "장소 추가 (선택 사항)",
+    "locationHint": "추억에 도움이 된다면 위치를 추가하세요"
+  },
+  "memoryDetail": {
+    "descriptionTitle": "설명",
+    "tagsTitle": "태그"
+  },
+  "entryDetail": {
+    "notesTitle": "메모",
+    "tagsTitle": "태그",
+    "allPhotos": "모든 사진 ({count})",
+    "created": "생성: {date}",
+    "updated": "업데이트: {date}",
+    "locationTitle": "위치",
+    "openInMaps": "지도에서 열기"
+  },
+  "chapterDetail": {
+    "noPhoto": "사진 없음",
+    "notePill": "메모",
+    "uncategorized": "미분류",
+    "emptyTitle": "아직 추억이 없습니다",
+    "emptySubtitle": "이 챕터에 추억을 추가해보세요",
+    "addFirstMemory": "첫 번째 추억 추가",
+    "addMemory": "추억 추가"
+  },
+  "chapterDetailLegacy": {
+    "noPhoto": "사진 없음",
+    "notePill": "메모",
+    "uncategorized": "미분류",
+    "emptyTitle": "아직 추억이 없습니다",
+    "emptySubtitle": "이 챕터에 추억을 추가해보세요",
+    "addFirstEntry": "첫 번째 추억 추가",
+    "addEntry": "추억 추가"
+  },
+  "memories": {
+    "memory": "추억",
+    "milestone": "마일스톤",
+    "note": "메모",
+    "notePill": "메모",
+    "noPhoto": "사진 없음"
+  },
+  "milestoneLists": {
+    "title": "도시 목록",
+    "listNameLabel": "목록 이름 *",
+    "listTypeLabel": "목록 유형",
+    "groupLabel": "국가 *",
+    "typeCustom": "사용자 정의",
+    "typeCountry": "국가",
+    "typeHintCustom": "추적하고 싶은 장소를 자유롭게 모아 사용자 정의 목록을 만드세요",
+    "typeHintCountry": "특정 국가 내 장소 목록을 만드세요",
+    "emptyTitle": "아직 도시 목록이 없습니다",
+    "emptyDescription": "가고 싶은 장소 목록을 만들고 진행 상황을 기록하세요",
+    "createFirstList": "첫 목록 만들기",
+    "progressVisited": "{visited}/{total} 방문 완료 ({percent}%)",
+    "detailProgress": "{total}개 중 {visited}개 방문 완료 ({percent}%)",
+    "detailEmptyTitle": "아직 도시가 없습니다",
+    "detailEmptyDescription": "가고 싶은 장소를 추가하고 진행 상황을 추적하세요",
+    "detailAddCity": "도시 추가",
+    "detailVisited": "방문 완료",
+    "notFound": "도시 목록을 찾을 수 없습니다",
+    "loading": "불러오는 중..."
+  },
+  "search": {
+    "emptyTitle": "추억을 검색하세요",
+    "emptySubtitle": "챕터 및 추억을 제목, 설명, 메모 또는 태그로 찾아보세요",
+    "noResultsTitle": "결과 없음",
+    "noResultsSubtitle": "다른 키워드로 시도해보세요",
+    "showLabel": "표시",
+    "memoryTypeLabel": "추억 유형",
+    "entryTypeLabel": "추억 유형",
+    "tagsLabel": "태그",
+    "clearFilters": "필터 초기화",
+    "filterAll": "전체",
+    "filterChapters": "챕터",
+    "filterMemories": "추억",
+    "filterChapterLegacy": "챕터",
+    "filterEntries": "추억",
+    "filterAny": "모두",
+    "filterMilestones": "마일스톤",
+    "filterNotes": "메모",
+    "filterMilestoneLegacy": "마일스톤",
+    "filterNoteLegacy": "메모",
+    "matchedIn": "{field}에서 일치",
+    "inChapter": "{chapter}에서",
+    "inChapterLegacy": "{chapter}에서",
+    "matchFieldTitle": "제목",
+    "matchFieldLocation": "위치",
+    "matchFieldSummary": "설명",
+    "matchFieldNotes": "메모",
+    "matchFieldTag": "태그",
+    "matchFieldMilestone": "도시"
+  },
+  "insights": {
+    "sectionStats": "내 통계",
+    "statsChapters": "챕터",
+    "statsMemories": "추억",
+    "statsChapterLegacy": "챕터",
+    "statsMemoryLegacy": "추억",
+    "statsMilestones": "장소",
+    "statsLocations": "위치",
+    "statsPhotos": "사진",
+    "statsChapterDays": "챕터 일수",
+    "memoriesBreakdown": "{milestones}개의 마일스톤, {notes}개의 메모",
+    "entriesBreakdown": "{milestones}개의 마일스톤, {notes}개의 메모",
+    "highlightMostVisited": "가장 많이 방문한",
+    "highlightFirstTrip": "첫 챕터",
+    "highlightFirstMemory": "첫 추억",
+    "topTags": "인기 태그",
+    "milestoneProgress": "마일스톤 목록",
+    "seeAll": "모두 보기",
+    "createFirstMilestoneList": "첫 마일스톤 목록을 만들어보세요",
+    "milestoneListsEmptyHint": "기록하고 싶은 마일스톤을 추적하세요",
+    "milestoneListCount": "{total}개 중 {visited}개",
+    "moreLists": "+{count}개 목록",
+    "achievements": "업적",
+    "viewAll": "모두 보기",
+    "noBadgesEarned": "아직 배지를 획득하지 않았습니다",
+    "badgesEmptyHint": "추억을 계속 기록해 배지를 획득하세요",
+    "moreBadges": "+{count}개 배지",
+    "badgesProgress": "총 {total}개 중 {unlocked}개 배지 획득"
+  },
+  "badges": {
+    "earned": "획득함",
+    "locked": "잠김",
+    "allBadges": "모든 배지",
+    "badgesEarned": "획득한 배지",
+    "special": "스페셜",
+    "tagAdventures": "태그 업적",
+    "firstSteps": "첫 걸음",
+    "chapterMilestones": "챕터 마일스톤",
+    "milestoneAchievements": "마일스톤 업적",
+    "entryMilestones": "추억 마일스톤",
+    "consistencyMilestones": "꾸준함",
+    "photoMilestones": "사진 마일스톤",
+    "tagMilestones": "태그 추적",
+    "organizationMilestones": "정리",
+    "badgeUnlocked": "배지 잠금 해제!"
+  },
+  "badgeDetail": {
+    "congratulations": "축하합니다!",
+    "earnedOn": "획득일: {date}",
+    "notYetEarned": "아직 획득하지 않음"
+  },
+  "badgeItems": {
+    "historian": {
+      "title": "추억 지킴이",
+      "description": "지난 추억 40개 기록"
+    },
+    "first_chapter": {
+      "title": "첫 챕터",
+      "description": "첫 챕터 생성"
+    },
+    "first_milestone": {
+      "title": "첫 마일스톤",
+      "description": "첫 마일스톤 기록"
+    },
+    "first_note": {
+      "title": "첫 메모",
+      "description": "첫 메모 작성"
+    },
+    "first_tag": {
+      "title": "첫 태그",
+      "description": "첫 태그 생성"
+    },
+    "chapters_5": {
+      "title": "연대기 작가",
+      "description": "챕터 5개 생성"
+    },
+    "chapters_15": {
+      "title": "스토리텔러",
+      "description": "챕터 15개 생성"
+    },
+    "chapters_30": {
+      "title": "레거시 빌더",
+      "description": "챕터 30개 생성"
+    },
+    "milestones_15": {
+      "title": "마일스톤 트래커",
+      "description": "마일스톤 15개 기록"
+    },
+    "milestones_40": {
+      "title": "마일스톤 수집가",
+      "description": "마일스톤 40개 기록"
+    },
+    "milestones_150": {
+      "title": "마일스톤 마스터",
+      "description": "마일스톤 150개 기록"
+    },
+    "memories_40": {
+      "title": "추억 지킴이",
+      "description": "추억 40개 생성"
+    },
+    "memories_150": {
+      "title": "아카이비스트",
+      "description": "추억 150개 생성"
+    },
+    "photos_25": {
+      "title": "사진 애호가",
+      "description": "사진 25개 기록"
+    },
+    "photos_100": {
+      "title": "사진가",
+      "description": "사진 100개 기록"
+    },
+    "photos_400": {
+      "title": "사진 아카이비스트",
+      "description": "사진 400개 기록"
+    },
+    "tag_first_time": {
+      "title": "첫 경험",
+      "description": "첫 경험 추억 10개 기록"
+    },
+    "tag_milestone": {
+      "title": "마일스톤 달인",
+      "description": "마일스톤 추억 15개에 태그 추가"
+    },
+    "tag_funny": {
+      "title": "웃음상",
+      "description": "웃긴 순간 12개 기록"
+    },
+    "tag_sweet": {
+      "title": "달콤한 순간",
+      "description": "달달한 추억 12개 기록"
+    },
+    "tag_growth": {
+      "title": "성장 트래커",
+      "description": "성장 기록 10개 생산"
+    },
+    "tag_health": {
+      "title": "건강 로그",
+      "description": "건강 기록 10개 생성"
+    },
+    "tag_feeding": {
+      "title": "수유 트래커",
+      "description": "수유 기록 15개 생성"
+    },
+    "tag_sleep": {
+      "title": "수면 모니터",
+      "description": "수면 기록 15개 생성"
+    },
+    "tag_play": {
+      "title": "놀이의 달인",
+      "description": "놀이 기록 12개 생성"
+    },
+    "tag_family": {
+      "title": "가족 순간",
+      "description": "가족 기록 15개 생성"
+    },
+    "note_taker": {
+      "title": "노트 테이커",
+      "description": "20개의 추억에 설명 추가"
+    },
+    "storyteller_badge": {
+      "title": "상세 기록자",
+      "description": "100개의 추억에 설명 추가"
+    },
+    "visual_logger": {
+      "title": "비주얼 로거",
+      "description": "20개의 추억에 사진 추가"
+    },
+    "photo_journalist": {
+      "title": "포토 저널리스트",
+      "description": "100개의 추억에 사진 추가"
+    },
+    "organizer": {
+      "title": "기록 정리자",
+      "description": "20개의 추억에 태그 추가"
+    },
+    "master_organizer": {
+      "title": "마스터 정리자",
+      "description": "100개의 추억에 태그 추가"
+    },
+    "tag_creator": {
+      "title": "태그 생성자",
+      "description": "20개의 고유 태그 생성"
+    },
+    "taxonomy_expert": {
+      "title": "분류 전문가",
+      "description": "40개의 고유 태그 생성"
+    }
+  },
+  "tags": {
+    "quick": {
+      "restaurant": "레스토랑",
+      "cafe": "카페",
+      "hotel": "호텔",
+      "museum": "박물관",
+      "cityCenter": "도심",
+      "beach": "해변",
+      "sea": "바다",
+      "park": "공원",
+      "shopping": "쇼핑",
+      "bar": "바",
+      "landmark": "랜드마크",
+      "mosque": "모스크",
+      "ship": "배",
+      "temple": "사원",
+      "market": "시장",
+      "nightlife": "야간 활동",
+      "nature": "자연",
+      "adventure": "모험",
+      "localFood": "현지 음식",
+      "streetFood": "길거리 음식",
+      "viewPoint": "전망대",
+      "historic": "역사",
+      "art": "예술",
+      "transport": "교통"
+    }
+  },
+  "dialogs": {
+    "tagPicker": {
+      "title": "태그 추가",
+      "selected": "선택됨",
+      "addCustom": "맞춤 태그 추가",
+      "customPlaceholder": "태그 이름 입력...",
+      "quickTags": "빠른 태그",
+      "yourTags": "내 태그"
+    },
+    "locationPicker": {
+      "label": "도시",
+      "placeholder": "도시 선택",
+      "title": "도시 선택",
+      "addLocation": "도시 추가",
+      "locationNamePlaceholder": "도시 이름",
+      "noLocation": "도시 없음 (분류되지 않음)",
+      "fromDate": "{date}부터",
+      "untilDate": "{date}까지"
+    },
+    "locationEditor": {
+      "label": "도시",
+      "empty": "아직 위치가 추가되지 않았어요",
+      "addLocation": "도시 추가",
+      "editTitle": "도시 편집",
+      "addTitle": "도시 추가",
+      "locationNameLabel": "도시 이름 *",
+      "locationNamePlaceholder": "예: 로마, 피렌체",
+      "arrivalDateLabel": "도착일 (선택 사항)",
+      "departureDateLabel": "출발일 (선택 사항)",
+      "notSet": "설정되지 않음",
+      "fromDate": "{date}부터",
+      "untilDate": "{date}까지",
+      "done": "완료"
+    },
+    "milestoneList": {
+      "createTitle": "새 도시 목록",
+      "addItemTitle": "도시 추가",
+      "addItemPlaceholder": "도시 이름",
+      "addItemButton": "도시 추가",
+      "adding": "추가 중...",
+      "linkChapterTitle": "챕터 링크 (선택 사항)",
+      "noChapterLinked": "링크된 챕터 없음"
+    }
+  },
+  "alerts": {
+    "exportFailedTitle": "내보내기 실패",
+    "exportFailedMessage": "데이터를 내보내지 못했습니다. 다시 시도하세요.",
+    "importComplete": "가져오기 완료",
+    "importCompletedWithErrors": "일부 문제와 함께 가져오기 완료",
+    "importFailed": "가져오기에 실패했습니다. 다시 시도하세요.",
+    "errorTitle": "오류",
+    "requiredTitle": "필수",
+    "invalidDateTitle": "잘못된 날짜",
+    "permissionTitle": "권한 필요",
+    "deleteEntryTitle": "추억 삭제",
+    "deleteEntryMessage": "이 추억을 삭제하시겠습니까?",
+    "deletePhotoTitle": "사진 삭제",
+    "deletePhotoMessage": "이 사진을 삭제하시겠습니까?",
+    "deleteChapterTitle": "챕터 삭제",
+    "deleteChapterMessage": "이 챕터를 삭제하시겠습니까? 해당 챕터의 추억도 모두 삭제됩니다.",
+    "deleteChapterLegacyTitle": "챕터 삭제",
+    "deleteChapterLegacyMessage": "이 챕터를 삭제하시겠습니까? 해당 챕터의 추억도 모두 삭제됩니다.",
+    "deleteListTitle": "목록 삭제",
+    "deleteListMessage": "“{name}”을 삭제하시겠습니까? 이 목록의 모든 위치도 삭제됩니다.",
+    "deleteItemTitle": "{item} 삭제",
+    "deleteItemMessage": "이 {item}을 삭제하시겠습니까?",
+    "deleteEntryFailed": "추억 삭제 실패",
+    "deleteMemoryFailed": "추억 삭제 실패",
+    "deletePhotoFailed": "사진 삭제 실패",
+    "deleteChapterFailed": "챕터 삭제 실패",
+    "deleteChapterLegacyFailed": "챕터 삭제 실패",
+    "deleteListFailed": "목록 삭제 실패",
+    "createEntryFailed": "기록 생성에 실패했습니다. 다시 시도하세요.",
+    "updateEntryFailed": "기록 업데이트에 실패했습니다. 다시 시도하세요.",
+    "createChapterFailed": "챕터 생성에 실패했습니다. 다시 시도하세요.",
+    "updateChapterFailed": "챕터 업데이트에 실패했습니다. 다시 시도하세요.",
+    "createChapterLegacyFailed": "챕터 생성에 실패했습니다. 다시 시도하세요.",
+    "updateChapterLegacyFailed": "챕터 업데이트에 실패했습니다. 다시 시도하세요.",
+    "createMilestoneListFailed": "도시 목록 생성에 실패했습니다. 다시 시도하세요.",
+    "createLocationFailed": "도시 생성에 실패했습니다. 다시 시도하세요.",
+    "addLocationFailed": "도시 추가 실패",
+    "permissionCameraMessage": "사진 촬영을 위해 카메라 권한이 필요합니다",
+    "invalidDateMessage": "끝나는 날짜는 시작 날짜보다 빠를 수 없습니다",
+    "entryDateOutOfRangeTitle": "날짜 범위 벗어남",
+    "entryDateOutOfRangeMessage": "기록 날짜는 {start}부터 {end} 사이여야 합니다.",
+    "requiredEntryTitle": "제목을 입력해 주세요",
+    "requiredChapterTitle": "챕터 제목을 입력해 주세요",
+    "requiredChapterLegacyTitle": "챕터 제목을 입력해 주세요",
+    "requiredMilestoneItem": "최소 한 개 도시를 추가해 주세요",
+    "requiredListName": "목록 이름을 입력해 주세요",
+    "requiredLocationGroup": "국가 이름을 입력해 주세요",
+    "requiredLocationName": "도시 이름을 입력해 주세요",
+    "noProfileFound": "아기 프로필을 찾을 수 없습니다. 먼저 생성해 주세요.",
+    "nothingToShare": "공유할 항목이 없습니다",
+    "nothingToShareMessage": "이 도시는 아직 공유할 기록이 없습니다.",
+    "shareFailed": "공유에 실패했습니다. 다시 시도하세요.",
+    "chapterLimitTitle": "챕터 제한 도달",
+    "chapterLimitMessage": "무료 사용자는 최대 {limit}개 챕터를 만들 수 있습니다. 무제한 챕터를 원하면 Pro로 업그레이드하세요.",
+    "chapterLimitUpgrade": "Pro로 업그레이드",
+    "chapterLimitLegacyTitle": "챕터 제한 도달",
+    "chapterLimitLegacyMessage": "무료 사용자는 최대 {limit}개 챕터를 만들 수 있습니다. 무제한 챕터를 원하면 Pro로 업그레이드하세요.",
+    "chapterLimitLegacyUpgrade": "Pro로 업그레이드",
+    "backupReminderTitle": "추억을 백업하세요",
+    "backupReminderMessage": "{count}개의 챕터를 만들었어요! 안전을 위해 데이터를 내보내 보세요.",
+    "backupReminderExport": "지금 내보내기",
+    "backupReminderLater": "나중에",
+    "proFeatureTitle": "Pro 기능",
+    "proFeatureExport": "내보내기는 Pro 기능입니다. 데이터를 내보내려면 업그레이드하세요.",
+    "proFeatureAdvancedSearch": "고급 검색 필터는 Pro 기능입니다.",
+    "proFeatureDarkMode": "다크 모드는 Pro 기능입니다. 모든 테마를 이용하려면 업그레이드하세요.",
+    "purchasesUnavailableTitle": "구매 불가",
+    "purchasesUnavailableMessage": "이 빌드에서는 구매를 사용할 수 없습니다.",
+    "purchasesNotReadyTitle": "구매 준비 중",
+    "purchasesNotReadyMessage": "잠시 후 다시 시도해 주세요.",
+    "purchasesNotConfiguredTitle": "구매 불가",
+    "purchasesNotConfiguredMessage": "RevenueCat이 아직 설정되지 않았습니다.",
+    "restoreTitle": "복원",
+    "restoreSuccessMessage": "구매가 성공적으로 복원되었습니다.",
+    "restoreEmptyMessage": "복원할 활성 구독이 없습니다.",
+    "restoreFailedMessage": "복원에 실패했습니다. 다시 시도하세요.",
+    "cameraPermission": "카메라 권한",
+    "cameraPermissionDesc": "설정에서 카메라 접근을 허용해 주세요",
+    "maxPhotos": "최대 3장의 사진",
+    "maxPhotosDesc": "최대 3장까지 사진을 추가할 수 있습니다",
+    "required": "필수"
+  },
+  "limitations": {
+    "title": "알아두면 좋은 정보",
+    "photosNotBundled": "내보내기에는 사진이 포함되지 않으며 로컬 파일에 대한 참조만 포함됩니다",
+    "noCloudSync": "모든 데이터는 기기에만 저장됩니다",
+    "freeTextCities": "마일스톤 목록 이름은 자유 입력이며, 동일한 이름이라도 별도의 목록으로 처리됩니다",
+    "noAutoBackup": "자동 백업은 제공되지 않습니다 — 정기적으로 데이터를 내보내세요"
+  },
+  "onboarding": {
+    "screens": {
+      "photoOverload": {
+        "title": "카메라 롤에서 아기 이야기로",
+        "body": "아기 순간들은 수천 장의 사진 사이에 묻히기 쉽습니다. 맥락과 함께 저장하면 가족이 빠르게 찾을 수 있습니다."
+      },
+      "structuredArchive": {
+        "title": "아기 이야기를 아름답게 정리",
+        "body": "각 성장 단계에 챕터를 만들고 마일스톤, 메모, 사진을 하나의 차분한 타임라인에 추가하세요."
+      },
+      "fastSearch": {
+        "title": "몇 초 만에 찾기",
+        "body": "제목, 메모, 태그로 아기 추억을 빠르게 검색하세요."
+      },
+      "bestOfList": {
+        "title": "계속 이야기하고 싶은 순간을 저장",
+        "body": "중요한 아기 순간에 표시를 하고 짧은 메모를 추가하여 잃지 않도록 하세요."
+      },
+      "noCompetition": {
+        "title": "피드 없음. 경쟁 없음.",
+        "body": "좋아요나 압박은 없습니다. 가족을 위한 아기의 추억만 남습니다."
+      },
+      "privateOffline": {
+        "title": "프라이빗하고 오프라인 우선",
+        "body": "계정이 필요없습니다. 데이터는 기기에 남고 오프라인에서도 작동합니다."
+      },
+      "simpleStart": {
+        "title": "지금 첫 챕터를 시작하세요",
+        "body": "몇 초 만에 챕터를 만들고 아기의 첫 추억을 추가하세요. 나중에 자세히 채울 수 있습니다."
+      }
+    },
+    "createFirstTrip": "아기의 첫 챕터 만들기",
+    "next": "다음",
+    "skip": "건너뛰기",
+    "back": "뒤로"
+  },
+  "shareContent": {
+    "locationLabel": "위치",
+    "summaryLabel": "요약",
+    "noEntries": "기록 없음",
+    "otherEntries": "다른 기록",
+    "sharedFrom": "Offly에서 공유",
+    "chapterHighlights": "챕터 하이라이트",
+    "locations": "위치",
+    "milestones": "마일스톤",
+    "moments": "메모",
+    "moreItems": "+ {count}개 더",
+    "fromTrip": "챕터에서",
+    "milestonesSection": "마일스톤",
+    "otherPlaces": "기타 마일스톤",
+    "memoriesSection": "메모",
+    "myRecommendations": "내 하이라이트",
+    "from": "출처",
+    "other": "기타"
+  },
+  "buttons": {
+    "save": "추억 저장"
+  }
+}

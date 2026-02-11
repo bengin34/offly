@@ -1,0 +1,748 @@
+{
+  "common": {
+    "appName": "Offly",
+    "done": "Klaar",
+    "cancel": "Annuleren",
+    "delete": "Verwijderen",
+    "save": "Opslaan",
+    "add": "Toevoegen",
+    "create": "Aanmaken",
+    "close": "Sluiten",
+    "saving": "Bezig met opslaan...",
+    "creating": "Bezig met aanmaken...",
+    "adding": "Bezig met toevoegen...",
+    "entry": "herinnering",
+    "entries": "herinneringen",
+    "memories": "Herinneringen",
+    "shareChapter": "Hoofdstuk delen"
+  },
+  "shareDialog": {
+    "title": "Deel {name}",
+    "subtitle": "Kies hoe je dit hoofdstuk wilt delen",
+    "hint": "Je gegevens blijven privé — delen maakt een lokaal bestand",
+    "optionTextTitle": "Tekstlijst",
+    "optionTextDescription": "Eenvoudig tekstformaat, ideaal voor berichtenapps",
+    "optionImageTitle": "Visuele kaart",
+    "optionImageDescription": "Prachtige kaart met je hoogtepunten",
+    "optionPdfTitle": "PDF-document",
+    "optionPdfDescription": "Volledig hoofdstuk met alle details en notities",
+    "dialogTitleChapter": "Deel {name}-hoofdstuk",
+    "dialogTitleMemoryHighlights": "Deel {name}-hoogtepunten",
+    "dialogTitleChapterGuide": "Deel {name}-hoofdstuk",
+    "dialogTitleCard": "Deel {name}-kaart"
+  },
+  "tabs": {
+    "chapters": "Hoofdstukken",
+    "chaptersLegacy": "Hoofdstukken",
+    "search": "Zoeken",
+    "insights": "Inzichten",
+    "settings": "Instellingen"
+  },
+  "navigation": {
+    "newChapter": "Nieuw hoofdstuk",
+    "chapter": "Hoofdstuk",
+    "editChapter": "Hoofdstuk bewerken",
+    "newChapterLegacy": "Nieuw hoofdstuk",
+    "chapterLegacy": "Hoofdstuk",
+    "editChapterLegacy": "Hoofdstuk bewerken",
+    "newMemory": "Nieuwe herinnering",
+    "memory": "Herinnering",
+    "editMemory": "Herinnering bewerken",
+    "newEntry": "Nieuwe herinnering",
+    "entry": "Herinnering",
+    "editEntry": "Herinnering bewerken"
+  },
+  "chapters": {
+    "addCover": "Omslag toevoegen",
+    "days": "{count} dagen",
+    "emptyTitle": "Nog geen hoofdstukken",
+    "emptySubtitle": "Begin met het vastleggen van de herinneringen van je baby",
+    "emptyButton": "Maak je eerste hoofdstuk"
+  },
+  "chaptersLegacy": {
+    "addCover": "Omslag toevoegen",
+    "days": "{count} dagen",
+    "emptyTitle": "Nog geen hoofdstukken",
+    "emptySubtitle": "Begin met het vastleggen van de herinneringen van je baby",
+    "emptyButton": "Maak je eerste hoofdstuk"
+  },
+  "settings": {
+    "preferences": "Voorkeuren",
+    "appearance": "Weergave",
+    "language": "Taal",
+    "chooseAppearance": "Kies weergave",
+    "chooseLanguage": "Kies taal",
+    "exportSection": "Exporteren",
+    "exportTitle": "Alle gegevens exporteren",
+    "exportDescription": "Download je hoofdstukken, herinneringen en tags als JSON of XLS",
+    "exportButton": "JSON exporteren",
+    "exportButtonXls": "XLS exporteren",
+    "exportOpenButton": "Open exportopties",
+    "exportInfoTitle": "Waarom exporteren?",
+    "exportInfoDescription": "Maak een persoonlijke backup, ga naar een nieuwe telefoon of analyseer je herinneringen in een spreadsheet. Exports blijven op je apparaat totdat je ze deelt.",
+    "exportPrivacyNote": "Exportbestanden kunnen persoonlijke notities bevatten. Deel voorzichtig.",
+    "exportPhotosNote": "Foto's zelf worden niet geëxporteerd.",
+    "exportFormatsTitle": "Kies een formaat",
+    "exportFormatsDescription": "JSON is ideaal voor backups en opnieuw importeren. XLS opent eenvoudig in Excel of Google Sheets.",
+    "importSection": "Importeren",
+    "importTitle": "Gegevens importeren",
+    "importDescription": "Breng je opgeslagen hoofdstukken en herinneringen in vanaf een JSON-bestand.",
+    "importButton": "JSON importeren",
+    "importButtonImporting": "Importeren...",
+    "dataSection": "Gegevens",
+    "dataTitle": "Exporteren & importeren",
+    "dataDescription": "Back-up of verplaats je herinneringen met export en import.",
+    "dataButton": "Opties tonen",
+    "supportSection": "Ondersteuning",
+    "supportRate": "Beoordeel ons met 5 sterren",
+    "supportShare": "Deel de app",
+    "supportContact": "Neem contact op",
+    "supportShareMessage": "Offly – een privé familieherinneringsarchief dat ik fantastisch vind: {link}",
+    "onboardingSection": "Introductie",
+    "onboardingTitle": "Toon introductie opnieuw",
+    "onboardingDescription": "Speel de introductie van 7 schermen opnieuw af wanneer je wilt.",
+    "onboardingButton": "Start introductie",
+    "onboardingResetTitle": "Introductie opnieuw starten?",
+    "onboardingResetMessage": "Deze actie toont de introductiestroom opnieuw. Je kunt altijd overslaan.",
+    "onboardingResetAction": "Start",
+    "aboutSection": "Over",
+    "version": "Versie",
+    "storage": "Opslag",
+    "privacy": "Privacy",
+    "storageValue": "Gegevens blijven op je apparaat.",
+    "privacyValue": "Offline-first",
+    "footer": "Offly — jouw privé familieherinneringenarchief",
+    "themeLight": "Licht",
+    "themeDark": "Donker",
+    "themeSystem": "Systeem",
+    "alertBackupExportFailedMessage": "Er kon geen backup worden gemaakt. Probeer het opnieuw.",
+    "alertProfileUpdateFailedMessage": "Het bijwerken van je profiel is mislukt. Probeer het opnieuw.",
+    "beforeBirthChapterTitle": "Voor de geboorte",
+    "beforeBirthChapterDescription": "Notities van de zwangerschap",
+    "alertModeUpdatedTitle": "Modus bijgewerkt",
+    "alertModeUpdatedMessage": "Je profiel is overgeschakeld naar de 'Geboort' modus. Zwangerschapsnotities zijn verplaatst naar het '{chapter}' hoofdstuk.",
+    "alertModeSwitchFailedMessage": "Het wisselen van modus is mislukt. Probeer het opnieuw.",
+    "yourBaby": "Je baby",
+    "modeExpecting": "In verwachting",
+    "modeBorn": "Geboren",
+    "editAction": "Bewerken",
+    "dueDate": "Uitgerekende datum",
+    "age": "Leeftijd",
+    "daysCount": "{count} dagen",
+    "babyBornButton": "Baby is geboren!",
+    "colorTheme": "Kleurenpalet",
+    "backupDataSection": "Back-up & gegevens",
+    "backupMemoriesTitle": "Back-up van je herinneringen",
+    "backupMemoriesDescription": "Exporteer je gegevens voor een veilige kopie. Je gegevens blijven alleen op dit apparaat.",
+    "lastBackup": "Laatste back-up: {date}",
+    "noBackupYet": "Nog geen back-up. We raden regelmatige back-ups aan.",
+    "createBackup": "Maak back-up",
+    "moreExportImportOptions": "Meer export-/importopties",
+    "chooseColorTheme": "Kies kleurenpalet",
+    "modeSwitchTitle": "Baby is geboren!",
+    "modeSwitchConfirm": "Bevestig",
+    "modeSwitchDescription": "Voer de geboortedatum in. Je zwangerschapsnotities worden verplaatst naar een '{chapter}' hoofdstuk en de datum van het openen van de kluis wordt opnieuw berekend.",
+    "editBabyProfileTitle": "Bewerk babyprofiel",
+    "name": "Naam",
+    "namePlaceholder": "Naam of bijnaam van de baby",
+    "birthDateLabel": "Geboortedatum"
+  },
+  "proBanner": {
+    "title": "Word Pro",
+    "subtitle": "Ontgrendel alle functies.",
+    "cta": "Upgrade",
+    "messages": [
+      {
+        "title": "Word Pro",
+        "subtitle": "Ontgrendel alle functies."
+      },
+      {
+        "title": "Minder scrollen, meer betekenis",
+        "subtitle": "Vind de belangrijke baby-momenten direct."
+      },
+      {
+        "title": "Onthoud alles",
+        "subtitle": "Bewaar de kleine momenten veilig."
+      },
+      {
+        "title": "Je familiearchief",
+        "subtitle": "Direct toegang tot elk hoofdstuk."
+      },
+      {
+        "title": "Vinden in seconden",
+        "subtitle": "Zoek herinneringen op titel, notities of tags."
+      },
+      {
+        "title": "Groeien zonder grenzen",
+        "subtitle": "Onbeperkte hoofdstukken. Onbeperkte herinneringen."
+      }
+    ]
+  },
+  "labels": {
+    "date": "Datum",
+    "startDate": "Startdatum",
+    "endDate": "Einddatum",
+    "title": "Titel",
+    "notes": "Notities",
+    "optional": "optioneel",
+    "filled": "Ingevuld",
+    "milestone": {
+      "pastDue": "Te laat",
+      "today": "Vandaag",
+      "tomorrow": "Morgen",
+      "empty": "Nog geen mijlpalen",
+      "emptySubtitle": "Mijlpalen verschijnen hier",
+      "quickAddHelper": "Open de volledige editor om tags en meer toe te voegen"
+    }
+  },
+  "placeholders": {
+    "search": "Zoek hoofdstukken, herinneringen, notities...",
+    "chapterTitleExample": "bijv. Eerste jaar",
+    "chapterSummaryExample": "Korte beschrijving van dit hoofdstuk...",
+    "chapterTitle": "bijv. 0–3 maanden",
+    "chapterDescription": "Korte uitleg over dit hoofdstuk...",
+    "entryTitleMilestone": "bijv. Eerste glimlach",
+    "entryTitleMemory": "bijv. Een rustige middag",
+    "memoryTitleMilestone": "Eerste glimlach, Eerste stap...",
+    "memoryTitleNote": "Een rustige middag, Een grappig moment...",
+    "entryNotes": "Voeg details toe...",
+    "milestoneListName": "bijv. Mijlpaalideeën, Familietradities",
+    "locationGroupName": "bijv. Thuis, Grootmoeders huis",
+    "memoryTitle": "Wat gebeurde er?",
+    "memoryNotes": "Voeg details toe..."
+  },
+  "chapterForm": {
+    "titleLabel": "Hoofdstuktitel *",
+    "descriptionLabel": "Beschrijving (optioneel)",
+    "coverImageLabel": "Omslagafbeelding (optioneel)",
+    "changeCover": "Wijzigen",
+    "addCoverPlaceholder": "Tik om een omslagafbeelding toe te voegen"
+  },
+  "chapterFormLegacy": {
+    "titleLabel": "Hoofdstuktitel *",
+    "summaryLabel": "Beschrijving (optioneel)",
+    "coverImageLabel": "Omslagafbeelding (optioneel)",
+    "changeCover": "Wijzigen",
+    "addCoverPlaceholder": "Tik om een omslagafbeelding toe te voegen"
+  },
+  "memoryForm": {
+    "titleLabel": "Titel *",
+    "locationLabel": "Locatie",
+    "descriptionLabel": "Beschrijving",
+    "tagsLabel": "Tags",
+    "milestone": "Mijlpaal",
+    "note": "Notitie"
+  },
+  "entryForm": {
+    "titleLabel": "Titel *",
+    "notesLabel": "Notities",
+    "tagsLabel": "Tags",
+    "photosLabel": "Foto's ({count}/{max})",
+    "gallery": "Galerij",
+    "camera": "Camera",
+    "tapToAddTags": "Tik om tags toe te voegen...",
+    "milestone": "Mijlpaal",
+    "memory": "Notitie",
+    "moreTags": "+{count} meer",
+    "locationLabel": "Locatie",
+    "locationPlaceholder": "Voeg een plaats toe (optioneel)",
+    "locationHint": "Voeg een locatie toe als dat helpt om de herinnering te begrijpen"
+  },
+  "memoryDetail": {
+    "descriptionTitle": "Beschrijving",
+    "tagsTitle": "Tags"
+  },
+  "entryDetail": {
+    "notesTitle": "Notities",
+    "tagsTitle": "Tags",
+    "allPhotos": "Alle foto's ({count})",
+    "created": "Aangemaakt: {date}",
+    "updated": "Bijgewerkt: {date}",
+    "locationTitle": "Locatie",
+    "openInMaps": "Open in Kaarten"
+  },
+  "chapterDetail": {
+    "noPhoto": "Geen foto",
+    "notePill": "Notitie",
+    "uncategorized": "Niet gecategoriseerd",
+    "emptyTitle": "Nog geen herinneringen",
+    "emptySubtitle": "Voeg herinneringen toe aan dit hoofdstuk",
+    "addFirstMemory": "Voeg je eerste herinnering toe",
+    "addMemory": "Herinnering toevoegen"
+  },
+  "chapterDetailLegacy": {
+    "noPhoto": "Geen foto",
+    "notePill": "Notitie",
+    "uncategorized": "Niet gecategoriseerd",
+    "emptyTitle": "Nog geen herinneringen",
+    "emptySubtitle": "Voeg herinneringen toe aan dit hoofdstuk",
+    "addFirstEntry": "Voeg je eerste herinnering toe",
+    "addEntry": "Herinnering toevoegen"
+  },
+  "memories": {
+    "memory": "Herinnering",
+    "milestone": "Mijlpaal",
+    "note": "Notitie",
+    "notePill": "NOTITIE",
+    "noPhoto": "Geen foto"
+  },
+  "milestoneLists": {
+    "title": "Stedenlijsten",
+    "listNameLabel": "Naam lijst *",
+    "listTypeLabel": "Type lijst",
+    "groupLabel": "Land *",
+    "typeCustom": "Aangepast",
+    "typeCountry": "Land",
+    "typeHintCustom": "Maak een aangepaste lijst van plaatsen die je wilt bijhouden",
+    "typeHintCountry": "Maak een lijst van plaatsen binnen één specifiek land",
+    "emptyTitle": "Nog geen stedenlijsten",
+    "emptyDescription": "Maak lijsten van plaatsen die je wilt bezoeken en houd je voortgang bij",
+    "createFirstList": "Maak je eerste lijst",
+    "progressVisited": "{visited}/{total} bezocht ({percent}%)",
+    "detailProgress": "{visited} van {total} plaatsen bezocht ({percent}%)",
+    "detailEmptyTitle": "Nog geen steden",
+    "detailEmptyDescription": "Voeg plaatsen toe die je wilt bezoeken en bespreek je voortgang",
+    "detailAddCity": "Plaats toevoegen",
+    "detailVisited": "Bezocht",
+    "notFound": "Stedenlijst niet gevonden",
+    "loading": "Laden..."
+  },
+  "search": {
+    "emptyTitle": "Doorzoek je herinneringen",
+    "emptySubtitle": "Zoek hoofdstukken en herinneringen op titel, beschrijving, notities of tags",
+    "noResultsTitle": "Geen resultaten gevonden",
+    "noResultsSubtitle": "Probeer andere zoekwoorden",
+    "showLabel": "Weergeven",
+    "memoryTypeLabel": "Herinneringstype",
+    "entryTypeLabel": "Herinneringstype",
+    "tagsLabel": "Tags",
+    "clearFilters": "Filters wissen",
+    "filterAll": "Alles",
+    "filterChapters": "Hoofdstukken",
+    "filterMemories": "Herinneringen",
+    "filterChapterLegacy": "Hoofdstukken",
+    "filterEntries": "Herinneringen",
+    "filterAny": "Alles",
+    "filterMilestones": "Mijlpalen",
+    "filterNotes": "Notities",
+    "filterMilestoneLegacy": "Mijlpalen",
+    "filterNoteLegacy": "Notities",
+    "matchedIn": "Overeenkomst in {field}:",
+    "inChapter": "in {chapter}",
+    "inChapterLegacy": "in {chapter}",
+    "matchFieldTitle": "titel",
+    "matchFieldLocation": "locatie",
+    "matchFieldSummary": "beschrijving",
+    "matchFieldNotes": "notities",
+    "matchFieldTag": "tag",
+    "matchFieldMilestone": "stad"
+  },
+  "insights": {
+    "sectionStats": "Je statistieken",
+    "statsChapters": "Hoofdstukken",
+    "statsMemories": "Herinneringen",
+    "statsChapterLegacy": "Hoofdstukken",
+    "statsMemoryLegacy": "Herinneringen",
+    "statsMilestones": "Plaatsen",
+    "statsLocations": "Locaties",
+    "statsPhotos": "Foto's",
+    "statsChapterDays": "Hoofdstukdagen",
+    "memoriesBreakdown": "{milestones} mijlpalen, {notes} notities",
+    "entriesBreakdown": "{milestones} mijlpalen, {notes} notities",
+    "highlightMostVisited": "Meest bezocht",
+    "highlightFirstTrip": "Eerste hoofdstuk",
+    "highlightFirstMemory": "Eerste herinnering",
+    "topTags": "Top tags",
+    "milestoneProgress": "Mijlpalenlijsten",
+    "seeAll": "Alles bekijken",
+    "createFirstMilestoneList": "Maak je eerste mijlpalenlijst",
+    "milestoneListsEmptyHint": "Houd de mijlpalen bij die je wilt vastleggen",
+    "milestoneListCount": "{visited}/{total} items",
+    "moreLists": "+{count} meer lijsten",
+    "achievements": "Prestaties",
+    "viewAll": "Alles bekijken",
+    "noBadgesEarned": "Nog geen badges verdiend",
+    "badgesEmptyHint": "Blijf herinneringen vastleggen om badges te ontgrendelen",
+    "moreBadges": "+{count} meer badges",
+    "badgesProgress": "{unlocked} van {total} badges verdiend"
+  },
+  "badges": {
+    "earned": "Verdiend",
+    "locked": "Vergrendeld",
+    "allBadges": "Alle badges",
+    "badgesEarned": "Verdiende badges",
+    "special": "Speciaal",
+    "tagAdventures": "Tagprestaties",
+    "firstSteps": "Eerste stappen",
+    "chapterMilestones": "Hoofdstukmijlpalen",
+    "milestoneAchievements": "Mijlpaalprestaties",
+    "entryMilestones": "Herinneringmijlpalen",
+    "consistencyMilestones": "Consistentie",
+    "photoMilestones": "Fotomijlpalen",
+    "tagMilestones": "Tagvolging",
+    "organizationMilestones": "Organisatie",
+    "badgeUnlocked": "Badge ontgrendeld!"
+  },
+  "badgeDetail": {
+    "congratulations": "Gefeliciteerd!",
+    "earnedOn": "Verdiend op {date}",
+    "notYetEarned": "Nog niet verdiend"
+  },
+  "badgeItems": {
+    "historian": {
+      "title": "Herinneringenbewaker",
+      "description": "40 herinneringen uit het verleden vastgelegd"
+    },
+    "first_chapter": {
+      "title": "Eerste hoofdstuk",
+      "description": "Je eerste hoofdstuk gemaakt"
+    },
+    "first_milestone": {
+      "title": "Eerste mijlpaal",
+      "description": "Je eerste mijlpaal geregistreerd"
+    },
+    "first_note": {
+      "title": "Eerste notitie",
+      "description": "Je eerste notitie geschreven"
+    },
+    "first_tag": {
+      "title": "Eerste tag",
+      "description": "Je eerste tag gemaakt"
+    },
+    "chapters_5": {
+      "title": "Chroniqueur",
+      "description": "5 hoofdstukken gemaakt"
+    },
+    "chapters_15": {
+      "title": "Verteller",
+      "description": "15 hoofdstukken gemaakt"
+    },
+    "chapters_30": {
+      "title": "Erfgoedbouwer",
+      "description": "30 hoofdstukken gemaakt"
+    },
+    "milestones_15": {
+      "title": "Mijlpalenvolger",
+      "description": "15 mijlpalen geregistreerd"
+    },
+    "milestones_40": {
+      "title": "Mijlpalenverzamelaar",
+      "description": "40 mijlpalen geregistreerd"
+    },
+    "milestones_150": {
+      "title": "Mijlpalenmeester",
+      "description": "150 mijlpalen geregistreerd"
+    },
+    "memories_40": {
+      "title": "Herinneringenbewaker",
+      "description": "40 herinneringen gemaakt"
+    },
+    "memories_150": {
+      "title": "Archivaris",
+      "description": "150 herinneringen gemaakt"
+    },
+    "photos_25": {
+      "title": "Fotoliefhebber",
+      "description": "25 foto's vastgelegd"
+    },
+    "photos_100": {
+      "title": "Fotograaf",
+      "description": "100 foto's vastgelegd"
+    },
+    "photos_400": {
+      "title": "Foto-archivaris",
+      "description": "400 foto's vastgelegd"
+    },
+    "tag_first_time": {
+      "title": "Eerste keren",
+      "description": "10 eerste herinneringen geregistreerd"
+    },
+    "tag_milestone": {
+      "title": "Mijlpalenkenner",
+      "description": "15 mijlpaalmomenten getagd"
+    },
+    "tag_funny": {
+      "title": "Lachmomenten",
+      "description": "12 grappige momenten geregistreerd"
+    },
+    "tag_sweet": {
+      "title": "Zoete momenten",
+      "description": "12 lieve herinneringen geregistreerd"
+    },
+    "tag_growth": {
+      "title": "Groei-tracker",
+      "description": "10 groeimomenten geregistreerd"
+    },
+    "tag_health": {
+      "title": "Gezondheidslog",
+      "description": "10 gezondheidsmomenten geregistreerd"
+    },
+    "tag_feeding": {
+      "title": "Voedingslog",
+      "description": "15 voedingsmomenten geregistreerd"
+    },
+    "tag_sleep": {
+      "title": "Slaapmonitor",
+      "description": "15 slaapregistraties gedaan"
+    },
+    "tag_play": {
+      "title": "Speeltijdheld",
+      "description": "12 speelmomenten geregistreerd"
+    },
+    "tag_family": {
+      "title": "Familie momenten",
+      "description": "15 familierituelen geregistreerd"
+    },
+    "note_taker": {
+      "title": "Notentaker",
+      "description": "Bijschrijvingen toegevoegd aan 20 herinneringen"
+    },
+    "storyteller_badge": {
+      "title": "Gedetailleerde verteller",
+      "description": "Bijschrijvingen toegevoegd aan 100 herinneringen"
+    },
+    "visual_logger": {
+      "title": "Visuele logger",
+      "description": "Foto's toegevoegd aan 20 herinneringen"
+    },
+    "photo_journalist": {
+      "title": "Fotojournalist",
+      "description": "Foto's toegevoegd aan 100 herinneringen"
+    },
+    "organizer": {
+      "title": "Organisator",
+      "description": "20 herinneringen getagd"
+    },
+    "master_organizer": {
+      "title": "Meesterorganisator",
+      "description": "100 herinneringen getagd"
+    },
+    "tag_creator": {
+      "title": "Tagmaker",
+      "description": "20 unieke tags gemaakt"
+    },
+    "taxonomy_expert": {
+      "title": "Taxonomie-expert",
+      "description": "40 unieke tags gemaakt"
+    }
+  },
+  "tags": {
+    "quick": {
+      "restaurant": "Restaurant",
+      "cafe": "Café",
+      "hotel": "Hotel",
+      "museum": "Museum",
+      "cityCenter": "Stadscentrum",
+      "beach": "Strand",
+      "sea": "Zee",
+      "park": "Park",
+      "shopping": "Winkelen",
+      "bar": "Bar",
+      "landmark": "Bezienswaardigheid",
+      "mosque": "Moskee",
+      "ship": "Schip",
+      "temple": "Tempel",
+      "market": "Markt",
+      "nightlife": "Uitgaansleven",
+      "nature": "Natuur",
+      "adventure": "Avontuur",
+      "localFood": "Lokaal eten",
+      "streetFood": "Streetfood",
+      "viewPoint": "Uitzichtpunt",
+      "historic": "Historisch",
+      "art": "Kunst",
+      "transport": "Vervoer"
+    }
+  },
+  "dialogs": {
+    "tagPicker": {
+      "title": "Tags toevoegen",
+      "selected": "Geselecteerd",
+      "addCustom": "Aangepaste tag toevoegen",
+      "customPlaceholder": "Typ een tagnaam...",
+      "quickTags": "Sneltags",
+      "yourTags": "Jouw tags"
+    },
+    "locationPicker": {
+      "label": "Stad",
+      "placeholder": "Selecteer een stad",
+      "title": "Selecteer stad",
+      "addLocation": "Stad toevoegen",
+      "locationNamePlaceholder": "Stadsnaam",
+      "noLocation": "Geen stad (ongecategoriseerd)",
+      "fromDate": "Vanaf {date}",
+      "untilDate": "Tot {date}"
+    },
+    "locationEditor": {
+      "label": "Steden",
+      "empty": "Nog geen locaties toegevoegd",
+      "addLocation": "Stad toevoegen",
+      "editTitle": "Stad bewerken",
+      "addTitle": "Stad toevoegen",
+      "locationNameLabel": "Stadsnaam *",
+      "locationNamePlaceholder": "bijv. Rome, Florence",
+      "arrivalDateLabel": "Aankomstdatum (optioneel)",
+      "departureDateLabel": "Vertrekdatum (optioneel)",
+      "notSet": "Niet ingesteld",
+      "fromDate": "Vanaf {date}",
+      "untilDate": "Tot {date}",
+      "done": "Klaar"
+    },
+    "milestoneList": {
+      "createTitle": "Nieuwe stedenlijst",
+      "addItemTitle": "Stad toevoegen",
+      "addItemPlaceholder": "Stadsnaam",
+      "addItemButton": "Stad toevoegen",
+      "adding": "Bezig met toevoegen...",
+      "linkChapterTitle": "Link naar hoofdstuk (optioneel)",
+      "noChapterLinked": "Geen hoofdstuk gekoppeld"
+    }
+  },
+  "alerts": {
+    "exportFailedTitle": "Export mislukt",
+    "exportFailedMessage": "Gegevens exporteren is mislukt. Probeer het opnieuw.",
+    "importComplete": "Import voltooid",
+    "importCompletedWithErrors": "Import voltooid met een paar problemen",
+    "importFailed": "Import mislukt. Probeer het opnieuw.",
+    "errorTitle": "Fout",
+    "requiredTitle": "Verplicht",
+    "invalidDateTitle": "Ongeldige datum",
+    "permissionTitle": "Toestemming nodig",
+    "deleteEntryTitle": "Herinnering verwijderen",
+    "deleteEntryMessage": "Weet je zeker dat je deze herinnering wilt verwijderen?",
+    "deletePhotoTitle": "Foto verwijderen",
+    "deletePhotoMessage": "Weet je zeker dat je deze foto wilt verwijderen?",
+    "deleteChapterTitle": "Hoofdstuk verwijderen",
+    "deleteChapterMessage": "Weet je zeker dat je dit hoofdstuk wilt verwijderen? Dit verwijdert ook alle herinneringen.",
+    "deleteChapterLegacyTitle": "Hoofdstuk verwijderen",
+    "deleteChapterLegacyMessage": "Weet je zeker dat je dit hoofdstuk wilt verwijderen? Dit verwijdert ook alle herinneringen.",
+    "deleteListTitle": "Lijst verwijderen",
+    "deleteListMessage": "Weet je zeker dat je '{name}' wilt verwijderen? Dit verwijdert ook alle locaties in deze lijst.",
+    "deleteItemTitle": "Verwijder {item}",
+    "deleteItemMessage": "Weet je zeker dat je {item} wilt verwijderen?",
+    "deleteEntryFailed": "Herinnering verwijderen mislukt",
+    "deleteMemoryFailed": "Herinnering verwijderen mislukt",
+    "deletePhotoFailed": "Foto verwijderen mislukt",
+    "deleteChapterFailed": "Hoofdstuk verwijderen mislukt",
+    "deleteChapterLegacyFailed": "Hoofdstuk verwijderen mislukt",
+    "deleteListFailed": "Lijst verwijderen mislukt",
+    "createEntryFailed": "Het aanmaken van een herinnering is mislukt. Probeer het opnieuw.",
+    "updateEntryFailed": "Het bijwerken van een herinnering is mislukt. Probeer het opnieuw.",
+    "createChapterFailed": "Het aanmaken van een hoofdstuk is mislukt. Probeer het opnieuw.",
+    "updateChapterFailed": "Het bijwerken van een hoofdstuk is mislukt. Probeer het opnieuw.",
+    "createChapterLegacyFailed": "Het aanmaken van een hoofdstuk is mislukt. Probeer het opnieuw.",
+    "updateChapterLegacyFailed": "Het bijwerken van een hoofdstuk is mislukt. Probeer het opnieuw.",
+    "createMilestoneListFailed": "Het aanmaken van een stedenlijst is mislukt. Probeer het opnieuw.",
+    "createLocationFailed": "Het aanmaken van een stad is mislukt. Probeer het opnieuw.",
+    "addLocationFailed": "Stad toevoegen mislukt",
+    "permissionCameraMessage": "Toegang tot de camera is nodig om foto's te maken",
+    "invalidDateMessage": "De einddatum kan niet vóór de startdatum liggen",
+    "entryDateOutOfRangeTitle": "Datum buiten bereik",
+    "entryDateOutOfRangeMessage": "De datum moet tussen {start} en {end} liggen.",
+    "requiredEntryTitle": "Voer een titel in",
+    "requiredChapterTitle": "Voer een hoofdstuktitel in",
+    "requiredChapterLegacyTitle": "Voer een hoofdstuktitel in",
+    "requiredMilestoneItem": "Voeg minstens één stad toe",
+    "requiredListName": "Voer een lijstnaam in",
+    "requiredLocationGroup": "Voer een landnaam in",
+    "requiredLocationName": "Voer een stadsnaam in",
+    "noProfileFound": "Geen babyprofiel gevonden. Maak er eerst een aan.",
+    "nothingToShare": "Niets om te delen",
+    "nothingToShareMessage": "Voor deze stad zijn nog geen herinneringen om te delen.",
+    "shareFailed": "Delen mislukt. Probeer het opnieuw.",
+    "chapterLimitTitle": "Hoofdstuklimiet bereikt",
+    "chapterLimitMessage": "Gratis gebruikers kunnen maximaal {limit} hoofdstukken maken. Upgrade naar Pro voor onbeperkte hoofdstukken.",
+    "chapterLimitUpgrade": "Upgrade naar Pro",
+    "chapterLimitLegacyTitle": "Hoofdstuklimiet bereikt",
+    "chapterLimitLegacyMessage": "Gratis gebruikers kunnen maximaal {limit} hoofdstukken maken. Upgrade naar Pro voor onbeperkte hoofdstukken.",
+    "chapterLimitLegacyUpgrade": "Upgrade naar Pro",
+    "backupReminderTitle": "Maak een back-up van je herinneringen",
+    "backupReminderMessage": "Je hebt {count} hoofdstukken gemaakt! Overweeg om je gegevens te exporteren voor veiligheid.",
+    "backupReminderExport": "Nu exporteren",
+    "backupReminderLater": "Later",
+    "proFeatureTitle": "Pro-functie",
+    "proFeatureExport": "Exporteren is een Pro-functie. Upgrade om je gegevens te exporteren.",
+    "proFeatureAdvancedSearch": "Geavanceerde zoekfilters zijn een Pro-functie.",
+    "proFeatureDarkMode": "Donkere modus is een Pro-functie. Upgrade om alle thema's te ontgrendelen.",
+    "purchasesUnavailableTitle": "Aankopen niet beschikbaar",
+    "purchasesUnavailableMessage": "Aankopen zijn niet beschikbaar in deze versie.",
+    "purchasesNotReadyTitle": "Aankopen nog niet klaar",
+    "purchasesNotReadyMessage": "Probeer het zo opnieuw.",
+    "purchasesNotConfiguredTitle": "Aankopen niet beschikbaar",
+    "purchasesNotConfiguredMessage": "RevenueCat is nog niet geconfigureerd.",
+    "restoreTitle": "Herstellen",
+    "restoreSuccessMessage": "Je aankopen zijn succesvol hersteld.",
+    "restoreEmptyMessage": "Geen actieve abonnementen om te herstellen.",
+    "restoreFailedMessage": "Herstellen mislukt. Probeer het opnieuw.",
+    "cameraPermission": "Camera toestemming",
+    "cameraPermissionDesc": "Schakel camera toegang in via instellingen",
+    "maxPhotos": "Maximaal 3 foto's",
+    "maxPhotosDesc": "Je kunt maximaal 3 foto's toevoegen",
+    "required": "Verplicht"
+  },
+  "limitations": {
+    "title": "Goed om te weten",
+    "photosNotBundled": "Foto's zitten niet in exports - alleen verwijzingen naar lokale bestanden",
+    "noCloudSync": "Alle data blijft alleen lokaal op je apparaat opgeslagen",
+    "freeTextCities": "Mijlpalenlijsten hebben vrije tekstnamen — duplicaten worden als aparte lijsten behandeld",
+    "noAutoBackup": "Geen automatische back-ups - vergeet niet regelmatig te exporteren"
+  },
+  "onboarding": {
+    "screens": {
+      "photoOverload": {
+        "title": "Van filmrol naar babyverhaal",
+        "body": "Baby-momenten raken snel verloren tussen duizenden foto's. Sla ze op met context, zodat mama en familie ze snel kunnen terugvinden."
+      },
+      "structuredArchive": {
+        "title": "Het verhaal van je baby, mooi georganiseerd",
+        "body": "Maak hoofdstukken voor elke fase en voeg mijlpalen, notities en foto's toe in één rustige tijdlijn."
+      },
+      "fastSearch": {
+        "title": "Binnen enkele seconden gevonden",
+        "body": "Zoek babyherinneringen op titel, notities of tags in een paar seconden."
+      },
+      "bestOfList": {
+        "title": "Bewaar de momenten die je keer op keer wilt vertellen",
+        "body": "Markeer betekenisvolle baby-momenten en voeg snelle notities toe zodat ze nooit verloren gaan."
+      },
+      "noCompetition": {
+        "title": "Geen feed. Geen competitie.",
+        "body": "Geen likes, geen druk. Alleen de herinneringen van je baby voor jouw familie."
+      },
+      "privateOffline": {
+        "title": "Privé en offline-first",
+        "body": "Geen account nodig. Je data blijft op je apparaat en werkt ook offline."
+      },
+      "simpleStart": {
+        "title": "Begin nu met je eerste hoofdstuk",
+        "body": "Maak binnen een paar seconden een hoofdstuk en voeg de eerste herinnering van je baby toe. Je kunt later details toevoegen."
+      }
+    },
+    "createFirstTrip": "Maak het eerste hoofdstuk van je baby",
+    "next": "Volgende",
+    "skip": "Overslaan",
+    "back": "Terug"
+  },
+  "shareContent": {
+    "locationLabel": "Locatie",
+    "summaryLabel": "Samenvatting",
+    "noEntries": "Geen artikelen",
+    "otherEntries": "Andere artikelen",
+    "sharedFrom": "Gedeeld vanuit Offly",
+    "chapterHighlights": "Hoofdstukhoogtepunten",
+    "locations": "Locaties",
+    "milestones": "Mijlpalen",
+    "moments": "Notities",
+    "moreItems": "+ {count} meer",
+    "fromTrip": "Van hoofdstuk",
+    "milestonesSection": "MIJLPAALEN",
+    "otherPlaces": "ANDERE MIJLPAALEN",
+    "memoriesSection": "NOTITIES",
+    "myRecommendations": "Mijn hoogtepunten",
+    "from": "Van",
+    "other": "Andere"
+  },
+  "buttons": {
+    "save": "Herinnering opslaan"
+  }
+}

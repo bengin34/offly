@@ -1,0 +1,748 @@
+{
+  "common": {
+    "appName": "Offly",
+    "done": "完了",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "save": "保存",
+    "add": "追加",
+    "create": "作成",
+    "close": "閉じる",
+    "saving": "保存中...",
+    "creating": "作成中...",
+    "adding": "追加中...",
+    "entry": "思い出",
+    "entries": "思い出",
+    "memories": "思い出",
+    "shareChapter": "チャプターを共有"
+  },
+  "shareDialog": {
+    "title": "{name}を共有",
+    "subtitle": "このチャプターの共有方法を選択してください",
+    "hint": "データは非公開のままです。共有ではローカルファイルが作成されます",
+    "optionTextTitle": "テキストリスト",
+    "optionTextDescription": "シンプルなテキスト形式。メッセージアプリに最適",
+    "optionImageTitle": "ビジュアルカード",
+    "optionImageDescription": "ハイライトを美しくまとめたカード",
+    "optionPdfTitle": "PDFドキュメント",
+    "optionPdfDescription": "詳細とメモを含む完全なチャプター",
+    "dialogTitleChapter": "{name}チャプターを共有",
+    "dialogTitleMemoryHighlights": "{name}のハイライトを共有",
+    "dialogTitleChapterGuide": "{name}チャプターを共有",
+    "dialogTitleCard": "{name}カードを共有"
+  },
+  "tabs": {
+    "chapters": "チャプター",
+    "chaptersLegacy": "チャプター",
+    "search": "検索",
+    "insights": "インサイト",
+    "settings": "設定"
+  },
+  "navigation": {
+    "newChapter": "新しいチャプター",
+    "chapter": "チャプター",
+    "editChapter": "チャプターを編集",
+    "newChapterLegacy": "新しいチャプター",
+    "chapterLegacy": "チャプター",
+    "editChapterLegacy": "チャプターを編集",
+    "newMemory": "新しい思い出",
+    "memory": "思い出",
+    "editMemory": "思い出を編集",
+    "newEntry": "新しい思い出",
+    "entry": "思い出",
+    "editEntry": "思い出を編集"
+  },
+  "chapters": {
+    "addCover": "カバーを追加",
+    "days": "{count}日",
+    "emptyTitle": "まだチャプターがありません",
+    "emptySubtitle": "赤ちゃんの思い出を記録し始めましょう",
+    "emptyButton": "最初のチャプターを作成"
+  },
+  "chaptersLegacy": {
+    "addCover": "カバーを追加",
+    "days": "{count}日",
+    "emptyTitle": "まだチャプターがありません",
+    "emptySubtitle": "赤ちゃんの思い出を記録し始めましょう",
+    "emptyButton": "最初のチャプターを作成"
+  },
+  "settings": {
+    "preferences": "環境設定",
+    "appearance": "表示",
+    "language": "言語",
+    "chooseAppearance": "表示を選択",
+    "chooseLanguage": "言語を選択",
+    "exportSection": "エクスポート",
+    "exportTitle": "すべてのデータをエクスポート",
+    "exportDescription": "チャプター、思い出、タグをJSONまたはXLSでダウンロード",
+    "exportButton": "JSONをエクスポート",
+    "exportButtonXls": "XLSをエクスポート",
+    "exportOpenButton": "エクスポートオプションを開く",
+    "exportInfoTitle": "なぜエクスポートするの？",
+    "exportInfoDescription": "個人バックアップを保存したり、新しいスマホへ移行したり、表計算で思い出を分析できます。エクスポートデータは共有するまで端末内に保存されます。",
+    "exportPrivacyNote": "エクスポートファイルには個人的なメモが含まれる場合があります。共有にはご注意ください。",
+    "exportPhotosNote": "写真そのものはエクスポートに含まれません。",
+    "exportFormatsTitle": "形式を選択",
+    "exportFormatsDescription": "JSONはバックアップと再インポートに最適です。XLSはExcelやGoogleスプレッドシートで簡単に開けます。",
+    "importSection": "インポート",
+    "importTitle": "データをインポート",
+    "importDescription": "保存したチャプターと思い出をJSONファイルから取り込みます。",
+    "importButton": "JSONをインポート",
+    "importButtonImporting": "インポート中...",
+    "dataSection": "データ",
+    "dataTitle": "エクスポートとインポート",
+    "dataDescription": "エクスポートとインポートで思い出をバックアップまたは移行できます。",
+    "dataButton": "オプションを表示",
+    "supportSection": "サポート",
+    "supportRate": "5つ星で評価する",
+    "supportShare": "アプリを共有",
+    "supportContact": "お問い合わせ",
+    "supportShareMessage": "Offly - 私が気に入っている家族向けプライベート思い出アーカイブ: {link}",
+    "onboardingSection": "オンボーディング",
+    "onboardingTitle": "オンボーディングを再表示",
+    "onboardingDescription": "7画面の紹介をいつでも再生できます。",
+    "onboardingButton": "オンボーディングを開始",
+    "onboardingResetTitle": "オンボーディングを開始しますか？",
+    "onboardingResetMessage": "オンボーディングフローを再表示します。いつでもスキップできます。",
+    "onboardingResetAction": "開始",
+    "aboutSection": "このアプリについて",
+    "version": "バージョン",
+    "storage": "ストレージ",
+    "privacy": "プライバシー",
+    "storageValue": "データはこの端末内に保存されます。",
+    "privacyValue": "オフライン優先",
+    "footer": "Offly — あなたの家族向けプライベート思い出アーカイブ",
+    "themeLight": "ライト",
+    "themeDark": "ダーク",
+    "themeSystem": "システム",
+    "alertBackupExportFailedMessage": "バックアップを作成できませんでした。もう一度お試しください。",
+    "alertProfileUpdateFailedMessage": "プロフィールの更新に失敗しました。もう一度お試しください。",
+    "beforeBirthChapterTitle": "生まれる前",
+    "beforeBirthChapterDescription": "妊娠中の記録",
+    "alertModeUpdatedTitle": "モードを更新しました",
+    "alertModeUpdatedMessage": "プロフィールは「誕生」モードに切り替わりました。妊娠中の記録は「{chapter}」チャプターに移動されました。",
+    "alertModeSwitchFailedMessage": "モードの切り替えに失敗しました。もう一度お試しください。",
+    "yourBaby": "あなたの赤ちゃん",
+    "modeExpecting": "出産予定",
+    "modeBorn": "誕生",
+    "editAction": "編集",
+    "dueDate": "出産予定日",
+    "age": "月齢",
+    "daysCount": "{count}日",
+    "babyBornButton": "赤ちゃんが生まれました！",
+    "colorTheme": "カラーテーマ",
+    "backupDataSection": "バックアップとデータ",
+    "backupMemoriesTitle": "思い出をバックアップ",
+    "backupMemoriesDescription": "安全なコピーを残すためにデータをエクスポートします。データはこの端末にのみ保存されます。",
+    "lastBackup": "最終バックアップ: {date}",
+    "noBackupYet": "まだバックアップがありません。定期的なバックアップをおすすめします。",
+    "createBackup": "バックアップを作成",
+    "moreExportImportOptions": "その他のエクスポート/インポートオプション",
+    "chooseColorTheme": "カラーテーマを選択",
+    "modeSwitchTitle": "赤ちゃんが生まれました！",
+    "modeSwitchConfirm": "確認",
+    "modeSwitchDescription": "誕生日を入力してください。妊娠中の記録は「{chapter}」チャプターに移動され、保管庫の解放日が再計算されます。",
+    "editBabyProfileTitle": "赤ちゃんプロフィールを編集",
+    "name": "名前",
+    "namePlaceholder": "赤ちゃんの名前またはニックネーム",
+    "birthDateLabel": "誕生日"
+  },
+  "proBanner": {
+    "title": "Proにアップグレード",
+    "subtitle": "すべての機能を解放。",
+    "cta": "アップグレード",
+    "messages": [
+      {
+        "title": "Proにアップグレード",
+        "subtitle": "すべての機能を解放。"
+      },
+      {
+        "title": "スクロールは少なく、価値はもっと",
+        "subtitle": "大切な赤ちゃんの瞬間をすぐに見つけられます。"
+      },
+      {
+        "title": "すべてを覚えておこう",
+        "subtitle": "小さな瞬間も安全に残せます。"
+      },
+      {
+        "title": "あなたの家族アーカイブ",
+        "subtitle": "すべてのチャプターにすぐアクセス。"
+      },
+      {
+        "title": "数秒で見つかる",
+        "subtitle": "タイトル、メモ、タグで思い出を検索。"
+      },
+      {
+        "title": "制限なく成長",
+        "subtitle": "チャプター無制限。思い出無制限。"
+      }
+    ]
+  },
+  "labels": {
+    "date": "日付",
+    "startDate": "開始日",
+    "endDate": "終了日",
+    "title": "タイトル",
+    "notes": "メモ",
+    "optional": "任意",
+    "filled": "入力済み",
+    "milestone": {
+      "pastDue": "期限切れ",
+      "today": "今日",
+      "tomorrow": "明日",
+      "empty": "まだマイルストーンがありません",
+      "emptySubtitle": "マイルストーンはここに表示されます",
+      "quickAddHelper": "タグなどを追加するにはフルエディターを開いてください"
+    }
+  },
+  "placeholders": {
+    "search": "チャプター、思い出、メモを検索...",
+    "chapterTitleExample": "例: 1年目",
+    "chapterSummaryExample": "このチャプターの簡単な説明...",
+    "chapterTitle": "例: 0〜3か月",
+    "chapterDescription": "このチャプターの短い説明...",
+    "entryTitleMilestone": "例: はじめての笑顔",
+    "entryTitleMemory": "例: 静かな午後",
+    "memoryTitleMilestone": "はじめての笑顔、はじめての一歩...",
+    "memoryTitleNote": "静かな午後、おもしろい瞬間...",
+    "entryNotes": "詳細を追加...",
+    "milestoneListName": "例: マイルストーン案、家族の習慣",
+    "locationGroupName": "例: 自宅、祖母の家",
+    "memoryTitle": "何がありましたか？",
+    "memoryNotes": "詳細を追加..."
+  },
+  "chapterForm": {
+    "titleLabel": "チャプタータイトル *",
+    "descriptionLabel": "説明（任意）",
+    "coverImageLabel": "カバー画像（任意）",
+    "changeCover": "変更",
+    "addCoverPlaceholder": "タップしてカバー画像を追加"
+  },
+  "chapterFormLegacy": {
+    "titleLabel": "チャプタータイトル *",
+    "summaryLabel": "説明（任意）",
+    "coverImageLabel": "カバー画像（任意）",
+    "changeCover": "変更",
+    "addCoverPlaceholder": "タップしてカバー画像を追加"
+  },
+  "memoryForm": {
+    "titleLabel": "タイトル *",
+    "locationLabel": "場所",
+    "descriptionLabel": "説明",
+    "tagsLabel": "タグ",
+    "milestone": "マイルストーン",
+    "note": "メモ"
+  },
+  "entryForm": {
+    "titleLabel": "タイトル *",
+    "notesLabel": "メモ",
+    "tagsLabel": "タグ",
+    "photosLabel": "写真 ({count}/{max})",
+    "gallery": "ギャラリー",
+    "camera": "カメラ",
+    "tapToAddTags": "タップしてタグを追加...",
+    "milestone": "マイルストーン",
+    "memory": "メモ",
+    "moreTags": "+{count}件",
+    "locationLabel": "場所",
+    "locationPlaceholder": "場所を追加（任意）",
+    "locationHint": "思い出の助けになる場合は場所を追加"
+  },
+  "memoryDetail": {
+    "descriptionTitle": "説明",
+    "tagsTitle": "タグ"
+  },
+  "entryDetail": {
+    "notesTitle": "メモ",
+    "tagsTitle": "タグ",
+    "allPhotos": "すべての写真 ({count})",
+    "created": "作成日: {date}",
+    "updated": "更新日: {date}",
+    "locationTitle": "場所",
+    "openInMaps": "マップで開く"
+  },
+  "chapterDetail": {
+    "noPhoto": "写真なし",
+    "notePill": "メモ",
+    "uncategorized": "未分類",
+    "emptyTitle": "まだ思い出がありません",
+    "emptySubtitle": "このチャプターに思い出を追加しましょう",
+    "addFirstMemory": "最初の思い出を追加",
+    "addMemory": "思い出を追加"
+  },
+  "chapterDetailLegacy": {
+    "noPhoto": "写真なし",
+    "notePill": "メモ",
+    "uncategorized": "未分類",
+    "emptyTitle": "まだ思い出がありません",
+    "emptySubtitle": "このチャプターに思い出を追加しましょう",
+    "addFirstEntry": "最初の思い出を追加",
+    "addEntry": "思い出を追加"
+  },
+  "memories": {
+    "memory": "思い出",
+    "milestone": "マイルストーン",
+    "note": "メモ",
+    "notePill": "メモ",
+    "noPhoto": "写真なし"
+  },
+  "milestoneLists": {
+    "title": "都市リスト",
+    "listNameLabel": "リスト名 *",
+    "listTypeLabel": "リスト種別",
+    "groupLabel": "国 *",
+    "typeCustom": "カスタム",
+    "typeCountry": "国",
+    "typeHintCustom": "追跡したい場所を自由にまとめたカスタムリストを作成",
+    "typeHintCountry": "特定の国の場所リストを作成",
+    "emptyTitle": "まだ都市リストがありません",
+    "emptyDescription": "行きたい場所のリストを作成し、進捗を記録しましょう",
+    "createFirstList": "最初のリストを作成",
+    "progressVisited": "{visited}/{total} 訪問済み ({percent}%)",
+    "detailProgress": "{total}件中{visited}件を訪問済み ({percent}%)",
+    "detailEmptyTitle": "まだ都市がありません",
+    "detailEmptyDescription": "行きたい場所を追加して進捗を追跡しましょう",
+    "detailAddCity": "都市を追加",
+    "detailVisited": "訪問済み",
+    "notFound": "都市リストが見つかりません",
+    "loading": "読み込み中..."
+  },
+  "search": {
+    "emptyTitle": "思い出を検索",
+    "emptySubtitle": "タイトル、説明、メモ、タグでチャプターと思い出を検索できます",
+    "noResultsTitle": "結果が見つかりません",
+    "noResultsSubtitle": "別のキーワードで検索してください",
+    "showLabel": "表示",
+    "memoryTypeLabel": "思い出タイプ",
+    "entryTypeLabel": "思い出タイプ",
+    "tagsLabel": "タグ",
+    "clearFilters": "フィルターをクリア",
+    "filterAll": "すべて",
+    "filterChapters": "チャプター",
+    "filterMemories": "思い出",
+    "filterChapterLegacy": "チャプター",
+    "filterEntries": "思い出",
+    "filterAny": "すべて",
+    "filterMilestones": "マイルストーン",
+    "filterNotes": "メモ",
+    "filterMilestoneLegacy": "マイルストーン",
+    "filterNoteLegacy": "メモ",
+    "matchedIn": "一致箇所 {field}:",
+    "inChapter": "{chapter}内",
+    "inChapterLegacy": "{chapter}内",
+    "matchFieldTitle": "タイトル",
+    "matchFieldLocation": "場所",
+    "matchFieldSummary": "説明",
+    "matchFieldNotes": "メモ",
+    "matchFieldTag": "タグ",
+    "matchFieldMilestone": "都市"
+  },
+  "insights": {
+    "sectionStats": "あなたの統計",
+    "statsChapters": "チャプター",
+    "statsMemories": "思い出",
+    "statsChapterLegacy": "チャプター",
+    "statsMemoryLegacy": "思い出",
+    "statsMilestones": "場所",
+    "statsLocations": "ロケーション",
+    "statsPhotos": "写真",
+    "statsChapterDays": "チャプター日数",
+    "memoriesBreakdown": "マイルストーン {milestones} 件、メモ {notes} 件",
+    "entriesBreakdown": "マイルストーン {milestones} 件、メモ {notes} 件",
+    "highlightMostVisited": "最も訪問",
+    "highlightFirstTrip": "最初のチャプター",
+    "highlightFirstMemory": "最初の思い出",
+    "topTags": "人気タグ",
+    "milestoneProgress": "マイルストーンリスト",
+    "seeAll": "すべて表示",
+    "createFirstMilestoneList": "最初のマイルストーンリストを作成",
+    "milestoneListsEmptyHint": "記録したいマイルストーンを追跡しましょう",
+    "milestoneListCount": "{total}件中{visited}件",
+    "moreLists": "+{count}件のリスト",
+    "achievements": "実績",
+    "viewAll": "すべて表示",
+    "noBadgesEarned": "まだバッジを獲得していません",
+    "badgesEmptyHint": "思い出を記録して実績を解放しましょう",
+    "moreBadges": "+{count}件のバッジ",
+    "badgesProgress": "{total}件中{unlocked}件のバッジを獲得"
+  },
+  "badges": {
+    "earned": "獲得済み",
+    "locked": "未獲得",
+    "allBadges": "すべてのバッジ",
+    "badgesEarned": "獲得したバッジ",
+    "special": "スペシャル",
+    "tagAdventures": "タグ実績",
+    "firstSteps": "はじめの一歩",
+    "chapterMilestones": "チャプター実績",
+    "milestoneAchievements": "マイルストーン実績",
+    "entryMilestones": "思い出実績",
+    "consistencyMilestones": "継続",
+    "photoMilestones": "写真実績",
+    "tagMilestones": "タグ追跡",
+    "organizationMilestones": "整理",
+    "badgeUnlocked": "バッジを解放しました！"
+  },
+  "badgeDetail": {
+    "congratulations": "おめでとうございます！",
+    "earnedOn": "獲得日: {date}",
+    "notYetEarned": "まだ獲得していません"
+  },
+  "badgeItems": {
+    "historian": {
+      "title": "思い出キーパー",
+      "description": "過去の思い出を40件記録"
+    },
+    "first_chapter": {
+      "title": "最初のチャプター",
+      "description": "最初のチャプターを作成"
+    },
+    "first_milestone": {
+      "title": "最初のマイルストーン",
+      "description": "最初のマイルストーンを記録"
+    },
+    "first_note": {
+      "title": "最初のメモ",
+      "description": "最初のメモを書きました"
+    },
+    "first_tag": {
+      "title": "最初のタグ",
+      "description": "最初のタグを作成"
+    },
+    "chapters_5": {
+      "title": "記録者",
+      "description": "チャプターを5件作成"
+    },
+    "chapters_15": {
+      "title": "ストーリーテラー",
+      "description": "チャプターを15件作成"
+    },
+    "chapters_30": {
+      "title": "レガシービルダー",
+      "description": "チャプターを30件作成"
+    },
+    "milestones_15": {
+      "title": "マイルストーントラッカー",
+      "description": "マイルストーンを15件記録"
+    },
+    "milestones_40": {
+      "title": "マイルストーンコレクター",
+      "description": "マイルストーンを40件記録"
+    },
+    "milestones_150": {
+      "title": "マイルストーンマスター",
+      "description": "マイルストーンを150件記録"
+    },
+    "memories_40": {
+      "title": "思い出キーパー",
+      "description": "思い出を40件作成"
+    },
+    "memories_150": {
+      "title": "アーキビスト",
+      "description": "思い出を150件作成"
+    },
+    "photos_25": {
+      "title": "写真好き",
+      "description": "写真を25枚記録"
+    },
+    "photos_100": {
+      "title": "フォトグラファー",
+      "description": "写真を100枚記録"
+    },
+    "photos_400": {
+      "title": "フォトアーキビスト",
+      "description": "写真を400枚記録"
+    },
+    "tag_first_time": {
+      "title": "はじめての瞬間",
+      "description": "初体験の思い出を10件記録"
+    },
+    "tag_milestone": {
+      "title": "マイルストーン達人",
+      "description": "マイルストーンの思い出に15件タグ付け"
+    },
+    "tag_funny": {
+      "title": "笑いの達人",
+      "description": "おもしろい瞬間を12件記録"
+    },
+    "tag_sweet": {
+      "title": "やさしい瞬間",
+      "description": "心温まる思い出を12件記録"
+    },
+    "tag_growth": {
+      "title": "成長トラッカー",
+      "description": "成長記録を10件登録"
+    },
+    "tag_health": {
+      "title": "健康ログ",
+      "description": "健康記録を10件登録"
+    },
+    "tag_feeding": {
+      "title": "授乳トラッカー",
+      "description": "授乳記録を15件登録"
+    },
+    "tag_sleep": {
+      "title": "睡眠モニター",
+      "description": "睡眠記録を15件登録"
+    },
+    "tag_play": {
+      "title": "遊びの達人",
+      "description": "遊びの記録を12件登録"
+    },
+    "tag_family": {
+      "title": "家族の瞬間",
+      "description": "家族の記録を15件登録"
+    },
+    "note_taker": {
+      "title": "メモ名人",
+      "description": "20件の思い出に説明を追加"
+    },
+    "storyteller_badge": {
+      "title": "詳細な記録者",
+      "description": "100件の思い出に説明を追加"
+    },
+    "visual_logger": {
+      "title": "ビジュアルロガー",
+      "description": "20件の思い出に写真を追加"
+    },
+    "photo_journalist": {
+      "title": "フォトジャーナリスト",
+      "description": "100件の思い出に写真を追加"
+    },
+    "organizer": {
+      "title": "オーガナイザー",
+      "description": "20件の思い出にタグ付け"
+    },
+    "master_organizer": {
+      "title": "マスターオーガナイザー",
+      "description": "100件の思い出にタグ付け"
+    },
+    "tag_creator": {
+      "title": "タグクリエイター",
+      "description": "20個のユニークタグを作成"
+    },
+    "taxonomy_expert": {
+      "title": "分類エキスパート",
+      "description": "40個のユニークタグを作成"
+    }
+  },
+  "tags": {
+    "quick": {
+      "restaurant": "レストラン",
+      "cafe": "カフェ",
+      "hotel": "ホテル",
+      "museum": "博物館",
+      "cityCenter": "市内中心部",
+      "beach": "ビーチ",
+      "sea": "海",
+      "park": "公園",
+      "shopping": "ショッピング",
+      "bar": "バー",
+      "landmark": "ランドマーク",
+      "mosque": "モスク",
+      "ship": "船",
+      "temple": "寺院",
+      "market": "市場",
+      "nightlife": "ナイトライフ",
+      "nature": "自然",
+      "adventure": "冒険",
+      "localFood": "ローカルフード",
+      "streetFood": "ストリートフード",
+      "viewPoint": "展望スポット",
+      "historic": "歴史",
+      "art": "アート",
+      "transport": "交通"
+    }
+  },
+  "dialogs": {
+    "tagPicker": {
+      "title": "タグを追加",
+      "selected": "選択中",
+      "addCustom": "カスタムタグを追加",
+      "customPlaceholder": "タグ名を入力...",
+      "quickTags": "クイックタグ",
+      "yourTags": "あなたのタグ"
+    },
+    "locationPicker": {
+      "label": "都市",
+      "placeholder": "都市を選択",
+      "title": "都市を選択",
+      "addLocation": "都市を追加",
+      "locationNamePlaceholder": "都市名",
+      "noLocation": "都市なし（未分類）",
+      "fromDate": "開始 {date}",
+      "untilDate": "終了 {date}"
+    },
+    "locationEditor": {
+      "label": "都市",
+      "empty": "まだ場所が追加されていません",
+      "addLocation": "都市を追加",
+      "editTitle": "都市を編集",
+      "addTitle": "都市を追加",
+      "locationNameLabel": "都市名 *",
+      "locationNamePlaceholder": "例: ローマ、フィレンツェ",
+      "arrivalDateLabel": "到着日（任意）",
+      "departureDateLabel": "出発日（任意）",
+      "notSet": "未設定",
+      "fromDate": "開始 {date}",
+      "untilDate": "終了 {date}",
+      "done": "完了"
+    },
+    "milestoneList": {
+      "createTitle": "新しい都市リスト",
+      "addItemTitle": "都市を追加",
+      "addItemPlaceholder": "都市名",
+      "addItemButton": "都市を追加",
+      "adding": "追加中...",
+      "linkChapterTitle": "チャプターにリンク（任意）",
+      "noChapterLinked": "リンクされたチャプターはありません"
+    }
+  },
+  "alerts": {
+    "exportFailedTitle": "エクスポートに失敗",
+    "exportFailedMessage": "データをエクスポートできませんでした。もう一度お試しください。",
+    "importComplete": "インポートが完了しました",
+    "importCompletedWithErrors": "一部の問題を含めてインポートが完了しました",
+    "importFailed": "インポートに失敗しました。もう一度お試しください。",
+    "errorTitle": "エラー",
+    "requiredTitle": "必須",
+    "invalidDateTitle": "無効な日付",
+    "permissionTitle": "権限が必要です",
+    "deleteEntryTitle": "思い出を削除",
+    "deleteEntryMessage": "この思い出を削除してもよろしいですか？",
+    "deletePhotoTitle": "写真を削除",
+    "deletePhotoMessage": "この写真を削除してもよろしいですか？",
+    "deleteChapterTitle": "チャプターを削除",
+    "deleteChapterMessage": "このチャプターを削除してもよろしいですか？関連する思い出もすべて削除されます。",
+    "deleteChapterLegacyTitle": "チャプターを削除",
+    "deleteChapterLegacyMessage": "このチャプターを削除してもよろしいですか？関連する思い出もすべて削除されます。",
+    "deleteListTitle": "リストを削除",
+    "deleteListMessage": "「{name}」を削除してもよろしいですか？このリスト内の場所もすべて削除されます。",
+    "deleteItemTitle": "{item}を削除",
+    "deleteItemMessage": "この{item}を削除してもよろしいですか？",
+    "deleteEntryFailed": "思い出の削除に失敗しました",
+    "deleteMemoryFailed": "思い出の削除に失敗しました",
+    "deletePhotoFailed": "写真の削除に失敗しました",
+    "deleteChapterFailed": "チャプターの削除に失敗しました",
+    "deleteChapterLegacyFailed": "チャプターの削除に失敗しました",
+    "deleteListFailed": "リストの削除に失敗しました",
+    "createEntryFailed": "記録の作成に失敗しました。もう一度お試しください。",
+    "updateEntryFailed": "記録の更新に失敗しました。もう一度お試しください。",
+    "createChapterFailed": "チャプターの作成に失敗しました。もう一度お試しください。",
+    "updateChapterFailed": "チャプターの更新に失敗しました。もう一度お試しください。",
+    "createChapterLegacyFailed": "チャプターの作成に失敗しました。もう一度お試しください。",
+    "updateChapterLegacyFailed": "チャプターの更新に失敗しました。もう一度お試しください。",
+    "createMilestoneListFailed": "都市リストの作成に失敗しました。もう一度お試しください。",
+    "createLocationFailed": "都市の作成に失敗しました。もう一度お試しください。",
+    "addLocationFailed": "都市の追加に失敗しました",
+    "permissionCameraMessage": "写真を撮るにはカメラへのアクセスが必要です",
+    "invalidDateMessage": "終了日は開始日より前にできません",
+    "entryDateOutOfRangeTitle": "日付が範囲外です",
+    "entryDateOutOfRangeMessage": "記録日は {start} から {end} の間である必要があります。",
+    "requiredEntryTitle": "タイトルを入力してください",
+    "requiredChapterTitle": "チャプタータイトルを入力してください",
+    "requiredChapterLegacyTitle": "チャプタータイトルを入力してください",
+    "requiredMilestoneItem": "少なくとも1つの都市を追加してください",
+    "requiredListName": "リスト名を入力してください",
+    "requiredLocationGroup": "国名を入力してください",
+    "requiredLocationName": "都市名を入力してください",
+    "noProfileFound": "赤ちゃんプロフィールが見つかりません。先に作成してください。",
+    "nothingToShare": "共有する内容がありません",
+    "nothingToShareMessage": "この都市にはまだ共有できる記録がありません。",
+    "shareFailed": "共有に失敗しました。もう一度お試しください。",
+    "chapterLimitTitle": "チャプター上限に達しました",
+    "chapterLimitMessage": "無料ユーザーは最大 {limit} 件のチャプターを作成できます。無制限にするにはProへアップグレードしてください。",
+    "chapterLimitUpgrade": "Proにアップグレード",
+    "chapterLimitLegacyTitle": "チャプター上限に達しました",
+    "chapterLimitLegacyMessage": "無料ユーザーは最大 {limit} 件のチャプターを作成できます。無制限にするにはProへアップグレードしてください。",
+    "chapterLimitLegacyUpgrade": "Proにアップグレード",
+    "backupReminderTitle": "思い出をバックアップしましょう",
+    "backupReminderMessage": "{count}件のチャプターを作成しました。安全のためにデータのエクスポートを検討してください。",
+    "backupReminderExport": "今すぐエクスポート",
+    "backupReminderLater": "あとで",
+    "proFeatureTitle": "Pro機能",
+    "proFeatureExport": "エクスポートはPro機能です。データをエクスポートするにはアップグレードしてください。",
+    "proFeatureAdvancedSearch": "高度な検索フィルターはPro機能です。",
+    "proFeatureDarkMode": "ダークモードはPro機能です。すべてのテーマを使うにはアップグレードしてください。",
+    "purchasesUnavailableTitle": "購入は利用できません",
+    "purchasesUnavailableMessage": "このビルドでは購入機能を利用できません。",
+    "purchasesNotReadyTitle": "購入機能の準備中",
+    "purchasesNotReadyMessage": "しばらくしてからもう一度お試しください。",
+    "purchasesNotConfiguredTitle": "購入は利用できません",
+    "purchasesNotConfiguredMessage": "RevenueCat はまだ設定されていません。",
+    "restoreTitle": "復元",
+    "restoreSuccessMessage": "購入情報を正常に復元しました。",
+    "restoreEmptyMessage": "復元できる有効なサブスクリプションはありません。",
+    "restoreFailedMessage": "復元に失敗しました。もう一度お試しください。",
+    "cameraPermission": "カメラ権限",
+    "cameraPermissionDesc": "設定でカメラアクセスを有効にしてください",
+    "maxPhotos": "写真は最大3枚",
+    "maxPhotosDesc": "追加できる写真は最大3枚です",
+    "required": "必須"
+  },
+  "limitations": {
+    "title": "ご注意",
+    "photosNotBundled": "エクスポートに写真本体は含まれません。ローカルファイル参照のみが含まれます",
+    "noCloudSync": "すべてのデータはこの端末内にのみ保存されます",
+    "freeTextCities": "マイルストーンリスト名は自由入力です。同じ名前でも別リストとして扱われます",
+    "noAutoBackup": "自動バックアップはありません。定期的にデータをエクスポートしてください"
+  },
+  "onboarding": {
+    "screens": {
+      "photoOverload": {
+        "title": "カメラロールから赤ちゃんの物語へ",
+        "body": "赤ちゃんの瞬間は大量の写真に埋もれがちです。文脈と一緒に保存すれば、ママや家族がすぐに見つけられます。"
+      },
+      "structuredArchive": {
+        "title": "赤ちゃんの物語を美しく整理",
+        "body": "各成長段階ごとにチャプターを作成し、マイルストーン、メモ、写真を1つの穏やかなタイムラインにまとめましょう。"
+      },
+      "fastSearch": {
+        "title": "数秒で見つかる",
+        "body": "タイトル、メモ、タグで赤ちゃんの思い出をすばやく検索できます。"
+      },
+      "bestOfList": {
+        "title": "何度も語りたくなる瞬間を残そう",
+        "body": "意味のある赤ちゃんの瞬間に印を付け、短いメモを添えて、決して失わないようにしましょう。"
+      },
+      "noCompetition": {
+        "title": "フィードなし。競争なし。",
+        "body": "いいねもプレッシャーもありません。家族のための赤ちゃんの思い出だけ。"
+      },
+      "privateOffline": {
+        "title": "プライベートでオフライン優先",
+        "body": "アカウント不要。データは端末内に保存され、オフラインでも使えます。"
+      },
+      "simpleStart": {
+        "title": "今すぐ最初のチャプターを始めよう",
+        "body": "数秒でチャプターを作成し、最初の思い出を追加できます。詳細はあとから育てていけます。"
+      }
+    },
+    "createFirstTrip": "赤ちゃんの最初のチャプターを作成",
+    "next": "次へ",
+    "skip": "スキップ",
+    "back": "戻る"
+  },
+  "shareContent": {
+    "locationLabel": "場所",
+    "summaryLabel": "概要",
+    "noEntries": "記録なし",
+    "otherEntries": "その他の記録",
+    "sharedFrom": "Offlyから共有",
+    "chapterHighlights": "チャプターハイライト",
+    "locations": "場所",
+    "milestones": "マイルストーン",
+    "moments": "メモ",
+    "moreItems": "+ {count} 件",
+    "fromTrip": "チャプターから",
+    "milestonesSection": "マイルストーン",
+    "otherPlaces": "その他のマイルストーン",
+    "memoriesSection": "メモ",
+    "myRecommendations": "私のハイライト",
+    "from": "から",
+    "other": "その他"
+  },
+  "buttons": {
+    "save": "思い出を保存"
+  }
+}

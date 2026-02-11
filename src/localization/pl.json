@@ -1,0 +1,748 @@
+{
+  "common": {
+    "appName": "Offly",
+    "done": "Gotowe",
+    "cancel": "Anuluj",
+    "delete": "Usuń",
+    "save": "Zapisz",
+    "add": "Dodaj",
+    "create": "Utwórz",
+    "close": "Zamknij",
+    "saving": "Zapisywanie...",
+    "creating": "Tworzenie...",
+    "adding": "Dodawanie...",
+    "entry": "wspomnienie",
+    "entries": "wspomnienia",
+    "memories": "Wspomnienia",
+    "shareChapter": "Udostępnij rozdział"
+  },
+  "shareDialog": {
+    "title": "Udostępnij {name}",
+    "subtitle": "Wybierz sposób udostępnienia tego rozdziału",
+    "hint": "Twoje dane pozostają prywatne — udostępnienie tworzy plik lokalny",
+    "optionTextTitle": "Lista tekstowa",
+    "optionTextDescription": "Prosty format tekstowy idealny do komunikatorów",
+    "optionImageTitle": "Karta wizualna",
+    "optionImageDescription": "Elegancka karta z wyróżnionymi wspomnieniami",
+    "optionPdfTitle": "Dokument PDF",
+    "optionPdfDescription": "Pełny rozdział ze wszystkimi szczegółami i notatkami",
+    "dialogTitleChapter": "Udostępnij rozdział {name}",
+    "dialogTitleMemoryHighlights": "Udostępnij wyróżnienia {name}",
+    "dialogTitleChapterGuide": "Udostępnij rozdział {name}",
+    "dialogTitleCard": "Udostępnij kartę {name}"
+  },
+  "tabs": {
+    "chapters": "Rozdziały",
+    "chaptersLegacy": "Rozdziały",
+    "search": "Szukaj",
+    "insights": "Statystyki",
+    "settings": "Ustawienia"
+  },
+  "navigation": {
+    "newChapter": "Nowy rozdział",
+    "chapter": "Rozdział",
+    "editChapter": "Edytuj rozdział",
+    "newChapterLegacy": "Nowy rozdział",
+    "chapterLegacy": "Rozdział",
+    "editChapterLegacy": "Edytuj rozdział",
+    "newMemory": "Nowe wspomnienie",
+    "memory": "Wspomnienie",
+    "editMemory": "Edytuj wspomnienie",
+    "newEntry": "Nowe wspomnienie",
+    "entry": "Wspomnienie",
+    "editEntry": "Edytuj wspomnienie"
+  },
+  "chapters": {
+    "addCover": "Dodaj okładkę",
+    "days": "{count} dni",
+    "emptyTitle": "Brak rozdziałów",
+    "emptySubtitle": "Zacznij zapisywać wspomnienia swojego dziecka",
+    "emptyButton": "Utwórz pierwszy rozdział"
+  },
+  "chaptersLegacy": {
+    "addCover": "Dodaj okładkę",
+    "days": "{count} dni",
+    "emptyTitle": "Brak rozdziałów",
+    "emptySubtitle": "Zacznij zapisywać wspomnienia swojego dziecka",
+    "emptyButton": "Utwórz pierwszy rozdział"
+  },
+  "settings": {
+    "preferences": "Preferencje",
+    "appearance": "Wygląd",
+    "language": "Język",
+    "chooseAppearance": "Wybierz wygląd",
+    "chooseLanguage": "Wybierz język",
+    "exportSection": "Eksport",
+    "exportTitle": "Eksportuj wszystkie dane",
+    "exportDescription": "Pobierz rozdziały, wspomnienia i tagi jako JSON lub XLS",
+    "exportButton": "Eksportuj JSON",
+    "exportButtonXls": "Eksportuj XLS",
+    "exportOpenButton": "Otwórz opcje eksportu",
+    "exportInfoTitle": "Dlaczego eksportować?",
+    "exportInfoDescription": "Zrób osobną kopię zapasową, przejdź na nowe urządzenie lub przeanalizuj wspomnienia w arkuszu. Eksporty zostają na urządzeniu, dopóki ich nie udostępnisz.",
+    "exportPrivacyNote": "Pliki eksportu mogą zawierać prywatne notatki. Udostępniaj ostrożnie.",
+    "exportPhotosNote": "Zdjęcia nie są dołączane do eksportu.",
+    "exportFormatsTitle": "Wybierz format",
+    "exportFormatsDescription": "JSON jest najlepszy do backupów i ponownego importu. XLS łatwo otworzyć w Excelu lub Google Sheets.",
+    "importSection": "Import",
+    "importTitle": "Importuj dane",
+    "importDescription": "Zaimportuj zapisane rozdziały i wspomnienia z pliku JSON.",
+    "importButton": "Importuj JSON",
+    "importButtonImporting": "Importowanie...",
+    "dataSection": "Dane",
+    "dataTitle": "Eksport i import",
+    "dataDescription": "Wykonaj backup lub przenieś wspomnienia przez eksport i import.",
+    "dataButton": "Pokaż opcje",
+    "supportSection": "Wsparcie",
+    "supportRate": "Oceń nas 5 gwiazdkami",
+    "supportShare": "Udostępnij aplikację",
+    "supportContact": "Skontaktuj się z nami",
+    "supportShareMessage": "Offly — prywatne rodzinne archiwum wspomnień, które uwielbiam: {link}",
+    "onboardingSection": "Wprowadzenie",
+    "onboardingTitle": "Pokaż wprowadzenie ponownie",
+    "onboardingDescription": "Odtwórz 7 ekranów wprowadzenia w dowolnym momencie.",
+    "onboardingButton": "Rozpocznij wprowadzenie",
+    "onboardingResetTitle": "Rozpocząć wprowadzenie od nowa?",
+    "onboardingResetMessage": "Pokażemy wprowadzenie ponownie. Zawsze możesz pominąć.",
+    "onboardingResetAction": "Rozpocznij",
+    "aboutSection": "Informacje",
+    "version": "Wersja",
+    "storage": "Pamięć",
+    "privacy": "Prywatność",
+    "storageValue": "Dane pozostają na Twoim urządzeniu.",
+    "privacyValue": "Prywatność offline",
+    "footer": "Offly — prywatne rodzinne archiwum wspomnień",
+    "themeLight": "Jasny",
+    "themeDark": "Ciemny",
+    "themeSystem": "System",
+    "alertBackupExportFailedMessage": "Nie udało się utworzyć backupu. Spróbuj ponownie.",
+    "alertProfileUpdateFailedMessage": "Nie udało się zaktualizować profilu. Spróbuj ponownie.",
+    "beforeBirthChapterTitle": "Przed narodzinami",
+    "beforeBirthChapterDescription": "Wpisy z dziennika ciąży",
+    "alertModeUpdatedTitle": "Tryb zaktualizowany",
+    "alertModeUpdatedMessage": "Profil został przełączony na tryb „Urodzony”. Wpisy z ciąży przeniesiono do rozdziału „{chapter}”.",
+    "alertModeSwitchFailedMessage": "Nie udało się zmienić trybu. Spróbuj ponownie.",
+    "yourBaby": "Twoje dziecko",
+    "modeExpecting": "W oczekiwaniu",
+    "modeBorn": "Urodzone",
+    "editAction": "Edytuj",
+    "dueDate": "Planowana data porodu",
+    "age": "Wiek",
+    "daysCount": "{count} dni",
+    "babyBornButton": "Dziecko się urodziło!",
+    "colorTheme": "Motyw kolorystyczny",
+    "backupDataSection": "Kopia i dane",
+    "backupMemoriesTitle": "Zrób backup wspomnień",
+    "backupMemoriesDescription": "Wyeksportuj dane, by mieć bezpieczną kopię. Dane są przechowywane tylko na tym urządzeniu.",
+    "lastBackup": "Ostatni backup: {date}",
+    "noBackupYet": "Brak backupu. Zalecamy regularne tworzenie kopii.",
+    "createBackup": "Utwórz backup",
+    "moreExportImportOptions": "Więcej opcji eksportu/importu",
+    "chooseColorTheme": "Wybierz motyw kolorystyczny",
+    "modeSwitchTitle": "Dziecko się urodziło!",
+    "modeSwitchConfirm": "Potwierdź",
+    "modeSwitchDescription": "Wprowadź datę urodzenia. Wpisy z ciąży trafią do rozdziału „{chapter}”, a terminy odblokowania skarbu zostaną przeliczone.",
+    "editBabyProfileTitle": "Edytuj profil dziecka",
+    "name": "Imię",
+    "namePlaceholder": "Imię lub przezwisko dziecka",
+    "birthDateLabel": "Data urodzenia"
+  },
+  "proBanner": {
+    "title": "Przejdź na Pro",
+    "subtitle": "Odblokuj wszystkie funkcje.",
+    "cta": "Zaktualizuj",
+    "messages": [
+      {
+        "title": "Przejdź na Pro",
+        "subtitle": "Odblokuj wszystkie funkcje."
+      },
+      {
+        "title": "Mniej przewijania, więcej sensu",
+        "subtitle": "Znajdź ważne chwile dziecka od razu."
+      },
+      {
+        "title": "Pamiętaj wszystko",
+        "subtitle": "Zachowuj małe chwile bezpiecznie."
+      },
+      {
+        "title": "Twoje rodzinne archiwum",
+        "subtitle": "Błyskawiczny dostęp do każdego rozdziału."
+      },
+      {
+        "title": "Znajdź w sekundę",
+        "subtitle": "Szukaj wspomnień po tytule, notatkach lub tagach."
+      },
+      {
+        "title": "Rośnij bez limitów",
+        "subtitle": "Nielimitowana liczba rozdziałów. Nielimitowana liczba wspomnień."
+      }
+    ]
+  },
+  "labels": {
+    "date": "Data",
+    "startDate": "Data rozpoczęcia",
+    "endDate": "Data zakończenia",
+    "title": "Tytuł",
+    "notes": "Notatki",
+    "optional": "opcjonalnie",
+    "filled": "Wypełnione",
+    "milestone": {
+      "pastDue": "Po terminie",
+      "today": "Dziś",
+      "tomorrow": "Jutro",
+      "empty": "Brak kamieni milowych",
+      "emptySubtitle": "Kamienie milowe pojawią się tutaj",
+      "quickAddHelper": "Otwórz pełny edytor, aby dodać tagi i więcej"
+    }
+  },
+  "placeholders": {
+    "search": "Szukaj rozdziałów, wspomnień, notatek...",
+    "chapterTitleExample": "np. Pierwszy rok",
+    "chapterSummaryExample": "Krótki opis tego rozdziału...",
+    "chapterTitle": "np. 0–3 miesiące",
+    "chapterDescription": "Krótki opis rozdziału...",
+    "entryTitleMilestone": "np. Pierwszy uśmiech",
+    "entryTitleMemory": "np. Spokojne popołudnie",
+    "memoryTitleMilestone": "Pierwszy uśmiech, Pierwszy krok...",
+    "memoryTitleNote": "Spokojne popołudnie, Śmieszna chwila...",
+    "entryNotes": "Dodaj szczegóły...",
+    "milestoneListName": "np. Pomysły na kamienie milowe, Rodzinne tradycje",
+    "locationGroupName": "np. Dom, Dom babci",
+    "memoryTitle": "Co się wydarzyło?",
+    "memoryNotes": "Dodaj szczegóły..."
+  },
+  "chapterForm": {
+    "titleLabel": "Tytuł rozdziału *",
+    "descriptionLabel": "Opis (opcjonalnie)",
+    "coverImageLabel": "Zdjęcie okładki (opcjonalnie)",
+    "changeCover": "Zmień",
+    "addCoverPlaceholder": "Stuknij, aby dodać okładkę"
+  },
+  "chapterFormLegacy": {
+    "titleLabel": "Tytuł rozdziału *",
+    "summaryLabel": "Opis (opcjonalnie)",
+    "coverImageLabel": "Zdjęcie okładki (opcjonalnie)",
+    "changeCover": "Zmień",
+    "addCoverPlaceholder": "Stuknij, aby dodać okładkę"
+  },
+  "memoryForm": {
+    "titleLabel": "Tytuł *",
+    "locationLabel": "Lokalizacja",
+    "descriptionLabel": "Opis",
+    "tagsLabel": "Tagi",
+    "milestone": "Kamień milowy",
+    "note": "Notatka"
+  },
+  "entryForm": {
+    "titleLabel": "Tytuł *",
+    "notesLabel": "Notatki",
+    "tagsLabel": "Tagi",
+    "photosLabel": "Zdjęcia ({count}/{max})",
+    "gallery": "Galeria",
+    "camera": "Aparat",
+    "tapToAddTags": "Stuknij, aby dodać tagi...",
+    "milestone": "Kamień milowy",
+    "memory": "Notatka",
+    "moreTags": "+{count} więcej",
+    "locationLabel": "Lokalizacja",
+    "locationPlaceholder": "Dodaj miejsce (opcjonalnie)",
+    "locationHint": "Dodaj lokalizację, jeśli pomoże przypomnieć wspomnienie"
+  },
+  "memoryDetail": {
+    "descriptionTitle": "Opis",
+    "tagsTitle": "Tagi"
+  },
+  "entryDetail": {
+    "notesTitle": "Notatki",
+    "tagsTitle": "Tagi",
+    "allPhotos": "Wszystkie zdjęcia ({count})",
+    "created": "Utworzono: {date}",
+    "updated": "Zaktualizowano: {date}",
+    "locationTitle": "Lokalizacja",
+    "openInMaps": "Otwórz w Mapach"
+  },
+  "chapterDetail": {
+    "noPhoto": "Brak zdjęcia",
+    "notePill": "Notatka",
+    "uncategorized": "Bez kategorii",
+    "emptyTitle": "Brak wspomnień",
+    "emptySubtitle": "Dodaj wspomnienia do tego rozdziału",
+    "addFirstMemory": "Dodaj pierwsze wspomnienie",
+    "addMemory": "Dodaj wspomnienie"
+  },
+  "chapterDetailLegacy": {
+    "noPhoto": "Brak zdjęcia",
+    "notePill": "Notatka",
+    "uncategorized": "Bez kategorii",
+    "emptyTitle": "Brak wspomnień",
+    "emptySubtitle": "Dodaj wspomnienia do tego rozdziału",
+    "addFirstEntry": "Dodaj pierwsze wspomnienie",
+    "addEntry": "Dodaj wspomnienie"
+  },
+  "memories": {
+    "memory": "Wspomnienie",
+    "milestone": "Kamień milowy",
+    "note": "Notatka",
+    "notePill": "NOTATKA",
+    "noPhoto": "Brak zdjęcia"
+  },
+  "milestoneLists": {
+    "title": "Listy miast",
+    "listNameLabel": "Nazwa listy *",
+    "listTypeLabel": "Typ listy",
+    "groupLabel": "Kraj *",
+    "typeCustom": "Niestandardowa",
+    "typeCountry": "Kraj",
+    "typeHintCustom": "Stwórz własną listę miejsc do śledzenia",
+    "typeHintCountry": "Stwórz listę miejsc w konkretnym kraju",
+    "emptyTitle": "Brak list miast",
+    "emptyDescription": "Twórz listy miejsc, które chcesz odwiedzić i śledź postęp",
+    "createFirstList": "Utwórz pierwszą listę",
+    "progressVisited": "{visited}/{total} odwiedzonych ({percent}%)",
+    "detailProgress": "{visited} z {total} miejsc odwiedzonych ({percent}%)",
+    "detailEmptyTitle": "Brak miast",
+    "detailEmptyDescription": "Dodaj miejsca, które chcesz odwiedzić",
+    "detailAddCity": "Dodaj miasto",
+    "detailVisited": "Odwiedzone",
+    "notFound": "Lista miast nie znaleziona",
+    "loading": "Ładowanie..."
+  },
+  "search": {
+    "emptyTitle": "Przeszukaj wspomnienia",
+    "emptySubtitle": "Znajdź rozdziały i wspomnienia po tytule, opisie, notatkach lub tagach",
+    "noResultsTitle": "Brak wyników",
+    "noResultsSubtitle": "Spróbuj innych słów kluczowych",
+    "showLabel": "Pokaż",
+    "memoryTypeLabel": "Typ wspomnienia",
+    "entryTypeLabel": "Typ wspomnienia",
+    "tagsLabel": "Tagi",
+    "clearFilters": "Wyczyść filtry",
+    "filterAll": "Wszystko",
+    "filterChapters": "Rozdziały",
+    "filterMemories": "Wspomnienia",
+    "filterChapterLegacy": "Rozdziały",
+    "filterEntries": "Wspomnienia",
+    "filterAny": "Dowolne",
+    "filterMilestones": "Kamienie milowe",
+    "filterNotes": "Notatki",
+    "filterMilestoneLegacy": "Kamienie milowe",
+    "filterNoteLegacy": "Notatki",
+    "matchedIn": "Znaleziono w {field}:",
+    "inChapter": "w {chapter}",
+    "inChapterLegacy": "w {chapter}",
+    "matchFieldTitle": "tytule",
+    "matchFieldLocation": "lokalizacji",
+    "matchFieldSummary": "opisie",
+    "matchFieldNotes": "notatkach",
+    "matchFieldTag": "tagu",
+    "matchFieldMilestone": "mieście"
+  },
+  "insights": {
+    "sectionStats": "Twoje statystyki",
+    "statsChapters": "Rozdziały",
+    "statsMemories": "Wspomnienia",
+    "statsChapterLegacy": "Rozdziały",
+    "statsMemoryLegacy": "Wspomnienia",
+    "statsMilestones": "Miejsca",
+    "statsLocations": "Lokalizacje",
+    "statsPhotos": "Zdjęcia",
+    "statsChapterDays": "Dni rozdziału",
+    "memoriesBreakdown": "{milestones} kamieni milowych, {notes} notatek",
+    "entriesBreakdown": "{milestones} kamieni milowych, {notes} notatek",
+    "highlightMostVisited": "Najczęściej odwiedzane",
+    "highlightFirstTrip": "Pierwszy rozdział",
+    "highlightFirstMemory": "Pierwsze wspomnienie",
+    "topTags": "Najpopularniejsze tagi",
+    "milestoneProgress": "Listy kamieni milowych",
+    "seeAll": "Zobacz wszystko",
+    "createFirstMilestoneList": "Stwórz pierwszą listę kamieni milowych",
+    "milestoneListsEmptyHint": "Śledź kamienie milowe, które chcesz uchwycić",
+    "milestoneListCount": "{visited}/{total} pozycji",
+    "moreLists": "+{count} list",
+    "achievements": "Osiągnięcia",
+    "viewAll": "Zobacz wszystko",
+    "noBadgesEarned": "Jeszcze nie zdobyto odznak",
+    "badgesEmptyHint": "Kontynuuj zbieranie wspomnień, aby odblokować nagrody",
+    "moreBadges": "+{count} odznak",
+    "badgesProgress": "Zdobyto {unlocked} z {total} odznak"
+  },
+  "badges": {
+    "earned": "Zdobyte",
+    "locked": "Zablokowane",
+    "allBadges": "Wszystkie odznaki",
+    "badgesEarned": "Zdobyte odznaki",
+    "special": "Specjalne",
+    "tagAdventures": "Osiągnięcia tagowe",
+    "firstSteps": "Pierwsze kroki",
+    "chapterMilestones": "Kamienie milowe rozdziału",
+    "milestoneAchievements": "Osiągnięcia kamieni milowych",
+    "entryMilestones": "Osiągnięcia wspomnień",
+    "consistencyMilestones": "Regularność",
+    "photoMilestones": "Osiągnięcia foto",
+    "tagMilestones": "Śledzenie tagów",
+    "organizationMilestones": "Organizacja",
+    "badgeUnlocked": "Odznaka odblokowana!"
+  },
+  "badgeDetail": {
+    "congratulations": "Gratulacje!",
+    "earnedOn": "Zdobyto: {date}",
+    "notYetEarned": "Jeszcze nie zdobyto"
+  },
+  "badgeItems": {
+    "historian": {
+      "title": "Strażnik wspomnień",
+      "description": "Zapisano 40 przeszłych wspomnień"
+    },
+    "first_chapter": {
+      "title": "Pierwszy rozdział",
+      "description": "Utworzyłeś pierwszy rozdział"
+    },
+    "first_milestone": {
+      "title": "Pierwszy kamień milowy",
+      "description": "Zarejestrowano pierwsze ważne wydarzenie"
+    },
+    "first_note": {
+      "title": "Pierwsza notatka",
+      "description": "Napisałeś pierwszą notatkę"
+    },
+    "first_tag": {
+      "title": "Pierwszy tag",
+      "description": "Utworzono pierwszy tag"
+    },
+    "chapters_5": {
+      "title": "Kronikarz",
+      "description": "Utworzono 5 rozdziałów"
+    },
+    "chapters_15": {
+      "title": "Opowiadacz",
+      "description": "Utworzono 15 rozdziałów"
+    },
+    "chapters_30": {
+      "title": "Twórca dziedzictwa",
+      "description": "Utworzono 30 rozdziałów"
+    },
+    "milestones_15": {
+      "title": "Śledzący kamienie milowe",
+      "description": "Zapisano 15 kamieni milowych"
+    },
+    "milestones_40": {
+      "title": "Kolekcjoner kamieni",
+      "description": "Zapisano 40 kamieni milowych"
+    },
+    "milestones_150": {
+      "title": "Mistrz kamieni milowych",
+      "description": "Zapisano 150 kamieni milowych"
+    },
+    "memories_40": {
+      "title": "Strażnik wspomnień",
+      "description": "Utworzono 40 wspomnień"
+    },
+    "memories_150": {
+      "title": "Archiwista",
+      "description": "Utworzono 150 wspomnień"
+    },
+    "photos_25": {
+      "title": "Entuzjasta fotografii",
+      "description": "Zapisano 25 zdjęć"
+    },
+    "photos_100": {
+      "title": "Fotograf",
+      "description": "Zapisano 100 zdjęć"
+    },
+    "photos_400": {
+      "title": "Fotoarchiwista",
+      "description": "Zapisano 400 zdjęć"
+    },
+    "tag_first_time": {
+      "title": "Pierwsze razy",
+      "description": "Zapisano 10 pierwszych wspomnień"
+    },
+    "tag_milestone": {
+      "title": "Mistrz kamieni",
+      "description": "Oznaczono 15 ważnych wydarzeń tagami"
+    },
+    "tag_funny": {
+      "title": "Śmieszne chwile",
+      "description": "Zapisano 12 zabawnych momentów"
+    },
+    "tag_sweet": {
+      "title": "Słodkie chwile",
+      "description": "Zapisano 12 wzruszających momentów"
+    },
+    "tag_growth": {
+      "title": "Śledzący rozwój",
+      "description": "Zapisano 10 wpisów o rozwoju"
+    },
+    "tag_health": {
+      "title": "Dziennik zdrowia",
+      "description": "Zapisano 10 wpisów o zdrowiu"
+    },
+    "tag_feeding": {
+      "title": "Śledzący karmienie",
+      "description": "Zapisano 15 wpisów o karmieniu"
+    },
+    "tag_sleep": {
+      "title": "Monitor snu",
+      "description": "Zapisano 15 wpisów o śnie"
+    },
+    "tag_play": {
+      "title": "Mistrz zabawy",
+      "description": "Zapisano 12 zabawnych chwil"
+    },
+    "tag_family": {
+      "title": "Rodzinne chwile",
+      "description": "Zapisano 15 rodzinnych momentów"
+    },
+    "note_taker": {
+      "title": "Notujący",
+      "description": "Dodano opisy do 20 wspomnień"
+    },
+    "storyteller_badge": {
+      "title": "Szczegółowy opowiadacz",
+      "description": "Dodano opisy do 100 wspomnień"
+    },
+    "visual_logger": {
+      "title": "Wizualny dziennik",
+      "description": "Dodano zdjęcia do 20 wspomnień"
+    },
+    "photo_journalist": {
+      "title": "Fotoreporter",
+      "description": "Dodano zdjęcia do 100 wspomnień"
+    },
+    "organizer": {
+      "title": "Organizator",
+      "description": "Otagowano 20 wspomnień"
+    },
+    "master_organizer": {
+      "title": "Mistrz organizacji",
+      "description": "Otagowano 100 wspomnień"
+    },
+    "tag_creator": {
+      "title": "Twórca tagów",
+      "description": "Utworzono 20 unikalnych tagów"
+    },
+    "taxonomy_expert": {
+      "title": "Ekspert od taksonomii",
+      "description": "Utworzono 40 unikalnych tagów"
+    }
+  },
+  "tags": {
+    "quick": {
+      "restaurant": "Restauracja",
+      "cafe": "Kawiarnia",
+      "hotel": "Hotel",
+      "museum": "Muzeum",
+      "cityCenter": "Centrum",
+      "beach": "Plaża",
+      "sea": "Morze",
+      "park": "Park",
+      "shopping": "Zakupy",
+      "bar": "Bar",
+      "landmark": "Punkt orientacyjny",
+      "mosque": "Meczet",
+      "ship": "Statek",
+      "temple": "Świątynia",
+      "market": "Rynek",
+      "nightlife": "Nocne życie",
+      "nature": "Przyroda",
+      "adventure": "Przygoda",
+      "localFood": "Lokalne jedzenie",
+      "streetFood": "Jedzenie uliczne",
+      "viewPoint": "Punkt widokowy",
+      "historic": "Historyczne",
+      "art": "Sztuka",
+      "transport": "Transport"
+    }
+  },
+  "dialogs": {
+    "tagPicker": {
+      "title": "Dodaj tagi",
+      "selected": "Wybrane",
+      "addCustom": "Dodaj własny tag",
+      "customPlaceholder": "Wpisz nazwę tagu...",
+      "quickTags": "Szybkie tagi",
+      "yourTags": "Twoje tagi"
+    },
+    "locationPicker": {
+      "label": "Miasto",
+      "placeholder": "Wybierz miasto",
+      "title": "Wybierz miasto",
+      "addLocation": "Dodaj miasto",
+      "locationNamePlaceholder": "Nazwa miasta",
+      "noLocation": "Brak miasta (niekategorizowane)",
+      "fromDate": "Od {date}",
+      "untilDate": "Do {date}"
+    },
+    "locationEditor": {
+      "label": "Miasta",
+      "empty": "Brak dodanych lokalizacji",
+      "addLocation": "Dodaj miasto",
+      "editTitle": "Edytuj miasto",
+      "addTitle": "Dodaj miasto",
+      "locationNameLabel": "Nazwa miasta *",
+      "locationNamePlaceholder": "np. Rzym, Florencja",
+      "arrivalDateLabel": "Data przyjazdu (opcjonalnie)",
+      "departureDateLabel": "Data odjazdu (opcjonalnie)",
+      "notSet": "Nie ustawiono",
+      "fromDate": "Od {date}",
+      "untilDate": "Do {date}",
+      "done": "Gotowe"
+    },
+    "milestoneList": {
+      "createTitle": "Nowa lista miast",
+      "addItemTitle": "Dodaj miasto",
+      "addItemPlaceholder": "Nazwa miasta",
+      "addItemButton": "Dodaj miasto",
+      "adding": "Dodawanie...",
+      "linkChapterTitle": "Powiąż z rozdziałem (opcjonalnie)",
+      "noChapterLinked": "Brak powiązanego rozdziału"
+    }
+  },
+  "alerts": {
+    "exportFailedTitle": "Eksport nieudany",
+    "exportFailedMessage": "Nie udało się wyeksportować danych. Spróbuj ponownie.",
+    "importComplete": "Import zakończony",
+    "importCompletedWithErrors": "Import zakończony z kilkoma problemami",
+    "importFailed": "Import nieudany. Spróbuj ponownie.",
+    "errorTitle": "Błąd",
+    "requiredTitle": "Wymagane",
+    "invalidDateTitle": "Nieprawidłowa data",
+    "permissionTitle": "Wymagane uprawnienie",
+    "deleteEntryTitle": "Usuń wspomnienie",
+    "deleteEntryMessage": "Czy na pewno chcesz usunąć to wspomnienie?",
+    "deletePhotoTitle": "Usuń zdjęcie",
+    "deletePhotoMessage": "Czy na pewno chcesz usunąć to zdjęcie?",
+    "deleteChapterTitle": "Usuń rozdział",
+    "deleteChapterMessage": "Czy na pewno chcesz usunąć ten rozdział? To usunie również wszystkie wspomnienia.",
+    "deleteChapterLegacyTitle": "Usuń rozdział",
+    "deleteChapterLegacyMessage": "Czy na pewno chcesz usunąć ten rozdział? To usunie również wszystkie wspomnienia.",
+    "deleteListTitle": "Usuń listę",
+    "deleteListMessage": "Czy na pewno chcesz usunąć „{name}”? Wszystkie miejsca tej listy zostaną usunięte.",
+    "deleteItemTitle": "Usuń {item}",
+    "deleteItemMessage": "Czy na pewno chcesz usunąć {item}?",
+    "deleteEntryFailed": "Nie udało się usunąć wspomnienia",
+    "deleteMemoryFailed": "Nie udało się usunąć wspomnienia",
+    "deletePhotoFailed": "Nie udało się usunąć zdjęcia",
+    "deleteChapterFailed": "Nie udało się usunąć rozdziału",
+    "deleteChapterLegacyFailed": "Nie udało się usunąć rozdziału",
+    "deleteListFailed": "Nie udało się usunąć listy",
+    "createEntryFailed": "Nie udało się utworzyć wpisu. Spróbuj ponownie.",
+    "updateEntryFailed": "Nie udało się zaktualizować wpisu. Spróbuj ponownie.",
+    "createChapterFailed": "Nie udało się utworzyć rozdziału. Spróbuj ponownie.",
+    "updateChapterFailed": "Nie udało się zaktualizować rozdziału. Spróbuj ponownie.",
+    "createChapterLegacyFailed": "Nie udało się utworzyć rozdziału. Spróbuj ponownie.",
+    "updateChapterLegacyFailed": "Nie udało się zaktualizować rozdziału. Spróbuj ponownie.",
+    "createMilestoneListFailed": "Nie udało się utworzyć listy miast. Spróbuj ponownie.",
+    "createLocationFailed": "Nie udało się utworzyć miasta. Spróbuj ponownie.",
+    "addLocationFailed": "Nie udało się dodać miasta",
+    "permissionCameraMessage": "Aby zrobić zdjęcie potrzebujemy dostępu do aparatu",
+    "invalidDateMessage": "Data zakończenia nie może być wcześniej niż data rozpoczęcia",
+    "entryDateOutOfRangeTitle": "Data poza zakresem",
+    "entryDateOutOfRangeMessage": "Data wpisu musi być między {start} i {end}.",
+    "requiredEntryTitle": "Wprowadź tytuł",
+    "requiredChapterTitle": "Wprowadź tytuł rozdziału",
+    "requiredChapterLegacyTitle": "Wprowadź tytuł rozdziału",
+    "requiredMilestoneItem": "Dodaj przynajmniej jedno miasto",
+    "requiredListName": "Wprowadź nazwę listy",
+    "requiredLocationGroup": "Wprowadź nazwę kraju",
+    "requiredLocationName": "Wprowadź nazwę miasta",
+    "noProfileFound": "Nie znaleziono profilu dziecka. Stwórz go najpierw.",
+    "nothingToShare": "Brak materiału do udostępnienia",
+    "nothingToShareMessage": "To miasto nie ma jeszcze nic do udostępnienia.",
+    "shareFailed": "Nie udało się udostępnić. Spróbuj ponownie.",
+    "chapterLimitTitle": "Osiągnięto limit rozdziałów",
+    "chapterLimitMessage": "Użytkownicy wersji darmowej mogą utworzyć maksymalnie {limit} rozdziałów. Przejdź na Pro, by mieć nielimitowane rozdziały.",
+    "chapterLimitUpgrade": "Przejdź na Pro",
+    "chapterLimitLegacyTitle": "Osiągnięto limit rozdziałów",
+    "chapterLimitLegacyMessage": "Użytkownicy wersji darmowej mogą utworzyć maksymalnie {limit} rozdziałów. Przejdź na Pro, by mieć nielimitowane rozdziały.",
+    "chapterLimitLegacyUpgrade": "Przejdź na Pro",
+    "backupReminderTitle": "Zrób backup wspomnień",
+    "backupReminderMessage": "Stworzyłeś już {count} rozdziałów! Rozważ wyeksportowanie danych dla bezpieczeństwa.",
+    "backupReminderExport": "Eksportuj teraz",
+    "backupReminderLater": "Później",
+    "proFeatureTitle": "Funkcja Pro",
+    "proFeatureExport": "Eksport to funkcja Pro. Zaktualizuj konto, aby eksportować dane.",
+    "proFeatureAdvancedSearch": "Zaawansowane filtry wyszukiwania to funkcja Pro.",
+    "proFeatureDarkMode": "Tryb ciemny to funkcja Pro. Zaktualizuj konto, aby odblokować wszystkie motywy.",
+    "purchasesUnavailableTitle": "Zakupy niedostępne",
+    "purchasesUnavailableMessage": "Zakupy nie są dostępne w tej wersji.",
+    "purchasesNotReadyTitle": "Zakupy jeszcze niedostępne",
+    "purchasesNotReadyMessage": "Spróbuj ponownie za chwilę.",
+    "purchasesNotConfiguredTitle": "Zakupy niedostępne",
+    "purchasesNotConfiguredMessage": "RevenueCat nie został jeszcze skonfigurowany.",
+    "restoreTitle": "Przywróć",
+    "restoreSuccessMessage": "Zakupy zostały pomyślnie przywrócone.",
+    "restoreEmptyMessage": "Brak aktywnych subskrypcji do przywrócenia.",
+    "restoreFailedMessage": "Przywracanie nieudane. Spróbuj ponownie.",
+    "cameraPermission": "Uprawnienie do aparatu",
+    "cameraPermissionDesc": "Włącz dostęp do aparatu w ustawieniach",
+    "maxPhotos": "Maksymalnie 3 zdjęcia",
+    "maxPhotosDesc": "Możesz dodać maksymalnie 3 zdjęcia",
+    "required": "Wymagane"
+  },
+  "limitations": {
+    "title": "Warto wiedzieć",
+    "photosNotBundled": "Zdjęcia nie są dołączane do eksportu — zawarte są jedynie odwołania do plików lokalnych",
+    "noCloudSync": "Wszystkie dane są przechowywane tylko na urządzeniu",
+    "freeTextCities": "Nazwy list miast można wpisywać dowolnie — duplikaty traktowane są jako osobne listy",
+    "noAutoBackup": "Brak automatycznego backupu — pamiętaj o regularnym eksporcie danych"
+  },
+  "onboarding": {
+    "screens": {
+      "photoOverload": {
+        "title": "Z rolki aparatu do historii dziecka",
+        "body": "Chwile malucha giną w tysiącach zdjęć. Zachowaj je z kontekstem, aby rodzina mogła je szybko odnaleźć."
+      },
+      "structuredArchive": {
+        "title": "Historia dziecka pięknie uporządkowana",
+        "body": "Twórz rozdziały dla kolejnych etapów i dodawaj kamienie milowe, notatki oraz zdjęcia do spokojnej osi czasu."
+      },
+      "fastSearch": {
+        "title": "Znajdź w sekundę",
+        "body": "Wyszukuj wspomnienia po tytule, notatkach lub tagach w kilka sekund."
+      },
+      "bestOfList": {
+        "title": "Zachowaj chwile, które opowiesz jeszcze nie raz",
+        "body": "Oznacz ważne momenty i dodaj szybkie notatki, żeby nigdy się nie zgubiły."
+      },
+      "noCompetition": {
+        "title": "Bez feeda. Bez rywalizacji.",
+        "body": "Bez polubień i presji. Tylko wspomnienia Twojego dziecka dla rodziny."
+      },
+      "privateOffline": {
+        "title": "Prywatnie i offline",
+        "body": "Nie potrzeba konta. Dane zostają na urządzeniu i działają offline."
+      },
+      "simpleStart": {
+        "title": "Zacznij pierwszy rozdział już teraz",
+        "body": "Stwórz rozdział w kilka sekund i dodaj pierwsze wspomnienie dziecka. Szczegóły możesz później dopracować."
+      }
+    },
+    "createFirstTrip": "Stwórz pierwszy rozdział dziecka",
+    "next": "Dalej",
+    "skip": "Pomiń",
+    "back": "Wstecz"
+  },
+  "shareContent": {
+    "locationLabel": "Miejsce",
+    "summaryLabel": "Podsumowanie",
+    "noEntries": "Brak wpisów",
+    "otherEntries": "Inne wpisy",
+    "sharedFrom": "Udostępniono z Offly",
+    "chapterHighlights": "Wyróżnienia rozdziału",
+    "locations": "Miejsca",
+    "milestones": "Kamienie milowe",
+    "moments": "Notatki",
+    "moreItems": "+ {count} więcej",
+    "fromTrip": "Z rozdziału",
+    "milestonesSection": "KAMIENIE MILOWE",
+    "otherPlaces": "INNE KAMIENIE",
+    "memoriesSection": "NOTATKI",
+    "myRecommendations": "Moje wyróżnienia",
+    "from": "Z",
+    "other": "Inne"
+  },
+  "buttons": {
+    "save": "Zapisz wspomnienie"
+  }
+}
