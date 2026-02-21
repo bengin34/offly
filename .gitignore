@@ -342,3 +342,5 @@ fastlane
 fastlane/Fastfile
 fastlane/screenshots
 fastlane/metadata
+github
+github.pub

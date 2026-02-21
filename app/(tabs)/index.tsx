@@ -34,7 +34,7 @@ export default function HomeScreen() {
   const navigation = useNavigation();
   const theme = useTheme();
   const { t, locale } = useI18n();
-  const mockData = useMockData(locale, 'baby'); // Try 'pregnancy' to see pregnancy mocks
+  const mockData = useMockData(locale, 'pregnancy'); // Try 'pregnancy' to see pregnancy mocks
 
   const [profile, setProfile] = useState<BabyProfile | null>(null);
   const [chapters, setChapters] = useState<ChapterWithMilestoneProgress[]>([]);

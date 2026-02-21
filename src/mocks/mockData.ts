@@ -1,3 +1,4 @@
+import { Image } from "react-native";
 import { Locale, supportedLocales } from "../localization";
 
 export type MockMilestone = {
@@ -48,21 +49,25 @@ const pregnancyTimelineDates = [
 
 const pregnancyMilestoneIcons = ["💗", "🤰", "👶", "🎀", "✨"];
 
-// High-quality pregnancy images from Unsplash
+// Local pregnancy photos: 19weeks (couple+ultrasound), 20weeks (tally marks), 21weeks (belly hold)
+const _p19 = Image.resolveAssetSource(require("../../assets/mocks/pregnant/19weeks.jpg")).uri;
+const _p20 = Image.resolveAssetSource(require("../../assets/mocks/pregnant/20weeks.jpg")).uri;
+const _p21 = Image.resolveAssetSource(require("../../assets/mocks/pregnant/21weeks.jpg")).uri;
+
 const pregnancyMilestoneImages = [
-  "https://images.unsplash.com/photo-1493894473891-10fc1e5dbd22?auto=format&fit=crop&w=800&q=80", // Ultrasound moment
-  "https://images.unsplash.com/photo-1555252333-9f8e92e65df9?auto=format&fit=crop&w=800&q=80", // Pregnancy glow
-  "https://images.unsplash.com/photo-1584646098378-0874589d76b1?auto=format&fit=crop&w=800&q=80", // Belly shot
-  "https://images.unsplash.com/photo-1607788394806-f9e87c678852?auto=format&fit=crop&w=800&q=80", // Pregnancy journal
-  "https://images.unsplash.com/photo-1555252333-9f8e92e65df9?auto=format&fit=crop&w=800&q=80", // Nursery prep
+  _p19, // Week 8 - First Heartbeat: couple with ultrasound photo
+  _p21, // Week 12 - First Trimester: belly hold
+  _p19, // Week 20 - Anatomy Scan: couple/ultrasound moment
+  _p20, // Week 28 - Third Trimester: counting the weeks
+  _p21, // Week 36 - Full Term: beautiful belly
 ];
 
 const pregnancyTimelineImages = [
-  "https://images.unsplash.com/photo-1555252333-9f8e92e65df9?auto=format&fit=crop&w=800&q=80", // Positive test
-  "https://images.unsplash.com/photo-1584646098378-0874589d76b1?auto=format&fit=crop&w=800&q=80", // Baby bump
-  "https://images.unsplash.com/photo-1607788394806-f9e87c678852?auto=format&fit=crop&w=800&q=80", // Pregnancy planning
-  "https://images.unsplash.com/photo-1555252333-9f8e92e65df9?auto=format&fit=crop&w=800&q=80", // Maternity style
-  "https://images.unsplash.com/photo-1493894473891-10fc1e5dbd22?auto=format&fit=crop&w=800&q=80", // Doctor visit
+  _p21, // Positive Test Day: belly hold
+  _p19, // Valentine's Announcement: couple together
+  _p21, // First Kicks Felt: belly
+  _p20, // Nursery Shopping: counting down
+  _p19, // Baby Shower: couple moment
 ];
 
 // ========================================
@@ -87,22 +92,27 @@ const babyTimelineDates = [
 
 const babyMilestoneIcons = ["🍼", "😊", "👀", "😄", "🎉"];
 
-// High-quality baby growth progression images from Unsplash
-// Each image represents the same baby growing from newborn to 5 months
+// Local baby photos: 1/1.1/1.2 (first month memories), 2 (alert baby in blue), 3 (tummy time)
+const _b1 = Image.resolveAssetSource(require("../../assets/mocks/baby/1.jpg")).uri;
+const _b11 = Image.resolveAssetSource(require("../../assets/mocks/baby/1.1.jpg")).uri;
+const _b12 = Image.resolveAssetSource(require("../../assets/mocks/baby/1.2.jpg")).uri;
+const _b2 = Image.resolveAssetSource(require("../../assets/mocks/baby/2.jpg")).uri;
+const _b3 = Image.resolveAssetSource(require("../../assets/mocks/baby/3.jpg")).uri;
+
 const babyMilestoneImages = [
-  "https://images.unsplash.com/photo-1515488764276-beab7607c1e6?auto=format&fit=crop&w=800&q=80", // Month 1: Newborn (0-4 weeks)
-  "https://images.unsplash.com/photo-1519689373023-dd07c7988603?auto=format&fit=crop&w=800&q=80", // Month 2: First smiles (1-2 months)
-  "https://images.unsplash.com/photo-1544181796-14e735b7e8be?auto=format&fit=crop&w=800&q=80", // Month 3: Alert and engaged (2-3 months)
-  "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=800&q=80", // Month 4: Social smiling (3-4 months)
-  "https://images.unsplash.com/photo-1566004100631-35d015d6a491?auto=format&fit=crop&w=800&q=80", // Month 5: Sitting support (4-5 months)
+  _b11, // Month 1: Welcome Home — first month memory
+  _b2,  // Month 2: First Real Smile — alert baby looking at camera
+  _b3,  // Month 3: Tracking & Cooing — tummy time, engaged
+  _b2,  // Month 4: First Laugh — happy alert face
+  _b3,  // Month 5: Rolling Over — active physical milestone
 ];
 
 const babyTimelineImages = [
-  "https://images.unsplash.com/photo-1515488764276-beab7607c1e6?auto=format&fit=crop&w=800&q=80", // First days home
-  "https://images.unsplash.com/photo-1519689373023-dd07c7988603?auto=format&fit=crop&w=800&q=80", // Growing stronger
-  "https://images.unsplash.com/photo-1544181796-14e735b7e8be?auto=format&fit=crop&w=800&q=80", // More alert
-  "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=800&q=80", // Happy baby
-  "https://images.unsplash.com/photo-1566004100631-35d015d6a491?auto=format&fit=crop&w=800&q=80", // Getting bigger
+  _b1,  // First Night Home — newborn
+  _b12, // Meeting Grandparents — first month memory
+  _b11, // First Pediatrician Visit — first month memory
+  _b2,  // Bedtime Routine Established — calm baby
+  _b3,  // Trying Tummy Time — perfect match
 ];
 
 // ========================================

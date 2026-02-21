@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { getDatabase } from '../src/db/database';
+import { seedMockDatabase } from '../src/mocks/seedDb';
 import { colors, fonts } from '../src/constants';
 import { useI18n, useTheme, SubscriptionProvider } from '../src/hooks';
 import { useLocaleStore, useThemeStore, useBackupStore } from '../src/stores';
@@ -170,6 +171,7 @@ export default function RootLayout() {
     async function initializeApp() {
       try {
         await Promise.all([getDatabase(), loadTheme(), loadLocale(), loadOnboardingState(), loadBackupState()]);
+        await seedMockDatabase();
         setIsReady(true);
       } catch (error) {
         console.error('Failed to initialize app:', error);
