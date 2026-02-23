@@ -340,4 +340,55 @@ export const MilestoneRepository = {
     );
     return result?.count ?? 0;
   },
+
+  /**
+   * Archive milestone instances belonging to archived pregnancy chapters
+   */
+  async archiveByPregnancyChapters(babyId: string): Promise<number> {
+    const db = await getDatabase();
+    const now = getTimestamp();
+    const result = await db.runAsync(
+      `UPDATE milestone_instances SET status = 'archived', updated_at = ?
+       WHERE baby_id = ? AND chapter_id IN (
+         SELECT id FROM chapters WHERE baby_id = ? AND archived_at IS NOT NULL
+       )`,
+      [now, babyId, babyId]
+    );
+    return result.changes;
+  },
+
+  /**
+   * Unarchive milestone instances when pregnancy chapters are restored
+   */
+  async unarchiveByPregnancyChapters(babyId: string): Promise<number> {
+    const db = await getDatabase();
+    const now = getTimestamp();
+    const result = await db.runAsync(
+      `UPDATE milestone_instances SET
+         status = CASE WHEN associated_memory_id IS NOT NULL THEN 'filled' ELSE 'pending' END,
+         updated_at = ?
+       WHERE baby_id = ? AND status = 'archived' AND chapter_id IN (
+         SELECT id FROM chapters WHERE baby_id = ?
+         AND (title LIKE 'Week %' OR title LIKE '%Trimester%')
+       )`,
+      [now, babyId, babyId]
+    );
+    return result.changes;
+  },
+
+  /**
+   * Count milestone instances in pregnancy chapters (for mode switch preview)
+   */
+  async countByPregnancyChapters(babyId: string): Promise<number> {
+    const db = await getDatabase();
+    const result = await db.getFirstAsync<{ count: number }>(
+      `SELECT COUNT(*) as count FROM milestone_instances
+       WHERE baby_id = ? AND chapter_id IN (
+         SELECT id FROM chapters WHERE baby_id = ? AND archived_at IS NULL
+         AND (title LIKE 'Week %' OR title LIKE '%Trimester%')
+       )`,
+      [babyId, babyId]
+    );
+    return result?.count ?? 0;
+  },
 };

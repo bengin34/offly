@@ -170,6 +170,23 @@ export const ALTER_MILESTONE_INSTANCES_ADD_CHAPTER_ID = `
   ALTER TABLE milestone_instances ADD COLUMN chapter_id TEXT REFERENCES chapters(id) ON DELETE CASCADE;
 `;
 
+// Archive & undo support for pregnant→born mode switch
+export const ALTER_CHAPTERS_ADD_ARCHIVED_AT = `
+  ALTER TABLE chapters ADD COLUMN archived_at TEXT;
+`;
+
+export const ALTER_BABY_PROFILES_ADD_PREVIOUS_MODE = `
+  ALTER TABLE baby_profiles ADD COLUMN previous_mode TEXT;
+`;
+
+export const ALTER_BABY_PROFILES_ADD_PREVIOUS_EDD = `
+  ALTER TABLE baby_profiles ADD COLUMN previous_edd TEXT;
+`;
+
+export const ALTER_BABY_PROFILES_ADD_MODE_SWITCHED_AT = `
+  ALTER TABLE baby_profiles ADD COLUMN mode_switched_at TEXT;
+`;
+
 // Indexes for search performance
 export const CREATE_CHAPTERS_TITLE_INDEX = `
   CREATE INDEX IF NOT EXISTS idx_chapters_title ON chapters (title);
@@ -228,4 +245,8 @@ export const UPGRADE_MIGRATIONS = [
   ALTER_MEMORIES_ADD_MILESTONE_TEMPLATE_ID,
   ALTER_MEMORIES_ADD_IS_CUSTOM_MILESTONE,
   ALTER_MILESTONE_INSTANCES_ADD_CHAPTER_ID,
+  ALTER_CHAPTERS_ADD_ARCHIVED_AT,
+  ALTER_BABY_PROFILES_ADD_PREVIOUS_MODE,
+  ALTER_BABY_PROFILES_ADD_PREVIOUS_EDD,
+  ALTER_BABY_PROFILES_ADD_MODE_SWITCHED_AT,
 ];

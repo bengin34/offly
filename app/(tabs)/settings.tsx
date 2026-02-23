@@ -31,7 +31,7 @@ import { pickAndImport } from '../../src/utils/import';
 import { exportToZip } from '../../src/utils/export';
 import { autoGenerateTimeline } from '../../src/utils/autoGenerate';
 import { rebaseBornTimelineDates } from '../../src/utils/rebaseBornTimeline';
-import { BabyProfileRepository, VaultRepository, ChapterRepository, MemoryRepository } from '../../src/db/repositories';
+import { BabyProfileRepository, VaultRepository, ChapterRepository, MemoryRepository, MilestoneRepository } from '../../src/db/repositories';
 import { useBackupStore } from '../../src/stores/backupStore';
 import type { BabyProfile } from '../../src/types';
 import type { ThemePalette } from '../../src/constants/colors';
@@ -186,11 +186,45 @@ export default function SettingsScreen() {
     }
   };
 
+  // Mode switch preview state
+  const [modeSwitchStep, setModeSwitchStep] = useState<1 | 2>(1);
+  const [switchPreview, setSwitchPreview] = useState<{
+    pregnancyChapterCount: number;
+    pregnancyMemoryCount: number;
+    pregnancyMilestoneCount: number;
+    journalEntryCount: number;
+  } | null>(null);
+
+  const computeSwitchPreview = async () => {
+    if (!profile) return;
+    const chapters = await ChapterRepository.getAll(profile.id);
+    const pregnancyChapters = chapters.filter(
+      (ch) => ch.title.startsWith('Week ') || ch.title.includes('Trimester')
+    );
+    let memoryCount = 0;
+    for (const ch of pregnancyChapters) {
+      const count = await MemoryRepository.count(ch.id);
+      memoryCount += count;
+    }
+    const milestoneCount = await MilestoneRepository.countByPregnancyChapters(profile.id);
+    const journalCount = await MemoryRepository.countPregnancyJournal();
+    setSwitchPreview({
+      pregnancyChapterCount: pregnancyChapters.length,
+      pregnancyMemoryCount: memoryCount,
+      pregnancyMilestoneCount: milestoneCount,
+      journalEntryCount: journalCount,
+    });
+    setModeSwitchStep(2);
+  };
+
   const confirmModeSwitchToBorn = async () => {
     if (!profile) return;
     setIsSwitchingMode(true);
     try {
       const dobStr = toPersistedDateIso(birthDate);
+
+      // 0. Save undo state before any changes
+      await BabyProfileRepository.saveModeSwitchState(profile.id);
 
       // 1. Update profile: mode → born, set birthdate
       await BabyProfileRepository.update({
@@ -211,8 +245,11 @@ export default function SettingsScreen() {
         await MemoryRepository.movePregnancyJournalToChapter(chapter.id);
       }
 
-      // 3. Ensure born timeline exists for users switching from pregnancy mode.
-      // If no standard template chapter is present, generate the default timeline.
+      // 3. Archive pregnancy chapters and milestones (not delete)
+      await ChapterRepository.archivePregnancyChapters(profile.id);
+      await MilestoneRepository.archiveByPregnancyChapters(profile.id);
+
+      // 4. Ensure born timeline exists for users switching from pregnancy mode.
       const existingChapters = await ChapterRepository.getAll(profile.id);
       const chapterTitles = new Set(existingChapters.map((ch) => ch.title));
       const hasAnyBornTemplateChapter = BORN_CHAPTER_TEMPLATES.some((template) =>
@@ -227,10 +264,12 @@ export default function SettingsScreen() {
         });
       }
 
-      // 4. Recalculate vault unlock dates using DOB
+      // 5. Recalculate vault unlock dates using DOB
       await VaultRepository.recalculateUnlockDates(profile.id, dobStr);
 
       setShowModeSwitchModal(false);
+      setModeSwitchStep(1);
+      setSwitchPreview(null);
       await loadProfile();
 
       Alert.alert(
@@ -243,6 +282,37 @@ export default function SettingsScreen() {
     } finally {
       setIsSwitchingMode(false);
     }
+  };
+
+  const handleUndoModeSwitch = () => {
+    if (!profile || !profile.modeSwitchedAt) return;
+    Alert.alert(
+      t('settings.undoModeSwitchTitle'),
+      t('settings.undoModeSwitchAlert'),
+      [
+        { text: t('common.cancel'), style: 'cancel' },
+        {
+          text: t('settings.undoModeSwitchConfirm'),
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              setIsSwitchingMode(true);
+              await BabyProfileRepository.undoModeSwitchToPregnant(profile.id);
+              await loadProfile();
+              Alert.alert(
+                t('settings.alertModeUpdatedTitle'),
+                t('settings.undoModeSwitchSuccess')
+              );
+            } catch (error) {
+              console.error('Failed to undo mode switch:', error);
+              Alert.alert(t('alerts.errorTitle'), t('settings.alertModeSwitchFailedMessage'));
+            } finally {
+              setIsSwitchingMode(false);
+            }
+          },
+        },
+      ]
+    );
   };
 
   const themeOptions: { mode: ThemeMode; label: string; icon: keyof typeof Ionicons.glyphMap }[] = [
@@ -503,6 +573,34 @@ export default function SettingsScreen() {
                   >
                     <Ionicons name="happy-outline" size={18} color={theme.white} />
                     <Text style={styles.babyBornButtonText}>{t('settings.babyBornButton')}</Text>
+                  </TouchableOpacity>
+                </>
+              )}
+
+              {/* Undo mode switch */}
+              {profile.mode === 'born' && profile.modeSwitchedAt && (
+                <>
+                  <View style={[styles.babyDivider, { backgroundColor: theme.border, marginVertical: spacing.md }]} />
+                  <TouchableOpacity
+                    style={[styles.undoModeButton, { borderColor: theme.border }]}
+                    onPress={handleUndoModeSwitch}
+                    disabled={isSwitchingMode}
+                  >
+                    <Ionicons name="refresh-outline" size={18} color={theme.textSecondary} />
+                    <View style={{ flex: 1 }}>
+                      <Text style={[styles.undoModeButtonText, { color: theme.text }]}>
+                        {t('settings.undoModeSwitchTitle')}
+                      </Text>
+                      <Text style={[styles.undoModeButtonSubtext, { color: theme.textMuted }]}>
+                        {t('settings.undoModeSwitchDescription', {
+                          date: new Date(profile.modeSwitchedAt).toLocaleDateString(undefined, {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                          }),
+                        })}
+                      </Text>
+                    </View>
                   </TouchableOpacity>
                 </>
               )}
@@ -994,87 +1092,162 @@ export default function SettingsScreen() {
         </Pressable>
       </Modal>
 
-      {/* Mode Switch Modal (Pregnant → Born) */}
+      {/* Mode Switch Modal (Pregnant → Born) — 2-step */}
       <Modal
         visible={showModeSwitchModal}
         transparent
         animationType="fade"
-        onRequestClose={() => setShowModeSwitchModal(false)}
+        onRequestClose={() => {
+          if (!isSwitchingMode) {
+            setShowModeSwitchModal(false);
+            setModeSwitchStep(1);
+            setSwitchPreview(null);
+          }
+        }}
       >
         <Pressable
           style={[styles.modalOverlay, styles.modeSwitchModalOverlay]}
-          onPress={() => !isSwitchingMode && setShowModeSwitchModal(false)}
+          onPress={() => {
+            if (!isSwitchingMode) {
+              setShowModeSwitchModal(false);
+              setModeSwitchStep(1);
+              setSwitchPreview(null);
+            }
+          }}
         >
           <Pressable
             style={[styles.modalContent, styles.modeSwitchModalContent]}
             onPress={(e) => e.stopPropagation()}
           >
-            <DialogHeader
-              title={t('settings.modeSwitchTitle')}
-              onClose={() => setShowModeSwitchModal(false)}
-              actionLabel={isSwitchingMode ? t('common.saving') : t('settings.modeSwitchConfirm')}
-              onAction={confirmModeSwitchToBorn}
-              palette={{
-                text: theme.text,
-                textSecondary: theme.textSecondary,
-                textMuted: theme.textMuted,
-                primary: theme.primary,
-                border: theme.border,
-              }}
-              containerStyle={styles.modalHeader}
-            />
-            <Text style={styles.modeSwitchDescription}>
-              {t('settings.modeSwitchDescription', { chapter: t('settings.beforeBirthChapterTitle') })}
-            </Text>
-
-            <TouchableOpacity
-              style={[styles.modeSwitchDateButton, { backgroundColor: theme.backgroundSecondary, borderColor: theme.borderLight }]}
-              onPress={() => {
-                Keyboard.dismiss();
-                setShowBirthDatePicker(true);
-              }}
-              activeOpacity={0.8}
-            >
-              <Ionicons name="calendar-outline" size={20} color={theme.textSecondary} />
-              <Text style={[styles.modeSwitchDateText, { color: theme.text }]}>
-                {birthDate.toLocaleDateString(undefined, {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric',
-                })}
-              </Text>
-            </TouchableOpacity>
-
-            {showBirthDatePicker && (
-              <View
-                style={[
-                  styles.modeSwitchPickerContainer,
-                  styles.modeSwitchPickerWideContainer,
-                  { backgroundColor: theme.card, borderColor: theme.borderLight },
-                ]}
-              >
-                <DateTimePicker
-                  value={birthDate}
-                  mode="date"
-                  display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                  onChange={handleBirthDateChange}
-                  themeVariant={theme.isDark ? 'dark' : 'light'}
-                  maximumDate={new Date()}
-                  style={{ height: 200, width: '80%' }}
+            {modeSwitchStep === 1 ? (
+              <>
+                <DialogHeader
+                  title={t('settings.modeSwitchTitle')}
+                  onClose={() => { setShowModeSwitchModal(false); setModeSwitchStep(1); setSwitchPreview(null); }}
+                  actionLabel={t('settings.modeSwitchNext')}
+                  onAction={computeSwitchPreview}
+                  palette={{
+                    text: theme.text,
+                    textSecondary: theme.textSecondary,
+                    textMuted: theme.textMuted,
+                    primary: theme.primary,
+                    border: theme.border,
+                  }}
+                  containerStyle={styles.modalHeader}
                 />
-                {Platform.OS === 'ios' && (
-                  <TouchableOpacity
-                    style={[styles.modeSwitchPickerDone, { borderTopColor: theme.borderLight }]}
-                    onPress={() => setShowBirthDatePicker(false)}
-                  >
-                    <Text style={{ color: theme.primary, fontFamily: fonts.ui, fontSize: fontSize.md }}>{t('common.done')}</Text>
-                  </TouchableOpacity>
-                )}
-              </View>
-            )}
+                <Text style={styles.modeSwitchDescription}>
+                  {t('settings.modeSwitchDescription', { chapter: t('settings.beforeBirthChapterTitle') })}
+                </Text>
 
-            {isSwitchingMode && (
-              <ActivityIndicator size="small" color={theme.primary} style={{ marginTop: spacing.md }} />
+                <TouchableOpacity
+                  style={[styles.modeSwitchDateButton, { backgroundColor: theme.backgroundSecondary, borderColor: theme.borderLight }]}
+                  onPress={() => {
+                    Keyboard.dismiss();
+                    setShowBirthDatePicker(true);
+                  }}
+                  activeOpacity={0.8}
+                >
+                  <Ionicons name="calendar-outline" size={20} color={theme.textSecondary} />
+                  <Text style={[styles.modeSwitchDateText, { color: theme.text }]}>
+                    {birthDate.toLocaleDateString(undefined, {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric',
+                    })}
+                  </Text>
+                </TouchableOpacity>
+
+                {showBirthDatePicker && (
+                  <View
+                    style={[
+                      styles.modeSwitchPickerContainer,
+                      styles.modeSwitchPickerWideContainer,
+                      { backgroundColor: theme.card, borderColor: theme.borderLight },
+                    ]}
+                  >
+                    <DateTimePicker
+                      value={birthDate}
+                      mode="date"
+                      display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                      onChange={handleBirthDateChange}
+                      themeVariant={theme.isDark ? 'dark' : 'light'}
+                      maximumDate={new Date()}
+                      style={{ height: 200, width: '80%' }}
+                    />
+                    {Platform.OS === 'ios' && (
+                      <TouchableOpacity
+                        style={[styles.modeSwitchPickerDone, { borderTopColor: theme.borderLight }]}
+                        onPress={() => setShowBirthDatePicker(false)}
+                      >
+                        <Text style={{ color: theme.primary, fontFamily: fonts.ui, fontSize: fontSize.md }}>{t('common.done')}</Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                )}
+              </>
+            ) : (
+              <>
+                <DialogHeader
+                  title={t('settings.modeSwitchReviewTitle')}
+                  onClose={() => { setModeSwitchStep(1); }}
+                  actionLabel={isSwitchingMode ? t('common.saving') : t('settings.modeSwitchConfirm')}
+                  onAction={confirmModeSwitchToBorn}
+                  palette={{
+                    text: theme.text,
+                    textSecondary: theme.textSecondary,
+                    textMuted: theme.textMuted,
+                    primary: theme.primary,
+                    border: theme.border,
+                  }}
+                  containerStyle={styles.modalHeader}
+                />
+                {switchPreview && (
+                  <View style={{ paddingHorizontal: spacing.md, gap: spacing.sm }}>
+                    {switchPreview.pregnancyChapterCount > 0 && (
+                      <View style={styles.reviewItem}>
+                        <Ionicons name="archive-outline" size={18} color={theme.textSecondary} />
+                        <Text style={[styles.reviewItemText, { color: theme.text }]}>
+                          {t('settings.modeSwitchReviewChapters', { count: switchPreview.pregnancyChapterCount })}
+                        </Text>
+                      </View>
+                    )}
+                    {switchPreview.pregnancyMemoryCount > 0 && (
+                      <View style={styles.reviewItem}>
+                        <Ionicons name="heart-outline" size={18} color={theme.textSecondary} />
+                        <Text style={[styles.reviewItemText, { color: theme.text }]}>
+                          {t('settings.modeSwitchReviewMemories', { count: switchPreview.pregnancyMemoryCount })}
+                        </Text>
+                      </View>
+                    )}
+                    {switchPreview.pregnancyMilestoneCount > 0 && (
+                      <View style={styles.reviewItem}>
+                        <Ionicons name="flag-outline" size={18} color={theme.textSecondary} />
+                        <Text style={[styles.reviewItemText, { color: theme.text }]}>
+                          {t('settings.modeSwitchReviewMilestones', { count: switchPreview.pregnancyMilestoneCount })}
+                        </Text>
+                      </View>
+                    )}
+                    {switchPreview.journalEntryCount > 0 && (
+                      <View style={styles.reviewItem}>
+                        <Ionicons name="book-outline" size={18} color={theme.textSecondary} />
+                        <Text style={[styles.reviewItemText, { color: theme.text }]}>
+                          {t('settings.modeSwitchReviewJournal', { count: switchPreview.journalEntryCount, chapter: t('settings.beforeBirthChapterTitle') })}
+                        </Text>
+                      </View>
+                    )}
+                    <View style={[styles.reviewItem, { marginTop: spacing.sm }]}>
+                      <Ionicons name="refresh-outline" size={18} color={theme.primary} />
+                      <Text style={[styles.reviewItemText, { color: theme.primary }]}>
+                        {t('settings.modeSwitchReviewUndo')}
+                      </Text>
+                    </View>
+                  </View>
+                )}
+
+                {isSwitchingMode && (
+                  <ActivityIndicator size="small" color={theme.primary} style={{ marginTop: spacing.md }} />
+                )}
+              </>
             )}
           </Pressable>
         </Pressable>
@@ -1625,5 +1798,35 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       fontFamily: fonts.ui,
       color: theme.white,
       fontWeight: '600',
+    },
+    undoModeButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.sm,
+      paddingVertical: spacing.sm,
+      paddingHorizontal: spacing.md,
+      borderRadius: borderRadius.lg,
+      borderWidth: 1,
+    },
+    undoModeButtonText: {
+      fontSize: fontSize.sm,
+      fontFamily: fonts.ui,
+      fontWeight: '500',
+    },
+    undoModeButtonSubtext: {
+      fontSize: fontSize.xs,
+      fontFamily: fonts.body,
+      marginTop: 2,
+    },
+    reviewItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.sm,
+      paddingVertical: spacing.xs,
+    },
+    reviewItemText: {
+      fontSize: fontSize.sm,
+      fontFamily: fonts.body,
+      flex: 1,
     },
   });

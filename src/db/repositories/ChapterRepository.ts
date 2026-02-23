@@ -10,6 +10,7 @@ interface ChapterRow {
   end_date: string | null;
   description: string | null;
   cover_image_uri: string | null;
+  archived_at: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -23,6 +24,7 @@ function rowToChapter(row: ChapterRow): Chapter {
     endDate: row.end_date ?? undefined,
     description: row.description ?? undefined,
     coverImageUri: row.cover_image_uri ?? undefined,
+    archivedAt: row.archived_at ?? undefined,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -34,14 +36,14 @@ export const ChapterRepository = {
 
     if (babyId) {
       const rows = await db.getAllAsync<ChapterRow>(
-        'SELECT * FROM chapters WHERE baby_id = ? ORDER BY start_date DESC',
+        'SELECT * FROM chapters WHERE baby_id = ? AND archived_at IS NULL ORDER BY start_date DESC',
         [babyId]
       );
       return rows.map(rowToChapter);
     }
 
     const rows = await db.getAllAsync<ChapterRow>(
-      'SELECT * FROM chapters ORDER BY start_date DESC'
+      'SELECT * FROM chapters WHERE archived_at IS NULL ORDER BY start_date DESC'
     );
     return rows.map(rowToChapter);
   },
@@ -51,14 +53,14 @@ export const ChapterRepository = {
 
     if (babyId) {
       const result = await db.getFirstAsync<{ count: number }>(
-        'SELECT COUNT(*) as count FROM chapters WHERE baby_id = ?',
+        'SELECT COUNT(*) as count FROM chapters WHERE baby_id = ? AND archived_at IS NULL',
         [babyId]
       );
       return result?.count ?? 0;
     }
 
     const result = await db.getFirstAsync<{ count: number }>(
-      'SELECT COUNT(*) as count FROM chapters'
+      'SELECT COUNT(*) as count FROM chapters WHERE archived_at IS NULL'
     );
     return result?.count ?? 0;
   },
@@ -69,12 +71,12 @@ export const ChapterRepository = {
     let rows: ChapterRow[];
     if (babyId) {
       rows = await db.getAllAsync<ChapterRow>(
-        'SELECT * FROM chapters WHERE baby_id = ? ORDER BY start_date DESC',
+        'SELECT * FROM chapters WHERE baby_id = ? AND archived_at IS NULL ORDER BY start_date DESC',
         [babyId]
       );
     } else {
       rows = await db.getAllAsync<ChapterRow>(
-        'SELECT * FROM chapters ORDER BY start_date DESC'
+        'SELECT * FROM chapters WHERE archived_at IS NULL ORDER BY start_date DESC'
       );
     }
 
@@ -95,10 +97,10 @@ export const ChapterRepository = {
     const db = await getDatabase();
     const rows = babyId
       ? await db.getAllAsync<ChapterRow>(
-          'SELECT * FROM chapters WHERE baby_id = ? ORDER BY start_date ASC',
+          'SELECT * FROM chapters WHERE baby_id = ? AND archived_at IS NULL ORDER BY start_date ASC',
           [babyId]
         )
-      : await db.getAllAsync<ChapterRow>('SELECT * FROM chapters ORDER BY start_date ASC');
+      : await db.getAllAsync<ChapterRow>('SELECT * FROM chapters WHERE archived_at IS NULL ORDER BY start_date ASC');
 
     const chapters: ChapterWithMilestoneProgress[] = [];
     for (const row of rows) {
@@ -234,6 +236,74 @@ export const ChapterRepository = {
     const db = await getDatabase();
     const result = await db.runAsync('DELETE FROM chapters WHERE id = ?', [id]);
     return result.changes > 0;
+  },
+
+  async archive(id: string): Promise<boolean> {
+    const db = await getDatabase();
+    const now = getTimestamp();
+    const result = await db.runAsync(
+      'UPDATE chapters SET archived_at = ?, updated_at = ? WHERE id = ?',
+      [now, now, id]
+    );
+    return result.changes > 0;
+  },
+
+  async unarchive(id: string): Promise<boolean> {
+    const db = await getDatabase();
+    const now = getTimestamp();
+    const result = await db.runAsync(
+      'UPDATE chapters SET archived_at = NULL, updated_at = ? WHERE id = ?',
+      [now, id]
+    );
+    return result.changes > 0;
+  },
+
+  async archivePregnancyChapters(babyId: string): Promise<number> {
+    const db = await getDatabase();
+    const now = getTimestamp();
+    const result = await db.runAsync(
+      `UPDATE chapters SET archived_at = ?, updated_at = ?
+       WHERE baby_id = ? AND archived_at IS NULL
+       AND (title LIKE 'Week %' OR title LIKE '%Trimester%')`,
+      [now, now, babyId]
+    );
+    return result.changes;
+  },
+
+  async unarchivePregnancyChapters(babyId: string): Promise<number> {
+    const db = await getDatabase();
+    const now = getTimestamp();
+    const result = await db.runAsync(
+      `UPDATE chapters SET archived_at = NULL, updated_at = ?
+       WHERE baby_id = ? AND archived_at IS NOT NULL
+       AND (title LIKE 'Week %' OR title LIKE '%Trimester%')`,
+      [now, babyId]
+    );
+    return result.changes;
+  },
+
+  async getArchived(babyId: string): Promise<Chapter[]> {
+    const db = await getDatabase();
+    const rows = await db.getAllAsync<ChapterRow>(
+      'SELECT * FROM chapters WHERE baby_id = ? AND archived_at IS NOT NULL ORDER BY start_date ASC',
+      [babyId]
+    );
+    return rows.map(rowToChapter);
+  },
+
+  async getAllIncludingArchived(babyId?: string): Promise<Chapter[]> {
+    const db = await getDatabase();
+    if (babyId) {
+      const rows = await db.getAllAsync<ChapterRow>(
+        'SELECT * FROM chapters WHERE baby_id = ? ORDER BY start_date DESC',
+        [babyId]
+      );
+      return rows.map(rowToChapter);
+    }
+    const rows = await db.getAllAsync<ChapterRow>(
+      'SELECT * FROM chapters ORDER BY start_date DESC'
+    );
+    return rows.map(rowToChapter);
   },
 
   async search(query: string): Promise<Chapter[]> {

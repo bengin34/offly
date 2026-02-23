@@ -396,7 +396,7 @@ async function importChapter(
     await db.runAsync(
       `UPDATE chapters SET
         baby_id = ?, title = ?, start_date = ?, end_date = ?,
-        description = ?, cover_image_uri = ?, updated_at = ?
+        description = ?, cover_image_uri = ?, archived_at = ?, updated_at = ?
        WHERE id = ?`,
       [
         babyId,
@@ -405,6 +405,7 @@ async function importChapter(
         chapter.endDate ?? null,
         chapter.description ?? null,
         chapter.coverImageUri ?? null,
+        chapter.archivedAt ?? null,
         now,
         chapter.id,
       ]
@@ -412,8 +413,8 @@ async function importChapter(
   } else {
     // Insert new chapter
     await db.runAsync(
-      `INSERT INTO chapters (id, baby_id, title, start_date, end_date, description, cover_image_uri, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO chapters (id, baby_id, title, start_date, end_date, description, cover_image_uri, archived_at, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         chapter.id,
         babyId,
@@ -422,6 +423,7 @@ async function importChapter(
         chapter.endDate ?? null,
         chapter.description ?? null,
         chapter.coverImageUri ?? null,
+        chapter.archivedAt ?? null,
         chapter.createdAt ?? now,
         now,
       ]

@@ -9,6 +9,9 @@ interface BabyProfileRow {
   edd: string | null;
   mode: string;
   is_default: number;
+  previous_mode: string | null;
+  previous_edd: string | null;
+  mode_switched_at: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -21,6 +24,9 @@ function rowToProfile(row: BabyProfileRow): BabyProfile {
     edd: row.edd ?? undefined,
     mode: (row.mode as BabyMode) || 'born',
     isDefault: row.is_default === 1,
+    previousMode: (row.previous_mode as BabyMode) ?? undefined,
+    previousEdd: row.previous_edd ?? undefined,
+    modeSwitchedAt: row.mode_switched_at ?? undefined,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -145,48 +151,95 @@ export const BabyProfileRepository = {
   },
 
   /**
-   * Transition from pregnant to born mode
-   * - Updates profile with birthdate and mode
-   * - Marks pregnancy chapters as archive
-   * - Preserves pregnancy milestones and journal entries
-   * - Born-mode chapters will be auto-generated on next load
+   * Save undo state before mode switch (pregnant → born)
    */
-  async transitionToBornMode(profileId: string, birthdate: string): Promise<void> {
+  async saveModeSwitchState(profileId: string): Promise<void> {
     const profile = await this.getById(profileId);
-    if (!profile || profile.mode !== 'pregnant') {
-      return;
-    }
+    if (!profile) return;
 
     const db = await getDatabase();
     const now = getTimestamp();
 
-    // Step 1: Update profile to born mode
     await db.runAsync(
       `UPDATE baby_profiles SET
-         birthdate = ?,
-         mode = ?,
+         previous_mode = ?,
+         previous_edd = ?,
+         mode_switched_at = ?,
          updated_at = ?
        WHERE id = ?`,
-      [birthdate, 'born', now, profileId]
+      [profile.mode, profile.edd ?? null, now, now, profileId]
+    );
+  },
+
+  /**
+   * Undo mode switch: revert from born back to pregnant mode
+   */
+  async undoModeSwitchToPregnant(profileId: string): Promise<boolean> {
+    const profile = await this.getById(profileId);
+    if (!profile || !profile.previousMode) return false;
+
+    const db = await getDatabase();
+    const now = getTimestamp();
+
+    const { ChapterRepository } = await import('./ChapterRepository');
+    const { MilestoneRepository } = await import('./MilestoneRepository');
+    const { VaultRepository } = await import('./VaultRepository');
+    const { MemoryRepository } = await import('./MemoryRepository');
+
+    // 1. Restore profile to pregnant mode
+    await db.runAsync(
+      `UPDATE baby_profiles SET
+         mode = ?,
+         birthdate = NULL,
+         edd = ?,
+         previous_mode = NULL,
+         previous_edd = NULL,
+         mode_switched_at = NULL,
+         updated_at = ?
+       WHERE id = ?`,
+      [profile.previousMode, profile.previousEdd ?? null, now, profileId]
     );
 
-    // Step 2: Mark pregnancy chapters as archived
-    // Add "[Before you were born]" to description
-    const { ChapterRepository } = await import('./ChapterRepository');
-    const pregnancyChapters = await ChapterRepository.getAll(profileId);
+    // 2. Unarchive pregnancy chapters
+    await ChapterRepository.unarchivePregnancyChapters(profileId);
 
-    for (const chapter of pregnancyChapters) {
-      const updatedDescription = chapter.description
-        ? `${chapter.description} [Before you were born]`
-        : '[Before you were born]';
+    // 3. Restore milestone statuses
+    await MilestoneRepository.unarchiveByPregnancyChapters(profileId);
 
-      await ChapterRepository.update({
-        id: chapter.id,
-        description: updatedDescription,
-      });
+    // 4. Move "Before you were born" chapter entries back to pregnancy journal
+    const beforeBirthChapters = await db.getAllAsync<{ id: string }>(
+      `SELECT id FROM chapters WHERE baby_id = ?
+       AND (title = 'Before you were born' OR description LIKE '%Pregnancy journal%')
+       AND archived_at IS NULL`,
+      [profileId]
+    );
+    for (const ch of beforeBirthChapters) {
+      await db.runAsync(
+        'UPDATE memories SET is_pregnancy_journal = 1, chapter_id = NULL WHERE chapter_id = ?',
+        [ch.id]
+      );
+      await ChapterRepository.delete(ch.id);
     }
 
-    // Note: Born-mode chapters and milestones will be auto-generated
-    // on next home screen load via existing onboarding logic
+    // 5. Delete empty auto-generated born chapters (no user data)
+    const bornChapters = await ChapterRepository.getAll(profileId);
+    for (const ch of bornChapters) {
+      if (!ch.title.startsWith('Week ') && !ch.title.includes('Trimester')) {
+        const memCount = await db.getFirstAsync<{ count: number }>(
+          'SELECT COUNT(*) as count FROM memories WHERE chapter_id = ?',
+          [ch.id]
+        );
+        if ((memCount?.count ?? 0) === 0) {
+          await ChapterRepository.delete(ch.id);
+        }
+      }
+    }
+
+    // 6. Recalculate vault unlock dates using EDD
+    if (profile.previousEdd) {
+      await VaultRepository.recalculateUnlockDates(profileId, profile.previousEdd);
+    }
+
+    return true;
   },
 };

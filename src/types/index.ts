@@ -13,6 +13,9 @@ export interface BabyProfile {
   edd?: string; // ISO date string (Estimated Due Date)
   mode: BabyMode;
   isDefault: boolean;
+  previousMode?: BabyMode; // Stored for undo (pregnant→born switch)
+  previousEdd?: string; // EDD before mode switch, for undo
+  modeSwitchedAt?: string; // ISO date string, when mode was switched
   createdAt: string;
   updatedAt: string;
 }
@@ -59,6 +62,7 @@ export interface Chapter {
   endDate?: string; // ISO date string
   description?: string;
   coverImageUri?: string;
+  archivedAt?: string; // ISO date string, non-null = archived (hidden from active timeline)
   createdAt: string;
   updatedAt: string;
 }

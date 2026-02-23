@@ -53,7 +53,7 @@ function toExportMemory(memory: MemoryWithRelations): ExportMemory {
 
 async function buildExportData(): Promise<ExportData> {
   const babyProfile = await BabyProfileRepository.getDefault();
-  const chapters = await ChapterRepository.getAll();
+  const chapters = await ChapterRepository.getAllIncludingArchived();
   const allTags = await TagRepository.getAll();
 
   // Export chapters with memories
@@ -463,7 +463,7 @@ export async function getExportStats(): Promise<{
   pregnancyEntryCount: number;
 }> {
   const babyProfile = await BabyProfileRepository.getDefault();
-  const chapters = await ChapterRepository.getAll();
+  const chapters = await ChapterRepository.getAllIncludingArchived();
   const allTags = await TagRepository.getAll();
 
   let memoryCount = 0;

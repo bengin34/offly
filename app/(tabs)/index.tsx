@@ -28,13 +28,15 @@ import { useI18n, useTheme } from '../../src/hooks';
 import { formatHeaderTitle } from '../../src/utils/ageFormatter';
 import type { ChapterWithMilestoneProgress, BabyProfile, VaultWithEntryCount } from '../../src/types';
 import { useMockData } from '../../src/mocks/useMockData';
+import { cleanupBornChapters } from '../../src/utils/autoGenerate';
 
 export default function HomeScreen() {
   const router = useRouter();
   const navigation = useNavigation();
   const theme = useTheme();
   const { t, locale } = useI18n();
-  const mockData = useMockData(locale, 'pregnancy'); // Try 'pregnancy' to see pregnancy mocks
+  const babyMockData = useMockData(locale, 'baby');
+  const pregnancyMockData = useMockData(locale, 'pregnancy');
 
   const [profile, setProfile] = useState<BabyProfile | null>(null);
   const [chapters, setChapters] = useState<ChapterWithMilestoneProgress[]>([]);
@@ -98,13 +100,17 @@ export default function HomeScreen() {
         let chapterData = await ChapterRepository.getAllWithProgress(babyProfile.id);
 
         // Apply mock data if active
-        if (mockData) {
-          chapterData = chapterData.map((chapter, index) => ({
-            ...chapter,
-            coverImageUri: mockData.milestones[index % mockData.milestones.length]?.imageUrl,
-            milestoneFilled: Math.min(index + 2, chapter.milestoneTotal),
-            memoryCount: index + 3,
-          }));
+        if (pregnancyMockData) {
+          chapterData = chapterData.map((chapter, index) => {
+            const mock = pregnancyMockData.milestones[index % pregnancyMockData.milestones.length];
+            return {
+              ...chapter,
+              title: mock?.title ?? chapter.title,
+              coverImageUri: mock?.imageUrl,
+              milestoneFilled: Math.min(index + 2, chapter.milestoneTotal),
+              memoryCount: index + 3,
+            };
+          });
         }
 
         setChapters(chapterData);
@@ -121,16 +127,23 @@ export default function HomeScreen() {
           }
         });
       } else {
+        // Clean up any leftover pregnancy chapters or duplicates from the DB
+        await cleanupBornChapters(babyProfile.id);
+
         let chapterData = await ChapterRepository.getAllWithProgress(babyProfile.id);
 
         // Apply mock data if active
-        if (mockData) {
-          chapterData = chapterData.map((chapter, index) => ({
-            ...chapter,
-            coverImageUri: mockData.milestones[index % mockData.milestones.length]?.imageUrl,
-            milestoneFilled: Math.min(index + 2, chapter.milestoneTotal),
-            memoryCount: index + 3,
-          }));
+        if (babyMockData) {
+          chapterData = chapterData.map((chapter, index) => {
+            const mock = babyMockData.milestones[index % babyMockData.milestones.length];
+            return {
+              ...chapter,
+              title: mock?.title ?? chapter.title,
+              coverImageUri: mock?.imageUrl,
+              milestoneFilled: Math.min(index + 2, chapter.milestoneTotal),
+              memoryCount: index + 3,
+            };
+          });
         }
 
         setChapters(chapterData);
@@ -148,7 +161,7 @@ export default function HomeScreen() {
       setIsLoading(false);
       setIsRefreshing(false);
     }
-  }, [getCurrentChapterIdFromList, scrollToCurrentChapter, mockData]);
+  }, [getCurrentChapterIdFromList, scrollToCurrentChapter, babyMockData, pregnancyMockData]);
 
   useFocusEffect(
     useCallback(() => {
@@ -208,12 +221,12 @@ export default function HomeScreen() {
   const isPregnant = profile?.mode === 'pregnant';
 
   useEffect(() => {
-    let dynamicTitle = formatHeaderTitle(profile);
+    let dynamicTitle = formatHeaderTitle(profile, t);
 
     // For pregnancy mode, add current week to title
     if (profile?.mode === 'pregnant' && profile.edd) {
       const currentWeek = calculateGestationWeeks(profile.edd);
-      dynamicTitle = `Week ${currentWeek} · ${dynamicTitle}`;
+      dynamicTitle = `${t('home.weekLabel', { week: currentWeek })} · ${dynamicTitle}`;
     }
 
     navigation.setOptions({
@@ -234,7 +247,7 @@ export default function HomeScreen() {
         >
           <Ionicons name="document-text-outline" size={20} color={theme.primary} />
           <Text style={styles.journalLinkText}>
-            View journal entries ({pregnancyEntryCount})
+            {t('home.journalEntries', { count: pregnancyEntryCount })}
           </Text>
           <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
         </TouchableOpacity>
@@ -253,18 +266,18 @@ export default function HomeScreen() {
 
     if (isCurrentChapter) {
       const currentWeek = calculateGestationWeeks(edd);
-      return `Week ${currentWeek}`;
+      return t('home.weekLabel', { week: currentWeek });
     }
 
     // For past/future chapters, show week range
     const template = getPregnancyChapterTemplateByTitle(chapter.title);
     if (template) {
       return template.gestationWeeksMin === template.gestationWeeksMax
-        ? `Week ${template.gestationWeeksMin}`
-        : `Weeks ${template.gestationWeeksMin}–${template.gestationWeeksMax}`;
+        ? t('home.weekLabel', { week: template.gestationWeeksMin })
+        : t('home.weeksLabel', { min: template.gestationWeeksMin, max: template.gestationWeeksMax });
     }
     return '';
-  }, []);
+  }, [t]);
 
   // --- Section: Chapters Timeline ---
   const renderChaptersSection = () => (
@@ -272,9 +285,9 @@ export default function HomeScreen() {
       {chapters.length === 0 ? (
         <View style={styles.emptySection}>
           <Ionicons name="book-outline" size={48} color={theme.textMuted} />
-          <Text style={styles.emptySectionTitle}>No chapters yet</Text>
+          <Text style={styles.emptySectionTitle}>{t('home.noChaptersTitle')}</Text>
           <Text style={styles.emptySectionSubtitle}>
-            Complete onboarding to generate your baby's timeline
+            {t('home.noChaptersSubtitle')}
           </Text>
         </View>
       ) : (
@@ -358,7 +371,7 @@ export default function HomeScreen() {
                     />
                     <View style={styles.addPhotoHint}>
                       <Ionicons name="camera-outline" size={12} color={theme.textMuted} />
-                      <Text style={styles.chapterImageText}>Add photo</Text>
+                      <Text style={styles.chapterImageText}>{t('home.addPhoto')}</Text>
                     </View>
                     {/* Monthly milestone badge for pregnancy weeks */}
                     {isPregnant && (() => {
@@ -385,7 +398,7 @@ export default function HomeScreen() {
                     </Text>
                     {isCurrent && (
                       <View style={styles.currentBadge}>
-                        <Text style={styles.currentBadgeText}>Now</Text>
+                        <Text style={styles.currentBadgeText}>{t('home.nowBadge')}</Text>
                       </View>
                     )}
                   </View>
@@ -421,7 +434,9 @@ export default function HomeScreen() {
                   {/* Memory count for past chapters */}
                   {isPast && item.memoryCount > 0 && (
                     <Text style={styles.memoryCountText}>
-                      {item.memoryCount} {item.memoryCount === 1 ? 'memory' : 'memories'}
+                      {item.memoryCount === 1
+                        ? t('home.memoryCount', { count: 1 })
+                        : t('home.memoryCountPlural', { count: item.memoryCount })}
                     </Text>
                   )}
                 </View>
@@ -440,10 +455,10 @@ export default function HomeScreen() {
     return (
       <View style={styles.sectionContainer}>
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Age-Locked Letters</Text>
+          <Text style={styles.sectionTitle}>{t('home.vaultsTitle')}</Text>
         </View>
         <Text style={styles.sectionSubtitle}>
-          Write letters to be unlocked in the future
+          {t('home.vaultsSubtitle')}
         </Text>
         {vaults.map((vault) => {
           const isLocked = vault.status === 'locked';
@@ -453,7 +468,7 @@ export default function HomeScreen() {
                 day: 'numeric',
                 year: 'numeric',
               })
-            : 'Date not set';
+            : t('home.vaultDateNotSet');
 
           return (
             <TouchableOpacity
@@ -477,15 +492,17 @@ export default function HomeScreen() {
               <View style={styles.vaultContent}>
                 <Text style={styles.vaultTitle}>
                   {vault.targetAgeYears === 1
-                    ? '1 Year'
-                    : `${vault.targetAgeYears} Years`}
+                    ? t('home.vaultYearSingular')
+                    : t('home.vaultYearPlural', { count: vault.targetAgeYears })}
                 </Text>
                 <Text style={styles.vaultMeta}>
                   {isLocked
-                    ? `Unlocks ${unlockLabel}`
-                    : 'Unlocked'}
+                    ? t('home.vaultUnlocks', { date: unlockLabel })
+                    : t('home.vaultUnlocked')}
                   {vault.entryCount > 0 &&
-                    ` · ${vault.entryCount} ${vault.entryCount === 1 ? 'letter' : 'letters'}`}
+                    ` · ${vault.entryCount === 1
+                      ? t('home.vaultLetterCount', { count: 1 })
+                      : t('home.vaultLetterCountPlural', { count: vault.entryCount })}`}
                 </Text>
               </View>
               <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
@@ -528,7 +545,7 @@ export default function HomeScreen() {
             <View style={styles.timelineStickyHeader}>
               <View style={styles.sectionHeader}>
                 <Text style={styles.sectionTitle}>
-                  {isPregnant ? 'Pregnancy Timeline' : 'Timeline'}
+                  {isPregnant ? t('home.pregnancyTimeline') : t('home.timeline')}
                 </Text>
               </View>
             </View>
@@ -581,7 +598,7 @@ export default function HomeScreen() {
                   }}
                 >
                   <View style={styles.fabOptionLabel}>
-                    <Text style={styles.fabOptionText}>New Memory</Text>
+                    <Text style={styles.fabOptionText}>{t('home.fabNewMemory')}</Text>
                   </View>
                   <View style={[styles.fabOptionIcon, { backgroundColor: theme.accent }]}>
                     <Ionicons name="star-outline" size={22} color={theme.white} />
@@ -616,7 +633,7 @@ export default function HomeScreen() {
                   }}
                 >
                   <View style={styles.fabOptionLabel}>
-                    <Text style={styles.fabOptionText}>New Chapter</Text>
+                    <Text style={styles.fabOptionText}>{t('home.fabNewChapter')}</Text>
                   </View>
                   <View style={[styles.fabOptionIcon, { backgroundColor: theme.primary }]}>
                     <Ionicons name="book-outline" size={22} color={theme.white} />
