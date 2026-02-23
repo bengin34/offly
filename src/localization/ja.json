@@ -694,6 +694,16 @@
     "maxPhotosDesc": "追加できる写真は最大3枚です",
     "required": "必須"
   },
+  "profiles": {
+    "switchProfile": "赤ちゃんを切り替える",
+    "defaultName": "赤ちゃん",
+    "addNew": "新しい赤ちゃんを追加",
+    "deleteTitle": "プロフィールを削除",
+    "deleteMessage": "このプロフィールと、そのすべてのチャプター、思い出、保管庫が完全に削除されます。この操作は元に戻せません。",
+    "deleteConfirm": "プロフィールを削除",
+    "cannotDeleteLast": "唯一のプロフィールは削除できません。",
+    "profileDeleted": "プロフィールを削除しました"
+  },
   "limitations": {
     "title": "ご注意",
     "photosNotBundled": "エクスポートに写真本体は含まれません。ローカルファイル参照のみが含まれます",

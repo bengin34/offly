@@ -694,6 +694,16 @@
     "maxPhotosDesc": "Je kunt maximaal 3 foto's toevoegen",
     "required": "Verplicht"
   },
+  "profiles": {
+    "switchProfile": "Baby wisselen",
+    "defaultName": "Baby",
+    "addNew": "Nieuwe baby toevoegen",
+    "deleteTitle": "Profiel verwijderen",
+    "deleteMessage": "Dit profiel en alle hoofdstukken, herinneringen en kluizen worden permanent verwijderd. Dit kan niet ongedaan worden gemaakt.",
+    "deleteConfirm": "Profiel verwijderen",
+    "cannotDeleteLast": "Je kunt je enige profiel niet verwijderen.",
+    "profileDeleted": "Profiel verwijderd"
+  },
   "limitations": {
     "title": "Goed om te weten",
     "photosNotBundled": "Foto's zitten niet in exports - alleen verwijzingen naar lokale bestanden",

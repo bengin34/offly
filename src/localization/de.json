@@ -862,6 +862,16 @@
     "maxPhotosDesc": "Du kannst bis zu 3 Fotos hinzufügen",
     "required": "Erforderlich"
   },
+  "profiles": {
+    "switchProfile": "Baby wechseln",
+    "defaultName": "Baby",
+    "addNew": "Neues Baby hinzufügen",
+    "deleteTitle": "Profil löschen",
+    "deleteMessage": "Dieses Profil und alle zugehörigen Kapitel, Erinnerungen und Tresore werden dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.",
+    "deleteConfirm": "Profil löschen",
+    "cannotDeleteLast": "Du kannst dein einziges Profil nicht löschen.",
+    "profileDeleted": "Profil gelöscht"
+  },
   "limitations": {
     "title": "Gut zu wissen",
     "photosNotBundled": "Fotos sind nicht in Exporten enthalten - nur Verweise auf lokale Dateien",

@@ -694,6 +694,16 @@
     "maxPhotosDesc": "Możesz dodać maksymalnie 3 zdjęcia",
     "required": "Wymagane"
   },
+  "profiles": {
+    "switchProfile": "Przełącz dziecko",
+    "defaultName": "Dziecko",
+    "addNew": "Dodaj nowe dziecko",
+    "deleteTitle": "Usuń profil",
+    "deleteMessage": "To trwale usunie ten profil oraz wszystkie jego rozdziały, wspomnienia i sejfy. Tej operacji nie można cofnąć.",
+    "deleteConfirm": "Usuń profil",
+    "cannotDeleteLast": "Nie możesz usunąć jedynego profilu.",
+    "profileDeleted": "Profil usunięty"
+  },
   "limitations": {
     "title": "Warto wiedzieć",
     "photosNotBundled": "Zdjęcia nie są dołączane do eksportu — zawarte są jedynie odwołania do plików lokalnych",

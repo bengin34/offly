@@ -862,6 +862,16 @@
     "maxPhotosDesc": "En fazla 3 fotoğraf ekleyebilirsin",
     "required": "Zorunlu"
   },
+  "profiles": {
+    "switchProfile": "Bebeği Değiştir",
+    "defaultName": "Bebek",
+    "addNew": "Yeni bebek ekle",
+    "deleteTitle": "Profili Sil",
+    "deleteMessage": "Bu profil ve ona ait tüm bölümler, anılar ve kasalar kalıcı olarak silinecek. Bu işlem geri alınamaz.",
+    "deleteConfirm": "Profili Sil",
+    "cannotDeleteLast": "Tek profilini silemezsin.",
+    "profileDeleted": "Profil silindi"
+  },
   "limitations": {
     "title": "Bilmenizde Fayda Var",
     "photosNotBundled": "Fotoğraflar dışa aktarmalara dahil değildir - sadece yerel dosya referansları",

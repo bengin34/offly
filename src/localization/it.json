@@ -862,6 +862,16 @@
     "maxPhotosDesc": "Puoi aggiungere fino a 3 foto",
     "required": "Obbligatorio"
   },
+  "profiles": {
+    "switchProfile": "Cambia bambino",
+    "defaultName": "Bambino",
+    "addNew": "Aggiungi un nuovo bambino",
+    "deleteTitle": "Elimina profilo",
+    "deleteMessage": "Questo eliminerà definitivamente questo profilo e tutti i suoi capitoli, ricordi e caveau. Questa azione non può essere annullata.",
+    "deleteConfirm": "Elimina profilo",
+    "cannotDeleteLast": "Non puoi eliminare il tuo unico profilo.",
+    "profileDeleted": "Profilo eliminato"
+  },
   "limitations": {
     "title": "Da sapere",
     "photosNotBundled": "Le foto non sono incluse nelle esportazioni - solo riferimenti ai file locali",
