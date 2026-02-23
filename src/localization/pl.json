@@ -154,6 +154,8 @@
     "undoModeSwitchConfirm": "Przywróć",
     "undoModeSwitchAlert": "To przywróci rozdziały ciążowe i usunie puste rozdziały po narodzinach. Rozdziały ze wspomnieniami zostaną zachowane.",
     "undoModeSwitchSuccess": "Twój profil został przywrócony do trybu ciąży. Rozdziały ciążowe zostały przywrócone.",
+    "showPregnancyChaptersTitle": "Pokaż wspomnienia z ciąży",
+    "showPregnancyChaptersDescription": "Wyświetl wpisy dziennika ciąży i kamienie milowe na osi czasu",
     "editBabyProfileTitle": "Edytuj profil dziecka",
     "name": "Imię",
     "namePlaceholder": "Imię lub przezwisko dziecka",

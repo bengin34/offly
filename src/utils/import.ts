@@ -17,6 +17,7 @@ export interface ImportResult {
   tagsImported: number;
   photosImported: number;
   photosRestored: number;
+  vaultsImported: number;
   skipped: {
     chapters: number;
     memories: number;
@@ -126,6 +127,7 @@ export async function importFromParsedData(
     tagsImported: 0,
     photosImported: 0,
     photosRestored: 0,
+    vaultsImported: 0,
     skipped: {
       chapters: 0,
       memories: 0,
@@ -217,6 +219,75 @@ export async function importFromParsedData(
         );
       } catch (error) {
         result.errors.push(`Chapter "${chapter.title}": ${String(error)}`);
+      }
+    }
+
+    // 4. Import vaults and their entries
+    const vaults: ExportVault[] = (data as any).vaults ?? [];
+    for (const vault of vaults) {
+      try {
+        const existingVault = await db.getFirstAsync<{ id: string }>(
+          "SELECT id FROM vaults WHERE id = ?",
+          [vault.id]
+        );
+
+        if (!existingVault) {
+          await db.runAsync(
+            `INSERT INTO vaults (id, baby_id, target_age_years, unlock_date, status, created_at, updated_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [
+              vault.id,
+              babyId,
+              vault.targetAgeYears,
+              vault.unlockDate ?? null,
+              vault.status ?? "locked",
+              vault.createdAt ?? now,
+              now,
+            ]
+          );
+          result.vaultsImported++;
+        } else if (duplicateHandling === "replace") {
+          await db.runAsync(
+            `UPDATE vaults SET target_age_years = ?, unlock_date = ?, status = ?, updated_at = ? WHERE id = ?`,
+            [vault.targetAgeYears, vault.unlockDate ?? null, vault.status ?? "locked", now, vault.id]
+          );
+        }
+
+        // Import vault entries
+        const entries: ExportMemory[] = vault.entries ?? [];
+        for (const entry of entries) {
+          await importMemory(
+            db,
+            entry,
+            null,
+            tagIdMap,
+            duplicateHandling,
+            result,
+            now,
+            { vaultId: vault.id }
+          );
+        }
+      } catch (error) {
+        result.errors.push(`Vault (${vault.targetAgeYears}yr): ${String(error)}`);
+      }
+    }
+
+    // 5. Import pregnancy journal entries
+    const pregnancyEntries: ExportMemory[] = (data as any).pregnancyJournalEntries ?? [];
+    for (const entry of pregnancyEntries) {
+      try {
+        await importMemory(
+          db,
+          entry,
+          null,
+          tagIdMap,
+          duplicateHandling,
+          result,
+          now,
+          { isPregnancyJournal: true }
+        );
+      } catch (error) {
+        result.errors.push(`Pregnancy entry "${entry.title ?? ""}": ${String(error)}`);
       }
     }
 
@@ -386,7 +457,8 @@ async function importChapter(
           tagIdMap,
           duplicateHandling,
           result,
-          now
+          now,
+          {}
         );
       }
       return;
@@ -460,7 +532,8 @@ async function importChapter(
       tagIdMap,
       duplicateHandling,
       result,
-      now
+      now,
+      {}
     );
   }
 }
@@ -468,12 +541,17 @@ async function importChapter(
 async function importMemory(
   db: Awaited<ReturnType<typeof getDatabase>>,
   memory: ExportMemory,
-  chapterId: string,
+  parentId: string | null,
   tagIdMap: Map<string, string>,
   duplicateHandling: "skip" | "replace",
   result: ImportResult,
-  now: string
+  now: string,
+  opts: { vaultId?: string; isPregnancyJournal?: boolean } = {}
 ): Promise<void> {
+  const chapterId = opts.vaultId ? null : parentId;
+  const vaultId = opts.vaultId ?? null;
+  const isPregnancyJournal = opts.isPregnancyJournal ? 1 : 0;
+
   // Check if memory exists
   const existing = await db.getFirstAsync<{ id: string }>(
     "SELECT id FROM memories WHERE id = ?",
@@ -489,13 +567,16 @@ async function importMemory(
     // Replace: update existing memory
     await db.runAsync(
       `UPDATE memories SET
-        chapter_id = ?, memory_type = ?, title = ?,
+        chapter_id = ?, vault_id = ?, is_pregnancy_journal = ?,
+        memory_type = ?, title = ?,
         description = ?, date = ?,
         location_name = ?, latitude = ?, longitude = ?, map_url = ?,
         updated_at = ?
        WHERE id = ?`,
       [
         chapterId,
+        vaultId,
+        isPregnancyJournal,
         memory.memoryType,
         memory.title,
         memory.description ?? null,
@@ -511,11 +592,13 @@ async function importMemory(
   } else {
     // Insert new memory
     await db.runAsync(
-      `INSERT INTO memories (id, chapter_id, memory_type, title, description, date, location_name, latitude, longitude, map_url, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO memories (id, chapter_id, vault_id, is_pregnancy_journal, memory_type, title, description, date, location_name, latitude, longitude, map_url, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         memory.id,
         chapterId,
+        vaultId,
+        isPregnancyJournal,
         memory.memoryType,
         memory.title,
         memory.description ?? null,

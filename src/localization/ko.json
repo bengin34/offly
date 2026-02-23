@@ -154,6 +154,8 @@
     "undoModeSwitchConfirm": "되돌리기",
     "undoModeSwitchAlert": "임신 챕터가 복원되고 비어 있는 출생 후 챕터가 삭제됩니다. 추억이 있는 챕터는 유지됩니다.",
     "undoModeSwitchSuccess": "프로필이 임신 모드로 되돌려졌습니다. 임신 챕터가 복원되었습니다.",
+    "showPregnancyChaptersTitle": "임신 중 추억 표시",
+    "showPregnancyChaptersDescription": "임신 일기 항목 및 이정표를 타임라인에 표시",
     "editBabyProfileTitle": "아기 프로필 편집",
     "name": "이름",
     "namePlaceholder": "아기 이름 또는 별명",

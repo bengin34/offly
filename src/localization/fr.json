@@ -154,6 +154,8 @@
     "undoModeSwitchConfirm": "Revenir",
     "undoModeSwitchAlert": "Cela restaurera vos chapitres de grossesse et supprimera les chapitres vides après la naissance. Les chapitres contenant des souvenirs seront conservés.",
     "undoModeSwitchSuccess": "Votre profil a été rétabli en mode grossesse. Les chapitres de grossesse ont été restaurés.",
+    "showPregnancyChaptersTitle": "Afficher les souvenirs de grossesse",
+    "showPregnancyChaptersDescription": "Afficher les entrées du journal de grossesse et les jalons dans votre chronologie",
     "editBabyProfileTitle": "Modifier le profil du bébé",
     "name": "Nom",
     "namePlaceholder": "Nom ou surnom du bébé",

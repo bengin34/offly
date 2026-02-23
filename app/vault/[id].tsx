@@ -11,16 +11,20 @@ import { useLocalSearchParams, useRouter, useFocusEffect } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { VaultRepository, MemoryRepository } from '../../src/db/repositories';
 import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
+import { APP_LIMITS } from '../../src/constants/limits';
 import { Background } from '../../src/components/Background';
 import { useTheme } from '../../src/hooks';
+import { useSubscription } from '../../src/hooks/useSubscriptions';
 import type { Vault, MemoryWithRelations } from '../../src/types';
 
 export default function VaultDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const theme = useTheme();
+  const { isPro, presentPaywall } = useSubscription();
 
   const [vault, setVault] = useState<Vault | null>(null);
+  const [vaultIndex, setVaultIndex] = useState<number>(0);
   const [entries, setEntries] = useState<MemoryWithRelations[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -34,6 +38,10 @@ export default function VaultDetailScreen() {
       if (vaultData) {
         const entryData = await MemoryRepository.getByVaultIdWithRelations(id);
         setEntries(entryData);
+        // Determine the 0-based index of this vault (sorted by age asc)
+        const allVaults = await VaultRepository.getAll(vaultData.babyId);
+        const idx = allVaults.findIndex((v) => v.id === id);
+        setVaultIndex(idx >= 0 ? idx : 0);
       }
     } catch (error) {
       console.error('Failed to load vault:', error);
@@ -89,16 +97,29 @@ export default function VaultDetailScreen() {
     ? formatDate(vault.unlockDate)
     : 'Date not set';
 
+  const isProVault = vaultIndex >= APP_LIMITS.FREE_MAX_AGE_LOCKED_LETTERS;
+
   const renderLockedHeader = () => (
     <View style={styles.lockedHeader}>
       <View style={styles.lockIconContainer}>
         <Ionicons name="lock-closed" size={48} color={theme.accent} />
       </View>
+      {isProVault && !isPro && (
+        <View style={[styles.proBadge, { backgroundColor: theme.primary }]}>
+          <Ionicons name="star" size={12} color={theme.white} />
+          <Text style={[styles.proBadgeText, { color: theme.white }]}>Pro</Text>
+        </View>
+      )}
       <Text style={styles.lockedTitle}>Locked until {unlockLabel}</Text>
       <Text style={styles.lockedSubtitle}>
         Letters in this vault will be revealed when your child turns {vault?.targetAgeYears}.
         You can still write new letters at any time.
       </Text>
+      {isProVault && !isPro && (
+        <Text style={[styles.proHint, { color: theme.textMuted }]}>
+          Upgrade to Pro to write letters to this vault
+        </Text>
+      )}
       <View style={styles.lockedStats}>
         <View style={styles.statItem}>
           <Text style={styles.statNumber}>{entries.length}</Text>
@@ -195,10 +216,17 @@ export default function VaultDetailScreen() {
           />
         }
       />
-      {/* Always allow writing new letters */}
+      {/* Add entry — Pro required for vaults beyond the free limit */}
       <TouchableOpacity
         style={styles.fab}
-        onPress={() => router.push({ pathname: '/vault/new-entry', params: { vaultId: id } })}
+        onPress={async () => {
+          const requiresPro = vaultIndex >= APP_LIMITS.FREE_MAX_AGE_LOCKED_LETTERS;
+          if (requiresPro && !isPro) {
+            await presentPaywall();
+            return;
+          }
+          router.push({ pathname: '/vault/new-entry', params: { vaultId: id } });
+        }}
       >
         <Ionicons name="create-outline" size={24} color={theme.white} />
       </TouchableOpacity>
@@ -233,6 +261,25 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       alignItems: 'center',
       justifyContent: 'center',
       marginBottom: spacing.md,
+    },
+    proBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+      paddingHorizontal: spacing.sm,
+      paddingVertical: 3,
+      borderRadius: borderRadius.full,
+      marginBottom: spacing.sm,
+    },
+    proBadgeText: {
+      fontSize: fontSize.xs,
+      fontFamily: fonts.ui,
+    },
+    proHint: {
+      fontSize: fontSize.sm,
+      fontFamily: fonts.body,
+      textAlign: 'center',
+      marginTop: spacing.sm,
     },
     lockedTitle: {
       fontSize: fontSize.xl,

@@ -12,6 +12,7 @@ interface BabyProfileRow {
   previous_mode: string | null;
   previous_edd: string | null;
   mode_switched_at: string | null;
+  show_archived_chapters: number;
   created_at: string;
   updated_at: string;
 }
@@ -27,6 +28,7 @@ function rowToProfile(row: BabyProfileRow): BabyProfile {
     previousMode: (row.previous_mode as BabyMode) ?? undefined,
     previousEdd: row.previous_edd ?? undefined,
     modeSwitchedAt: row.mode_switched_at ?? undefined,
+    showArchivedChapters: row.show_archived_chapters === 1,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -76,8 +78,8 @@ export const BabyProfileRepository = {
     const isDefault = (count?.count ?? 0) === 0 ? 1 : 0;
 
     await db.runAsync(
-      `INSERT INTO baby_profiles (id, name, birthdate, edd, mode, is_default, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO baby_profiles (id, name, birthdate, edd, mode, is_default, show_archived_chapters, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         id,
         input.name ?? null,
@@ -85,6 +87,7 @@ export const BabyProfileRepository = {
         input.edd ?? null,
         input.mode ?? 'born',
         isDefault,
+        1, // Show archived chapters by default
         now,
         now,
       ]
@@ -241,5 +244,18 @@ export const BabyProfileRepository = {
     }
 
     return true;
+  },
+
+  /**
+   * Toggle visibility of archived chapters in timeline
+   */
+  async setShowArchivedChapters(profileId: string, show: boolean): Promise<void> {
+    const db = await getDatabase();
+    const now = getTimestamp();
+
+    await db.runAsync(
+      'UPDATE baby_profiles SET show_archived_chapters = ?, updated_at = ? WHERE id = ?',
+      [show ? 1 : 0, now, profileId]
+    );
   },
 };

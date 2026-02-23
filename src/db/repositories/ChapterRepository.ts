@@ -35,10 +35,20 @@ export const ChapterRepository = {
     const db = await getDatabase();
 
     if (babyId) {
-      const rows = await db.getAllAsync<ChapterRow>(
-        'SELECT * FROM chapters WHERE baby_id = ? AND archived_at IS NULL ORDER BY start_date DESC',
-        [babyId]
-      );
+      // Check if we should show archived chapters (for born mode with pregnancy chapters)
+      const { BabyProfileRepository } = await import('./BabyProfileRepository');
+      const profile = await BabyProfileRepository.getById(babyId);
+
+      let query: string;
+      if (profile?.showArchivedChapters) {
+        // Show all chapters (both active and archived)
+        query = 'SELECT * FROM chapters WHERE baby_id = ? ORDER BY start_date DESC';
+      } else {
+        // Show only active chapters
+        query = 'SELECT * FROM chapters WHERE baby_id = ? AND archived_at IS NULL ORDER BY start_date DESC';
+      }
+
+      const rows = await db.getAllAsync<ChapterRow>(query, [babyId]);
       return rows.map(rowToChapter);
     }
 
@@ -70,10 +80,18 @@ export const ChapterRepository = {
 
     let rows: ChapterRow[];
     if (babyId) {
-      rows = await db.getAllAsync<ChapterRow>(
-        'SELECT * FROM chapters WHERE baby_id = ? AND archived_at IS NULL ORDER BY start_date DESC',
-        [babyId]
-      );
+      // Check if we should show archived chapters
+      const { BabyProfileRepository } = await import('./BabyProfileRepository');
+      const profile = await BabyProfileRepository.getById(babyId);
+
+      let query: string;
+      if (profile?.showArchivedChapters) {
+        query = 'SELECT * FROM chapters WHERE baby_id = ? ORDER BY start_date DESC';
+      } else {
+        query = 'SELECT * FROM chapters WHERE baby_id = ? AND archived_at IS NULL ORDER BY start_date DESC';
+      }
+
+      rows = await db.getAllAsync<ChapterRow>(query, [babyId]);
     } else {
       rows = await db.getAllAsync<ChapterRow>(
         'SELECT * FROM chapters WHERE archived_at IS NULL ORDER BY start_date DESC'
@@ -95,12 +113,24 @@ export const ChapterRepository = {
 
   async getAllWithProgress(babyId?: string): Promise<ChapterWithMilestoneProgress[]> {
     const db = await getDatabase();
-    const rows = babyId
-      ? await db.getAllAsync<ChapterRow>(
-          'SELECT * FROM chapters WHERE baby_id = ? AND archived_at IS NULL ORDER BY start_date ASC',
-          [babyId]
-        )
-      : await db.getAllAsync<ChapterRow>('SELECT * FROM chapters WHERE archived_at IS NULL ORDER BY start_date ASC');
+
+    let rows: ChapterRow[];
+    if (babyId) {
+      // Check if we should show archived chapters
+      const { BabyProfileRepository } = await import('./BabyProfileRepository');
+      const profile = await BabyProfileRepository.getById(babyId);
+
+      let query: string;
+      if (profile?.showArchivedChapters) {
+        query = 'SELECT * FROM chapters WHERE baby_id = ? ORDER BY start_date ASC';
+      } else {
+        query = 'SELECT * FROM chapters WHERE baby_id = ? AND archived_at IS NULL ORDER BY start_date ASC';
+      }
+
+      rows = await db.getAllAsync<ChapterRow>(query, [babyId]);
+    } else {
+      rows = await db.getAllAsync<ChapterRow>('SELECT * FROM chapters WHERE archived_at IS NULL ORDER BY start_date ASC');
+    }
 
     const chapters: ChapterWithMilestoneProgress[] = [];
     for (const row of rows) {

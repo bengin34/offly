@@ -126,6 +126,7 @@ export async function rebaseBornTimelineDates(
       mode: 'born',
       birthdate: birthdateIso,
       isDefault: true,
+      showArchivedChapters: true,
       createdAt: now,
       updatedAt: now,
     };

@@ -154,6 +154,8 @@
     "undoModeSwitchConfirm": "Ripristina",
     "undoModeSwitchAlert": "Questo ripristinerà i capitoli di gravidanza e rimuoverà i capitoli vuoti dopo la nascita. I capitoli con ricordi verranno conservati.",
     "undoModeSwitchSuccess": "Il tuo profilo è stato ripristinato alla modalità gravidanza. I capitoli di gravidanza sono stati recuperati.",
+    "showPregnancyChaptersTitle": "Mostra i ricordi della gravidanza",
+    "showPregnancyChaptersDescription": "Visualizza le voci del diario di gravidanza e i traguardi nella tua cronologia",
     "editBabyProfileTitle": "Modifica profilo del bebè",
     "name": "Nome",
     "namePlaceholder": "Nome o soprannome del bebè",

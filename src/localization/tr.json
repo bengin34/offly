@@ -154,6 +154,8 @@
     "undoModeSwitchConfirm": "Geri al",
     "undoModeSwitchAlert": "Bu işlem hamilelik bölümlerini geri yükleyecek ve boş doğum sonrası bölümleri kaldıracak. Anıları olan bölümler korunacak.",
     "undoModeSwitchSuccess": "Profilin hamilelik moduna geri döndürüldü. Hamilelik bölümleri geri yüklendi.",
+    "showPregnancyChaptersTitle": "Hamilelik anılarını göster",
+    "showPregnancyChaptersDescription": "Hamilelik günlüğü girdilerini ve kilometre taşlarını zaman çizelgenizde göster",
     "editBabyProfileTitle": "Bebek Profilini Düzenle",
     "name": "İsim",
     "namePlaceholder": "Bebeğin adı veya takma adı",

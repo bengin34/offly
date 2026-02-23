@@ -154,6 +154,8 @@
     "undoModeSwitchConfirm": "元に戻す",
     "undoModeSwitchAlert": "妊娠チャプターが復元され、空の出生後チャプターが削除されます。思い出のあるチャプターは保持されます。",
     "undoModeSwitchSuccess": "プロフィールが妊娠モードに戻されました。妊娠チャプターが復元されました。",
+    "showPregnancyChaptersTitle": "妊娠中の思い出を表示",
+    "showPregnancyChaptersDescription": "妊娠日誌のエントリーとマイルストーンをタイムラインに表示",
     "editBabyProfileTitle": "赤ちゃんプロフィールを編集",
     "name": "名前",
     "namePlaceholder": "赤ちゃんの名前またはニックネーム",

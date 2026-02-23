@@ -14,6 +14,7 @@ import {
   Share,
   Platform,
   Keyboard,
+  Switch,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
@@ -315,6 +316,17 @@ export default function SettingsScreen() {
     );
   };
 
+  const handleToggleShowArchivedChapters = async (show: boolean) => {
+    if (!profile) return;
+    try {
+      await BabyProfileRepository.setShowArchivedChapters(profile.id, show);
+      await loadProfile();
+    } catch (error) {
+      console.error('Failed to update archived chapters visibility:', error);
+      Alert.alert(t('alerts.errorTitle'), 'Failed to update settings');
+    }
+  };
+
   const themeOptions: { mode: ThemeMode; label: string; icon: keyof typeof Ionicons.glyphMap }[] = [
     { mode: 'light', label: t('settings.themeLight'), icon: 'sunny' },
     { mode: 'dark', label: t('settings.themeDark'), icon: 'moon' },
@@ -602,6 +614,35 @@ export default function SettingsScreen() {
                       </Text>
                     </View>
                   </TouchableOpacity>
+                </>
+              )}
+
+              {/* Show/Hide pregnancy memories toggle */}
+              {profile.mode === 'born' && (
+                <>
+                  <View style={[styles.babyDivider, { backgroundColor: theme.border, marginVertical: spacing.md }]} />
+                  <View style={styles.settingsRow}>
+                    <View style={styles.settingsRowLeft}>
+                      <Ionicons name="archive-outline" size={22} color={theme.textSecondary} />
+                      <View style={{ flex: 1 }}>
+                        <Text style={[styles.settingsRowLabel, { color: theme.text }]}>
+                          {t('settings.showPregnancyChaptersTitle')}
+                        </Text>
+                        <Text style={[styles.settingsRowDescription, { color: theme.textMuted }]}>
+                          {t('settings.showPregnancyChaptersDescription')}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={styles.settingsRowRight}>
+                      <Switch
+                        value={profile.showArchivedChapters}
+                        onValueChange={handleToggleShowArchivedChapters}
+                        disabled={isSwitchingMode}
+                        trackColor={{ false: theme.border, true: theme.primary }}
+                        thumbColor={profile.showArchivedChapters ? '#fff' : theme.textMuted}
+                      />
+                    </View>
+                  </View>
                 </>
               )}
             </View>
@@ -1404,6 +1445,12 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       fontSize: fontSize.md,
       fontFamily: fonts.ui,
       color: theme.textSecondary,
+    },
+    settingsRowDescription: {
+      fontSize: fontSize.sm,
+      fontFamily: fonts.body,
+      color: theme.textMuted,
+      marginTop: spacing.xs,
     },
     label: {
       fontSize: fontSize.sm,

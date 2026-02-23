@@ -17,5 +17,4 @@ export const PRO_FEATURES = {
   XLS_EXPORT: 'xls_export',
   ZIP_EXPORT: 'zip_export',
   ADVANCED_SEARCH: 'advanced_search',
-  DARK_MODE: 'dark_mode',
 } as const;

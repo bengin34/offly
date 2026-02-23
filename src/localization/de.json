@@ -154,6 +154,8 @@
     "undoModeSwitchConfirm": "Zurücksetzen",
     "undoModeSwitchAlert": "Dies stellt deine Schwangerschaftskapitel wieder her und entfernt leere Kapitel nach der Geburt. Kapitel mit Erinnerungen bleiben erhalten.",
     "undoModeSwitchSuccess": "Dein Profil wurde in den Schwangerschaftsmodus zurückgesetzt. Schwangerschaftskapitel wurden wiederhergestellt.",
+    "showPregnancyChaptersTitle": "Schwangerschaftserinnerungen anzeigen",
+    "showPregnancyChaptersDescription": "Schwangerschaftstagebucheinträge und Meilensteine in der Zeitleiste anzeigen",
     "editBabyProfileTitle": "Babyprofil bearbeiten",
     "name": "Name",
     "namePlaceholder": "Name oder Spitzname des Babys",

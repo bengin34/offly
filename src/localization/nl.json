@@ -154,6 +154,8 @@
     "undoModeSwitchConfirm": "Terugzetten",
     "undoModeSwitchAlert": "Dit herstelt je zwangerschapshoofdstukken en verwijdert lege hoofdstukken na de geboorte. Hoofdstukken met herinneringen blijven bewaard.",
     "undoModeSwitchSuccess": "Je profiel is teruggezet naar de zwangerschapsmodus. Zwangerschapshoofdstukken zijn hersteld.",
+    "showPregnancyChaptersTitle": "Zwangerschapsherinneringen weergeven",
+    "showPregnancyChaptersDescription": "Zwangerschapsdagboekingangen en mijlpalen in uw tijdlijn weergeven",
     "editBabyProfileTitle": "Bewerk babyprofiel",
     "name": "Naam",
     "namePlaceholder": "Naam of bijnaam van de baby",

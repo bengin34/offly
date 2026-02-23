@@ -154,6 +154,8 @@
     "undoModeSwitchConfirm": "Revertir",
     "undoModeSwitchAlert": "Esto restaurará tus capítulos de embarazo y eliminará los capítulos vacíos posteriores al nacimiento. Los capítulos con recuerdos se conservarán.",
     "undoModeSwitchSuccess": "Tu perfil ha sido revertido al modo embarazo. Los capítulos de embarazo han sido restaurados.",
+    "showPregnancyChaptersTitle": "Mostrar recuerdos de embarazo",
+    "showPregnancyChaptersDescription": "Mostrar entradas de diario de embarazo e hitos en tu cronología",
     "editBabyProfileTitle": "Editar perfil del bebé",
     "name": "Nombre",
     "namePlaceholder": "Nombre o apodo del bebé",
