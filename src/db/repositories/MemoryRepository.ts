@@ -131,12 +131,13 @@ export const MemoryRepository = {
     const now = getTimestamp();
 
     await db.runAsync(
-      `INSERT INTO memories (id, chapter_id, vault_id, is_pregnancy_journal, memory_type, title, description, date, location_name, latitude, longitude, map_url, milestone_template_id, is_custom_milestone, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO memories (id, chapter_id, vault_id, baby_id, is_pregnancy_journal, memory_type, title, description, date, location_name, latitude, longitude, map_url, milestone_template_id, is_custom_milestone, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         id,
         input.chapterId || null,
         input.vaultId ?? null,
+        input.babyId ?? null,
         input.isPregnancyJournal ? 1 : 0,
         input.memoryType,
         input.title,
@@ -364,16 +365,23 @@ export const MemoryRepository = {
   },
 
   // Pregnancy journal entries
-  async getPregnancyJournalEntries(): Promise<Memory[]> {
+  async getPregnancyJournalEntries(babyId?: string): Promise<Memory[]> {
     const db = await getDatabase();
+    if (babyId) {
+      const rows = await db.getAllAsync<MemoryRow>(
+        'SELECT * FROM memories WHERE is_pregnancy_journal = 1 AND baby_id = ? ORDER BY date ASC, created_at ASC',
+        [babyId]
+      );
+      return rows.map(rowToMemory);
+    }
     const rows = await db.getAllAsync<MemoryRow>(
       'SELECT * FROM memories WHERE is_pregnancy_journal = 1 ORDER BY date ASC, created_at ASC'
     );
     return rows.map(rowToMemory);
   },
 
-  async getPregnancyJournalEntriesWithRelations(): Promise<MemoryWithRelations[]> {
-    const memories = await this.getPregnancyJournalEntries();
+  async getPregnancyJournalEntriesWithRelations(babyId?: string): Promise<MemoryWithRelations[]> {
+    const memories = await this.getPregnancyJournalEntries(babyId);
     const result: MemoryWithRelations[] = [];
     for (const memory of memories) {
       const withRelations = await this.getWithRelations(memory.id);
@@ -382,8 +390,15 @@ export const MemoryRepository = {
     return result;
   },
 
-  async countPregnancyJournal(): Promise<number> {
+  async countPregnancyJournal(babyId?: string): Promise<number> {
     const db = await getDatabase();
+    if (babyId) {
+      const result = await db.getFirstAsync<{ count: number }>(
+        'SELECT COUNT(*) as count FROM memories WHERE is_pregnancy_journal = 1 AND baby_id = ?',
+        [babyId]
+      );
+      return result?.count ?? 0;
+    }
     const result = await db.getFirstAsync<{ count: number }>(
       'SELECT COUNT(*) as count FROM memories WHERE is_pregnancy_journal = 1'
     );

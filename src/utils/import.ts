@@ -33,6 +33,11 @@ interface ImportOptions {
    * - 'replace': Replace existing items with imported data
    */
   duplicateHandling?: "skip" | "replace";
+  /**
+   * Target baby profile ID to import data into.
+   * If not provided, uses the default profile (or creates one).
+   */
+  targetBabyId?: string;
 }
 
 /**
@@ -190,19 +195,25 @@ export async function importFromParsedData(
       }
     }
 
-    // 2. Ensure a default baby profile exists for imported chapters
+    // 2. Determine target baby profile for imported data
     let babyId: string;
-    const existingProfile = await db.getFirstAsync<{ id: string }>(
-      "SELECT id FROM baby_profiles WHERE is_default = 1"
-    );
-    if (existingProfile) {
-      babyId = existingProfile.id;
+    if (options.targetBabyId) {
+      // Import into the specified profile
+      babyId = options.targetBabyId;
     } else {
-      babyId = generateUUID();
-      await db.runAsync(
-        "INSERT INTO baby_profiles (id, is_default, created_at, updated_at) VALUES (?, 1, ?, ?)",
-        [babyId, now, now]
+      // Fall back to default profile (or create one)
+      const existingProfile = await db.getFirstAsync<{ id: string }>(
+        "SELECT id FROM baby_profiles WHERE is_default = 1"
       );
+      if (existingProfile) {
+        babyId = existingProfile.id;
+      } else {
+        babyId = generateUUID();
+        await db.runAsync(
+          "INSERT INTO baby_profiles (id, is_default, created_at, updated_at) VALUES (?, 1, ?, ?)",
+          [babyId, now, now]
+        );
+      }
     }
 
     // 3. Import chapters and their memories

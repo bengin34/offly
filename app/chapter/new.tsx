@@ -16,6 +16,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { ChapterRepository, BabyProfileRepository, MilestoneRepository } from '../../src/db/repositories';
+import { useProfileStore } from '../../src/stores/profileStore';
 import { getMilestoneTemplates } from '../../src/constants/milestoneTemplates';
 import { getExpectedDate, getMilestonesForChapter } from '../../src/utils/milestones';
 import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
@@ -30,6 +31,7 @@ export default function NewChapterScreen() {
   const theme = useTheme();
   const { t, locale } = useI18n();
   const { isPro, presentPaywall } = useSubscription();
+  const { activeBaby } = useProfileStore();
   const [title, setTitle] = useState('');
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
@@ -45,7 +47,7 @@ export default function NewChapterScreen() {
   // Check chapter limit on mount
   useEffect(() => {
     const checkLimit = async () => {
-      const count = await ChapterRepository.count();
+      const count = await ChapterRepository.count(activeBaby?.id);
       setChapterCount(count);
 
       // Simple check: if not pro and count >= 3, show paywall
@@ -159,8 +161,8 @@ export default function NewChapterScreen() {
 
     setIsSubmitting(true);
     try {
-      // Get default baby profile
-      const babyProfile = await BabyProfileRepository.getDefault();
+      // Use active profile from store, fall back to default
+      const babyProfile = activeBaby ?? await BabyProfileRepository.getDefault();
       if (!babyProfile) {
         Alert.alert(t('alerts.errorTitle'), t('alerts.noProfileFound'));
         setIsSubmitting(false);

@@ -694,6 +694,16 @@
     "maxPhotosDesc": "You can add up to 3 photos",
     "required": "Required"
   },
+  "profiles": {
+    "switchProfile": "Switch Baby",
+    "defaultName": "Baby",
+    "addNew": "Add new baby",
+    "deleteTitle": "Delete Profile",
+    "deleteMessage": "This will permanently delete this profile and all its chapters, memories, and vaults. This cannot be undone.",
+    "deleteConfirm": "Delete Profile",
+    "cannotDeleteLast": "You cannot delete your only profile.",
+    "profileDeleted": "Profile deleted"
+  },
   "limitations": {
     "title": "Good to Know",
     "photosNotBundled": "Photos are not included in exports - only references to local files",

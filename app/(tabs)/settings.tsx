@@ -24,7 +24,7 @@ import { spacing, fontSize, borderRadius, fonts, lightPaletteColors, paletteMeta
 import { Background } from '../../src/components/Background';
 import { DialogHeader } from '../../src/components/DialogHeader';
 import { ProUpgradeBanner } from '../../src/components/ProUpgradeBanner';
-import { useI18n, useTheme, useThemeMode } from '../../src/hooks';
+import { useI18n, useTheme, useThemeMode, useSubscription } from '../../src/hooks';
 import { getLocaleLabel, Locale, supportedLocales } from '../../src/localization';
 import { type ThemeMode } from '../../src/stores';
 import { useOnboardingStore } from '../../src/stores/onboardingStore';
@@ -34,6 +34,8 @@ import { autoGenerateTimeline } from '../../src/utils/autoGenerate';
 import { rebaseBornTimelineDates } from '../../src/utils/rebaseBornTimeline';
 import { BabyProfileRepository, VaultRepository, ChapterRepository, MemoryRepository, MilestoneRepository } from '../../src/db/repositories';
 import { useBackupStore } from '../../src/stores/backupStore';
+import { useProfileStore } from '../../src/stores/profileStore';
+import { APP_LIMITS } from '../../src/constants/limits';
 import type { BabyProfile } from '../../src/types';
 import type { ThemePalette } from '../../src/constants/colors';
 import { BORN_CHAPTER_TEMPLATES } from '../../src/constants/chapterTemplates';
@@ -43,6 +45,7 @@ export default function SettingsScreen() {
   const router = useRouter();
   const { mode, setMode, palette, setPalette } = useThemeMode();
   const { t, locale, setLocale } = useI18n();
+  const { isPro, presentPaywall } = useSubscription();
   const [showThemeModal, setShowThemeModal] = useState(false);
   const [showPaletteModal, setShowPaletteModal] = useState(false);
   const [showLanguageModal, setShowLanguageModal] = useState(false);
@@ -64,6 +67,10 @@ export default function SettingsScreen() {
   );
 
   const handleBackupExport = async () => {
+    if (!isPro) {
+      await presentPaywall();
+      return;
+    }
     try {
       setBackupProgress(0);
       await exportToZip((progress) => setBackupProgress(progress));
@@ -78,6 +85,7 @@ export default function SettingsScreen() {
 
   // Baby profile state
   const [profile, setProfile] = useState<BabyProfile | null>(null);
+  const [allProfiles, setAllProfiles] = useState<BabyProfile[]>([]);
   const [birthDate, setBirthDate] = useState(new Date());
   const [showBirthDatePicker, setShowBirthDatePicker] = useState(false);
   const [isSwitchingMode, setIsSwitchingMode] = useState(false);
@@ -107,10 +115,15 @@ export default function SettingsScreen() {
       0
     ).toISOString();
 
+  const { activeBaby, loadActiveProfile } = useProfileStore();
+
   const loadProfile = useCallback(async () => {
-    const p = await BabyProfileRepository.getDefault();
+    await loadActiveProfile();
+    const p = activeBaby ?? await BabyProfileRepository.getDefault();
     setProfile(p);
-  }, []);
+    const all = await BabyProfileRepository.getAll();
+    setAllProfiles(all);
+  }, [activeBaby, loadActiveProfile]);
 
   useFocusEffect(
     useCallback(() => {
@@ -327,6 +340,57 @@ export default function SettingsScreen() {
     }
   };
 
+  const { setActiveBaby } = useProfileStore();
+
+  const handleSwitchProfile = async (profileId: string) => {
+    if (profileId === profile?.id) return;
+    await setActiveBaby(profileId);
+    await loadProfile();
+  };
+
+  const handleAddNewProfile = async () => {
+    if (!isPro && allProfiles.length >= APP_LIMITS.FREE_MAX_PROFILES) {
+      await presentPaywall();
+      return;
+    }
+    router.push('/baby-setup?addNew=true');
+  };
+
+  const handleDeleteProfile = (profileToDelete: BabyProfile) => {
+    if (allProfiles.length <= 1) {
+      Alert.alert(t('alerts.errorTitle'), t('profiles.cannotDeleteLast'));
+      return;
+    }
+
+    Alert.alert(
+      t('profiles.deleteTitle'),
+      t('profiles.deleteMessage'),
+      [
+        { text: t('common.cancel'), style: 'cancel' },
+        {
+          text: t('profiles.deleteConfirm'),
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await BabyProfileRepository.delete(profileToDelete.id);
+              // If deleting the active profile, switch to another
+              if (profileToDelete.id === profile?.id) {
+                const remaining = allProfiles.filter((p) => p.id !== profileToDelete.id);
+                if (remaining.length > 0) {
+                  await setActiveBaby(remaining[0].id);
+                }
+              }
+              await loadProfile();
+            } catch (error) {
+              console.error('Failed to delete profile:', error);
+              Alert.alert(t('alerts.errorTitle'), t('alerts.deleteFailed'));
+            }
+          },
+        },
+      ]
+    );
+  };
+
   const themeOptions: { mode: ThemeMode; label: string; icon: keyof typeof Ionicons.glyphMap }[] = [
     { mode: 'light', label: t('settings.themeLight'), icon: 'sunny' },
     { mode: 'dark', label: t('settings.themeDark'), icon: 'moon' },
@@ -391,6 +455,10 @@ export default function SettingsScreen() {
   };
 
   const handleImport = async () => {
+    if (!isPro) {
+      await presentPaywall();
+      return;
+    }
     Alert.alert(
       t('settings.importTitle'),
       `${t('settings.importDescription')}\n\n${t('settings.exportPhotosNote')}`,
@@ -476,6 +544,64 @@ export default function SettingsScreen() {
       <Background />
       <ScrollView>
         <ProUpgradeBanner style={styles.proBanner} />
+
+        {/* Profile Switcher Section */}
+        {allProfiles.length > 1 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>
+              {t('profiles.switchProfile').toLocaleUpperCase(locale)}
+            </Text>
+            <View style={styles.card}>
+              {allProfiles.map((p) => {
+                const isActive = p.id === profile?.id;
+                return (
+                  <TouchableOpacity
+                    key={p.id}
+                    style={[styles.settingsRow, { paddingVertical: spacing.sm + 2 }]}
+                    onPress={() => handleSwitchProfile(p.id)}
+                    onLongPress={() => handleDeleteProfile(p)}
+                  >
+                    <View style={styles.settingsRowLeft}>
+                      <View style={[styles.profileListIcon, { backgroundColor: p.mode === 'pregnant' ? theme.primary + '15' : theme.accent + '15' }]}>
+                        <Ionicons
+                          name={p.mode === 'pregnant' ? 'heart' : 'happy'}
+                          size={18}
+                          color={p.mode === 'pregnant' ? theme.primary : theme.accent}
+                        />
+                      </View>
+                      <View>
+                        <Text style={[styles.settingsRowLabel, isActive && { color: theme.primary, fontFamily: fonts.ui }]}>
+                          {p.name || t('profiles.defaultName')}
+                        </Text>
+                        <Text style={styles.profileListMeta}>
+                          {p.mode === 'pregnant' ? t('settings.modeExpecting') : t('settings.modeBorn')}
+                        </Text>
+                      </View>
+                    </View>
+                    {isActive && (
+                      <Ionicons name="checkmark-circle" size={22} color={theme.primary} />
+                    )}
+                  </TouchableOpacity>
+                );
+              })}
+              <View style={styles.settingsDivider} />
+              <TouchableOpacity
+                style={[styles.settingsRow, { paddingVertical: spacing.sm + 2 }]}
+                onPress={handleAddNewProfile}
+              >
+                <View style={styles.settingsRowLeft}>
+                  <View style={[styles.profileListIcon, { backgroundColor: theme.backgroundSecondary }]}>
+                    <Ionicons name="add" size={20} color={theme.primary} />
+                  </View>
+                  <Text style={[styles.settingsRowLabel, { color: theme.primary }]}>{t('profiles.addNew')}</Text>
+                </View>
+                {!isPro && allProfiles.length >= APP_LIMITS.FREE_MAX_PROFILES && (
+                  <Ionicons name="lock-closed" size={14} color={theme.textMuted} />
+                )}
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
 
         {/* Baby Profile Section */}
         {profile && (
@@ -646,6 +772,22 @@ export default function SettingsScreen() {
                 </>
               )}
             </View>
+
+            {/* Add new baby button (shown when only 1 profile) */}
+            {allProfiles.length <= 1 && (
+              <TouchableOpacity
+                style={[styles.settingsRow, { marginTop: spacing.md }]}
+                onPress={handleAddNewProfile}
+              >
+                <View style={styles.settingsRowLeft}>
+                  <Ionicons name="add-circle-outline" size={22} color={theme.primary} />
+                  <Text style={[styles.settingsRowLabel, { color: theme.primary }]}>{t('profiles.addNew')}</Text>
+                </View>
+                {!isPro && allProfiles.length >= APP_LIMITS.FREE_MAX_PROFILES && (
+                  <Ionicons name="lock-closed" size={14} color={theme.textMuted} />
+                )}
+              </TouchableOpacity>
+            )}
           </View>
         )}
 
@@ -831,7 +973,11 @@ export default function SettingsScreen() {
               </View>
             )}
             <TouchableOpacity
-              style={[styles.onboardingButton, backupProgress !== null && { opacity: 0.6 }]}
+              style={[
+                styles.onboardingButton,
+                backupProgress !== null && { opacity: 0.6 },
+                !isPro && { backgroundColor: theme.textMuted },
+              ]}
               onPress={handleBackupExport}
               disabled={backupProgress !== null}
             >
@@ -846,17 +992,27 @@ export default function SettingsScreen() {
                 <>
                   <Ionicons name="download-outline" size={20} color={theme.white} />
                   <Text style={styles.onboardingButtonText}>{t('settings.createBackup')}</Text>
+                  {!isPro && <Ionicons name="lock-closed" size={16} color={theme.white} style={{ marginLeft: 4 }} />}
                 </>
               )}
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.exportLink}
-              onPress={() => setShowDataModal(true)}
+              onPress={() => {
+                if (!isPro) {
+                  void presentPaywall();
+                  return;
+                }
+                setShowDataModal(true);
+              }}
               accessibilityRole="button"
               accessibilityLabel={t('settings.dataButton')}
             >
               <Text style={styles.exportLinkText}>{t('settings.moreExportImportOptions')}</Text>
-              <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                {!isPro && <Ionicons name="lock-closed" size={14} color={theme.textMuted} />}
+                <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
+              </View>
             </TouchableOpacity>
           </View>
         </View>
@@ -1875,5 +2031,19 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       fontSize: fontSize.sm,
       fontFamily: fonts.body,
       flex: 1,
+    },
+    // Profile list styles
+    profileListIcon: {
+      width: 36,
+      height: 36,
+      borderRadius: borderRadius.md,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    profileListMeta: {
+      fontSize: fontSize.xs,
+      fontFamily: fonts.body,
+      color: theme.textSecondary,
+      marginTop: 1,
     },
   });

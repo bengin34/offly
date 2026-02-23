@@ -191,6 +191,37 @@ export const ALTER_BABY_PROFILES_ADD_SHOW_ARCHIVED_CHAPTERS = `
   ALTER TABLE baby_profiles ADD COLUMN show_archived_chapters INTEGER DEFAULT 1;
 `;
 
+// Multi-profile: add baby_id to memories for direct profile scoping
+export const ALTER_MEMORIES_ADD_BABY_ID = `
+  ALTER TABLE memories ADD COLUMN baby_id TEXT REFERENCES baby_profiles(id) ON DELETE CASCADE;
+`;
+
+export const CREATE_MEMORIES_BABY_ID_INDEX = `
+  CREATE INDEX IF NOT EXISTS idx_memories_baby_id ON memories (baby_id);
+`;
+
+/**
+ * Backfill baby_id on memories from their parent chapter or vault.
+ * Pregnancy journal entries (chapter_id IS NULL, vault_id IS NULL) get the default profile.
+ */
+export const BACKFILL_MEMORIES_BABY_ID_FROM_CHAPTERS = `
+  UPDATE memories SET baby_id = (
+    SELECT c.baby_id FROM chapters c WHERE c.id = memories.chapter_id
+  ) WHERE chapter_id IS NOT NULL AND baby_id IS NULL;
+`;
+
+export const BACKFILL_MEMORIES_BABY_ID_FROM_VAULTS = `
+  UPDATE memories SET baby_id = (
+    SELECT v.baby_id FROM vaults v WHERE v.id = memories.vault_id
+  ) WHERE vault_id IS NOT NULL AND baby_id IS NULL;
+`;
+
+export const BACKFILL_MEMORIES_BABY_ID_DEFAULT = `
+  UPDATE memories SET baby_id = (
+    SELECT id FROM baby_profiles WHERE is_default = 1 LIMIT 1
+  ) WHERE baby_id IS NULL;
+`;
+
 // Indexes for search performance
 export const CREATE_CHAPTERS_TITLE_INDEX = `
   CREATE INDEX IF NOT EXISTS idx_chapters_title ON chapters (title);
@@ -238,6 +269,7 @@ export const ALL_MIGRATIONS = [
   CREATE_MILESTONE_INSTANCES_BABY_ID_INDEX,
   CREATE_MILESTONE_INSTANCES_STATUS_INDEX,
   CREATE_MILESTONE_INSTANCES_EXPECTED_DATE_INDEX,
+  CREATE_MEMORIES_BABY_ID_INDEX,
 ];
 
 // ALTER migrations for existing installs (run safely — column may already exist)
@@ -254,4 +286,8 @@ export const UPGRADE_MIGRATIONS = [
   ALTER_BABY_PROFILES_ADD_PREVIOUS_EDD,
   ALTER_BABY_PROFILES_ADD_MODE_SWITCHED_AT,
   ALTER_BABY_PROFILES_ADD_SHOW_ARCHIVED_CHAPTERS,
+  ALTER_MEMORIES_ADD_BABY_ID,
+  BACKFILL_MEMORIES_BABY_ID_FROM_CHAPTERS,
+  BACKFILL_MEMORIES_BABY_ID_FROM_VAULTS,
+  BACKFILL_MEMORIES_BABY_ID_DEFAULT,
 ];

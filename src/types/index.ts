@@ -182,6 +182,7 @@ export interface UpdateChapterInput extends Partial<Omit<CreateChapterInput, "ba
 
 export interface CreateMemoryInput {
   chapterId: string;
+  babyId?: string;
   vaultId?: string;
   isPregnancyJournal?: boolean;
   memoryType: MemoryType;

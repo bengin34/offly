@@ -51,8 +51,13 @@ function toExportMemory(memory: MemoryWithRelations): ExportMemory {
   };
 }
 
-async function buildExportData(): Promise<ExportData> {
-  const babyProfile = await BabyProfileRepository.getDefault();
+async function buildExportData(babyId?: string): Promise<ExportData> {
+  let babyProfile: BabyProfile | null = null;
+  if (babyId) {
+    babyProfile = await BabyProfileRepository.getById(babyId);
+  } else {
+    babyProfile = await BabyProfileRepository.getDefault();
+  }
   const chapters = await ChapterRepository.getAllIncludingArchived();
   const allTags = await TagRepository.getAll();
 
@@ -454,7 +459,7 @@ export async function exportToZip(
   }
 }
 
-export async function getExportStats(): Promise<{
+export async function getExportStats(babyId?: string): Promise<{
   chapterCount: number;
   memoryCount: number;
   photoCount: number;
@@ -462,7 +467,12 @@ export async function getExportStats(): Promise<{
   vaultCount: number;
   pregnancyEntryCount: number;
 }> {
-  const babyProfile = await BabyProfileRepository.getDefault();
+  let babyProfile: BabyProfile | null = null;
+  if (babyId) {
+    babyProfile = await BabyProfileRepository.getById(babyId);
+  } else {
+    babyProfile = await BabyProfileRepository.getDefault();
+  }
   const chapters = await ChapterRepository.getAllIncludingArchived();
   const allTags = await TagRepository.getAll();
 

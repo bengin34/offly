@@ -27,7 +27,7 @@ interface TagSearchRow {
 }
 
 export const SearchRepository = {
-  async search(query: string, filters?: SearchFilters): Promise<SearchResult[]> {
+  async search(query: string, filters?: SearchFilters, babyId?: string): Promise<SearchResult[]> {
     if (!query.trim()) return [];
 
     const db = await getDatabase();
@@ -38,11 +38,13 @@ export const SearchRepository = {
 
     // Search chapters
     if (showChapters) {
-      const chapterRows = await db.getAllAsync<ChapterSearchRow>(
-        `SELECT id, title, description FROM chapters
-         WHERE title LIKE ? OR description LIKE ?`,
-        [searchPattern, searchPattern]
-      );
+      const chapterQuery = babyId
+        ? `SELECT id, title, description FROM chapters WHERE baby_id = ? AND (title LIKE ? OR description LIKE ?)`
+        : `SELECT id, title, description FROM chapters WHERE title LIKE ? OR description LIKE ?`;
+      const chapterParams = babyId
+        ? [babyId, searchPattern, searchPattern]
+        : [searchPattern, searchPattern];
+      const chapterRows = await db.getAllAsync<ChapterSearchRow>(chapterQuery, chapterParams);
 
       for (const row of chapterRows) {
         let matchedField = 'title';
@@ -74,6 +76,11 @@ export const SearchRepository = {
       // Build dynamic WHERE clause based on filters
       let memoryWhereClause = '(m.title LIKE ? OR m.description LIKE ?)';
       const memoryParams: (string | number)[] = [searchPattern, searchPattern];
+
+      if (babyId) {
+        memoryWhereClause += ' AND m.baby_id = ?';
+        memoryParams.push(babyId);
+      }
 
       if (filters?.memoryType) {
         memoryWhereClause += ' AND m.memory_type = ?';
@@ -143,16 +150,23 @@ export const SearchRepository = {
     }
 
     // Search by tags (memories)
-    const memoryTagRows = await db.getAllAsync<TagSearchRow>(
-      `SELECT m.id as memory_id, NULL as chapter_id, tg.name as tag_name,
-              m.title as memory_title, COALESCE(c.title, '') as chapter_title
-       FROM tags tg
-       INNER JOIN memory_tags mt ON tg.id = mt.tag_id
-       INNER JOIN memories m ON mt.memory_id = m.id
-       LEFT JOIN chapters c ON m.chapter_id = c.id
-       WHERE tg.name LIKE ?`,
-      [searchPattern]
-    );
+    const memoryTagQuery = babyId
+      ? `SELECT m.id as memory_id, NULL as chapter_id, tg.name as tag_name,
+                m.title as memory_title, COALESCE(c.title, '') as chapter_title
+         FROM tags tg
+         INNER JOIN memory_tags mt ON tg.id = mt.tag_id
+         INNER JOIN memories m ON mt.memory_id = m.id
+         LEFT JOIN chapters c ON m.chapter_id = c.id
+         WHERE tg.name LIKE ? AND m.baby_id = ?`
+      : `SELECT m.id as memory_id, NULL as chapter_id, tg.name as tag_name,
+                m.title as memory_title, COALESCE(c.title, '') as chapter_title
+         FROM tags tg
+         INNER JOIN memory_tags mt ON tg.id = mt.tag_id
+         INNER JOIN memories m ON mt.memory_id = m.id
+         LEFT JOIN chapters c ON m.chapter_id = c.id
+         WHERE tg.name LIKE ?`;
+    const memoryTagParams = babyId ? [searchPattern, babyId] : [searchPattern];
+    const memoryTagRows = await db.getAllAsync<TagSearchRow>(memoryTagQuery, memoryTagParams);
 
     for (const row of memoryTagRows) {
       if (row.memory_id && row.memory_title) {
@@ -168,15 +182,21 @@ export const SearchRepository = {
     }
 
     // Search by tags (chapters)
-    const chapterTagRows = await db.getAllAsync<TagSearchRow>(
-      `SELECT NULL as memory_id, c.id as chapter_id, tg.name as tag_name,
-              NULL as memory_title, c.title as chapter_title
-       FROM tags tg
-       INNER JOIN chapter_tags ct ON tg.id = ct.tag_id
-       INNER JOIN chapters c ON ct.chapter_id = c.id
-       WHERE tg.name LIKE ?`,
-      [searchPattern]
-    );
+    const chapterTagQuery = babyId
+      ? `SELECT NULL as memory_id, c.id as chapter_id, tg.name as tag_name,
+                NULL as memory_title, c.title as chapter_title
+         FROM tags tg
+         INNER JOIN chapter_tags ct ON tg.id = ct.tag_id
+         INNER JOIN chapters c ON ct.chapter_id = c.id
+         WHERE tg.name LIKE ? AND c.baby_id = ?`
+      : `SELECT NULL as memory_id, c.id as chapter_id, tg.name as tag_name,
+                NULL as memory_title, c.title as chapter_title
+         FROM tags tg
+         INNER JOIN chapter_tags ct ON tg.id = ct.tag_id
+         INNER JOIN chapters c ON ct.chapter_id = c.id
+         WHERE tg.name LIKE ?`;
+    const chapterTagParams = babyId ? [searchPattern, babyId] : [searchPattern];
+    const chapterTagRows = await db.getAllAsync<TagSearchRow>(chapterTagQuery, chapterTagParams);
 
     for (const row of chapterTagRows) {
       if (row.chapter_id) {

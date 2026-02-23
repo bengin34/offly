@@ -24,7 +24,9 @@ import { getPregnancyChapterPlaceholder, getPregnancyChapterTemplateByTitle } fr
 import { calculateGestationWeeks } from '../../src/utils/milestones';
 import { Background } from '../../src/components/Background';
 import { ProUpgradeBanner } from '../../src/components/ProUpgradeBanner';
+import { ProfileSwitcherModal } from '../../src/components/ProfileSwitcherModal';
 import { useI18n, useTheme } from '../../src/hooks';
+import { useProfileStore } from '../../src/stores/profileStore';
 import { formatHeaderTitle } from '../../src/utils/ageFormatter';
 import type { ChapterWithMilestoneProgress, BabyProfile, VaultWithEntryCount } from '../../src/types';
 import { useMockData } from '../../src/mocks/useMockData';
@@ -35,9 +37,11 @@ export default function HomeScreen() {
   const navigation = useNavigation();
   const theme = useTheme();
   const { t, locale } = useI18n();
+  const { activeBaby, loadActiveProfile } = useProfileStore();
   const babyMockData = useMockData(locale, 'baby');
   const pregnancyMockData = useMockData(locale, 'pregnancy');
 
+  const [showProfileSwitcher, setShowProfileSwitcher] = useState(false);
   const [profile, setProfile] = useState<BabyProfile | null>(null);
   const [chapters, setChapters] = useState<ChapterWithMilestoneProgress[]>([]);
   const [vaults, setVaults] = useState<VaultWithEntryCount[]>([]);
@@ -74,7 +78,11 @@ export default function HomeScreen() {
   const loadData = useCallback(async () => {
     shouldAutoFocusCurrentChapter.current = true;
     try {
-      let babyProfile = await BabyProfileRepository.getDefault();
+      // Use active profile from store instead of getDefault()
+      let babyProfile = activeBaby;
+      if (!babyProfile) {
+        babyProfile = await BabyProfileRepository.getDefault();
+      }
 
       // Auto-create a default profile if none exists
       if (!babyProfile) {
@@ -161,12 +169,12 @@ export default function HomeScreen() {
       setIsLoading(false);
       setIsRefreshing(false);
     }
-  }, [getCurrentChapterIdFromList, scrollToCurrentChapter, babyMockData, pregnancyMockData]);
+  }, [activeBaby, getCurrentChapterIdFromList, scrollToCurrentChapter, babyMockData, pregnancyMockData]);
 
   useFocusEffect(
     useCallback(() => {
-      loadData();
-    }, [loadData])
+      loadActiveProfile().then(() => loadData());
+    }, [loadActiveProfile, loadData])
   );
 
   const handleRefresh = () => {
@@ -231,8 +239,25 @@ export default function HomeScreen() {
 
     navigation.setOptions({
       headerTitle: dynamicTitle || t('tabs.chapters'),
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => setShowProfileSwitcher(true)}
+          style={styles.headerProfileButton}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <Ionicons
+            name={profile?.mode === 'pregnant' ? 'heart' : 'happy'}
+            size={18}
+            color={theme.primary}
+          />
+          <Text style={styles.headerProfileName} numberOfLines={1}>
+            {profile?.name || t('profiles.defaultName')}
+          </Text>
+          <Ionicons name="chevron-down" size={14} color={theme.textMuted} />
+        </TouchableOpacity>
+      ),
     });
-  }, [navigation, profile, t]);
+  }, [navigation, profile, t, theme, styles]);
 
   // --- Section: Pregnancy Journal Link (appears below timeline for pregnancy mode) ---
   const renderPregnancyJournalLink = () => {
@@ -673,6 +698,10 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </>
       )}
+      <ProfileSwitcherModal
+        visible={showProfileSwitcher}
+        onClose={() => setShowProfileSwitcher(false)}
+      />
     </View>
   );
 }
@@ -1206,5 +1235,23 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       shadowOpacity: 0.2,
       shadowRadius: 4,
       elevation: 3,
+    },
+
+    // Header profile switcher
+    headerProfileButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: theme.backgroundSecondary,
+      paddingHorizontal: spacing.sm + 2,
+      paddingVertical: spacing.xs + 2,
+      borderRadius: borderRadius.full,
+      gap: 4,
+      maxWidth: 160,
+    },
+    headerProfileName: {
+      fontSize: fontSize.sm,
+      fontFamily: fonts.ui,
+      color: theme.text,
+      maxWidth: 100,
     },
   });

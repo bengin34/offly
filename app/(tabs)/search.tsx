@@ -18,6 +18,7 @@ import { QUICK_TAGS } from '../../src/constants/quickTags';
 import { Background } from '../../src/components/Background';
 import { ProUpgradeBanner } from '../../src/components/ProUpgradeBanner';
 import { useI18n, useTheme, useSubscription } from '../../src/hooks';
+import { useProfileStore } from '../../src/stores/profileStore';
 import type { SearchResult, Tag, MemoryType } from '../../src/types';
 
 type ResultTypeFilter = 'all' | 'chapter' | 'memory';
@@ -27,6 +28,7 @@ export default function SearchScreen() {
   const theme = useTheme();
   const { t, locale } = useI18n();
   const { isPro, presentPaywall } = useSubscription();
+  const { activeBaby } = useProfileStore();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
@@ -101,13 +103,13 @@ export default function SearchScreen() {
     }
 
     try {
-      const searchResults = await SearchRepository.search(text.trim(), filters);
+      const searchResults = await SearchRepository.search(text.trim(), filters, activeBaby?.id);
       setResults(searchResults);
       setHasSearched(true);
     } catch (error) {
       console.error('Search failed:', error);
     }
-  }, []);
+  }, [activeBaby?.id]);
 
   const handleSearch = useCallback((text: string) => {
     setQuery(text);

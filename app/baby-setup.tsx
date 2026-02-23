@@ -10,12 +10,13 @@ import {
   ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useI18n, useTheme, useThemeMode } from '../src/hooks';
 import { useOnboardingStore } from '../src/stores/onboardingStore';
 import { BabyProfileRepository, VaultRepository } from '../src/db/repositories';
+import { useProfileStore } from '../src/stores/profileStore';
 import { autoGenerateTimeline } from '../src/utils/autoGenerate';
 import { Background } from '../src/components/Background';
 import { spacing, fontSize, fonts, borderRadius, lightPaletteColors, paletteMetadata } from '../src/constants';
@@ -28,7 +29,10 @@ export default function BabySetupScreen() {
   const { t } = useI18n();
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const { addNew } = useLocalSearchParams<{ addNew?: string }>();
+  const isAddingNew = addNew === 'true';
   const completeOnboarding = useOnboardingStore((s) => s.completeOnboarding);
+  const { setActiveBaby } = useProfileStore();
 
   const [step, setStep] = useState<'mode' | 'details' | 'theme'>('mode');
   const [mode, setMode] = useState<BabyMode | null>(null);
@@ -50,8 +54,13 @@ export default function BabySetupScreen() {
 
   const handleContinueFromDetails = useCallback(() => {
     if (!mode) return;
-    setStep('theme');
-  }, [mode]);
+    if (isAddingNew) {
+      // Skip theme selection when adding a new profile
+      handleFinish();
+    } else {
+      setStep('theme');
+    }
+  }, [mode, isAddingNew, handleFinish]);
 
   const handleSelectPalette = useCallback(
     (nextPalette: ThemePalette) => {
@@ -66,13 +75,13 @@ export default function BabySetupScreen() {
     setIsSaving(true);
 
     try {
-      setPalette(selectedPalette);
+      if (!isAddingNew) {
+        setPalette(selectedPalette);
+      }
 
-      // Update the default profile with mode + date info
-      const profile = await BabyProfileRepository.getDefault();
-      if (profile) {
-        await BabyProfileRepository.update({
-          id: profile.id,
+      if (isAddingNew) {
+        // Create a brand new profile
+        const newProfile = await BabyProfileRepository.create({
           name: name.trim() || undefined,
           mode,
           birthdate: mode === 'born' ? date.toISOString() : undefined,
@@ -81,32 +90,64 @@ export default function BabySetupScreen() {
 
         // Create default vaults
         const referenceDate = date.toISOString();
-        await VaultRepository.createDefaults(profile.id, referenceDate);
+        await VaultRepository.createDefaults(newProfile.id, referenceDate);
 
         // Auto-generate chapters + milestones for born mode
         if (mode === 'born') {
           try {
-            const updatedProfile = await BabyProfileRepository.getDefault();
-            if (updatedProfile) {
-              await autoGenerateTimeline(updatedProfile);
-            }
+            await autoGenerateTimeline(newProfile);
           } catch (err) {
             console.warn('Failed to auto-generate timeline:', err);
           }
         }
-      }
 
-      await completeOnboarding();
-      router.replace('/');
+        // Set the new profile as active
+        await setActiveBaby(newProfile.id);
+        router.back();
+      } else {
+        // Update the default profile with mode + date info (onboarding flow)
+        const profile = await BabyProfileRepository.getDefault();
+        if (profile) {
+          await BabyProfileRepository.update({
+            id: profile.id,
+            name: name.trim() || undefined,
+            mode,
+            birthdate: mode === 'born' ? date.toISOString() : undefined,
+            edd: mode === 'pregnant' ? date.toISOString() : undefined,
+          });
+
+          // Create default vaults
+          const referenceDate = date.toISOString();
+          await VaultRepository.createDefaults(profile.id, referenceDate);
+
+          // Auto-generate chapters + milestones for born mode
+          if (mode === 'born') {
+            try {
+              const updatedProfile = await BabyProfileRepository.getDefault();
+              if (updatedProfile) {
+                await autoGenerateTimeline(updatedProfile);
+              }
+            } catch (err) {
+              console.warn('Failed to auto-generate timeline:', err);
+            }
+          }
+        }
+
+        await completeOnboarding();
+        router.replace('/');
+      }
     } catch (error) {
       console.error('Failed to save baby setup:', error);
-      // Still complete onboarding to avoid being stuck
-      await completeOnboarding();
-      router.replace('/');
+      if (!isAddingNew) {
+        await completeOnboarding();
+        router.replace('/');
+      } else {
+        router.back();
+      }
     } finally {
       setIsSaving(false);
     }
-  }, [mode, name, date, isSaving, selectedPalette, setPalette, completeOnboarding, router]);
+  }, [mode, name, date, isSaving, isAddingNew, selectedPalette, setPalette, completeOnboarding, setActiveBaby, router]);
 
   const paletteOptions: {
     palette: ThemePalette;
