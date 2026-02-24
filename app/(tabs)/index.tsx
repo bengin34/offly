@@ -124,7 +124,7 @@ export default function HomeScreen() {
         setChapters(chapterData);
 
         // Also load pregnancy journal count
-        const count = await MemoryRepository.countPregnancyJournal();
+        const count = await MemoryRepository.countPregnancyJournal(babyProfile.id);
         setPregnancyEntryCount(count);
 
         const currentId = getCurrentChapterIdFromList(chapterData);

@@ -9,15 +9,17 @@ import {
 } from 'react-native';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { MemoryRepository } from '../../src/db/repositories';
+import { MemoryRepository, BabyProfileRepository } from '../../src/db/repositories';
 import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
 import { Background } from '../../src/components/Background';
 import { useTheme } from '../../src/hooks';
+import { useProfileStore } from '../../src/stores/profileStore';
 import type { MemoryWithRelations } from '../../src/types';
 
 export default function PregnancyJournalScreen() {
   const router = useRouter();
   const theme = useTheme();
+  const { activeBaby, loadActiveProfile } = useProfileStore();
 
   const [entries, setEntries] = useState<MemoryWithRelations[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -25,7 +27,12 @@ export default function PregnancyJournalScreen() {
 
   const loadEntries = useCallback(async () => {
     try {
-      const data = await MemoryRepository.getPregnancyJournalEntriesWithRelations();
+      let babyId = activeBaby?.id;
+      if (!babyId) {
+        await loadActiveProfile();
+        babyId = useProfileStore.getState().activeBaby?.id ?? (await BabyProfileRepository.getDefault())?.id;
+      }
+      const data = await MemoryRepository.getPregnancyJournalEntriesWithRelations(babyId);
       setEntries(data);
     } catch (error) {
       console.error('Failed to load pregnancy journal entries:', error);
@@ -33,7 +40,7 @@ export default function PregnancyJournalScreen() {
       setIsLoading(false);
       setIsRefreshing(false);
     }
-  }, []);
+  }, [activeBaby?.id, loadActiveProfile]);
 
   useFocusEffect(
     useCallback(() => {

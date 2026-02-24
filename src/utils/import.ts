@@ -18,6 +18,7 @@ export interface ImportResult {
   photosImported: number;
   photosRestored: number;
   vaultsImported: number;
+  milestoneInstancesImported: number;
   skipped: {
     chapters: number;
     memories: number;
@@ -133,6 +134,7 @@ export async function importFromParsedData(
     photosImported: 0,
     photosRestored: 0,
     vaultsImported: 0,
+    milestoneInstancesImported: 0,
     skipped: {
       chapters: 0,
       memories: 0,
@@ -299,6 +301,64 @@ export async function importFromParsedData(
         );
       } catch (error) {
         result.errors.push(`Pregnancy entry "${entry.title ?? ""}": ${String(error)}`);
+      }
+    }
+
+    // 6. Import milestone instances
+    const milestoneInstances: import("../types").MilestoneInstance[] =
+      (data as any).milestoneInstances ?? [];
+    for (const instance of milestoneInstances) {
+      try {
+        const existing = await db.getFirstAsync<{ id: string }>(
+          "SELECT id FROM milestone_instances WHERE id = ?",
+          [instance.id]
+        );
+
+        if (existing) {
+          if (duplicateHandling === "replace") {
+            await db.runAsync(
+              `UPDATE milestone_instances SET
+                baby_id = ?, chapter_id = ?, milestone_template_id = ?,
+                associated_memory_id = ?, expected_date = ?, filled_date = ?,
+                status = ?, updated_at = ?
+               WHERE id = ?`,
+              [
+                babyId,
+                instance.chapterId ?? null,
+                instance.milestoneTemplateId,
+                instance.associatedMemoryId ?? null,
+                instance.expectedDate,
+                instance.filledDate ?? null,
+                instance.status,
+                now,
+                instance.id,
+              ]
+            );
+          }
+          // skip: leave existing intact
+        } else {
+          await db.runAsync(
+            `INSERT INTO milestone_instances
+              (id, baby_id, chapter_id, milestone_template_id, associated_memory_id,
+               expected_date, filled_date, status, created_at, updated_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+              instance.id,
+              babyId,
+              instance.chapterId ?? null,
+              instance.milestoneTemplateId,
+              instance.associatedMemoryId ?? null,
+              instance.expectedDate,
+              instance.filledDate ?? null,
+              instance.status,
+              instance.createdAt ?? now,
+              now,
+            ]
+          );
+          result.milestoneInstancesImported++;
+        }
+      } catch (error) {
+        result.errors.push(`Milestone instance (${instance.milestoneTemplateId}): ${String(error)}`);
       }
     }
 

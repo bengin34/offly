@@ -336,15 +336,24 @@ export const ChapterRepository = {
     return rows.map(rowToChapter);
   },
 
-  async search(query: string): Promise<Chapter[]> {
+  async search(query: string, babyId?: string): Promise<Chapter[]> {
     const db = await getDatabase();
     const searchPattern = `%${query}%`;
-    const rows = await db.getAllAsync<ChapterRow>(
-      `SELECT * FROM chapters
-       WHERE title LIKE ? OR description LIKE ?
-       ORDER BY start_date DESC`,
-      [searchPattern, searchPattern]
-    );
+    const rows = babyId
+      ? await db.getAllAsync<ChapterRow>(
+          `SELECT * FROM chapters
+           WHERE baby_id = ? AND (title LIKE ? OR description LIKE ?)
+           ORDER BY start_date DESC
+           LIMIT 200`,
+          [babyId, searchPattern, searchPattern]
+        )
+      : await db.getAllAsync<ChapterRow>(
+          `SELECT * FROM chapters
+           WHERE title LIKE ? OR description LIKE ?
+           ORDER BY start_date DESC
+           LIMIT 200`,
+          [searchPattern, searchPattern]
+        );
     return rows.map(rowToChapter);
   },
 

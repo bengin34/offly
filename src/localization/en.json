@@ -639,6 +639,7 @@
     "deletePhotoFailed": "Failed to delete photo",
     "deleteChapterFailed": "Failed to delete chapter",
     "deleteChapterLegacyFailed": "Failed to delete chapter",
+    "deleteProfileFailed": "Failed to delete profile",
     "deleteListFailed": "Failed to delete list",
     "createEntryFailed": "Failed to create entry. Please try again.",
     "updateEntryFailed": "Failed to update entry. Please try again.",

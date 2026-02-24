@@ -7,7 +7,8 @@ import {
   VaultRepository,
 } from "../db/repositories";
 import { BabyProfileRepository } from "../db/repositories/BabyProfileRepository";
-import type { Chapter, MemoryWithRelations, Tag, BabyProfile, Vault } from "../types";
+import { MilestoneRepository } from "../db/repositories/MilestoneRepository";
+import type { Chapter, MemoryWithRelations, Tag, BabyProfile, Vault, MilestoneInstance } from "../types";
 
 export interface ExportData {
   version: string;
@@ -17,6 +18,7 @@ export interface ExportData {
   vaults: ExportVault[];
   pregnancyJournalEntries: ExportMemory[];
   tags: Tag[];
+  milestoneInstances: MilestoneInstance[];
 }
 
 export interface ExportChapter extends Chapter {
@@ -58,7 +60,7 @@ async function buildExportData(babyId?: string): Promise<ExportData> {
   } else {
     babyProfile = await BabyProfileRepository.getDefault();
   }
-  const chapters = await ChapterRepository.getAllIncludingArchived();
+  const chapters = await ChapterRepository.getAllIncludingArchived(babyProfile?.id);
   const allTags = await TagRepository.getAll();
 
   // Export chapters with memories
@@ -87,7 +89,12 @@ async function buildExportData(babyId?: string): Promise<ExportData> {
   }
 
   // Export pregnancy journal entries
-  const pregnancyEntries = await MemoryRepository.getPregnancyJournalEntriesWithRelations();
+  const pregnancyEntries = await MemoryRepository.getPregnancyJournalEntriesWithRelations(babyProfile?.id);
+
+  // Export milestone instances
+  const milestoneInstances = babyProfile
+    ? await MilestoneRepository.getByBabyId(babyProfile.id)
+    : [];
 
   const exportData: ExportData = {
     version: "1.1.0",
@@ -97,6 +104,7 @@ async function buildExportData(babyId?: string): Promise<ExportData> {
     vaults: exportVaults,
     pregnancyJournalEntries: pregnancyEntries.map(toExportMemory),
     tags: allTags,
+    milestoneInstances,
   };
 
   return exportData;
@@ -473,7 +481,7 @@ export async function getExportStats(babyId?: string): Promise<{
   } else {
     babyProfile = await BabyProfileRepository.getDefault();
   }
-  const chapters = await ChapterRepository.getAllIncludingArchived();
+  const chapters = await ChapterRepository.getAllIncludingArchived(babyProfile?.id);
   const allTags = await TagRepository.getAll();
 
   let memoryCount = 0;
@@ -492,7 +500,7 @@ export async function getExportStats(babyId?: string): Promise<{
     vaultCount = await VaultRepository.count(babyProfile.id);
   }
 
-  const pregnancyEntryCount = await MemoryRepository.countPregnancyJournal();
+  const pregnancyEntryCount = await MemoryRepository.countPregnancyJournal(babyProfile?.id);
 
   return {
     chapterCount: chapters.length,

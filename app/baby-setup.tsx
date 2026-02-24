@@ -52,16 +52,6 @@ export default function BabySetupScreen() {
     if (selectedDate) setDate(selectedDate);
   }, []);
 
-  const handleContinueFromDetails = useCallback(() => {
-    if (!mode) return;
-    if (isAddingNew) {
-      // Skip theme selection when adding a new profile
-      handleFinish();
-    } else {
-      setStep('theme');
-    }
-  }, [mode, isAddingNew, handleFinish]);
-
   const handleSelectPalette = useCallback(
     (nextPalette: ThemePalette) => {
       setSelectedPalette(nextPalette);
@@ -148,6 +138,16 @@ export default function BabySetupScreen() {
       setIsSaving(false);
     }
   }, [mode, name, date, isSaving, isAddingNew, selectedPalette, setPalette, completeOnboarding, setActiveBaby, router]);
+
+  const handleContinueFromDetails = useCallback(() => {
+    if (!mode) return;
+    if (isAddingNew) {
+      // Skip theme selection when adding a new profile
+      handleFinish();
+    } else {
+      setStep('theme');
+    }
+  }, [mode, isAddingNew, handleFinish]);
 
   const paletteOptions: {
     palette: ThemePalette;

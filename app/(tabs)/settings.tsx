@@ -221,7 +221,7 @@ export default function SettingsScreen() {
       memoryCount += count;
     }
     const milestoneCount = await MilestoneRepository.countByPregnancyChapters(profile.id);
-    const journalCount = await MemoryRepository.countPregnancyJournal();
+    const journalCount = await MemoryRepository.countPregnancyJournal(profile.id);
     setSwitchPreview({
       pregnancyChapterCount: pregnancyChapters.length,
       pregnancyMemoryCount: memoryCount,
@@ -248,7 +248,7 @@ export default function SettingsScreen() {
       });
 
       // 2. Create a "Before you were born" chapter and move pregnancy journal entries
-      const pregnancyCount = await MemoryRepository.countPregnancyJournal();
+      const pregnancyCount = await MemoryRepository.countPregnancyJournal(profile.id);
       if (pregnancyCount > 0) {
         const chapter = await ChapterRepository.create({
           babyId: profile.id,
@@ -256,7 +256,8 @@ export default function SettingsScreen() {
           startDate: profile.edd || dobStr,
           description: t('settings.beforeBirthChapterDescription'),
         });
-        await MemoryRepository.movePregnancyJournalToChapter(chapter.id);
+        await MemoryRepository.movePregnancyJournalToChapter(chapter.id, profile.id);
+        await BabyProfileRepository.setBeforeBirthChapterId(profile.id, chapter.id);
       }
 
       // 3. Archive pregnancy chapters and milestones (not delete)
@@ -383,7 +384,7 @@ export default function SettingsScreen() {
               await loadProfile();
             } catch (error) {
               console.error('Failed to delete profile:', error);
-              Alert.alert(t('alerts.errorTitle'), t('alerts.deleteFailed'));
+              Alert.alert(t('alerts.errorTitle'), t('alerts.deleteProfileFailed'));
             }
           },
         },

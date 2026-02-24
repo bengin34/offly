@@ -298,15 +298,24 @@ export const MemoryRepository = {
     return result.changes > 0;
   },
 
-  async search(query: string): Promise<Memory[]> {
+  async search(query: string, babyId?: string): Promise<Memory[]> {
     const db = await getDatabase();
     const searchPattern = `%${query}%`;
-    const rows = await db.getAllAsync<MemoryRow>(
-      `SELECT * FROM memories
-       WHERE title LIKE ? OR description LIKE ?
-       ORDER BY date DESC`,
-      [searchPattern, searchPattern]
-    );
+    const rows = babyId
+      ? await db.getAllAsync<MemoryRow>(
+          `SELECT * FROM memories
+           WHERE baby_id = ? AND (title LIKE ? OR description LIKE ?)
+           ORDER BY date DESC
+           LIMIT 200`,
+          [babyId, searchPattern, searchPattern]
+        )
+      : await db.getAllAsync<MemoryRow>(
+          `SELECT * FROM memories
+           WHERE title LIKE ? OR description LIKE ?
+           ORDER BY date DESC
+           LIMIT 200`,
+          [searchPattern, searchPattern]
+        );
     return rows.map(rowToMemory);
   },
 
@@ -406,12 +415,17 @@ export const MemoryRepository = {
   },
 
   // Move pregnancy journal entries to a chapter (for mode switch)
-  async movePregnancyJournalToChapter(chapterId: string): Promise<number> {
+  async movePregnancyJournalToChapter(chapterId: string, babyId?: string): Promise<number> {
     const db = await getDatabase();
-    const result = await db.runAsync(
-      'UPDATE memories SET chapter_id = ?, is_pregnancy_journal = 0 WHERE is_pregnancy_journal = 1',
-      [chapterId]
-    );
+    const result = babyId
+      ? await db.runAsync(
+          'UPDATE memories SET chapter_id = ?, is_pregnancy_journal = 0 WHERE is_pregnancy_journal = 1 AND baby_id = ?',
+          [chapterId, babyId]
+        )
+      : await db.runAsync(
+          'UPDATE memories SET chapter_id = ?, is_pregnancy_journal = 0 WHERE is_pregnancy_journal = 1',
+          [chapterId]
+        );
     return result.changes;
   },
 };

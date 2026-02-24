@@ -16,6 +16,7 @@ export interface BabyProfile {
   previousMode?: BabyMode; // Stored for undo (pregnant→born switch)
   previousEdd?: string; // EDD before mode switch, for undo
   modeSwitchedAt?: string; // ISO date string, when mode was switched
+  beforeBirthChapterId?: string; // ID of "Before you were born" chapter created on mode switch
   showArchivedChapters: boolean; // Show pregnancy chapters in timeline (when in born mode)
   createdAt: string;
   updatedAt: string;
