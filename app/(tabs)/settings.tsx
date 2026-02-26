@@ -115,15 +115,15 @@ export default function SettingsScreen() {
       0
     ).toISOString();
 
-  const { activeBaby, loadActiveProfile } = useProfileStore();
+  const { loadActiveProfile } = useProfileStore();
 
   const loadProfile = useCallback(async () => {
     await loadActiveProfile();
-    const p = activeBaby ?? await BabyProfileRepository.getDefault();
+    const p = useProfileStore.getState().activeBaby ?? await BabyProfileRepository.getDefault();
     setProfile(p);
     const all = await BabyProfileRepository.getAll();
     setAllProfiles(all);
-  }, [activeBaby, loadActiveProfile]);
+  }, [loadActiveProfile]);
 
   useFocusEffect(
     useCallback(() => {
@@ -246,6 +246,7 @@ export default function SettingsScreen() {
         mode: 'born',
         birthdate: dobStr,
       });
+      await BabyProfileRepository.setShowArchivedChapters(profile.id, true);
 
       // 2. Create a "Before you were born" chapter and move pregnancy journal entries
       const pregnancyCount = await MemoryRepository.countPregnancyJournal(profile.id);
@@ -400,17 +401,33 @@ export default function SettingsScreen() {
   const currentThemeLabel =
     themeOptions.find((o) => o.mode === mode)?.label || themeOptions[0]?.label;
 
+  const trOrFallback = useCallback(
+    (key: string, fallback: string) => {
+      const translated = t(key);
+      return translated === key ? fallback : translated;
+    },
+    [t]
+  );
+
   const paletteOptions: {
     palette: ThemePalette;
     label: string;
     description: string;
     icon: keyof typeof Ionicons.glyphMap;
-  }[] = (Object.keys(paletteMetadata) as ThemePalette[]).map((value) => ({
-    palette: value,
-    ...paletteMetadata[value],
-  }));
+  }[] = (Object.keys(paletteMetadata) as ThemePalette[]).map((value) => {
+    const base = paletteMetadata[value];
+    return {
+      palette: value,
+      label: trOrFallback(`settings.palette.${value}.label`, base.label),
+      description: trOrFallback(`settings.palette.${value}.description`, base.description),
+      icon: base.icon,
+    };
+  });
 
-  const currentPaletteLabel = paletteMetadata[palette]?.label ?? paletteMetadata.blush.label;
+  const currentPaletteLabel =
+    paletteOptions.find((option) => option.palette === palette)?.label ??
+    paletteOptions[0]?.label ??
+    paletteMetadata.blush.label;
 
   const languageOptions: { locale: Locale; label: string }[] = supportedLocales.map((language) => ({
     locale: language,
@@ -547,7 +564,7 @@ export default function SettingsScreen() {
         <ProUpgradeBanner style={styles.proBanner} />
 
         {/* Profile Switcher Section */}
-        {allProfiles.length > 1 && (
+        {allProfiles.length > 1 && profile?.mode !== 'pregnant' && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>
               {t('profiles.switchProfile').toLocaleUpperCase(locale)}
@@ -1058,6 +1075,7 @@ export default function SettingsScreen() {
           <View style={styles.modalContent}>
             <DialogHeader
               title={t('settings.chooseAppearance')}
+              titleNumberOfLines={2}
               onClose={() => setShowThemeModal(false)}
               actionLabel={t('common.done')}
               onAction={() => setShowThemeModal(false)}
@@ -1114,6 +1132,7 @@ export default function SettingsScreen() {
           <View style={styles.modalContent}>
             <DialogHeader
               title={t('settings.chooseColorTheme')}
+              titleNumberOfLines={2}
               onClose={() => setShowPaletteModal(false)}
               actionLabel={t('common.done')}
               onAction={() => setShowPaletteModal(false)}
@@ -1135,6 +1154,7 @@ export default function SettingsScreen() {
                   key={option.palette}
                   style={[
                     styles.modalOption,
+                    styles.paletteModalOption,
                     isActive && styles.modalOptionActive,
                   ]}
                   onPress={() => handleSelectPalette(option.palette)}
@@ -1145,16 +1165,19 @@ export default function SettingsScreen() {
                       size={22}
                       color={isActive ? theme.primary : theme.textSecondary}
                     />
-                    <View>
+                    <View style={styles.paletteTextContainer}>
                       <Text
                         style={[
                           styles.modalOptionText,
                           isActive && styles.modalOptionTextActive,
                         ]}
+                        numberOfLines={2}
                       >
                         {option.label}
                       </Text>
-                      <Text style={styles.paletteDescription}>{option.description}</Text>
+                      <Text style={styles.paletteDescription} numberOfLines={2}>
+                        {option.description}
+                      </Text>
                     </View>
                   </View>
                   <View style={styles.paletteOptionRight}>
@@ -1163,9 +1186,11 @@ export default function SettingsScreen() {
                       <View style={[styles.paletteDot, { backgroundColor: preview.accent }]} />
                       <View style={[styles.paletteDot, { backgroundColor: preview.milestone }]} />
                     </View>
-                    {isActive && (
-                      <Ionicons name="checkmark" size={22} color={theme.primary} />
-                    )}
+                    <View style={styles.paletteCheckSlot}>
+                      {isActive && (
+                        <Ionicons name="checkmark" size={22} color={theme.primary} />
+                      )}
+                    </View>
                   </View>
                 </TouchableOpacity>
               );
@@ -1177,26 +1202,31 @@ export default function SettingsScreen() {
       {/* Language Selection Modal */}
       <Modal
         visible={showLanguageModal}
-        transparent
-        animationType="fade"
+        animationType="slide"
+        presentationStyle="fullScreen"
         onRequestClose={() => setShowLanguageModal(false)}
       >
-        <Pressable style={styles.modalOverlay} onPress={() => setShowLanguageModal(false)}>
-          <View style={styles.modalContent}>
-            <DialogHeader
-              title={t('settings.chooseLanguage')}
-              onClose={() => setShowLanguageModal(false)}
-              actionLabel={t('common.done')}
-              onAction={() => setShowLanguageModal(false)}
-              palette={{
-                text: theme.text,
-                textSecondary: theme.textSecondary,
-                textMuted: theme.textMuted,
-                primary: theme.primary,
-                border: theme.border,
-              }}
-              containerStyle={styles.modalHeader}
-            />
+        <View style={styles.languageModalScreen}>
+          <DialogHeader
+            title={t('settings.chooseLanguage')}
+            titleNumberOfLines={2}
+            onClose={() => setShowLanguageModal(false)}
+            actionLabel={t('common.done')}
+            onAction={() => setShowLanguageModal(false)}
+            palette={{
+              text: theme.text,
+              textSecondary: theme.textSecondary,
+              textMuted: theme.textMuted,
+              primary: theme.primary,
+              border: theme.border,
+            }}
+            containerStyle={styles.languageModalHeader}
+          />
+          <ScrollView
+            style={styles.languageModalList}
+            contentContainerStyle={styles.languageModalListContent}
+            showsVerticalScrollIndicator={false}
+          >
             {languageOptions.map((option) => (
               <TouchableOpacity
                 key={option.locale}
@@ -1226,8 +1256,8 @@ export default function SettingsScreen() {
                 )}
               </TouchableOpacity>
             ))}
-          </View>
-        </Pressable>
+          </ScrollView>
+        </View>
       </Modal>
 
       {/* Data Transfer Modal */}
@@ -1241,6 +1271,7 @@ export default function SettingsScreen() {
           <View style={styles.modalContent}>
             <DialogHeader
               title={t('settings.dataTitle')}
+              titleNumberOfLines={2}
               onClose={() => setShowDataModal(false)}
               actionLabel={t('common.close')}
               onAction={() => setShowDataModal(false)}
@@ -1736,7 +1767,7 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       borderRadius: borderRadius.xl,
       padding: spacing.lg,
       width: '100%',
-      maxWidth: 320,
+      maxWidth: 360,
       shadowColor: theme.shadow,
       shadowOffset: { width: 0, height: 10 },
       shadowOpacity: 0.3,
@@ -1766,6 +1797,22 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
     modalHeader: {
       marginBottom: spacing.md,
     },
+    languageModalScreen: {
+      flex: 1,
+      backgroundColor: theme.background,
+      paddingHorizontal: spacing.md,
+      paddingTop: Platform.OS === 'ios' ? spacing.xl : spacing.lg,
+      paddingBottom: spacing.md,
+    },
+    languageModalHeader: {
+      marginBottom: spacing.sm,
+    },
+    languageModalList: {
+      flex: 1,
+    },
+    languageModalListContent: {
+      paddingBottom: spacing.xl,
+    },
     modalOption: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -1778,6 +1825,9 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
     modalOptionActive: {
       backgroundColor: theme.backgroundSecondary,
     },
+    paletteModalOption: {
+      alignItems: 'flex-start',
+    },
     modalOptionLeft: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -1785,20 +1835,34 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
     },
     paletteOptionLeft: {
       flexDirection: 'row',
-      alignItems: 'center',
+      alignItems: 'flex-start',
       gap: spacing.md,
       flex: 1,
+      minWidth: 0,
+    },
+    paletteTextContainer: {
+      flex: 1,
+      minWidth: 0,
     },
     paletteOptionRight: {
       flexDirection: 'row',
       alignItems: 'center',
       gap: spacing.sm,
+      flexShrink: 0,
+      marginLeft: spacing.sm,
     },
     paletteDescription: {
       fontSize: fontSize.xs,
       fontFamily: fonts.body,
       color: theme.textSecondary,
       marginTop: 2,
+      lineHeight: 18,
+    },
+    paletteCheckSlot: {
+      width: 22,
+      height: 22,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     palettePreview: {
       flexDirection: 'row',

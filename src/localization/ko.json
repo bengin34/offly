@@ -139,6 +139,24 @@
     "createBackup": "백업 생성",
     "moreExportImportOptions": "추가 내보내기/가져오기 옵션",
     "chooseColorTheme": "색상 테마 선택",
+    "palette": {
+      "blush": {
+        "label": "여아 (핑크)",
+        "description": "부드러운 핑크 파스텔 톤"
+      },
+      "sky": {
+        "label": "남아 (블루)",
+        "description": "차분한 블루 파스텔 톤"
+      },
+      "mint": {
+        "label": "민트 가든",
+        "description": "산뜻한 그린 파스텔 톤"
+      },
+      "lavender": {
+        "label": "라벤더 드림",
+        "description": "은은한 퍼플 파스텔 톤"
+      }
+    },
     "modeSwitchTitle": "아기가 태어났어요!",
     "modeSwitchConfirm": "확인",
     "modeSwitchDescription": "출생일을 입력하세요. 임신 기간 기록은 ‘{chapter}’ 챕터로 이동하고 금고 열림 날짜가 재계산됩니다.",

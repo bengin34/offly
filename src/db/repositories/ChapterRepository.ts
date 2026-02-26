@@ -35,16 +35,14 @@ export const ChapterRepository = {
     const db = await getDatabase();
 
     if (babyId) {
-      // Check if we should show archived chapters (for born mode with pregnancy chapters)
       const { BabyProfileRepository } = await import('./BabyProfileRepository');
       const profile = await BabyProfileRepository.getById(babyId);
+      const includeArchived = profile?.mode === 'born' && Boolean(profile.showArchivedChapters);
 
       let query: string;
-      if (profile?.showArchivedChapters) {
-        // Show all chapters (both active and archived)
+      if (includeArchived) {
         query = 'SELECT * FROM chapters WHERE baby_id = ? ORDER BY start_date DESC';
       } else {
-        // Show only active chapters
         query = 'SELECT * FROM chapters WHERE baby_id = ? AND archived_at IS NULL ORDER BY start_date DESC';
       }
 
@@ -62,10 +60,14 @@ export const ChapterRepository = {
     const db = await getDatabase();
 
     if (babyId) {
-      const result = await db.getFirstAsync<{ count: number }>(
-        'SELECT COUNT(*) as count FROM chapters WHERE baby_id = ? AND archived_at IS NULL',
-        [babyId]
-      );
+      const { BabyProfileRepository } = await import('./BabyProfileRepository');
+      const profile = await BabyProfileRepository.getById(babyId);
+      const includeArchived = profile?.mode === 'born' && Boolean(profile.showArchivedChapters);
+      const query =
+        includeArchived
+          ? 'SELECT COUNT(*) as count FROM chapters WHERE baby_id = ?'
+          : 'SELECT COUNT(*) as count FROM chapters WHERE baby_id = ? AND archived_at IS NULL';
+      const result = await db.getFirstAsync<{ count: number }>(query, [babyId]);
       return result?.count ?? 0;
     }
 
@@ -80,12 +82,12 @@ export const ChapterRepository = {
 
     let rows: ChapterRow[];
     if (babyId) {
-      // Check if we should show archived chapters
       const { BabyProfileRepository } = await import('./BabyProfileRepository');
       const profile = await BabyProfileRepository.getById(babyId);
+      const includeArchived = profile?.mode === 'born' && Boolean(profile.showArchivedChapters);
 
       let query: string;
-      if (profile?.showArchivedChapters) {
+      if (includeArchived) {
         query = 'SELECT * FROM chapters WHERE baby_id = ? ORDER BY start_date DESC';
       } else {
         query = 'SELECT * FROM chapters WHERE baby_id = ? AND archived_at IS NULL ORDER BY start_date DESC';
@@ -116,12 +118,12 @@ export const ChapterRepository = {
 
     let rows: ChapterRow[];
     if (babyId) {
-      // Check if we should show archived chapters
       const { BabyProfileRepository } = await import('./BabyProfileRepository');
       const profile = await BabyProfileRepository.getById(babyId);
+      const includeArchived = profile?.mode === 'born' && Boolean(profile.showArchivedChapters);
 
       let query: string;
-      if (profile?.showArchivedChapters) {
+      if (includeArchived) {
         query = 'SELECT * FROM chapters WHERE baby_id = ? ORDER BY start_date ASC';
       } else {
         query = 'SELECT * FROM chapters WHERE baby_id = ? AND archived_at IS NULL ORDER BY start_date ASC';
@@ -358,16 +360,82 @@ export const ChapterRepository = {
   },
 
   /**
+   * Ensure all weekly pregnancy chapters exist.
+   * Creates missing weeks only; does not generate milestones.
+   */
+  async ensurePregnancyWeekChapters(babyId: string, edd: string): Promise<Chapter[]> {
+    const { PREGNANCY_CHAPTER_TEMPLATES, getPregnancyChapterDates } = await import(
+      '../../constants/pregnancyChapterTemplates'
+    );
+    const db = await getDatabase();
+    const now = getTimestamp();
+
+    const existing = await this.getAllIncludingArchived(babyId);
+    const created: Chapter[] = [];
+
+    for (const template of PREGNANCY_CHAPTER_TEMPLATES) {
+      const sameTitle = existing.filter((ch) => ch.title === template.title);
+      const { startDate, endDate } = getPregnancyChapterDates(edd, template);
+
+      // If duplicates exist for a week title, keep a single canonical row and archive extras.
+      if (sameTitle.length > 0) {
+        const keeper = [...sameTitle].sort((a, b) => {
+          const aArchived = Boolean(a.archivedAt);
+          const bArchived = Boolean(b.archivedAt);
+          if (aArchived !== bArchived) return aArchived ? 1 : -1;
+          return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+        })[0];
+
+        for (const duplicate of sameTitle) {
+          if (duplicate.id === keeper.id || duplicate.archivedAt) continue;
+          try {
+            await this.archive(duplicate.id);
+          } catch (error) {
+            console.warn('[ensurePregnancyWeekChapters] failed to archive duplicate', duplicate.id, error);
+          }
+        }
+
+        try {
+          await db.runAsync(
+            `UPDATE chapters
+             SET start_date = ?, end_date = ?, description = ?, archived_at = NULL, updated_at = ?
+             WHERE id = ?`,
+            [startDate, endDate, template.description || null, now, keeper.id]
+          );
+        } catch (error) {
+          console.warn('[ensurePregnancyWeekChapters] failed to normalize', template.title, error);
+        }
+        continue;
+      }
+
+      try {
+        const chapter = await this.create({
+          babyId,
+          title: template.title,
+          startDate,
+          endDate,
+          description: template.description,
+        });
+        created.push(chapter);
+      } catch (error) {
+        console.warn('[ensurePregnancyWeekChapters] failed for', template.title, error);
+      }
+    }
+
+    return created;
+  },
+
+  /**
    * Auto-generate trimester chapters for pregnancy mode
    * Called when profile mode is 'pregnant' and edd is set
    */
   async autoGeneratePregnancyChapters(babyId: string, edd: string): Promise<Chapter[]> {
-    const { PREGNANCY_CHAPTER_TEMPLATES, getPregnancyChapterDates } = await import(
+    const { getPregnancyChapterTemplateByTitle } = await import(
       '../../constants/pregnancyChapterTemplates'
     );
 
     // Backward compatibility: Delete old non-weekly chapters if they exist
-    const existing = await this.getAll(babyId);
+    const existing = await this.getAllIncludingArchived(babyId);
     const hasOldChapters = existing.some((ch) =>
       ch.title.includes('Trimester') || ch.title.includes('Month')
     );
@@ -382,28 +450,21 @@ export const ChapterRepository = {
       }
     }
 
-    const created: Chapter[] = [];
+    const created = await this.ensurePregnancyWeekChapters(babyId, edd);
 
-    for (const template of PREGNANCY_CHAPTER_TEMPLATES) {
-      // Check if already exists
-      const updatedExisting = await this.getAll(babyId);
-      const alreadyExists = updatedExisting.some((ch) => ch.title === template.title);
+    for (const chapter of created) {
+      const template = getPregnancyChapterTemplateByTitle(chapter.title);
+      if (!template) continue;
 
-      if (!alreadyExists) {
-        const { startDate, endDate } = getPregnancyChapterDates(edd, template);
-
-        const chapter = await this.create({
-          babyId,
-          title: template.title,
-          startDate,
-          endDate,
-          description: template.description,
-        });
-
-        created.push(chapter);
-
-        // Auto-generate milestones for this trimester
+      // Auto-generate milestones for this chapter
+      try {
         await this.autoGenerateMilestonesForPregnancyChapter(babyId, chapter.id, template);
+      } catch (error) {
+        console.warn(
+          '[autoGeneratePregnancyChapters] milestone generation failed for',
+          chapter.title,
+          error
+        );
       }
     }
 

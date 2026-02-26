@@ -161,7 +161,7 @@ const createStyles = (theme: ThemeColors) =>
       borderRadius: borderRadius.xl,
       padding: spacing.lg,
       width: '100%',
-      maxWidth: 320,
+      maxWidth: 360,
       shadowColor: theme.shadow,
       shadowOffset: { width: 0, height: 10 },
       shadowOpacity: 0.3,

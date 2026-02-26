@@ -139,6 +139,24 @@
     "createBackup": "Créer une sauvegarde",
     "moreExportImportOptions": "Plus d’options d’export et d’import",
     "chooseColorTheme": "Choisir le thème de couleur",
+    "palette": {
+      "blush": {
+        "label": "Bébé fille (Rose)",
+        "description": "Tons pastel rose doux"
+      },
+      "sky": {
+        "label": "Bébé garçon (Bleu)",
+        "description": "Tons pastel bleus apaisants"
+      },
+      "mint": {
+        "label": "Jardin menthe",
+        "description": "Tons pastel verts frais"
+      },
+      "lavender": {
+        "label": "Rêve lavande",
+        "description": "Tons pastel violets doux"
+      }
+    },
     "modeSwitchTitle": "Bébé est né !",
     "modeSwitchConfirm": "Confirmer",
     "modeSwitchDescription": "Saisissez la date de naissance. Les entrées du journal de grossesse seront déplacées vers le chapitre \"{chapter}\" et les dates de déverrouillage du coffre seront recalculées.",

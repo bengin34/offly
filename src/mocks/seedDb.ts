@@ -10,6 +10,11 @@ const MOCK_BABY_PHOTOS = [
   Image.resolveAssetSource(require('../../assets/mocks/baby/2.jpg')).uri,
   Image.resolveAssetSource(require('../../assets/mocks/baby/3.jpg')).uri,
 ];
+const MOCK_PREGNANCY_PHOTOS = [
+  Image.resolveAssetSource(require('../../assets/mocks/pregnant/19weeks.jpg')).uri,
+  Image.resolveAssetSource(require('../../assets/mocks/pregnant/20weeks.jpg')).uri,
+  Image.resolveAssetSource(require('../../assets/mocks/pregnant/21weeks.jpg')).uri,
+];
 
 // Sub-photos for the first chapter's first memory (multi-photo gallery)
 const MOCK_BABY_PHOTO_1_1 = Image.resolveAssetSource(require('../../assets/mocks/baby/1.1.jpg')).uri;
@@ -60,20 +65,39 @@ export async function seedMockDatabase(): Promise<void> {
 
     const chapters = await db.getAllAsync<{
       id: string;
+      baby_id: string;
+      title: string;
+      mode: string;
       start_date: string;
       cover_image_uri: string | null;
-    }>('SELECT id, start_date, cover_image_uri FROM chapters ORDER BY start_date ASC');
+    }>(
+      `SELECT c.id, c.baby_id, c.title, c.start_date, c.cover_image_uri, bp.mode
+       FROM chapters c
+       LEFT JOIN baby_profiles bp ON bp.id = c.baby_id
+       ORDER BY c.start_date ASC`
+    );
 
     for (let i = 0; i < chapters.length; i++) {
       const chapter = chapters[i];
-      const coverPhotoUri = MOCK_BABY_PHOTOS[i % MOCK_BABY_PHOTOS.length];
+      const isPregnancyChapter = chapter.mode === 'pregnant' && /^Week\s+\d+$/i.test(chapter.title);
+      const coverPool = isPregnancyChapter ? MOCK_PREGNANCY_PHOTOS : MOCK_BABY_PHOTOS;
+      const coverPhotoUri = coverPool[i % coverPool.length];
+      const hasWrongMockCover =
+        isPregnancyChapter &&
+        chapter.cover_image_uri !== null &&
+        chapter.cover_image_uri.includes('/mocks/baby/');
 
-      // Set cover photo if not already set
-      if (!chapter.cover_image_uri) {
+      // Set cover photo if missing; for pregnancy chapters also fix previously-seeded baby covers.
+      if (!chapter.cover_image_uri || hasWrongMockCover) {
         await db.runAsync(
           'UPDATE chapters SET cover_image_uri = ?, updated_at = ? WHERE id = ?',
           [coverPhotoUri, getTimestamp(), chapter.id]
         );
+      }
+
+      // Do not seed born-style memories into pregnancy timeline chapters.
+      if (isPregnancyChapter) {
+        continue;
       }
 
       // In dev mode with forceMockReseed: wipe existing mock memories so they re-seed fresh

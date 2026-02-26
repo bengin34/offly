@@ -89,7 +89,7 @@ export const BabyProfileRepository = {
         input.edd ?? null,
         input.mode ?? 'born',
         isDefault,
-        1, // Show archived chapters by default
+        (input.mode ?? 'born') === 'born' ? 1 : 0,
         now,
         now,
       ]
@@ -198,6 +198,7 @@ export const BabyProfileRepository = {
          mode = ?,
          birthdate = NULL,
          edd = ?,
+         show_archived_chapters = 0,
          previous_mode = NULL,
          previous_edd = NULL,
          mode_switched_at = NULL,

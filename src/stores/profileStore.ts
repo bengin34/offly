@@ -36,7 +36,12 @@ export const useProfileStore = create<ProfileState & ProfileActions>((set, get) 
       if (savedId) {
         const profile = await BabyProfileRepository.getById(savedId);
         if (profile) {
-          set({ activeBaby: profile, isLoaded: true });
+          const current = get().activeBaby;
+          const isSameProfile =
+            current?.id === profile.id && current?.updatedAt === profile.updatedAt;
+          if (!isSameProfile || !get().isLoaded) {
+            set({ activeBaby: profile, isLoaded: true });
+          }
           return;
         }
       }
@@ -49,13 +54,23 @@ export const useProfileStore = create<ProfileState & ProfileActions>((set, get) 
           JSON.stringify({ activeBabyId: defaultProfile.id })
         );
       }
-      set({ activeBaby: defaultProfile, isLoaded: true });
+      const current = get().activeBaby;
+      const isSameProfile =
+        current?.id === defaultProfile?.id && current?.updatedAt === defaultProfile?.updatedAt;
+      if (!isSameProfile || !get().isLoaded) {
+        set({ activeBaby: defaultProfile, isLoaded: true });
+      }
     } catch (error) {
       console.error('Failed to load active profile:', error);
       // Last resort: try default
       try {
         const fallback = await BabyProfileRepository.getDefault();
-        set({ activeBaby: fallback, isLoaded: true });
+        const current = get().activeBaby;
+        const isSameProfile =
+          current?.id === fallback?.id && current?.updatedAt === fallback?.updatedAt;
+        if (!isSameProfile || !get().isLoaded) {
+          set({ activeBaby: fallback, isLoaded: true });
+        }
       } catch {
         set({ isLoaded: true });
       }

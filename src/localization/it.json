@@ -139,6 +139,24 @@
     "createBackup": "Crea backup",
     "moreExportImportOptions": "Altre opzioni di esportazione e importazione",
     "chooseColorTheme": "Scegli tema colore",
+    "palette": {
+      "blush": {
+        "label": "Bimba (Rosa)",
+        "description": "Toni pastello rosa delicati"
+      },
+      "sky": {
+        "label": "Bimbo (Blu)",
+        "description": "Toni pastello blu rilassanti"
+      },
+      "mint": {
+        "label": "Giardino menta",
+        "description": "Toni pastello verdi freschi"
+      },
+      "lavender": {
+        "label": "Sogno lavanda",
+        "description": "Toni pastello viola delicati"
+      }
+    },
     "modeSwitchTitle": "Il bebè è nato!",
     "modeSwitchConfirm": "Conferma",
     "modeSwitchDescription": "Inserisci la data di nascita. Le voci del diario di gravidanza verranno spostate nel capitolo \"{chapter}\" e le date di sblocco del caveau verranno ricalcolate.",
@@ -946,8 +964,8 @@
     "bornDaysAgo": "Nato {count} giorni fa",
     "bornWeekAgo": "Nato {count} settimana fa",
     "bornWeeksAgo": "Nato {count} settimane fa",
-    "arrivingInWeek": "Il bambino arriva tra {count} settimana",
-    "arrivingInWeeks": "Il bambino arriva tra {count} settimane",
+    "arrivingInWeek": "Arriva tra {count} sett.",
+    "arrivingInWeeks": "Arriva tra {count} sett.",
     "weekContext12": "Primo trimestre completato",
     "weekContext20": "A metà strada",
     "weekContext28": "Inizia il terzo trimestre",

@@ -30,7 +30,8 @@ import { useProfileStore } from '../../src/stores/profileStore';
 import { formatHeaderTitle } from '../../src/utils/ageFormatter';
 import type { ChapterWithMilestoneProgress, BabyProfile, VaultWithEntryCount } from '../../src/types';
 import { useMockData } from '../../src/mocks/useMockData';
-import { cleanupBornChapters } from '../../src/utils/autoGenerate';
+import { isMockActive } from '../../src/mocks/config';
+import { autoGenerateTimeline, cleanupBornChapters } from '../../src/utils/autoGenerate';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -52,6 +53,8 @@ export default function HomeScreen() {
   const scrollViewRef = useRef<ScrollView>(null);
   const shouldAutoFocusCurrentChapter = useRef(false);
   const chapterYByIdRef = useRef<Record<string, number>>({});
+  const loadInFlightRef = useRef(false);
+  const pendingReloadRef = useRef(false);
   const fabAnim = useRef(new Animated.Value(0)).current;
 
   const getCurrentChapterIdFromList = useCallback((list: ChapterWithMilestoneProgress[]) => {
@@ -76,10 +79,20 @@ export default function HomeScreen() {
   }, []);
 
   const loadData = useCallback(async () => {
+    if (loadInFlightRef.current) {
+      pendingReloadRef.current = true;
+      return;
+    }
+
+    loadInFlightRef.current = true;
     shouldAutoFocusCurrentChapter.current = true;
     try {
       // Use active profile from store instead of getDefault()
       let babyProfile = activeBaby;
+      if (babyProfile) {
+        const refreshedProfile = await BabyProfileRepository.getById(babyProfile.id);
+        babyProfile = refreshedProfile ?? babyProfile;
+      }
       if (!babyProfile) {
         babyProfile = await BabyProfileRepository.getDefault();
       }
@@ -99,24 +112,42 @@ export default function HomeScreen() {
       await VaultRepository.checkAndUnlock(babyProfile.id);
 
       if (babyProfile.mode === 'pregnant') {
+        // Ensure previously archived pregnancy weeks are visible again in pregnancy mode.
+        await ChapterRepository.unarchivePregnancyChapters(babyProfile.id);
+
         // Auto-generate weekly chapters (handles migration from old formats)
         if (babyProfile.edd) {
-          await ChapterRepository.autoGeneratePregnancyChapters(babyProfile.id, babyProfile.edd);
+          try {
+            await ChapterRepository.autoGeneratePregnancyChapters(babyProfile.id, babyProfile.edd);
+          } catch (error) {
+            console.warn('Pregnancy chapter generation failed, continuing with existing data:', error);
+          }
         }
 
         // Load chapters with progress (same as born mode)
         let chapterData = await ChapterRepository.getAllWithProgress(babyProfile.id);
+        if (chapterData.length === 0 && babyProfile.edd) {
+          try {
+            await ChapterRepository.ensurePregnancyWeekChapters(babyProfile.id, babyProfile.edd);
+            chapterData = await ChapterRepository.getAllWithProgress(babyProfile.id);
+          } catch (error) {
+            console.warn('Pregnancy fallback generation failed:', error);
+          }
+        }
 
-        // Apply mock data if active
+        // In pregnancy mock mode, keep real week titles from DB
+        // but force pregnancy cover images.
         if (pregnancyMockData) {
           chapterData = chapterData.map((chapter, index) => {
-            const mock = pregnancyMockData.milestones[index % pregnancyMockData.milestones.length];
+            const weekMatch = chapter.title.match(/^Week\s+(\d+)$/i);
+            const weekNumber = weekMatch ? Number.parseInt(weekMatch[1], 10) : index + 1;
+            const mock = pregnancyMockData.milestones[
+              Math.max(0, weekNumber - 1) % pregnancyMockData.milestones.length
+            ];
             return {
               ...chapter,
-              title: mock?.title ?? chapter.title,
-              coverImageUri: mock?.imageUrl,
-              milestoneFilled: Math.min(index + 2, chapter.milestoneTotal),
-              memoryCount: index + 3,
+              // In pregnancy mock mode, always use pregnancy covers (prevents leaked baby covers).
+              coverImageUri: mock?.imageUrl ?? chapter.coverImageUri ?? null,
             };
           });
         }
@@ -139,17 +170,23 @@ export default function HomeScreen() {
         await cleanupBornChapters(babyProfile.id);
 
         let chapterData = await ChapterRepository.getAllWithProgress(babyProfile.id);
+        if (chapterData.length === 0 && isMockActive() && babyProfile.birthdate) {
+          try {
+            await autoGenerateTimeline(babyProfile);
+            chapterData = await ChapterRepository.getAllWithProgress(babyProfile.id);
+          } catch (error) {
+            console.warn('Born timeline fallback generation failed:', error);
+          }
+        }
 
-        // Apply mock data if active
+        // In mock mode, only fill missing cover photos.
+        // Keep real chapter titles from DB.
         if (babyMockData) {
           chapterData = chapterData.map((chapter, index) => {
             const mock = babyMockData.milestones[index % babyMockData.milestones.length];
             return {
               ...chapter,
-              title: mock?.title ?? chapter.title,
-              coverImageUri: mock?.imageUrl,
-              milestoneFilled: Math.min(index + 2, chapter.milestoneTotal),
-              memoryCount: index + 3,
+              coverImageUri: chapter.coverImageUri ?? mock?.imageUrl ?? null,
             };
           });
         }
@@ -166,20 +203,40 @@ export default function HomeScreen() {
     } catch (error) {
       console.error('Failed to load home data:', error);
     } finally {
+      loadInFlightRef.current = false;
       setIsLoading(false);
       setIsRefreshing(false);
+
+      if (pendingReloadRef.current) {
+        pendingReloadRef.current = false;
+        void loadData();
+      }
     }
   }, [activeBaby, getCurrentChapterIdFromList, scrollToCurrentChapter, babyMockData, pregnancyMockData]);
 
   useFocusEffect(
     useCallback(() => {
-      loadActiveProfile().then(() => loadData());
+      let cancelled = false;
+
+      const run = async () => {
+        await loadActiveProfile();
+        if (cancelled) return;
+        await loadData();
+      };
+
+      run().catch((error) => {
+        console.error('Failed to run home focus load:', error);
+      });
+
+      return () => {
+        cancelled = true;
+      };
     }, [loadActiveProfile, loadData])
   );
 
   const handleRefresh = () => {
     setIsRefreshing(true);
-    loadData();
+    void loadData();
   };
 
   const toggleFab = () => {
@@ -230,6 +287,7 @@ export default function HomeScreen() {
 
   useEffect(() => {
     let dynamicTitle = formatHeaderTitle(profile, t);
+    const canSwitchProfile = profile?.mode !== 'pregnant';
 
     // For pregnancy mode, add current week to title
     if (profile?.mode === 'pregnant' && profile.edd) {
@@ -239,23 +297,25 @@ export default function HomeScreen() {
 
     navigation.setOptions({
       headerTitle: dynamicTitle || t('tabs.chapters'),
-      headerRight: () => (
-        <TouchableOpacity
-          onPress={() => setShowProfileSwitcher(true)}
-          style={styles.headerProfileButton}
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-        >
-          <Ionicons
-            name={profile?.mode === 'pregnant' ? 'heart' : 'happy'}
-            size={18}
-            color={theme.primary}
-          />
-          <Text style={styles.headerProfileName} numberOfLines={1}>
-            {profile?.name || t('profiles.defaultName')}
-          </Text>
-          <Ionicons name="chevron-down" size={14} color={theme.textMuted} />
-        </TouchableOpacity>
-      ),
+      headerRight: canSwitchProfile
+        ? () => (
+            <TouchableOpacity
+              onPress={() => setShowProfileSwitcher(true)}
+              style={styles.headerProfileButton}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <Ionicons
+                name={profile?.mode === 'pregnant' ? 'heart' : 'happy'}
+                size={18}
+                color={theme.primary}
+              />
+              <Text style={styles.headerProfileName} numberOfLines={1}>
+                {profile?.name || t('profiles.defaultName')}
+              </Text>
+              <Ionicons name="chevron-down" size={14} color={theme.textMuted} />
+            </TouchableOpacity>
+          )
+        : undefined,
     });
   }, [navigation, profile, t, theme, styles]);
 
@@ -304,6 +364,18 @@ export default function HomeScreen() {
     return '';
   }, [t]);
 
+  const getDisplayChapterTitle = useCallback(
+    (rawTitle: string) => {
+      if (!isPregnant) return rawTitle;
+      const weekMatch = rawTitle.match(/^Week\s+(\d+)$/i);
+      if (!weekMatch) return rawTitle;
+      const week = Number.parseInt(weekMatch[1], 10);
+      if (!Number.isFinite(week)) return rawTitle;
+      return t('home.weekLabel', { week });
+    },
+    [isPregnant, t]
+  );
+
   // --- Section: Chapters Timeline ---
   const renderChaptersSection = () => (
     <View style={styles.sectionContainer}>
@@ -329,6 +401,7 @@ export default function HomeScreen() {
             : getChapterPlaceholder(item.title);
           const hasMilestones = item.milestoneTotal > 0;
           const hasContent = item.memoryCount > 0 || item.milestoneFilled > 0;
+          const isCompleted = isPast && (isPregnant || hasContent);
           const progressPct = hasMilestones
             ? Math.round((item.milestoneFilled / item.milestoneTotal) * 100)
             : 0;
@@ -356,13 +429,13 @@ export default function HomeScreen() {
                   style={[
                     styles.timelineDot,
                     isCurrent && styles.timelineDotCurrent,
-                    isPast && hasContent && styles.timelineDotFilled,
+                    isCompleted && styles.timelineDotFilled,
                     isFuture && styles.timelineDotFuture,
                   ]}
                 >
                   {isCurrent ? (
                     <Ionicons name="ellipse" size={10} color={theme.white} />
-                  ) : isPast && hasContent ? (
+                  ) : isCompleted ? (
                     <Ionicons name="checkmark" size={12} color={theme.white} />
                   ) : null}
                 </View>
@@ -419,7 +492,7 @@ export default function HomeScreen() {
                       ]}
                       numberOfLines={1}
                     >
-                      {item.title}
+                      {getDisplayChapterTitle(item.title)}
                     </Text>
                     {isCurrent && (
                       <View style={styles.currentBadge}>

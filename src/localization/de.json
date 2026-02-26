@@ -139,6 +139,24 @@
     "createBackup": "Backup erstellen",
     "moreExportImportOptions": "Weitere Export- und Importoptionen",
     "chooseColorTheme": "Farbthema wählen",
+    "palette": {
+      "blush": {
+        "label": "Baby-Mädchen (Rosa)",
+        "description": "Sanfte rosafarbene Pastelltöne"
+      },
+      "sky": {
+        "label": "Baby-Junge (Blau)",
+        "description": "Ruhige blaue Pastelltöne"
+      },
+      "mint": {
+        "label": "Minzgarten",
+        "description": "Frische grüne Pastelltöne"
+      },
+      "lavender": {
+        "label": "Lavendeltraum",
+        "description": "Sanfte lila Pastelltöne"
+      }
+    },
     "modeSwitchTitle": "Baby ist geboren!",
     "modeSwitchConfirm": "Bestätigen",
     "modeSwitchDescription": "Gib das Geburtsdatum ein. Deine Schwangerschaftstagebucheinträge werden in das Kapitel \"{chapter}\" verschoben und die Freischaltdaten des Tresors werden neu berechnet.",

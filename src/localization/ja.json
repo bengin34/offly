@@ -139,6 +139,24 @@
     "createBackup": "バックアップを作成",
     "moreExportImportOptions": "その他のエクスポート/インポートオプション",
     "chooseColorTheme": "カラーテーマを選択",
+    "palette": {
+      "blush": {
+        "label": "ベビーピンク",
+        "description": "やさしいピンクのパステルトーン"
+      },
+      "sky": {
+        "label": "ベビーブルー",
+        "description": "落ち着いたブルーのパステルトーン"
+      },
+      "mint": {
+        "label": "ミントガーデン",
+        "description": "爽やかなグリーンのパステルトーン"
+      },
+      "lavender": {
+        "label": "ラベンダードリーム",
+        "description": "やわらかなラベンダーのパステルトーン"
+      }
+    },
     "modeSwitchTitle": "赤ちゃんが生まれました！",
     "modeSwitchConfirm": "確認",
     "modeSwitchDescription": "誕生日を入力してください。妊娠中の記録は「{chapter}」チャプターに移動され、保管庫の解放日が再計算されます。",

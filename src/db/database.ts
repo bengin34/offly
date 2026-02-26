@@ -1,39 +1,92 @@
 import * as SQLite from "expo-sqlite";
-import { ALL_MIGRATIONS, UPGRADE_MIGRATIONS } from "./schema";
+import {
+  ALL_MIGRATIONS,
+  ALTER_CHAPTERS_ADD_ARCHIVED_AT,
+  ALTER_MEMORIES_ADD_BABY_ID,
+  UPGRADE_MIGRATIONS,
+} from "./schema";
 import { v4 as uuidv4 } from "uuid";
 
 const DATABASE_NAME = "Offly.db";
 
 let db: SQLite.SQLiteDatabase | null = null;
+let dbInitPromise: Promise<SQLite.SQLiteDatabase> | null = null;
 
 export async function getDatabase(): Promise<SQLite.SQLiteDatabase> {
   if (db) {
     return db;
   }
 
-  db = await SQLite.openDatabaseAsync(DATABASE_NAME);
-
-  // Enable foreign keys
-  await db.execAsync("PRAGMA foreign_keys = ON;");
-
-  // Run create-table migrations (idempotent via IF NOT EXISTS)
-  for (const migration of ALL_MIGRATIONS) {
-    await db.execAsync(migration);
+  if (dbInitPromise) {
+    return dbInitPromise;
   }
 
-  // Run ALTER upgrades safely (column may already exist)
-  for (const migration of UPGRADE_MIGRATIONS) {
-    try {
-      await db.execAsync(migration);
-    } catch {
-      // Column already exists — ignore
+  dbInitPromise = (async () => {
+    const openedDb = await SQLite.openDatabaseAsync(DATABASE_NAME);
+    db = openedDb;
+
+    // Enable foreign keys
+    await openedDb.execAsync("PRAGMA foreign_keys = ON;");
+    // Wait briefly instead of failing immediately when a write lock is active.
+    await openedDb.execAsync("PRAGMA busy_timeout = 5000;");
+
+    // Run create-table migrations (idempotent via IF NOT EXISTS)
+    for (const migration of ALL_MIGRATIONS) {
+      await openedDb.execAsync(migration);
     }
+
+    await ensureRequiredColumns(openedDb);
+
+    // Run ALTER upgrades safely (column may already exist)
+    for (const migration of UPGRADE_MIGRATIONS) {
+      try {
+        await openedDb.execAsync(migration);
+      } catch (error) {
+        // Keep startup resilient but don't hide unexpected migration issues.
+        const message = error instanceof Error ? error.message : String(error);
+        if (
+          !message.toLowerCase().includes("duplicate column name") &&
+          !message.toLowerCase().includes("already exists")
+        ) {
+          console.warn("[db:migration] failed:", message);
+        }
+      }
+    }
+
+    // Ensure default baby profile exists
+    await ensureDefaultBabyProfile(openedDb);
+
+    return openedDb;
+  })();
+
+  try {
+    return await dbInitPromise;
+  } catch (error) {
+    db = null;
+    throw error;
+  } finally {
+    dbInitPromise = null;
   }
+}
 
-  // Ensure default baby profile exists
-  await ensureDefaultBabyProfile(db);
+async function ensureRequiredColumns(database: SQLite.SQLiteDatabase): Promise<void> {
+  await ensureColumnExists(database, "chapters", "archived_at", ALTER_CHAPTERS_ADD_ARCHIVED_AT);
+  await ensureColumnExists(database, "memories", "baby_id", ALTER_MEMORIES_ADD_BABY_ID);
+}
 
-  return db;
+async function ensureColumnExists(
+  database: SQLite.SQLiteDatabase,
+  tableName: string,
+  columnName: string,
+  addColumnSql: string
+): Promise<void> {
+  const columns = await database.getAllAsync<{ name: string }>(
+    `PRAGMA table_info(${tableName})`
+  );
+  const hasColumn = columns.some((column) => column.name === columnName);
+  if (!hasColumn) {
+    await database.execAsync(addColumnSql);
+  }
 }
 
 async function ensureDefaultBabyProfile(
@@ -55,6 +108,7 @@ async function ensureDefaultBabyProfile(
 }
 
 export async function closeDatabase(): Promise<void> {
+  dbInitPromise = null;
   if (db) {
     await db.closeAsync();
     db = null;

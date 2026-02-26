@@ -139,6 +139,24 @@
     "createBackup": "Yedek Oluştur",
     "moreExportImportOptions": "Daha fazla dışa/içe aktarma seçeneği",
     "chooseColorTheme": "Renk Temasını Seç",
+    "palette": {
+      "blush": {
+        "label": "Kız Bebek (Pembe)",
+        "description": "Yumuşak pembe pastel tonlar"
+      },
+      "sky": {
+        "label": "Erkek Bebek (Mavi)",
+        "description": "Sakin mavi pastel tonlar"
+      },
+      "mint": {
+        "label": "Nane Bahçesi",
+        "description": "Ferah yeşil pastel tonlar"
+      },
+      "lavender": {
+        "label": "Lavanta Rüyası",
+        "description": "Yumuşak mor pastel tonlar"
+      }
+    },
     "modeSwitchTitle": "Bebek doğdu!",
     "modeSwitchConfirm": "Onayla",
     "modeSwitchDescription": "Doğum tarihini gir. Hamilelik günlüğü kayıtların \"{chapter}\" bölümüne taşınacak ve kasa açılma tarihleri yeniden hesaplanacak.",

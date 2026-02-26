@@ -139,6 +139,24 @@
     "createBackup": "Create Backup",
     "moreExportImportOptions": "More export & import options",
     "chooseColorTheme": "Choose Color Theme",
+    "palette": {
+      "blush": {
+        "label": "Baby Girl (Pink)",
+        "description": "Soft blush pastel tones"
+      },
+      "sky": {
+        "label": "Baby Boy (Blue)",
+        "description": "Calm pastel blue tones"
+      },
+      "mint": {
+        "label": "Mint Garden",
+        "description": "Fresh green pastel tones"
+      },
+      "lavender": {
+        "label": "Lavender Dream",
+        "description": "Gentle purple pastel tones"
+      }
+    },
     "modeSwitchTitle": "Baby is born!",
     "modeSwitchConfirm": "Confirm",
     "modeSwitchNext": "Next",

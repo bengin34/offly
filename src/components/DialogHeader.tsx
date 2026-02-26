@@ -13,6 +13,7 @@ type DialogHeaderPalette = {
 type DialogHeaderProps = {
   title: string;
   onClose: () => void;
+  titleNumberOfLines?: number;
   actionLabel?: string;
   onAction?: () => void;
   actionDisabled?: boolean;
@@ -34,6 +35,7 @@ const defaultPalette: DialogHeaderPalette = {
 export function DialogHeader({
   title,
   onClose,
+  titleNumberOfLines = 1,
   actionLabel,
   onAction,
   actionDisabled = false,
@@ -55,7 +57,8 @@ export function DialogHeader({
       </Pressable>
       <Text
         style={[styles.title, { color: palette.text }, titleStyle]}
-        numberOfLines={1}
+        numberOfLines={titleNumberOfLines}
+        ellipsizeMode="tail"
       >
         {title}
       </Text>
@@ -86,7 +89,8 @@ export function DialogHeader({
 
 const styles = StyleSheet.create({
   container: {
-    height:70,
+    minHeight: 70,
+    paddingVertical: spacing.xs,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 2,

@@ -139,6 +139,24 @@
     "createBackup": "Crear copia",
     "moreExportImportOptions": "Más opciones de exportar e importar",
     "chooseColorTheme": "Elegir tema de color",
+    "palette": {
+      "blush": {
+        "label": "Bebé niña (Rosa)",
+        "description": "Tonos pastel rosa suaves"
+      },
+      "sky": {
+        "label": "Bebé niño (Azul)",
+        "description": "Tonos pastel azul suaves"
+      },
+      "mint": {
+        "label": "Jardín de menta",
+        "description": "Tonos pastel verdes frescos"
+      },
+      "lavender": {
+        "label": "Sueño lavanda",
+        "description": "Tonos pastel lila suaves"
+      }
+    },
     "modeSwitchTitle": "¡El bebé nació!",
     "modeSwitchConfirm": "Confirmar",
     "modeSwitchDescription": "Introduce la fecha de nacimiento. Las entradas de tu diario de embarazo se moverán al capítulo \"{chapter}\" y se recalcularán las fechas de desbloqueo del baúl.",

@@ -434,6 +434,15 @@ export default function ChapterDetailScreen() {
   };
 
   const groupedMemories = groupEntriesByDate(memories);
+  const displayChapterTitle = useMemo(() => {
+    const rawTitle = chapter?.title;
+    if (!rawTitle) return t('navigation.chapter');
+    const weekMatch = rawTitle.match(/^Week\s+(\d+)$/i);
+    if (!weekMatch) return rawTitle;
+    const week = Number.parseInt(weekMatch[1], 10);
+    if (!Number.isFinite(week)) return rawTitle;
+    return t('home.weekLabel', { week });
+  }, [chapter?.title, t]);
 
   const renderTabBar = () => (
     <View style={styles.tabBar}>
@@ -480,7 +489,7 @@ export default function ChapterDetailScreen() {
       <Stack.Screen
         options={{
           headerTitle: () => (
-            <PageTitle title={chapter?.title || t('navigation.chapter')} />
+            <PageTitle title={displayChapterTitle} />
           ),
           headerTitleAlign: 'center',
           headerBackButtonDisplayMode: 'minimal',

@@ -139,6 +139,24 @@
     "createBackup": "Criar backup",
     "moreExportImportOptions": "Mais opções de exportar/importar",
     "chooseColorTheme": "Escolher tema de cor",
+    "palette": {
+      "blush": {
+        "label": "Menina (Rosa)",
+        "description": "Tons pastel rosa suaves"
+      },
+      "sky": {
+        "label": "Menino (Azul)",
+        "description": "Tons pastel azuis suaves"
+      },
+      "mint": {
+        "label": "Jardim de menta",
+        "description": "Tons pastel verdes frescos"
+      },
+      "lavender": {
+        "label": "Sonho de lavanda",
+        "description": "Tons pastel roxos suaves"
+      }
+    },
     "modeSwitchTitle": "O bebê nasceu!",
     "modeSwitchConfirm": "Confirmar",
     "modeSwitchDescription": "Insira a data de nascimento. Suas entradas do diário de gravidez serão movidas para um capítulo \"{chapter}\" e as datas de desbloqueio do cofre serão recalculadas.",

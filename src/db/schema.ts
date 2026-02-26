@@ -8,6 +8,11 @@ export const CREATE_BABY_PROFILES_TABLE = `
     edd TEXT,
     mode TEXT NOT NULL DEFAULT 'born',
     is_default INTEGER NOT NULL DEFAULT 0,
+    previous_mode TEXT,
+    previous_edd TEXT,
+    mode_switched_at TEXT,
+    show_archived_chapters INTEGER DEFAULT 1,
+    before_birth_chapter_id TEXT,
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL
   );
@@ -22,6 +27,7 @@ export const CREATE_CHAPTERS_TABLE = `
     end_date TEXT,
     description TEXT,
     cover_image_uri TEXT,
+    archived_at TEXT,
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL,
     FOREIGN KEY (baby_id) REFERENCES baby_profiles (id) ON DELETE CASCADE
@@ -33,6 +39,7 @@ export const CREATE_MEMORIES_TABLE = `
     id TEXT PRIMARY KEY NOT NULL,
     chapter_id TEXT,
     vault_id TEXT,
+    baby_id TEXT,
     is_pregnancy_journal INTEGER NOT NULL DEFAULT 0,
     memory_type TEXT NOT NULL CHECK (memory_type IN ('milestone', 'note', 'letter')),
     title TEXT NOT NULL,
@@ -45,7 +52,8 @@ export const CREATE_MEMORIES_TABLE = `
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL,
     FOREIGN KEY (chapter_id) REFERENCES chapters (id) ON DELETE CASCADE,
-    FOREIGN KEY (vault_id) REFERENCES vaults (id) ON DELETE CASCADE
+    FOREIGN KEY (vault_id) REFERENCES vaults (id) ON DELETE CASCADE,
+    FOREIGN KEY (baby_id) REFERENCES baby_profiles (id) ON DELETE CASCADE
   );
 `;
 
@@ -199,7 +207,7 @@ export const ALTER_BABY_PROFILES_ADD_BEFORE_BIRTH_CHAPTER_ID = `
 
 // Multi-profile: add baby_id to memories for direct profile scoping
 export const ALTER_MEMORIES_ADD_BABY_ID = `
-  ALTER TABLE memories ADD COLUMN baby_id TEXT REFERENCES baby_profiles(id) ON DELETE CASCADE;
+  ALTER TABLE memories ADD COLUMN baby_id TEXT;
 `;
 
 export const CREATE_MEMORIES_BABY_ID_INDEX = `
@@ -275,7 +283,6 @@ export const ALL_MIGRATIONS = [
   CREATE_MILESTONE_INSTANCES_BABY_ID_INDEX,
   CREATE_MILESTONE_INSTANCES_STATUS_INDEX,
   CREATE_MILESTONE_INSTANCES_EXPECTED_DATE_INDEX,
-  CREATE_MEMORIES_BABY_ID_INDEX,
 ];
 
 // ALTER migrations for existing installs (run safely — column may already exist)
@@ -293,6 +300,7 @@ export const UPGRADE_MIGRATIONS = [
   ALTER_BABY_PROFILES_ADD_MODE_SWITCHED_AT,
   ALTER_BABY_PROFILES_ADD_SHOW_ARCHIVED_CHAPTERS,
   ALTER_MEMORIES_ADD_BABY_ID,
+  CREATE_MEMORIES_BABY_ID_INDEX,
   BACKFILL_MEMORIES_BABY_ID_FROM_CHAPTERS,
   BACKFILL_MEMORIES_BABY_ID_FROM_VAULTS,
   BACKFILL_MEMORIES_BABY_ID_DEFAULT,

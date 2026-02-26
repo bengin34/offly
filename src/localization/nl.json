@@ -139,6 +139,24 @@
     "createBackup": "Maak back-up",
     "moreExportImportOptions": "Meer export-/importopties",
     "chooseColorTheme": "Kies kleurenpalet",
+    "palette": {
+      "blush": {
+        "label": "Meisje (Roze)",
+        "description": "Zachte roze pasteltinten"
+      },
+      "sky": {
+        "label": "Jongen (Blauw)",
+        "description": "Rustige blauwe pasteltinten"
+      },
+      "mint": {
+        "label": "Minttuin",
+        "description": "Frisse groene pasteltinten"
+      },
+      "lavender": {
+        "label": "Lavendeldroom",
+        "description": "Zachte paarse pasteltinten"
+      }
+    },
     "modeSwitchTitle": "Baby is geboren!",
     "modeSwitchConfirm": "Bevestig",
     "modeSwitchDescription": "Voer de geboortedatum in. Je zwangerschapsnotities worden verplaatst naar een '{chapter}' hoofdstuk en de datum van het openen van de kluis wordt opnieuw berekend.",

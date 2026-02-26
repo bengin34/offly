@@ -149,15 +149,28 @@ export default function BabySetupScreen() {
     }
   }, [mode, isAddingNew, handleFinish]);
 
+  const trOrFallback = useCallback(
+    (key: string, fallback: string) => {
+      const translated = t(key);
+      return translated === key ? fallback : translated;
+    },
+    [t]
+  );
+
   const paletteOptions: {
     palette: ThemePalette;
     label: string;
     description: string;
     icon: keyof typeof Ionicons.glyphMap;
-  }[] = (Object.keys(paletteMetadata) as ThemePalette[]).map((value) => ({
-    palette: value,
-    ...paletteMetadata[value],
-  }));
+  }[] = (Object.keys(paletteMetadata) as ThemePalette[]).map((value) => {
+    const base = paletteMetadata[value];
+    return {
+      palette: value,
+      label: trOrFallback(`settings.palette.${value}.label`, base.label),
+      description: trOrFallback(`settings.palette.${value}.description`, base.description),
+      icon: base.icon,
+    };
+  });
 
   const styles = createStyles(theme);
 
@@ -248,9 +261,13 @@ export default function BabySetupScreen() {
                           color={isSelected ? theme.primary : theme.textSecondary}
                         />
                       </View>
-                      <View>
-                        <Text style={styles.paletteTitle}>{option.label}</Text>
-                        <Text style={styles.paletteSubtitle}>{option.description}</Text>
+                      <View style={styles.paletteTextContainer}>
+                        <Text style={styles.paletteTitle} numberOfLines={2}>
+                          {option.label}
+                        </Text>
+                        <Text style={styles.paletteSubtitle} numberOfLines={2}>
+                          {option.description}
+                        </Text>
                       </View>
                     </View>
                     <View style={styles.paletteRight}>
@@ -259,9 +276,11 @@ export default function BabySetupScreen() {
                         <View style={[styles.paletteSwatch, { backgroundColor: preview.accent }]} />
                         <View style={[styles.paletteSwatch, { backgroundColor: preview.milestone }]} />
                       </View>
-                      {isSelected && (
-                        <Ionicons name="checkmark-circle" size={22} color={theme.primary} />
-                      )}
+                      <View style={styles.paletteCheckSlot}>
+                        {isSelected && (
+                          <Ionicons name="checkmark-circle" size={22} color={theme.primary} />
+                        )}
+                      </View>
                     </View>
                   </TouchableOpacity>
                 );
@@ -451,7 +470,7 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       borderColor: theme.borderLight,
       padding: spacing.md,
       flexDirection: 'row',
-      alignItems: 'center',
+      alignItems: 'flex-start',
       justifyContent: 'space-between',
       shadowColor: theme.shadow,
       shadowOffset: { width: 0, height: 4 },
@@ -465,9 +484,14 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
     },
     paletteCardLeft: {
       flexDirection: 'row',
-      alignItems: 'center',
+      alignItems: 'flex-start',
       gap: spacing.md,
       flex: 1,
+      minWidth: 0,
+    },
+    paletteTextContainer: {
+      flex: 1,
+      minWidth: 0,
     },
     paletteIconWrap: {
       width: 36,
@@ -486,11 +510,14 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       fontFamily: fonts.body,
       color: theme.textSecondary,
       marginTop: 2,
+      lineHeight: 18,
     },
     paletteRight: {
       flexDirection: 'row',
       alignItems: 'center',
       gap: spacing.sm,
+      flexShrink: 0,
+      marginLeft: spacing.sm,
     },
     paletteSwatches: {
       flexDirection: 'row',
@@ -503,6 +530,12 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       borderRadius: 5,
       borderWidth: 1,
       borderColor: theme.borderLight,
+    },
+    paletteCheckSlot: {
+      width: 22,
+      height: 22,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     formSection: {
       marginBottom: spacing.lg,

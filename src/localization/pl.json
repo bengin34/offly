@@ -139,6 +139,24 @@
     "createBackup": "Utwórz backup",
     "moreExportImportOptions": "Więcej opcji eksportu/importu",
     "chooseColorTheme": "Wybierz motyw kolorystyczny",
+    "palette": {
+      "blush": {
+        "label": "Dziewczynka (Róż)",
+        "description": "Delikatne różowe pastelowe tony"
+      },
+      "sky": {
+        "label": "Chłopiec (Błękit)",
+        "description": "Spokojne błękitne pastelowe tony"
+      },
+      "mint": {
+        "label": "Miętowy ogród",
+        "description": "Świeże zielone pastelowe tony"
+      },
+      "lavender": {
+        "label": "Lawendowy sen",
+        "description": "Delikatne fioletowe pastelowe tony"
+      }
+    },
     "modeSwitchTitle": "Dziecko się urodziło!",
     "modeSwitchConfirm": "Potwierdź",
     "modeSwitchDescription": "Wprowadź datę urodzenia. Wpisy z ciąży trafią do rozdziału \"{chapter}\", a terminy odblokowania skarbu zostaną przeliczone.",
