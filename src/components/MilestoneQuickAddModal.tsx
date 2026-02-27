@@ -18,6 +18,7 @@ import { TagPickerDialog } from './TagPickerDialog';
 import { useTheme, useI18n } from '../hooks';
 import { spacing, fontSize, borderRadius, fonts } from '../constants';
 import type { MilestoneInstanceWithTemplate, Tag } from '../types';
+import { getLocalizedMilestoneLabel } from '../constants/milestoneTemplates';
 
 interface MilestoneQuickAddModalProps {
   visible: boolean;
@@ -140,6 +141,7 @@ export function MilestoneQuickAddModal({
   };
 
   if (!milestone) return null;
+  const displayMilestoneLabel = getLocalizedMilestoneLabel(milestone.template, t);
 
   const formatDate = (d: Date) => {
     try {
@@ -149,7 +151,7 @@ export function MilestoneQuickAddModal({
         day: 'numeric',
       });
     } catch {
-      return d.toLocaleDateString();
+      return d.toLocaleDateString(locale);
     }
   };
 
@@ -162,7 +164,7 @@ export function MilestoneQuickAddModal({
     >
     <ModalWrapper
       onClose={onClose}
-      title={milestone.template.label}
+      title={displayMilestoneLabel}
       actionLabel={isSaving ? (t('common.saving') || 'Saving...') : (t('common.save') || 'Save')}
       onAction={handleSave}
       actionDisabled={isSaving || isLoading}

@@ -14,14 +14,17 @@ import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { MemoryRepository } from '../../src/db/repositories';
 import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
+import { APP_LIMITS } from '../../src/constants/limits';
+import { hideVaultFreeLimit } from '../../src/config/dev';
 import { Background } from '../../src/components/Background';
 import { ModalWrapper } from '../../src/components/ModalWrapper';
-import { useTheme, useSubscription } from '../../src/hooks';
+import { useI18n, useTheme, useSubscription } from '../../src/hooks';
 
 export default function NewVaultEntryScreen() {
   const { vaultId } = useLocalSearchParams<{ vaultId: string }>();
   const router = useRouter();
   const theme = useTheme();
+  const { locale } = useI18n();
   const { isPro, presentPaywall } = useSubscription();
 
   const [title, setTitle] = useState('');
@@ -32,13 +35,13 @@ export default function NewVaultEntryScreen() {
 
   const formatDate = (d: Date) => {
     try {
-      return d.toLocaleDateString(undefined, {
+      return d.toLocaleDateString(locale, {
         year: 'numeric',
         month: 'short',
         day: 'numeric',
       });
     } catch {
-      return d.toLocaleDateString();
+      return d.toLocaleDateString(locale);
     }
   };
 
@@ -70,18 +73,13 @@ export default function NewVaultEntryScreen() {
       return;
     }
 
-    // Simple check: if not pro and letter count >= 5, show paywall
-    const currentLetterCount = await MemoryRepository.countAgeLockedLetters();
-    if (!isPro && currentLetterCount >= 5) {
-      Alert.alert(
-        'Age-Locked Letter Limit Reached',
-        'Free users can create up to 5 age-locked letters. Upgrade to Pro for unlimited letters.',
-        [
-          { text: 'Cancel', style: 'cancel' },
-          { text: 'Upgrade to Pro', onPress: async () => await presentPaywall() },
-        ]
-      );
-      return;
+    // Per-vault check: free users can write up to FREE_MAX_LETTERS_PER_VAULT letters per vault
+    if (!isPro && !hideVaultFreeLimit) {
+      const vaultLetterCount = await MemoryRepository.countByVaultId(vaultId);
+      if (vaultLetterCount >= APP_LIMITS.FREE_MAX_LETTERS_PER_VAULT) {
+        await presentPaywall();
+        return;
+      }
     }
 
     setIsSubmitting(true);

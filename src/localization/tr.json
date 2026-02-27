@@ -173,7 +173,8 @@
     "undoModeSwitchAlert": "Bu işlem hamilelik bölümlerini geri yükleyecek ve boş doğum sonrası bölümleri kaldıracak. Anıları olan bölümler korunacak.",
     "undoModeSwitchSuccess": "Profilin hamilelik moduna geri döndürüldü. Hamilelik bölümleri geri yüklendi.",
     "showPregnancyChaptersTitle": "Hamilelik anılarını göster",
-    "showPregnancyChaptersDescription": "Hamilelik günlüğü girdilerini ve kilometre taşlarını zaman çizelgenizde göster",
+    "showPregnancyChaptersDescription": "Hamilelik günlüğü kayıtlarını ve anılarını zaman çizelgenizde gösterir",
+    "showProfileSwitcherOnHome": "Ana ekranda profil değiştiriciyi göster",
     "editBabyProfileTitle": "Bebek Profilini Düzenle",
     "name": "İsim",
     "namePlaceholder": "Bebeğin adı veya takma adı",
@@ -224,7 +225,15 @@
       "tomorrow": "Yarın",
       "empty": "Henüz dönüm noktası yok",
       "emptySubtitle": "Dönüm noktaları burada görünecek",
-      "quickAddHelper": "Etiket ve daha fazlasını eklemek için tam düzenleyiciyi aç"
+      "quickAddHelper": "Etiket ve daha fazlasını eklemek için tam düzenleyiciyi aç",
+      "firstWeek": "İlk Hafta",
+      "firstSmile": "İlk Gülüş",
+      "firstLaughs": "İlk Kahkaha",
+      "firstTooth": "İlk Diş",
+      "sitsUpAlone": "Desteksiz Oturuyor",
+      "firstCrawl": "İlk Emekleme",
+      "firstSteps": "İlk Adımlar",
+      "firstWords": "İlk Kelimeler"
     }
   },
   "placeholders": {
@@ -300,7 +309,9 @@
     "emptyTitle": "Henüz anı yok",
     "emptySubtitle": "Bu bölüme anılar eklemeye başla",
     "addFirstMemory": "İlk Anıyı Ekle",
-    "addMemory": "Anı Ekle"
+    "addMemory": "Anı Ekle",
+    "autoDescriptionMonth": "Dünyayı her gün biraz daha keşfediyor",
+    "autoDescriptionYear": "Büyüme ve yeni maceralarla dolu bir yıl"
   },
   "chapterDetailLegacy": {
     "noPhoto": "Fotoğraf yok",
@@ -907,6 +918,7 @@
   },
   "profiles": {
     "switchProfile": "Bebeği Değiştir",
+    "multipleProfiles": "Çoklu Profiller",
     "defaultName": "Bebek",
     "addNew": "Yeni bebek ekle",
     "deleteTitle": "Profili Sil",
@@ -946,7 +958,9 @@
     "fabNewMemory": "Yeni Anı",
     "fabNewChapter": "Yeni Bölüm",
     "weekLabel": "Hafta {week}",
-    "weeksLabel": "Hafta {min}–{max}"
+    "weeksLabel": "Hafta {min}–{max}",
+    "monthLabel": "{count}. Ay",
+    "yearLabel": "{count}. Yıl"
   },
   "age": {
     "nameIsAge": "{name} {age}",
@@ -1054,5 +1068,17 @@
   },
   "buttons": {
     "save": "Anıyı Kaydet"
+  },
+  "mockContent": {
+    "memoryTitles": {
+      "firstSmile": "İlk Gülüş",
+      "morningCuddles": "Sabah Sarılmaları",
+      "tummyTimeChampion": "Karın Üstü Şampiyonu"
+    },
+    "memoryDescriptions": {
+      "firstSmile": "Göz göze gelip ilk kez gülümsediği o büyülü an. Tarif edilemez bir mutluluk.",
+      "morningCuddles": "Tüm sabahı sadece birlikte sarılarak geçirdik. Bu sakin anlar her şeye değer.",
+      "tummyTimeChampion": "Bugün başını neredeyse 10 saniye boyunca yukarıda tuttu! Her gün daha da güçleniyor."
+    }
   }
 }

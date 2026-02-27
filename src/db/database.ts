@@ -5,7 +5,8 @@ import {
   ALTER_MEMORIES_ADD_BABY_ID,
   UPGRADE_MIGRATIONS,
 } from "./schema";
-import { v4 as uuidv4 } from "uuid";
+import { generateUUID } from "../utils/uuid";
+import { isMockActive } from "../mocks/config";
 
 const DATABASE_NAME = "Offly.db";
 
@@ -97,13 +98,27 @@ async function ensureDefaultBabyProfile(
   );
 
   if (!existing || existing.count === 0) {
-    const id = uuidv4();
+    const id = generateUUID();
     const now = new Date().toISOString();
-    await database.runAsync(
-      `INSERT INTO baby_profiles (id, name, is_default, created_at, updated_at)
-       VALUES (?, ?, 1, ?, ?)`,
-      [id, null, now, now]
-    );
+
+    // In mock mode, create a born profile with birthdate ~3 months ago
+    if (isMockActive()) {
+      const birthDate = new Date();
+      birthDate.setMonth(birthDate.getMonth() - 3); // 3 months ago
+      const birthdateIso = birthDate.toISOString();
+
+      await database.runAsync(
+        `INSERT INTO baby_profiles (id, name, mode, birthdate, is_default, created_at, updated_at)
+         VALUES (?, ?, ?, ?, 1, ?, ?)`,
+        [id, "Baby", "born", birthdateIso, now, now]
+      );
+    } else {
+      await database.runAsync(
+        `INSERT INTO baby_profiles (id, name, is_default, created_at, updated_at)
+         VALUES (?, ?, 1, ?, ?)`,
+        [id, null, now, now]
+      );
+    }
   }
 }
 

@@ -14,6 +14,7 @@ import { useTheme, useI18n } from '../hooks';
 import { spacing, fontSize, borderRadius, fonts } from '../constants';
 import type { MilestoneInstanceWithTemplate, MemoryPhoto } from '../types';
 import { formatMilestoneDate, isMilestoneInPast, getDaysUntilMilestone } from '../utils/milestones';
+import { getLocalizedMilestoneLabel } from '../constants/milestoneTemplates';
 
 interface MilestoneTimelineProps {
   milestones: MilestoneInstanceWithTemplate[];
@@ -55,6 +56,7 @@ export function MilestoneTimeline({
     const isArchived = item.status === 'archived';
     const isPast = isMilestoneInPast(item.expectedDate);
     const daysUntil = getDaysUntilMilestone(item.expectedDate);
+    const displayLabel = getLocalizedMilestoneLabel(item.template, t);
 
     if (isArchived) {
       return (
@@ -63,7 +65,7 @@ export function MilestoneTimeline({
             <Ionicons name="archive-outline" size={20} color={theme.textMuted} />
             <View style={styles.milestoneText}>
               <Text style={[styles.milestoneLabel, { color: theme.textMuted }]}>
-                {item.template.label}
+                {displayLabel}
               </Text>
               <Text style={[styles.milestoneDate, { color: theme.textMuted }]}>
                 {formatMilestoneDate(item.expectedDate, locale)}
@@ -97,7 +99,7 @@ export function MilestoneTimeline({
             <View style={styles.filledTextContainer}>
               <View style={styles.filledHeader}>
                 <Text style={[styles.milestoneLabelFilled, { color: theme.text }]}>
-                  {item.template.label}
+                  {displayLabel}
                 </Text>
                 <View
                   style={[
@@ -147,7 +149,7 @@ export function MilestoneTimeline({
             </View>
             <View style={styles.emptyTextContainer}>
               <Text style={[styles.milestoneLabel, { color: theme.text }]}>
-                {item.template.label}
+                {displayLabel}
               </Text>
               <Text style={[styles.emptyDate, { color: theme.textSecondary }]}>
                 {isPast

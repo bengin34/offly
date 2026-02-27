@@ -174,6 +174,7 @@
     "undoModeSwitchSuccess": "プロフィールが妊娠モードに戻されました。妊娠チャプターが復元されました。",
     "showPregnancyChaptersTitle": "妊娠中の思い出を表示",
     "showPregnancyChaptersDescription": "妊娠日誌のエントリーとマイルストーンをタイムラインに表示",
+    "showProfileSwitcherOnHome": "ホーム画面にプロフィール切り替えを表示",
     "editBabyProfileTitle": "赤ちゃんプロフィールを編集",
     "name": "名前",
     "namePlaceholder": "赤ちゃんの名前またはニックネーム",
@@ -224,7 +225,15 @@
       "tomorrow": "明日",
       "empty": "まだマイルストーンがありません",
       "emptySubtitle": "マイルストーンはここに表示されます",
-      "quickAddHelper": "タグなどを追加するにはフルエディターを開いてください"
+      "quickAddHelper": "タグなどを追加するにはフルエディターを開いてください",
+      "firstWeek": "生後1週目",
+      "firstSmile": "はじめての笑顔",
+      "firstLaughs": "はじめての笑い",
+      "firstTooth": "はじめての歯",
+      "sitsUpAlone": "ひとりでおすわり",
+      "firstCrawl": "はじめてのはいはい",
+      "firstSteps": "はじめての一歩",
+      "firstWords": "はじめての言葉"
     }
   },
   "placeholders": {
@@ -300,7 +309,9 @@
     "emptyTitle": "まだ思い出がありません",
     "emptySubtitle": "このチャプターに思い出を追加しましょう",
     "addFirstMemory": "最初の思い出を追加",
-    "addMemory": "思い出を追加"
+    "addMemory": "思い出を追加",
+    "autoDescriptionMonth": "毎日少しずつ世界を発見",
+    "autoDescriptionYear": "成長と新しい冒険が詰まった1年"
   },
   "chapterDetailLegacy": {
     "noPhoto": "写真なし",
@@ -739,6 +750,7 @@
   },
   "profiles": {
     "switchProfile": "赤ちゃんを切り替える",
+    "multipleProfiles": "複数プロフィール",
     "defaultName": "赤ちゃん",
     "addNew": "新しい赤ちゃんを追加",
     "deleteTitle": "プロフィールを削除",
@@ -778,7 +790,9 @@
     "fabNewMemory": "新しい思い出",
     "fabNewChapter": "新しいチャプター",
     "weekLabel": "{week}週目",
-    "weeksLabel": "{min}〜{max}週目"
+    "weeksLabel": "{min}〜{max}週目",
+    "monthLabel": "{count}か月",
+    "yearLabel": "{count}年"
   },
   "age": {
     "nameIsAge": "{name}は{age}",
@@ -886,5 +900,17 @@
   },
   "buttons": {
     "save": "思い出を保存"
+  },
+  "mockContent": {
+    "memoryTitles": {
+      "firstSmile": "はじめての笑顔",
+      "morningCuddles": "朝のだっこ時間",
+      "tummyTimeChampion": "うつぶせ練習の名人"
+    },
+    "memoryDescriptions": {
+      "firstSmile": "目を合わせて、はじめてにっこり笑ってくれた魔法のような瞬間。幸せでいっぱい。",
+      "morningCuddles": "朝はずっと一緒にのんびり過ごしました。こういう静かな時間が何より大切。",
+      "tummyTimeChampion": "今日はうつぶせで、ほぼ10秒も頭を上げられました! どんどん強くなっています。"
+    }
   }
 }

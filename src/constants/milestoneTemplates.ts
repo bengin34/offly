@@ -1,5 +1,7 @@
 import type { MilestoneTemplate } from '../types';
 
+type TranslateFn = (key: string, params?: Record<string, string | number>) => string;
+
 /**
  * Milestone templates for born mode
  * Organized by age windows (in weeks)
@@ -398,4 +400,67 @@ export function getMilestoneTemplates(mode: 'born' | 'pregnant'): MilestoneTempl
 export function getMilestoneTemplateById(id: string): MilestoneTemplate | null {
   const allTemplates = [...BORN_MODE_MILESTONES, ...PREGNANCY_MODE_MILESTONES];
   return allTemplates.find((t) => t.id === id) || null;
+}
+
+/** Returns localized milestone label for template IDs with graceful fallback to template.label. */
+export function getLocalizedMilestoneLabel(template: MilestoneTemplate, t: TranslateFn): string {
+  const id = template.id;
+
+  if (id === 'milestone_1_week') {
+    const translated = t('labels.milestone.firstWeek');
+    return translated === 'labels.milestone.firstWeek' ? template.label : translated;
+  }
+
+  if (id === 'milestone_first_smile') {
+    const translated = t('labels.milestone.firstSmile');
+    return translated === 'labels.milestone.firstSmile' ? template.label : translated;
+  }
+
+  if (id === 'milestone_first_laughs') {
+    const translated = t('labels.milestone.firstLaughs');
+    return translated === 'labels.milestone.firstLaughs' ? template.label : translated;
+  }
+
+  if (id === 'milestone_first_tooth') {
+    const translated = t('labels.milestone.firstTooth');
+    return translated === 'labels.milestone.firstTooth' ? template.label : translated;
+  }
+
+  if (id === 'milestone_sits_up') {
+    const translated = t('labels.milestone.sitsUpAlone');
+    return translated === 'labels.milestone.sitsUpAlone' ? template.label : translated;
+  }
+
+  if (id === 'milestone_crawling') {
+    const translated = t('labels.milestone.firstCrawl');
+    return translated === 'labels.milestone.firstCrawl' ? template.label : translated;
+  }
+
+  if (id === 'milestone_first_steps') {
+    const translated = t('labels.milestone.firstSteps');
+    return translated === 'labels.milestone.firstSteps' ? template.label : translated;
+  }
+
+  if (id === 'milestone_first_words') {
+    const translated = t('labels.milestone.firstWords');
+    return translated === 'labels.milestone.firstWords' ? template.label : translated;
+  }
+
+  const monthMatch = id.match(/^milestone_(\d+)_months?$/);
+  if (monthMatch) {
+    const count = Number.parseInt(monthMatch[1], 10);
+    if (Number.isFinite(count)) {
+      return count === 1 ? t('age.month', { count }) : t('age.months', { count });
+    }
+  }
+
+  const yearMatch = id.match(/^milestone_(\d+)_years?$/);
+  if (yearMatch) {
+    const count = Number.parseInt(yearMatch[1], 10);
+    if (Number.isFinite(count)) {
+      return count === 1 ? t('age.year', { count }) : t('age.years', { count });
+    }
+  }
+
+  return template.label;
 }

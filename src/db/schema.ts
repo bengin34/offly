@@ -205,6 +205,10 @@ export const ALTER_BABY_PROFILES_ADD_BEFORE_BIRTH_CHAPTER_ID = `
   ALTER TABLE baby_profiles ADD COLUMN before_birth_chapter_id TEXT;
 `;
 
+export const ALTER_BABY_PROFILES_ADD_AVATAR = `
+  ALTER TABLE baby_profiles ADD COLUMN avatar TEXT;
+`;
+
 // Multi-profile: add baby_id to memories for direct profile scoping
 export const ALTER_MEMORIES_ADD_BABY_ID = `
   ALTER TABLE memories ADD COLUMN baby_id TEXT;
@@ -305,4 +309,5 @@ export const UPGRADE_MIGRATIONS = [
   BACKFILL_MEMORIES_BABY_ID_FROM_VAULTS,
   BACKFILL_MEMORIES_BABY_ID_DEFAULT,
   ALTER_BABY_PROFILES_ADD_BEFORE_BIRTH_CHAPTER_ID,
+  ALTER_BABY_PROFILES_ADD_AVATAR,
 ];

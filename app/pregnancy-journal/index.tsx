@@ -12,13 +12,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { MemoryRepository, BabyProfileRepository } from '../../src/db/repositories';
 import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
 import { Background } from '../../src/components/Background';
-import { useTheme } from '../../src/hooks';
+import { useI18n, useTheme } from '../../src/hooks';
 import { useProfileStore } from '../../src/stores/profileStore';
 import type { MemoryWithRelations } from '../../src/types';
 
 export default function PregnancyJournalScreen() {
   const router = useRouter();
   const theme = useTheme();
+  const { locale } = useI18n();
   const { activeBaby, loadActiveProfile } = useProfileStore();
 
   const [entries, setEntries] = useState<MemoryWithRelations[]>([]);
@@ -56,13 +57,13 @@ export default function PregnancyJournalScreen() {
   const formatDate = (dateStr: string) => {
     const d = new Date(dateStr);
     try {
-      return d.toLocaleDateString(undefined, {
+      return d.toLocaleDateString(locale, {
         month: 'short',
         day: 'numeric',
         year: 'numeric',
       });
     } catch {
-      return d.toLocaleDateString();
+      return d.toLocaleDateString(locale);
     }
   };
 

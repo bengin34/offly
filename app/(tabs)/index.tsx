@@ -19,7 +19,7 @@ import {
   MemoryRepository,
 } from '../../src/db/repositories';
 import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
-import { getChapterPlaceholder } from '../../src/constants/chapterTemplates';
+import { getChapterPlaceholder, getLocalizedChapterTitle } from '../../src/constants/chapterTemplates';
 import { getPregnancyChapterPlaceholder, getPregnancyChapterTemplateByTitle } from '../../src/constants/pregnancyChapterTemplates';
 import { calculateGestationWeeks } from '../../src/utils/milestones';
 import { Background } from '../../src/components/Background';
@@ -27,6 +27,7 @@ import { ProUpgradeBanner } from '../../src/components/ProUpgradeBanner';
 import { ProfileSwitcherModal } from '../../src/components/ProfileSwitcherModal';
 import { useI18n, useTheme } from '../../src/hooks';
 import { useProfileStore } from '../../src/stores/profileStore';
+import { useSettingsStore } from '../../src/stores/settingsStore';
 import { formatHeaderTitle } from '../../src/utils/ageFormatter';
 import type { ChapterWithMilestoneProgress, BabyProfile, VaultWithEntryCount } from '../../src/types';
 import { useMockData } from '../../src/mocks/useMockData';
@@ -42,8 +43,10 @@ export default function HomeScreen() {
   const babyMockData = useMockData(locale, 'baby');
   const pregnancyMockData = useMockData(locale, 'pregnancy');
 
+  const { multiProfileEnabled } = useSettingsStore();
   const [showProfileSwitcher, setShowProfileSwitcher] = useState(false);
   const [profile, setProfile] = useState<BabyProfile | null>(null);
+  const [profileCount, setProfileCount] = useState(1);
   const [chapters, setChapters] = useState<ChapterWithMilestoneProgress[]>([]);
   const [vaults, setVaults] = useState<VaultWithEntryCount[]>([]);
   const [pregnancyEntryCount, setPregnancyEntryCount] = useState(0);
@@ -103,6 +106,8 @@ export default function HomeScreen() {
       }
 
       setProfile(babyProfile);
+      const count = await BabyProfileRepository.count();
+      setProfileCount(count);
 
       // Load vaults for all modes
       const vaultData = await VaultRepository.getAllWithEntryCounts(babyProfile.id);
@@ -179,14 +184,23 @@ export default function HomeScreen() {
           }
         }
 
-        // In mock mode, only fill missing cover photos.
-        // Keep real chapter titles from DB.
+        // In baby mock mode, force deterministic covers by chronological week order.
+        // This guarantees stable, ordered visuals regardless of previously persisted covers.
         if (babyMockData) {
+          const MS_PER_WEEK = 1000 * 60 * 60 * 24 * 7;
+          const birthMs = babyProfile.birthdate ? new Date(babyProfile.birthdate).getTime() : null;
           chapterData = chapterData.map((chapter, index) => {
-            const mock = babyMockData.milestones[index % babyMockData.milestones.length];
+            const startMs = new Date(chapter.startDate).getTime();
+            const weekOffset =
+              birthMs !== null
+                ? Math.max(0, Math.floor((startMs - birthMs) / MS_PER_WEEK))
+                : index;
+            const mock = babyMockData.milestones[
+              weekOffset % babyMockData.milestones.length
+            ];
             return {
               ...chapter,
-              coverImageUri: chapter.coverImageUri ?? mock?.imageUrl ?? null,
+              coverImageUri: mock?.imageUrl ?? chapter.coverImageUri ?? null,
             };
           });
         }
@@ -214,11 +228,14 @@ export default function HomeScreen() {
     }
   }, [activeBaby, getCurrentChapterIdFromList, scrollToCurrentChapter, babyMockData, pregnancyMockData]);
 
+  const { loadSettings } = useSettingsStore();
+
   useFocusEffect(
     useCallback(() => {
       let cancelled = false;
 
       const run = async () => {
+        await loadSettings();
         await loadActiveProfile();
         if (cancelled) return;
         await loadData();
@@ -231,7 +248,7 @@ export default function HomeScreen() {
       return () => {
         cancelled = true;
       };
-    }, [loadActiveProfile, loadData])
+    }, [loadSettings, loadActiveProfile, loadData])
   );
 
   const handleRefresh = () => {
@@ -263,7 +280,7 @@ export default function HomeScreen() {
       try {
         return date.toLocaleDateString(locale, options);
       } catch (error) {
-        return date.toLocaleDateString(undefined, options);
+        return date.toLocaleDateString(locale);
       }
     },
     [locale]
@@ -287,7 +304,8 @@ export default function HomeScreen() {
 
   useEffect(() => {
     let dynamicTitle = formatHeaderTitle(profile, t);
-    const canSwitchProfile = profile?.mode !== 'pregnant';
+    const canSwitchProfile =
+      profile?.mode !== 'pregnant' && (multiProfileEnabled || profileCount > 1);
 
     // For pregnancy mode, add current week to title
     if (profile?.mode === 'pregnant' && profile.edd) {
@@ -304,20 +322,22 @@ export default function HomeScreen() {
               style={styles.headerProfileButton}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
-              <Ionicons
-                name={profile?.mode === 'pregnant' ? 'heart' : 'happy'}
-                size={18}
-                color={theme.primary}
-              />
-              <Text style={styles.headerProfileName} numberOfLines={1}>
-                {profile?.name || t('profiles.defaultName')}
-              </Text>
-              <Ionicons name="chevron-down" size={14} color={theme.textMuted} />
+              <View style={styles.headerAvatar}>
+                {profile?.avatar ? (
+                  <Image source={{ uri: profile.avatar }} style={styles.headerAvatarImage} />
+                ) : profile?.name ? (
+                  <Text style={styles.headerAvatarInitial}>
+                    {profile.name.charAt(0).toUpperCase()}
+                  </Text>
+                ) : (
+                  <Ionicons name="footsteps" size={12} color={theme.white} />
+                )}
+              </View>
             </TouchableOpacity>
           )
         : undefined,
     });
-  }, [navigation, profile, t, theme, styles]);
+  }, [navigation, profile, t, theme, styles, multiProfileEnabled, profileCount]);
 
   // --- Section: Pregnancy Journal Link (appears below timeline for pregnancy mode) ---
   const renderPregnancyJournalLink = () => {
@@ -366,14 +386,9 @@ export default function HomeScreen() {
 
   const getDisplayChapterTitle = useCallback(
     (rawTitle: string) => {
-      if (!isPregnant) return rawTitle;
-      const weekMatch = rawTitle.match(/^Week\s+(\d+)$/i);
-      if (!weekMatch) return rawTitle;
-      const week = Number.parseInt(weekMatch[1], 10);
-      if (!Number.isFinite(week)) return rawTitle;
-      return t('home.weekLabel', { week });
+      return getLocalizedChapterTitle(rawTitle, t);
     },
-    [isPregnant, t]
+    [t]
   );
 
   // --- Section: Chapters Timeline ---
@@ -400,8 +415,7 @@ export default function HomeScreen() {
             ? getPregnancyChapterPlaceholder(item.title)
             : getChapterPlaceholder(item.title);
           const hasMilestones = item.milestoneTotal > 0;
-          const hasContent = item.memoryCount > 0 || item.milestoneFilled > 0;
-          const isCompleted = isPast && (isPregnant || hasContent);
+          const isCompleted = isPast;
           const progressPct = hasMilestones
             ? Math.round((item.milestoneFilled / item.milestoneTotal) * 100)
             : 0;
@@ -1314,12 +1328,25 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
     headerProfileButton: {
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: theme.backgroundSecondary,
-      paddingHorizontal: spacing.sm + 2,
-      paddingVertical: spacing.xs + 2,
-      borderRadius: borderRadius.full,
-      gap: 4,
-      maxWidth: 160,
+      gap: 2,
+    },
+    headerAvatar: {
+      width: 28,
+      height: 28,
+      borderRadius: 14,
+      backgroundColor: theme.primary,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    headerAvatarImage: {
+      width: 28,
+      height: 28,
+      borderRadius: 14,
+    },
+    headerAvatarInitial: {
+      color: theme.white,
+      fontSize: fontSize.sm,
+      fontFamily: fonts.display,
     },
     headerProfileName: {
       fontSize: fontSize.sm,

@@ -174,6 +174,7 @@
     "undoModeSwitchSuccess": "Seu perfil foi revertido para o modo gravidez. Os capítulos de gravidez foram restaurados.",
     "showPregnancyChaptersTitle": "Mostrar memórias de gravidez",
     "showPregnancyChaptersDescription": "Exibir entradas do diário de gravidez e marcos na sua linha do tempo",
+    "showProfileSwitcherOnHome": "Mostrar alternador de perfil na tela inicial",
     "editBabyProfileTitle": "Editar perfil do bebê",
     "name": "Nome",
     "namePlaceholder": "Nome ou apelido do bebê",
@@ -224,7 +225,15 @@
       "tomorrow": "Amanhã",
       "empty": "Ainda não há marcos",
       "emptySubtitle": "Os marcos aparecerão aqui",
-      "quickAddHelper": "Abra o editor completo para adicionar etiquetas e mais"
+      "quickAddHelper": "Abra o editor completo para adicionar etiquetas e mais",
+      "firstWeek": "Primeira semana",
+      "firstSmile": "Primeiro sorriso",
+      "firstLaughs": "Primeiras risadas",
+      "firstTooth": "Primeiro dentinho",
+      "sitsUpAlone": "Senta sozinho",
+      "firstCrawl": "Primeiro engatinhar",
+      "firstSteps": "Primeiros passos",
+      "firstWords": "Primeiras palavras"
     }
   },
   "placeholders": {
@@ -300,7 +309,9 @@
     "emptyTitle": "Ainda não há lembranças",
     "emptySubtitle": "Adicione lembranças a este capítulo",
     "addFirstMemory": "Adicione sua primeira lembrança",
-    "addMemory": "Adicionar lembrança"
+    "addMemory": "Adicionar lembrança",
+    "autoDescriptionMonth": "Descobrindo o mundo, dia após dia",
+    "autoDescriptionYear": "Um ano de crescimento e novas aventuras"
   },
   "chapterDetailLegacy": {
     "noPhoto": "Sem foto",
@@ -739,6 +750,7 @@
   },
   "profiles": {
     "switchProfile": "Trocar bebê",
+    "multipleProfiles": "Perfis múltiplos",
     "defaultName": "Bebê",
     "addNew": "Adicionar novo bebê",
     "deleteTitle": "Excluir perfil",
@@ -778,7 +790,9 @@
     "fabNewMemory": "Nova lembrança",
     "fabNewChapter": "Novo capítulo",
     "weekLabel": "Semana {week}",
-    "weeksLabel": "Semanas {min}–{max}"
+    "weeksLabel": "Semanas {min}–{max}",
+    "monthLabel": "Mês {count}",
+    "yearLabel": "Ano {count}"
   },
   "age": {
     "nameIsAge": "{name} tem {age}",
@@ -886,5 +900,17 @@
   },
   "buttons": {
     "save": "Salvar lembrança"
+  },
+  "mockContent": {
+    "memoryTitles": {
+      "firstSmile": "Primeiro sorriso",
+      "morningCuddles": "Carinhos da manhã",
+      "tummyTimeChampion": "Campeão de tempo de barriga"
+    },
+    "memoryDescriptions": {
+      "firstSmile": "Aquele momento mágico quando olhou para cima e sorriu pela primeira vez. Pura alegria.",
+      "morningCuddles": "Passamos a manhã inteira apenas juntos. Esses momentos tranquilos são tudo.",
+      "tummyTimeChampion": "Hoje segurou a cabecinha por quase 10 segundos! Está ficando cada dia mais forte."
+    }
   }
 }

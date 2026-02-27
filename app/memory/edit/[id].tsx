@@ -71,11 +71,7 @@ export default function EditMemoryScreen() {
         day: 'numeric',
       });
     } catch (error) {
-      return d.toLocaleDateString(undefined, {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      });
+      return d.toLocaleDateString(locale);
     }
   };
 

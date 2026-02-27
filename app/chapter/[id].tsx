@@ -21,7 +21,11 @@ import {
   MilestoneRepository,
 } from '../../src/db/repositories';
 import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
-import { getChapterPlaceholder } from '../../src/constants/chapterTemplates';
+import {
+  getChapterPlaceholder,
+  getLocalizedChapterDescription,
+  getLocalizedChapterTitle,
+} from '../../src/constants/chapterTemplates';
 import { persistPhoto } from '../../src/utils/photos';
 import { Background } from '../../src/components/Background';
 import { PageTitle, HEADER_ACTIONS_WIDTH } from '../../src/components/PageTitle';
@@ -29,6 +33,8 @@ import { SwipeableRow } from '../../src/components/SwipeableRow';
 import { MilestoneTimeline } from '../../src/components/MilestoneTimeline';
 import { MilestoneQuickAddModal } from '../../src/components/MilestoneQuickAddModal';
 import { useI18n, useTheme, ThemeColors } from '../../src/hooks';
+import { getMilestoneTemplateById, getLocalizedMilestoneLabel } from '../../src/constants/milestoneTemplates';
+import { getLocalizedSeedMockTitle, getLocalizedSeedMockDescription } from '../../src/mocks/localizeSeedMockContent';
 import type {
   ChapterWithTags,
   MemoryWithRelations,
@@ -211,7 +217,40 @@ export default function ChapterDetailScreen() {
       try {
         return date.toLocaleDateString(locale, options);
       } catch (error) {
-        return date.toLocaleDateString(undefined, options);
+        return date.toLocaleDateString(locale);
+      }
+    },
+    [locale]
+  );
+
+  const formatHeaderDateRange = useCallback(
+    (startDate: string, endDate?: string) => {
+      const start = new Date(startDate);
+      const options: Intl.DateTimeFormatOptions = {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      };
+
+      try {
+        const formatter = new Intl.DateTimeFormat(locale, options);
+        if (endDate) {
+          const end = new Date(endDate);
+          const maybeRange = (formatter as Intl.DateTimeFormat & {
+            formatRange?: (start: Date, end: Date) => string;
+          }).formatRange;
+          if (typeof maybeRange === 'function') {
+            return maybeRange.call(formatter, start, end);
+          }
+          return `${formatter.format(start)} - ${formatter.format(end)}`;
+        }
+        return formatter.format(start);
+      } catch (error) {
+        if (endDate) {
+          const end = new Date(endDate);
+          return `${start.toLocaleDateString(locale, options)} - ${end.toLocaleDateString(locale, options)}`;
+        }
+        return start.toLocaleDateString(locale, options);
       }
     },
     [locale]
@@ -236,6 +275,15 @@ export default function ChapterDetailScreen() {
     const tagCount = memory.tags.length;
     const hasDescription = Boolean(memory.description);
     const isMilestone = memory.memoryType === 'milestone';
+    const milestoneTemplate = memory.milestoneTemplateId
+      ? getMilestoneTemplateById(memory.milestoneTemplateId)
+      : null;
+    const displayTitle = isMilestone && milestoneTemplate
+      ? getLocalizedMilestoneLabel(milestoneTemplate, t)
+      : getLocalizedSeedMockTitle(memory.title, t);
+    const displayDescription = memory.description
+      ? getLocalizedSeedMockDescription(memory.description, t)
+      : '';
 
     return (
       <SwipeableRow
@@ -313,11 +361,11 @@ export default function ChapterDetailScreen() {
                 </Text>
               </View>
               <Text style={styles.memoryTitle} numberOfLines={1}>
-                {memory.title}
+                {displayTitle}
               </Text>
               {memory.description && (
                 <Text style={styles.memoryDescription} numberOfLines={2}>
-                  {memory.description}
+                  {displayDescription}
                 </Text>
               )}
               {memory.tags.length > 0 && (
@@ -368,7 +416,6 @@ export default function ChapterDetailScreen() {
 
   const renderHeader = () => {
     if (!chapter || !placeholder) return null;
-    const hasEndDate = Boolean(chapter.endDate);
     return (
       <View style={styles.header}>
         {/* Cover image or placeholder */}
@@ -391,7 +438,7 @@ export default function ChapterDetailScreen() {
               <View style={styles.coverPlaceholderHint}>
                 <Ionicons name="camera-outline" size={14} color={placeholder.bgColor} />
                 <Text style={[styles.coverPlaceholderText, { color: placeholder.bgColor }]}>
-                  Add cover photo
+                  {t('chapters.addCover')}
                 </Text>
               </View>
             </View>
@@ -403,21 +450,13 @@ export default function ChapterDetailScreen() {
             <View style={styles.headerDatesPill}>
               <Ionicons name="calendar-outline" size={12} color={theme.textMuted} />
               <Text style={styles.headerDates}>
-                {formatDatePart(new Date(chapter.startDate), { month: 'short', day: 'numeric' })}
-                {hasEndDate && (
-                  <Text>
-                    {' - '}
-                    {formatDatePart(new Date(chapter.endDate!), {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric',
-                    })}
-                  </Text>
-                )}
+                {formatHeaderDateRange(chapter.startDate, chapter.endDate)}
               </Text>
             </View>
           </View>
-          {chapter.description && <Text style={styles.headerDescription}>{chapter.description}</Text>}
+          {displayChapterDescription && (
+            <Text style={styles.headerDescription}>{displayChapterDescription}</Text>
+          )}
           {chapter.tags && chapter.tags.length > 0 && (
             <View style={styles.headerTags}>
               {chapter.tags.map((tag: Tag) => (
@@ -437,12 +476,13 @@ export default function ChapterDetailScreen() {
   const displayChapterTitle = useMemo(() => {
     const rawTitle = chapter?.title;
     if (!rawTitle) return t('navigation.chapter');
-    const weekMatch = rawTitle.match(/^Week\s+(\d+)$/i);
-    if (!weekMatch) return rawTitle;
-    const week = Number.parseInt(weekMatch[1], 10);
-    if (!Number.isFinite(week)) return rawTitle;
-    return t('home.weekLabel', { week });
+    return getLocalizedChapterTitle(rawTitle, t);
   }, [chapter?.title, t]);
+
+  const displayChapterDescription = useMemo(() => {
+    if (!chapter?.title) return chapter?.description;
+    return getLocalizedChapterDescription(chapter.title, chapter.description, t);
+  }, [chapter?.title, chapter?.description, t]);
 
   const renderTabBar = () => (
     <View style={styles.tabBar}>
@@ -457,7 +497,7 @@ export default function ChapterDetailScreen() {
           color={activeTab === 'memories' ? theme.primary : theme.textMuted}
         />
         <Text style={[styles.tabText, activeTab === 'memories' && styles.tabTextActive]}>
-          Memories
+          {t('common.memories')}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
@@ -471,7 +511,7 @@ export default function ChapterDetailScreen() {
           color={activeTab === 'milestones' ? theme.primary : theme.textMuted}
         />
         <Text style={[styles.tabText, activeTab === 'milestones' && styles.tabTextActive]}>
-          Milestones
+          {t('shareContent.milestones')}
         </Text>
         {milestones.filter((m) => m.status === 'pending').length > 0 && (
           <View style={styles.tabBadge}>

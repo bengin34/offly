@@ -10,11 +10,6 @@ const MOCK_BABY_PHOTOS = [
   Image.resolveAssetSource(require('../../assets/mocks/baby/2.jpg')).uri,
   Image.resolveAssetSource(require('../../assets/mocks/baby/3.jpg')).uri,
 ];
-const MOCK_PREGNANCY_PHOTOS = [
-  Image.resolveAssetSource(require('../../assets/mocks/pregnant/19weeks.jpg')).uri,
-  Image.resolveAssetSource(require('../../assets/mocks/pregnant/20weeks.jpg')).uri,
-  Image.resolveAssetSource(require('../../assets/mocks/pregnant/21weeks.jpg')).uri,
-];
 
 // Sub-photos for the first chapter's first memory (multi-photo gallery)
 const MOCK_BABY_PHOTO_1_1 = Image.resolveAssetSource(require('../../assets/mocks/baby/1.1.jpg')).uri;
@@ -52,6 +47,23 @@ const SAMPLE_MEMORIES: {
   },
 ];
 
+const SAMPLE_AGE_LOCKED_LETTERS: {
+  title: string;
+  description: string;
+  dayOffset: number;
+}[] = [
+  {
+    title: 'For your 18th birthday',
+    description: 'A letter from your early days, saved for the moment you step into adulthood.',
+    dayOffset: 30,
+  },
+  {
+    title: 'When you read this at 18',
+    description: 'We wrote this while you were little, so one day you can remember how this journey started.',
+    dayOffset: 120,
+  },
+];
+
 /**
  * Seeds chapters with mock cover photos and creates sample memories with photos.
  * Only runs in dev/mock mode. Idempotent — skips chapters that already have covers
@@ -68,10 +80,11 @@ export async function seedMockDatabase(): Promise<void> {
       baby_id: string;
       title: string;
       mode: string;
+      birthdate: string | null;
       start_date: string;
       cover_image_uri: string | null;
     }>(
-      `SELECT c.id, c.baby_id, c.title, c.start_date, c.cover_image_uri, bp.mode
+      `SELECT c.id, c.baby_id, c.title, c.start_date, c.cover_image_uri, bp.mode, bp.birthdate
        FROM chapters c
        LEFT JOIN baby_profiles bp ON bp.id = c.baby_id
        ORDER BY c.start_date ASC`
@@ -79,25 +92,30 @@ export async function seedMockDatabase(): Promise<void> {
 
     for (let i = 0; i < chapters.length; i++) {
       const chapter = chapters[i];
-      const isPregnancyChapter = chapter.mode === 'pregnant' && /^Week\s+\d+$/i.test(chapter.title);
-      const coverPool = isPregnancyChapter ? MOCK_PREGNANCY_PHOTOS : MOCK_BABY_PHOTOS;
-      const coverPhotoUri = coverPool[i % coverPool.length];
-      const hasWrongMockCover =
-        isPregnancyChapter &&
-        chapter.cover_image_uri !== null &&
-        chapter.cover_image_uri.includes('/mocks/baby/');
+      const isBornChapter = chapter.mode === 'born';
 
-      // Set cover photo if missing; for pregnancy chapters also fix previously-seeded baby covers.
-      if (!chapter.cover_image_uri || hasWrongMockCover) {
+      // Only process born mode chapters
+      if (!isBornChapter) {
+        continue;
+      }
+
+      // Calculate cover photo index based on weeks since birth
+      let coverIndex = i;
+      if (chapter.birthdate) {
+        const MS_PER_WEEK = 1000 * 60 * 60 * 24 * 7;
+        const startMs = new Date(chapter.start_date).getTime();
+        const birthMs = new Date(chapter.birthdate).getTime();
+        coverIndex = Math.max(0, Math.floor((startMs - birthMs) / MS_PER_WEEK));
+      }
+
+      const coverPhotoUri = MOCK_BABY_PHOTOS[coverIndex % MOCK_BABY_PHOTOS.length];
+
+      // In mock mode, keep timeline covers deterministic by chronological week order.
+      if (!chapter.cover_image_uri || chapter.cover_image_uri !== coverPhotoUri) {
         await db.runAsync(
           'UPDATE chapters SET cover_image_uri = ?, updated_at = ? WHERE id = ?',
           [coverPhotoUri, getTimestamp(), chapter.id]
         );
-      }
-
-      // Do not seed born-style memories into pregnancy timeline chapters.
-      if (isPregnancyChapter) {
-        continue;
       }
 
       // In dev mode with forceMockReseed: wipe existing mock memories so they re-seed fresh
@@ -120,7 +138,7 @@ export async function seedMockDatabase(): Promise<void> {
 
       if (!memCount || memCount.count === 0) {
         const startDate = new Date(chapter.start_date);
-        const isFirstChapter = i === 0;
+        const isFirstChapter = isBornChapter && coverIndex === 0;
 
         for (let j = 0; j < SAMPLE_MEMORIES.length; j++) {
           const mem = SAMPLE_MEMORIES[j];
@@ -150,6 +168,114 @@ export async function seedMockDatabase(): Promise<void> {
           await db.runAsync(
             'INSERT INTO memory_photos (id, memory_id, uri, order_index) VALUES (?, ?, ?, 0)',
             [generateUUID(), memId, primaryPhoto]
+          );
+        }
+      }
+    }
+
+    const bornProfiles = await db.getAllAsync<{
+      id: string;
+      birthdate: string | null;
+    }>(
+      `SELECT id, birthdate
+       FROM baby_profiles
+       WHERE mode = 'born'`
+    );
+
+    for (const profile of bornProfiles) {
+      const existingVault = await db.getFirstAsync<{
+        id: string;
+      }>(
+        `SELECT id
+         FROM vaults
+         WHERE baby_id = ? AND target_age_years = 18
+         LIMIT 1`,
+        [profile.id]
+      );
+
+      let eighteenYearVaultId = existingVault?.id;
+      if (!eighteenYearVaultId) {
+        eighteenYearVaultId = generateUUID();
+        const now = getTimestamp();
+        const unlockDate = profile.birthdate ? new Date(profile.birthdate) : new Date();
+        unlockDate.setFullYear(unlockDate.getFullYear() + 18);
+
+        await db.runAsync(
+          `INSERT INTO vaults
+             (id, baby_id, target_age_years, unlock_date, status, created_at, updated_at)
+           VALUES (?, ?, 18, ?, ?, ?, ?)`,
+          [
+            eighteenYearVaultId,
+            profile.id,
+            unlockDate.toISOString(),
+            new Date() >= unlockDate ? 'unlocked' : 'locked',
+            now,
+            now,
+          ]
+        );
+      }
+
+      if (forceMockReseed) {
+        await db.runAsync(
+          `DELETE FROM memory_photos
+          WHERE memory_id IN (
+             SELECT id
+             FROM memories
+             WHERE vault_id = ?
+               AND memory_type = 'letter'
+               AND title IN (?, ?)
+           )`,
+          [
+            eighteenYearVaultId,
+            SAMPLE_AGE_LOCKED_LETTERS[0].title,
+            SAMPLE_AGE_LOCKED_LETTERS[1].title,
+          ]
+        );
+
+        await db.runAsync(
+          `DELETE FROM memories
+           WHERE vault_id = ?
+             AND memory_type = 'letter'
+             AND title IN (?, ?)`,
+          [
+            eighteenYearVaultId,
+            SAMPLE_AGE_LOCKED_LETTERS[0].title,
+            SAMPLE_AGE_LOCKED_LETTERS[1].title,
+          ]
+        );
+      }
+
+      const letterCount = await db.getFirstAsync<{ count: number }>(
+        `SELECT COUNT(*) as count
+         FROM memories
+         WHERE vault_id = ? AND memory_type = 'letter'`,
+        [eighteenYearVaultId]
+      );
+
+      if (!letterCount || letterCount.count === 0) {
+        const baseDate = profile.birthdate ? new Date(profile.birthdate) : new Date();
+
+        for (const letter of SAMPLE_AGE_LOCKED_LETTERS) {
+          const letterDate = new Date(baseDate);
+          letterDate.setDate(letterDate.getDate() + letter.dayOffset);
+
+          const memoryId = generateUUID();
+          const now = getTimestamp();
+
+          await db.runAsync(
+            `INSERT INTO memories
+              (id, chapter_id, vault_id, baby_id, is_pregnancy_journal, memory_type, title, description, date, created_at, updated_at)
+             VALUES (?, NULL, ?, ?, 0, 'letter', ?, ?, ?, ?, ?)`,
+            [
+              memoryId,
+              eighteenYearVaultId,
+              profile.id,
+              letter.title,
+              letter.description,
+              letterDate.toISOString(),
+              now,
+              now,
+            ]
           );
         }
       }

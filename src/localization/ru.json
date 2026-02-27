@@ -174,6 +174,7 @@
     "undoModeSwitchSuccess": "Ваш профиль возвращён в режим беременности. Главы беременности восстановлены.",
     "showPregnancyChaptersTitle": "Показать воспоминания о беременности",
     "showPregnancyChaptersDescription": "Показать записи дневника беременности и вехи на вашей временной шкале",
+    "showProfileSwitcherOnHome": "Показывать переключатель профилей на главном экране",
     "editBabyProfileTitle": "Редактировать профиль малыша",
     "name": "Имя",
     "namePlaceholder": "Имя или ласковое прозвище",
@@ -224,7 +225,15 @@
       "tomorrow": "Завтра",
       "empty": "Пока нет важных событий",
       "emptySubtitle": "Здесь появятся важные моменты",
-      "quickAddHelper": "Откройте полный редактор, чтобы добавить теги и др."
+      "quickAddHelper": "Откройте полный редактор, чтобы добавить теги и др.",
+      "firstWeek": "Первая неделя",
+      "firstSmile": "Первая улыбка",
+      "firstLaughs": "Первый смех",
+      "firstTooth": "Первый зуб",
+      "sitsUpAlone": "Сидит самостоятельно",
+      "firstCrawl": "Первое ползание",
+      "firstSteps": "Первые шаги",
+      "firstWords": "Первые слова"
     }
   },
   "placeholders": {
@@ -300,7 +309,9 @@
     "emptyTitle": "Пока нет воспоминаний",
     "emptySubtitle": "Добавьте воспоминания в эту главу",
     "addFirstMemory": "Добавить первую память",
-    "addMemory": "Добавить воспоминание"
+    "addMemory": "Добавить воспоминание",
+    "autoDescriptionMonth": "Познаём мир день за днём",
+    "autoDescriptionYear": "Год роста и новых открытий"
   },
   "chapterDetailLegacy": {
     "noPhoto": "Фото отсутствует",
@@ -739,6 +750,7 @@
   },
   "profiles": {
     "switchProfile": "Сменить малыша",
+    "multipleProfiles": "Несколько профилей",
     "defaultName": "Малыш",
     "addNew": "Добавить малыша",
     "deleteTitle": "Удалить профиль",
@@ -778,7 +790,9 @@
     "fabNewMemory": "Новое воспоминание",
     "fabNewChapter": "Новая глава",
     "weekLabel": "Неделя {week}",
-    "weeksLabel": "Недели {min}–{max}"
+    "weeksLabel": "Недели {min}–{max}",
+    "monthLabel": "Месяц {count}",
+    "yearLabel": "Год {count}"
   },
   "age": {
     "nameIsAge": "{name} — {age}",
@@ -886,5 +900,17 @@
   },
   "buttons": {
     "save": "Сохранить воспоминание"
+  },
+  "mockContent": {
+    "memoryTitles": {
+      "firstSmile": "Первая улыбка",
+      "morningCuddles": "Утренние обнимашки",
+      "tummyTimeChampion": "Чемпион по времени на животике"
+    },
+    "memoryDescriptions": {
+      "firstSmile": "Тот волшебный момент, когда малыш поднял взгляд и впервые улыбнулся. Чистая радость.",
+      "morningCuddles": "Мы провели всё утро просто вместе. Эти тихие моменты бесценны.",
+      "tummyTimeChampion": "Сегодня почти 10 секунд держал голову! С каждым днём становится всё сильнее."
+    }
   }
 }

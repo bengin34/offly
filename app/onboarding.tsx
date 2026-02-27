@@ -208,8 +208,8 @@ export default function OnboardingScreen() {
           </Text>
         </TouchableOpacity>
 
-        {/* Skip button on last page */}
-        {isLastPage && (
+        {/* Skip button — only shown before the last page */}
+        {!isLastPage && (
           <TouchableOpacity
             style={styles.secondaryButton}
             onPress={handleSkip}

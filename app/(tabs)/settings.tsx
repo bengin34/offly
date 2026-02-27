@@ -15,7 +15,10 @@ import {
   Platform,
   Keyboard,
   Switch,
+  Image,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system/legacy';
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import { useRouter, useFocusEffect } from 'expo-router';
@@ -35,6 +38,7 @@ import { rebaseBornTimelineDates } from '../../src/utils/rebaseBornTimeline';
 import { BabyProfileRepository, VaultRepository, ChapterRepository, MemoryRepository, MilestoneRepository } from '../../src/db/repositories';
 import { useBackupStore } from '../../src/stores/backupStore';
 import { useProfileStore } from '../../src/stores/profileStore';
+import { useSettingsStore } from '../../src/stores/settingsStore';
 import { APP_LIMITS } from '../../src/constants/limits';
 import type { BabyProfile } from '../../src/types';
 import type { ThemePalette } from '../../src/constants/colors';
@@ -116,6 +120,7 @@ export default function SettingsScreen() {
     ).toISOString();
 
   const { loadActiveProfile } = useProfileStore();
+  const { multiProfileEnabled, setMultiProfileEnabled } = useSettingsStore();
 
   const loadProfile = useCallback(async () => {
     await loadActiveProfile();
@@ -198,6 +203,25 @@ export default function SettingsScreen() {
     } finally {
       setIsSavingProfile(false);
     }
+  };
+
+  const handlePickAvatar = async () => {
+    if (!profile) return;
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.8,
+    });
+    if (result.canceled || !result.assets[0]) return;
+    const sourceUri = result.assets[0].uri;
+    const dir = (FileSystem.documentDirectory ?? '') + 'avatars/';
+    await FileSystem.makeDirectoryAsync(dir, { intermediates: true });
+    const destUri = dir + profile.id + '.jpg';
+    await FileSystem.copyAsync({ from: sourceUri, to: destUri });
+    await BabyProfileRepository.update({ id: profile.id, avatar: destUri });
+    await loadProfile();
+    await loadActiveProfile();
   };
 
   // Mode switch preview state
@@ -567,7 +591,7 @@ export default function SettingsScreen() {
         {allProfiles.length > 1 && profile?.mode !== 'pregnant' && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>
-              {t('profiles.switchProfile').toLocaleUpperCase(locale)}
+              {t('profiles.multipleProfiles').toLocaleUpperCase(locale)}
             </Text>
             <View style={styles.card}>
               {allProfiles.map((p) => {
@@ -625,29 +649,41 @@ export default function SettingsScreen() {
         {profile && (
           <View style={styles.babyProfileSection}>
             <View style={[styles.babyProfileCard, { backgroundColor: profile.mode === 'pregnant' ? theme.primary + '08' : theme.success + '08', borderColor: profile.mode === 'pregnant' ? theme.primary + '25' : theme.success + '25' }]}>
-              {/* Header with Name + Edit */}
+              {/* Header with Avatar + Name + Edit */}
               <View style={styles.babyProfileHeader}>
+                <TouchableOpacity style={styles.babyAvatarWrap} onPress={handlePickAvatar} activeOpacity={0.8}>
+                  {profile.avatar ? (
+                    <Image source={{ uri: profile.avatar }} style={styles.babyAvatarImage} />
+                  ) : (
+                    <View style={[styles.babyAvatarPlaceholder, { backgroundColor: theme.primary + '20' }]}>
+                      {profile.name ? (
+                        <Text style={[styles.babyAvatarInitial, { color: theme.primary }]}>
+                          {profile.name.charAt(0).toUpperCase()}
+                        </Text>
+                      ) : (
+                        <Ionicons name="camera-outline" size={22} color={theme.primary} />
+                      )}
+                    </View>
+                  )}
+                  <View style={[styles.babyAvatarEditBadge, { backgroundColor: theme.accent }]}>
+                    <Ionicons name="camera" size={10} color={theme.white} />
+                  </View>
+                </TouchableOpacity>
                 <View style={styles.babyProfileHeaderText}>
                   <Text style={styles.babyProfileNameLarge}>{profile.name || t('settings.yourBaby')}</Text>
-                  <View style={[
-                    styles.modeBadge,
-                    {
-                      backgroundColor: profile.mode === 'pregnant'
-                        ? theme.primary + '22'
-                        : theme.accent + '22'
-                    }
+                  {profile.mode === 'pregnant' && (
+                    <View style={[
+                      styles.modeBadge,
+                      { backgroundColor: theme.primary + '22' }
                     ]}>
-                    <Text style={[
-                      styles.modeBadgeText,
-                      {
-                        color: profile.mode === 'pregnant'
-                          ? theme.primary
-                          : theme.accent
-                      }
-                    ]}>
-                      {profile.mode === 'pregnant' ? t('settings.modeExpecting') : t('settings.modeBorn')}
-                    </Text>
-                  </View>
+                      <Text style={[
+                        styles.modeBadgeText,
+                        { color: theme.primary }
+                      ]}>
+                        {t('settings.modeExpecting')}
+                      </Text>
+                    </View>
+                  )}
                 </View>
                 <TouchableOpacity
                   style={[styles.babyEditButton, { backgroundColor: theme.accent + '18' }]}
@@ -671,7 +707,7 @@ export default function SettingsScreen() {
                     <View>
                       <Text style={styles.babyDateLabel}>{t('settings.dueDate')}</Text>
                       <Text style={styles.babyDateValue}>
-                        {new Date(profile.edd).toLocaleDateString(undefined, {
+                        {new Date(profile.edd).toLocaleDateString(locale, {
                           month: 'long',
                           day: 'numeric',
                           year: 'numeric',
@@ -690,9 +726,9 @@ export default function SettingsScreen() {
                         <Ionicons name="calendar-outline" size={18} color={theme.accent} />
                       </View>
                       <View style={{ flex: 1 }}>
-                        <Text style={styles.babyDateLabel}>{t('settings.modeBorn')}</Text>
+                        <Text style={styles.babyDateLabel}>{t('settings.birthDateLabel')}</Text>
                         <Text style={styles.babyDateValue}>
-                          {new Date(profile.birthdate).toLocaleDateString(undefined, {
+                          {new Date(profile.birthdate).toLocaleDateString(locale, {
                             month: 'long',
                             day: 'numeric',
                             year: 'numeric',
@@ -749,7 +785,7 @@ export default function SettingsScreen() {
                       </Text>
                       <Text style={[styles.undoModeButtonSubtext, { color: theme.textMuted }]}>
                         {t('settings.undoModeSwitchDescription', {
-                          date: new Date(profile.modeSwitchedAt).toLocaleDateString(undefined, {
+                          date: new Date(profile.modeSwitchedAt).toLocaleDateString(locale, {
                             year: 'numeric',
                             month: 'short',
                             day: 'numeric',
@@ -765,10 +801,10 @@ export default function SettingsScreen() {
               {profile.mode === 'born' && (
                 <>
                   <View style={[styles.babyDivider, { backgroundColor: theme.border, marginVertical: spacing.md }]} />
-                  <View style={styles.settingsRow}>
-                    <View style={styles.settingsRowLeft}>
+                  <View style={[styles.settingsRow, styles.settingsRowMultiline]}>
+                    <View style={[styles.settingsRowLeft, styles.settingsRowLeftMultiline]}>
                       <Ionicons name="archive-outline" size={22} color={theme.textSecondary} />
-                      <View style={{ flex: 1 }}>
+                      <View style={styles.settingsRowTextContainer}>
                         <Text style={[styles.settingsRowLabel, { color: theme.text }]}>
                           {t('settings.showPregnancyChaptersTitle')}
                         </Text>
@@ -777,7 +813,7 @@ export default function SettingsScreen() {
                         </Text>
                       </View>
                     </View>
-                    <View style={styles.settingsRowRight}>
+                    <View style={[styles.settingsRowRight, styles.settingsRowRightFixed]}>
                       <Switch
                         value={profile.showArchivedChapters}
                         onValueChange={handleToggleShowArchivedChapters}
@@ -789,10 +825,31 @@ export default function SettingsScreen() {
                   </View>
                 </>
               )}
+
+              <View style={[styles.babyDivider, { backgroundColor: theme.border, marginVertical: spacing.md }]} />
+              <View style={[styles.settingsRow, styles.settingsRowMultiline]}>
+                <View style={[styles.settingsRowLeft, styles.settingsRowLeftMultiline]}>
+                  <Ionicons name="people-outline" size={22} color={theme.textSecondary} />
+                  <View style={styles.settingsRowTextContainer}>
+                    <Text style={styles.settingsRowLabel}>{t('profiles.multipleProfiles')}</Text>
+                    <Text style={[styles.settingsRowDescription, { color: theme.textMuted }]}>
+                      {t('settings.showProfileSwitcherOnHome')}
+                    </Text>
+                  </View>
+                </View>
+                <View style={[styles.settingsRowRight, styles.settingsRowRightFixed]}>
+                  <Switch
+                    value={multiProfileEnabled}
+                    onValueChange={setMultiProfileEnabled}
+                    trackColor={{ false: theme.border, true: theme.primary }}
+                    thumbColor={multiProfileEnabled ? '#fff' : theme.textMuted}
+                  />
+                </View>
+              </View>
             </View>
 
-            {/* Add new baby button (shown when only 1 profile) */}
-            {allProfiles.length <= 1 && (
+            {/* Add new baby button (shown when multiple profiles enabled or already >1) */}
+            {(multiProfileEnabled || allProfiles.length > 1) && (
               <TouchableOpacity
                 style={[styles.settingsRow, { marginTop: spacing.md }]}
                 onPress={handleAddNewProfile}
@@ -820,10 +877,14 @@ export default function SettingsScreen() {
             >
               <View style={styles.settingsRowLeft}>
                 <Ionicons name="color-palette-outline" size={22} color={theme.textSecondary} />
-                <Text style={styles.settingsRowLabel}>{t('settings.appearance')}</Text>
+                <Text style={styles.settingsRowLabel} numberOfLines={1}>
+                  {t('settings.appearance')}
+                </Text>
               </View>
-              <View style={styles.settingsRowRight}>
-                <Text style={styles.settingsRowValue}>{currentThemeLabel}</Text>
+              <View style={styles.settingsRowRightValue}>
+                <Text style={styles.settingsRowValue} numberOfLines={1} ellipsizeMode="tail">
+                  {currentThemeLabel}
+                </Text>
                 <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
               </View>
             </TouchableOpacity>
@@ -834,10 +895,14 @@ export default function SettingsScreen() {
             >
               <View style={styles.settingsRowLeft}>
                 <Ionicons name="color-wand-outline" size={22} color={theme.textSecondary} />
-                <Text style={styles.settingsRowLabel}>{t('settings.colorTheme')}</Text>
+                <Text style={styles.settingsRowLabel} numberOfLines={1}>
+                  {t('settings.colorTheme')}
+                </Text>
               </View>
-              <View style={styles.settingsRowRight}>
-                <Text style={styles.settingsRowValue}>{currentPaletteLabel}</Text>
+              <View style={styles.settingsRowRightValue}>
+                <Text style={styles.settingsRowValue} numberOfLines={1} ellipsizeMode="tail">
+                  {currentPaletteLabel}
+                </Text>
                 <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
               </View>
             </TouchableOpacity>
@@ -848,10 +913,14 @@ export default function SettingsScreen() {
             >
               <View style={styles.settingsRowLeft}>
                 <Ionicons name="language-outline" size={22} color={theme.textSecondary} />
-                <Text style={styles.settingsRowLabel}>{t('settings.language')}</Text>
+                <Text style={styles.settingsRowLabel} numberOfLines={1}>
+                  {t('settings.language')}
+                </Text>
               </View>
-              <View style={styles.settingsRowRight}>
-                <Text style={styles.settingsRowValue}>{currentLanguageLabel}</Text>
+              <View style={styles.settingsRowRightValue}>
+                <Text style={styles.settingsRowValue} numberOfLines={1} ellipsizeMode="tail">
+                  {currentLanguageLabel}
+                </Text>
                 <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
               </View>
             </TouchableOpacity>
@@ -971,7 +1040,7 @@ export default function SettingsScreen() {
                 <Ionicons name="checkmark-circle" size={16} color={theme.success} />
                 <Text style={[styles.lastBackupText, { color: theme.success }]}>
                   {t('settings.lastBackup', {
-                    date: new Date(lastBackupDate).toLocaleDateString(undefined, {
+                    date: new Date(lastBackupDate).toLocaleDateString(locale, {
                       month: 'short',
                       day: 'numeric',
                       year: 'numeric',
@@ -1378,7 +1447,7 @@ export default function SettingsScreen() {
                 >
                   <Ionicons name="calendar-outline" size={20} color={theme.textSecondary} />
                   <Text style={[styles.modeSwitchDateText, { color: theme.text }]}>
-                    {birthDate.toLocaleDateString(undefined, {
+                    {birthDate.toLocaleDateString(locale, {
                       year: 'numeric',
                       month: 'short',
                       day: 'numeric',
@@ -1530,7 +1599,7 @@ export default function SettingsScreen() {
             >
               <Ionicons name="calendar-outline" size={20} color={theme.textSecondary} />
               <Text style={[styles.modeSwitchDateText, { color: theme.text }]}>
-                {editDate.toLocaleDateString(undefined, {
+                {editDate.toLocaleDateString(locale, {
                   year: 'numeric',
                   month: 'short',
                   day: 'numeric',
@@ -1609,15 +1678,44 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       alignItems: 'center',
       justifyContent: 'space-between',
     },
+    settingsRowMultiline: {
+      alignItems: 'flex-start',
+    },
     settingsRowLeft: {
       flexDirection: 'row',
       alignItems: 'center',
       gap: spacing.md,
+      flex: 1,
+      minWidth: 0,
+    },
+    settingsRowLeftMultiline: {
+      alignItems: 'flex-start',
+    },
+    settingsRowTextContainer: {
+      flex: 1,
+      minWidth: 0,
     },
     settingsRowRight: {
       flexDirection: 'row',
       alignItems: 'center',
       gap: spacing.xs,
+      flexShrink: 1,
+      minWidth: 0,
+      marginLeft: spacing.sm,
+    },
+    settingsRowRightValue: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      gap: spacing.xs,
+      flexShrink: 1,
+      minWidth: 0,
+      marginLeft: spacing.sm,
+      maxWidth: '52%',
+    },
+    settingsRowRightFixed: {
+      flexShrink: 0,
+      marginLeft: spacing.sm,
     },
     settingsDivider: {
       height: 1,
@@ -1628,11 +1726,14 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       fontSize: fontSize.md,
       fontFamily: fonts.body,
       color: theme.text,
+      flexShrink: 1,
     },
     settingsRowValue: {
       fontSize: fontSize.md,
       fontFamily: fonts.ui,
       color: theme.textSecondary,
+      flexShrink: 1,
+      textAlign: 'right',
     },
     settingsRowDescription: {
       fontSize: fontSize.sm,
@@ -1970,6 +2071,38 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       alignItems: 'center',
       justifyContent: 'space-between',
       marginBottom: spacing.md,
+    },
+    babyAvatarWrap: {
+      width: 52,
+      height: 52,
+      marginRight: spacing.md,
+      position: 'relative',
+    },
+    babyAvatarImage: {
+      width: 52,
+      height: 52,
+      borderRadius: 26,
+    },
+    babyAvatarPlaceholder: {
+      width: 52,
+      height: 52,
+      borderRadius: 26,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    babyAvatarInitial: {
+      fontSize: fontSize.xl,
+      fontFamily: fonts.display,
+    },
+    babyAvatarEditBadge: {
+      position: 'absolute',
+      bottom: 0,
+      right: 0,
+      width: 18,
+      height: 18,
+      borderRadius: 9,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     babyProfileHeaderLeft: {
       flexDirection: 'row',

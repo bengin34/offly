@@ -93,12 +93,7 @@ export function BadgeUnlockDialog({
         year: 'numeric',
       });
     } catch (error) {
-      return date.toLocaleDateString(undefined, {
-        weekday: 'long',
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-      });
+      return date.toLocaleDateString(locale);
     }
   };
 

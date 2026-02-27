@@ -17,12 +17,13 @@ import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
 import { Background } from '../../src/components/Background';
 import { ModalWrapper } from '../../src/components/ModalWrapper';
 import { TagPickerDialog } from '../../src/components/TagPickerDialog';
-import { useTheme, useSubscription } from '../../src/hooks';
+import { useI18n, useTheme, useSubscription } from '../../src/hooks';
 import type { MemoryType, Tag } from '../../src/types';
 
 export default function NewPregnancyJournalEntryScreen() {
   const router = useRouter();
   const theme = useTheme();
+  const { locale } = useI18n();
   const { isPro } = useSubscription();
 
   const [memoryType, setMemoryType] = useState<MemoryType>('note');
@@ -36,13 +37,13 @@ export default function NewPregnancyJournalEntryScreen() {
 
   const formatDate = (d: Date) => {
     try {
-      return d.toLocaleDateString(undefined, {
+      return d.toLocaleDateString(locale, {
         year: 'numeric',
         month: 'short',
         day: 'numeric',
       });
     } catch {
-      return d.toLocaleDateString();
+      return d.toLocaleDateString(locale);
     }
   };
 

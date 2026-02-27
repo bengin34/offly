@@ -9,6 +9,7 @@ export type MilestoneInstanceStatus = "pending" | "filled" | "archived";
 export interface BabyProfile {
   id: string;
   name?: string;
+  avatar?: string; // Local file URI for profile photo
   birthdate?: string; // ISO date string (DOB)
   edd?: string; // ISO date string (Estimated Due Date)
   mode: BabyMode;
@@ -155,6 +156,7 @@ export interface CreateBabyProfileInput {
 
 export interface UpdateBabyProfileInput extends Partial<CreateBabyProfileInput> {
   id: string;
+  avatar?: string | null;
 }
 
 export interface CreateVaultInput {

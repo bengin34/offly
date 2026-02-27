@@ -18,6 +18,7 @@ import { useOnboardingStore } from '../src/stores/onboardingStore';
 import { BabyProfileRepository, VaultRepository } from '../src/db/repositories';
 import { useProfileStore } from '../src/stores/profileStore';
 import { autoGenerateTimeline } from '../src/utils/autoGenerate';
+import { rebaseBornTimelineDates } from '../src/utils/rebaseBornTimeline';
 import { Background } from '../src/components/Background';
 import { spacing, fontSize, fonts, borderRadius, lightPaletteColors, paletteMetadata } from '../src/constants';
 import type { BabyMode } from '../src/types';
@@ -110,12 +111,20 @@ export default function BabySetupScreen() {
           const referenceDate = date.toISOString();
           await VaultRepository.createDefaults(profile.id, referenceDate);
 
-          // Auto-generate chapters + milestones for born mode
+          // Auto-generate chapters + milestones for born mode.
+          // Also rebase existing chapters in case mock data pre-created them
+          // with a different birth date (ensures chapter dates align with the
+          // actual birth date entered during onboarding).
           if (mode === 'born') {
             try {
               const updatedProfile = await BabyProfileRepository.getDefault();
               if (updatedProfile) {
                 await autoGenerateTimeline(updatedProfile);
+                await rebaseBornTimelineDates(
+                  updatedProfile.id,
+                  updatedProfile.birthdate!,
+                  profile.birthdate
+                );
               }
             } catch (err) {
               console.warn('Failed to auto-generate timeline:', err);
@@ -231,7 +240,7 @@ export default function BabySetupScreen() {
             ]}
             keyboardShouldPersistTaps="handled"
           >
-            <TouchableOpacity style={styles.backButton} onPress={() => setStep('details')}>
+            <TouchableOpacity style={styles.backButton} onPress={() => setStep('multiProfile')}>
               <Ionicons name="arrow-back" size={22} color={theme.textSecondary} />
             </TouchableOpacity>
 

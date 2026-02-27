@@ -5,6 +5,7 @@ import type { BabyProfile, BabyMode, CreateBabyProfileInput, UpdateBabyProfileIn
 interface BabyProfileRow {
   id: string;
   name: string | null;
+  avatar: string | null;
   birthdate: string | null;
   edd: string | null;
   mode: string;
@@ -22,6 +23,7 @@ function rowToProfile(row: BabyProfileRow): BabyProfile {
   return {
     id: row.id,
     name: row.name ?? undefined,
+    avatar: row.avatar ?? undefined,
     birthdate: row.birthdate ?? undefined,
     edd: row.edd ?? undefined,
     mode: (row.mode as BabyMode) || 'born',
@@ -108,6 +110,7 @@ export const BabyProfileRepository = {
     await db.runAsync(
       `UPDATE baby_profiles SET
          name = ?,
+         avatar = ?,
          birthdate = ?,
          edd = ?,
          mode = ?,
@@ -115,6 +118,7 @@ export const BabyProfileRepository = {
        WHERE id = ?`,
       [
         input.name !== undefined ? input.name ?? null : existing.name ?? null,
+        input.avatar !== undefined ? input.avatar ?? null : existing.avatar ?? null,
         input.birthdate !== undefined ? input.birthdate ?? null : existing.birthdate ?? null,
         input.edd !== undefined ? input.edd ?? null : existing.edd ?? null,
         input.mode !== undefined ? input.mode : existing.mode,

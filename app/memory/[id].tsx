@@ -23,6 +23,9 @@ import { PageTitle, HEADER_ACTIONS_WIDTH } from '../../src/components/PageTitle'
 import { LocationCard } from '../../src/components/LocationCard';
 import { useI18n, useTheme, ThemeColors } from '../../src/hooks';
 import { useThemeStore } from '../../src/stores/themeStore';
+import { getLocalizedChapterTitle } from '../../src/constants/chapterTemplates';
+import { getLocalizedMilestoneLabel, getMilestoneTemplateById } from '../../src/constants/milestoneTemplates';
+import { getLocalizedSeedMockTitle, getLocalizedSeedMockDescription } from '../../src/mocks/localizeSeedMockContent';
 import type { MemoryWithRelations, Chapter } from '../../src/types';
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -59,7 +62,7 @@ export default function MemoryDetailScreen() {
       try {
         return date.toLocaleDateString(locale, options);
       } catch (error) {
-        return date.toLocaleDateString(undefined, options);
+        return date.toLocaleDateString(locale);
       }
     },
     [locale]
@@ -78,7 +81,7 @@ export default function MemoryDetailScreen() {
       try {
         return date.toLocaleString(locale, options);
       } catch (error) {
-        return date.toLocaleString(undefined, options);
+        return date.toLocaleString(locale);
       }
     },
     [locale]
@@ -189,7 +192,30 @@ export default function MemoryDetailScreen() {
     handleDelete();
   };
 
-  const headerTitle = memory?.title || t('navigation.entry');
+  const displayMemoryTitle = useMemo(() => {
+    if (!memory) return t('navigation.entry');
+
+    if (memory.memoryType === 'milestone' && memory.milestoneTemplateId) {
+      const template = getMilestoneTemplateById(memory.milestoneTemplateId);
+      if (template) {
+        return getLocalizedMilestoneLabel(template, t);
+      }
+    }
+
+    return getLocalizedSeedMockTitle(memory.title, t);
+  }, [memory, t]);
+
+  const displayMemoryDescription = useMemo(() => {
+    if (!memory?.description) return memory?.description;
+    return getLocalizedSeedMockDescription(memory.description, t);
+  }, [memory?.description, t]);
+
+  const displayChapterTitle = useMemo(() => {
+    if (!chapter) return '';
+    return getLocalizedChapterTitle(chapter.title, t);
+  }, [chapter, t]);
+
+  const headerTitle = displayMemoryTitle;
 
   return (
     <>
@@ -289,7 +315,7 @@ export default function MemoryDetailScreen() {
             {chapter && (
               <TouchableOpacity style={styles.chapterLink} onPress={() => router.push(`/chapter/${chapter.id}`)}>
                 <Ionicons name="book-outline" size={16} color={theme.textSecondary} />
-                <Text style={styles.chapterLinkText}>{chapter.title}</Text>
+                <Text style={styles.chapterLinkText}>{displayChapterTitle}</Text>
                 <Ionicons name="chevron-forward" size={16} color={theme.textMuted} />
               </TouchableOpacity>
             )}
@@ -307,12 +333,12 @@ export default function MemoryDetailScreen() {
             )}
 
           {/* Description */}
-          {memory.description && (
+          {displayMemoryDescription && (
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>
                 {(t('memoryDetail.descriptionTitle') || t('entryDetail.notesTitle')).toLocaleUpperCase(locale)}
               </Text>
-              <Text style={styles.notes}>{memory.description}</Text>
+              <Text style={styles.notes}>{displayMemoryDescription}</Text>
             </View>
           )}
 

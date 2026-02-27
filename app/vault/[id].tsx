@@ -12,8 +12,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { VaultRepository, MemoryRepository } from '../../src/db/repositories';
 import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
 import { APP_LIMITS } from '../../src/constants/limits';
+import { hideVaultFreeLimit } from '../../src/config/dev';
 import { Background } from '../../src/components/Background';
-import { useTheme } from '../../src/hooks';
+import { useI18n, useTheme } from '../../src/hooks';
 import { useSubscription } from '../../src/hooks/useSubscriptions';
 import type { Vault, MemoryWithRelations } from '../../src/types';
 
@@ -21,10 +22,10 @@ export default function VaultDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const theme = useTheme();
+  const { locale } = useI18n();
   const { isPro, presentPaywall } = useSubscription();
 
   const [vault, setVault] = useState<Vault | null>(null);
-  const [vaultIndex, setVaultIndex] = useState<number>(0);
   const [entries, setEntries] = useState<MemoryWithRelations[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -38,10 +39,6 @@ export default function VaultDetailScreen() {
       if (vaultData) {
         const entryData = await MemoryRepository.getByVaultIdWithRelations(id);
         setEntries(entryData);
-        // Determine the 0-based index of this vault (sorted by age asc)
-        const allVaults = await VaultRepository.getAll(vaultData.babyId);
-        const idx = allVaults.findIndex((v) => v.id === id);
-        setVaultIndex(idx >= 0 ? idx : 0);
       }
     } catch (error) {
       console.error('Failed to load vault:', error);
@@ -65,13 +62,13 @@ export default function VaultDetailScreen() {
   const formatDate = (dateStr: string) => {
     const d = new Date(dateStr);
     try {
-      return d.toLocaleDateString(undefined, {
+      return d.toLocaleDateString(locale, {
         month: 'short',
         day: 'numeric',
         year: 'numeric',
       });
     } catch {
-      return d.toLocaleDateString();
+      return d.toLocaleDateString(locale);
     }
   };
 
@@ -89,35 +86,38 @@ export default function VaultDetailScreen() {
   }
 
   const isLocked = vault?.status === 'locked';
-  const vaultLabel =
-    vault?.targetAgeYears === 1
-      ? '1 Year'
-      : `${vault?.targetAgeYears} Years`;
   const unlockLabel = vault?.unlockDate
     ? formatDate(vault.unlockDate)
     : 'Date not set';
 
-  const isProVault = vaultIndex >= APP_LIMITS.FREE_MAX_AGE_LOCKED_LETTERS;
+  const freeLettersRemaining = Math.max(0, APP_LIMITS.FREE_MAX_LETTERS_PER_VAULT - entries.length);
+  const hasReachedFreeLimit = !isPro && !hideVaultFreeLimit && entries.length >= APP_LIMITS.FREE_MAX_LETTERS_PER_VAULT;
 
   const renderLockedHeader = () => (
     <View style={styles.lockedHeader}>
       <View style={styles.lockIconContainer}>
         <Ionicons name="lock-closed" size={48} color={theme.accent} />
       </View>
-      {isProVault && !isPro && (
-        <View style={[styles.proBadge, { backgroundColor: theme.primary }]}>
-          <Ionicons name="star" size={12} color={theme.white} />
-          <Text style={[styles.proBadgeText, { color: theme.white }]}>Pro</Text>
-        </View>
-      )}
       <Text style={styles.lockedTitle}>Locked until {unlockLabel}</Text>
       <Text style={styles.lockedSubtitle}>
         Letters in this vault will be revealed when your child turns {vault?.targetAgeYears}.
         You can still write new letters at any time.
       </Text>
-      {isProVault && !isPro && (
-        <Text style={[styles.proHint, { color: theme.textMuted }]}>
-          Upgrade to Pro to write letters to this vault
+      {hasReachedFreeLimit && (
+        <TouchableOpacity
+          style={[styles.proBanner, { backgroundColor: theme.primary + '15', borderColor: theme.primary + '40' }]}
+          onPress={async () => await presentPaywall()}
+          activeOpacity={0.8}
+        >
+          <Ionicons name="star" size={14} color={theme.primary} />
+          <Text style={[styles.proBannerText, { color: theme.primary }]}>
+            Free limit reached · Upgrade to write more letters
+          </Text>
+        </TouchableOpacity>
+      )}
+      {!isPro && !hasReachedFreeLimit && freeLettersRemaining > 0 && (
+        <Text style={[styles.freeHint, { color: theme.textMuted }]}>
+          {freeLettersRemaining} free {freeLettersRemaining === 1 ? 'letter' : 'letters'} remaining
         </Text>
       )}
       <View style={styles.lockedStats}>
@@ -216,12 +216,11 @@ export default function VaultDetailScreen() {
           />
         }
       />
-      {/* Add entry — Pro required for vaults beyond the free limit */}
+      {/* Add entry — Pro required after free letter limit per vault */}
       <TouchableOpacity
         style={styles.fab}
         onPress={async () => {
-          const requiresPro = vaultIndex >= APP_LIMITS.FREE_MAX_AGE_LOCKED_LETTERS;
-          if (requiresPro && !isPro) {
+          if (hasReachedFreeLimit) {
             await presentPaywall();
             return;
           }
@@ -262,20 +261,21 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       justifyContent: 'center',
       marginBottom: spacing.md,
     },
-    proBadge: {
+    proBanner: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 4,
-      paddingHorizontal: spacing.sm,
-      paddingVertical: 3,
-      borderRadius: borderRadius.full,
-      marginBottom: spacing.sm,
+      gap: spacing.xs,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      borderRadius: borderRadius.lg,
+      borderWidth: 1,
+      marginTop: spacing.md,
     },
-    proBadgeText: {
-      fontSize: fontSize.xs,
+    proBannerText: {
+      fontSize: fontSize.sm,
       fontFamily: fonts.ui,
     },
-    proHint: {
+    freeHint: {
       fontSize: fontSize.sm,
       fontFamily: fonts.body,
       textAlign: 'center',

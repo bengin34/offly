@@ -174,6 +174,7 @@
     "undoModeSwitchSuccess": "프로필이 임신 모드로 되돌려졌습니다. 임신 챕터가 복원되었습니다.",
     "showPregnancyChaptersTitle": "임신 중 추억 표시",
     "showPregnancyChaptersDescription": "임신 일기 항목 및 이정표를 타임라인에 표시",
+    "showProfileSwitcherOnHome": "홈 화면에 프로필 전환기를 표시",
     "editBabyProfileTitle": "아기 프로필 편집",
     "name": "이름",
     "namePlaceholder": "아기 이름 또는 별명",
@@ -224,7 +225,15 @@
       "tomorrow": "내일",
       "empty": "아직 마일스톤이 없습니다",
       "emptySubtitle": "마일스톤은 여기에 표시됩니다",
-      "quickAddHelper": "태그 등을 추가하려면 전체 편집기를 여세요"
+      "quickAddHelper": "태그 등을 추가하려면 전체 편집기를 여세요",
+      "firstWeek": "첫 번째 주",
+      "firstSmile": "첫 미소",
+      "firstLaughs": "첫 웃음",
+      "firstTooth": "첫 이",
+      "sitsUpAlone": "혼자 앉기",
+      "firstCrawl": "첫 기어가기",
+      "firstSteps": "첫걸음",
+      "firstWords": "첫 단어"
     }
   },
   "placeholders": {
@@ -300,7 +309,9 @@
     "emptyTitle": "아직 추억이 없습니다",
     "emptySubtitle": "이 챕터에 추억을 추가해보세요",
     "addFirstMemory": "첫 번째 추억 추가",
-    "addMemory": "추억 추가"
+    "addMemory": "추억 추가",
+    "autoDescriptionMonth": "하루하루 세상을 알아가요",
+    "autoDescriptionYear": "성장과 새로운 모험으로 가득한 한 해"
   },
   "chapterDetailLegacy": {
     "noPhoto": "사진 없음",
@@ -739,6 +750,7 @@
   },
   "profiles": {
     "switchProfile": "아기 전환",
+    "multipleProfiles": "다중 프로필",
     "defaultName": "아기",
     "addNew": "새 아기 추가",
     "deleteTitle": "프로필 삭제",
@@ -778,7 +790,9 @@
     "fabNewMemory": "새 추억",
     "fabNewChapter": "새 챕터",
     "weekLabel": "{week}주차",
-    "weeksLabel": "{min}–{max}주차"
+    "weeksLabel": "{min}–{max}주차",
+    "monthLabel": "{count}개월",
+    "yearLabel": "{count}년"
   },
   "age": {
     "nameIsAge": "{name}은(는) {age}",
@@ -886,5 +900,17 @@
   },
   "buttons": {
     "save": "추억 저장"
+  },
+  "mockContent": {
+    "memoryTitles": {
+      "firstSmile": "첫 미소",
+      "morningCuddles": "아침 포옹 시간",
+      "tummyTimeChampion": "터미타임 챔피언"
+    },
+    "memoryDescriptions": {
+      "firstSmile": "올려다보며 처음으로 미소 지어 준 그 마법 같은 순간. 그저 벅찬 행복.",
+      "morningCuddles": "오늘 아침은 함께 꼭 붙어 지냈어요. 이런 조용한 순간이 가장 소중해요.",
+      "tummyTimeChampion": "오늘은 거의 10초 동안 고개를 들고 있었어요! 점점 더 힘이 생기고 있어요."
+    }
   }
 }

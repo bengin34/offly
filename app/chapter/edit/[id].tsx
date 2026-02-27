@@ -73,11 +73,7 @@ export default function EditChapterScreen() {
         day: 'numeric',
       });
     } catch (error) {
-      return date.toLocaleDateString(undefined, {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      });
+      return date.toLocaleDateString(locale);
     }
   };
 

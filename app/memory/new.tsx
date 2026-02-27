@@ -48,11 +48,7 @@ export default function NewMemoryScreen() {
         day: 'numeric',
       });
     } catch (error) {
-      return d.toLocaleDateString(undefined, {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      });
+      return d.toLocaleDateString(locale);
     }
   };
 

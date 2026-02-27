@@ -35,11 +35,7 @@ export function BadgeCard({ badge, unlocked, progress, onPress, style }: BadgeCa
         year: 'numeric',
       });
     } catch (error) {
-      return date.toLocaleDateString(undefined, {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-      });
+      return date.toLocaleDateString(locale);
     }
   };
 

@@ -10,6 +10,8 @@ export interface ChapterTemplate {
   order: number;
 }
 
+type TranslateFn = (key: string, params?: Record<string, string | number>) => string;
+
 /**
  * Pre-defined chapter templates for born mode.
  * Monthly for the first year, yearly after that.
@@ -197,4 +199,67 @@ export function getChapterDates(
     startDate: start.toISOString(),
     endDate: end.toISOString(),
   };
+}
+
+/** Localize canonical born chapter titles like "Month 2" / "Year 2". */
+export function getLocalizedChapterTitle(rawTitle: string, t: TranslateFn): string {
+  const weekMatch = rawTitle.match(/^Week\s+(\d+)$/i);
+  if (weekMatch) {
+    const week = Number.parseInt(weekMatch[1], 10);
+    if (Number.isFinite(week)) {
+      const translated = t('home.weekLabel', { week });
+      return translated === 'home.weekLabel' ? rawTitle : translated;
+    }
+  }
+
+  const monthMatch = rawTitle.match(/^Month\s+(\d+)$/i);
+  if (monthMatch) {
+    const count = Number.parseInt(monthMatch[1], 10);
+    if (Number.isFinite(count)) {
+      const translated = t('home.monthLabel', { count });
+      return translated === 'home.monthLabel' ? rawTitle : translated;
+    }
+  }
+
+  const yearMatch = rawTitle.match(/^Year\s+(\d+)$/i);
+  if (yearMatch) {
+    const count = Number.parseInt(yearMatch[1], 10);
+    if (Number.isFinite(count)) {
+      const translated = t('home.yearLabel', { count });
+      return translated === 'home.yearLabel' ? rawTitle : translated;
+    }
+  }
+
+  return rawTitle;
+}
+
+/**
+ * Localize default born chapter descriptions if they were auto-generated from templates.
+ * User-edited/custom descriptions are returned as-is.
+ */
+export function getLocalizedChapterDescription(
+  chapterTitle: string,
+  chapterDescription: string | undefined,
+  t: TranslateFn
+): string | undefined {
+  if (!chapterDescription) return chapterDescription;
+
+  const template = BORN_CHAPTER_TEMPLATES.find((item) => item.title === chapterTitle);
+  if (!template || template.description !== chapterDescription) {
+    return chapterDescription;
+  }
+
+  const monthMatch = chapterTitle.match(/^Month\s+(\d+)$/i);
+  if (monthMatch) {
+    const translated = t('chapterDetail.autoDescriptionMonth');
+    return translated === 'chapterDetail.autoDescriptionMonth' ? chapterDescription : translated;
+  }
+
+  const yearMatch = chapterTitle.match(/^Year\s+(\d+)$/i);
+  if (yearMatch) {
+    const translated = t('chapterDetail.autoDescriptionYear');
+    return translated === 'chapterDetail.autoDescriptionYear' ? chapterDescription : translated;
+  }
+
+  return chapterDescription;
 }

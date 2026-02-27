@@ -174,6 +174,7 @@
     "undoModeSwitchSuccess": "Twój profil został przywrócony do trybu ciąży. Rozdziały ciążowe zostały przywrócone.",
     "showPregnancyChaptersTitle": "Pokaż wspomnienia z ciąży",
     "showPregnancyChaptersDescription": "Wyświetl wpisy dziennika ciąży i kamienie milowe na osi czasu",
+    "showProfileSwitcherOnHome": "Pokazuj przełącznik profilu na ekranie głównym",
     "editBabyProfileTitle": "Edytuj profil dziecka",
     "name": "Imię",
     "namePlaceholder": "Imię lub przezwisko dziecka",
@@ -224,7 +225,15 @@
       "tomorrow": "Jutro",
       "empty": "Brak kamieni milowych",
       "emptySubtitle": "Kamienie milowe pojawią się tutaj",
-      "quickAddHelper": "Otwórz pełny edytor, aby dodać tagi i więcej"
+      "quickAddHelper": "Otwórz pełny edytor, aby dodać tagi i więcej",
+      "firstWeek": "Pierwszy tydzień",
+      "firstSmile": "Pierwszy uśmiech",
+      "firstLaughs": "Pierwszy śmiech",
+      "firstTooth": "Pierwszy ząbek",
+      "sitsUpAlone": "Siedzi samodzielnie",
+      "firstCrawl": "Pierwsze raczkowanie",
+      "firstSteps": "Pierwsze kroki",
+      "firstWords": "Pierwsze słowa"
     }
   },
   "placeholders": {
@@ -300,7 +309,9 @@
     "emptyTitle": "Brak wspomnień",
     "emptySubtitle": "Dodaj wspomnienia do tego rozdziału",
     "addFirstMemory": "Dodaj pierwsze wspomnienie",
-    "addMemory": "Dodaj wspomnienie"
+    "addMemory": "Dodaj wspomnienie",
+    "autoDescriptionMonth": "Poznawanie świata każdego dnia",
+    "autoDescriptionYear": "Rok pełen rozwoju i nowych przygód"
   },
   "chapterDetailLegacy": {
     "noPhoto": "Brak zdjęcia",
@@ -739,6 +750,7 @@
   },
   "profiles": {
     "switchProfile": "Przełącz dziecko",
+    "multipleProfiles": "Wiele profili",
     "defaultName": "Dziecko",
     "addNew": "Dodaj nowe dziecko",
     "deleteTitle": "Usuń profil",
@@ -778,7 +790,9 @@
     "fabNewMemory": "Nowe wspomnienie",
     "fabNewChapter": "Nowy rozdział",
     "weekLabel": "Tydzień {week}",
-    "weeksLabel": "Tygodnie {min}–{max}"
+    "weeksLabel": "Tygodnie {min}–{max}",
+    "monthLabel": "Miesiąc {count}",
+    "yearLabel": "Rok {count}"
   },
   "age": {
     "nameIsAge": "{name} ma {age}",
@@ -886,5 +900,17 @@
   },
   "buttons": {
     "save": "Zapisz wspomnienie"
+  },
+  "mockContent": {
+    "memoryTitles": {
+      "firstSmile": "Pierwszy uśmiech",
+      "morningCuddles": "Poranne przytulanki",
+      "tummyTimeChampion": "Mistrz leżenia na brzuszku"
+    },
+    "memoryDescriptions": {
+      "firstSmile": "Ta magiczna chwila, gdy podniosło wzrok i uśmiechnęło się po raz pierwszy. Czysta radość.",
+      "morningCuddles": "Spędziliśmy cały poranek po prostu razem. Te spokojne chwile znaczą wszystko.",
+      "tummyTimeChampion": "Dziś trzymało główkę uniesioną prawie 10 sekund! Z dnia na dzień jest coraz silniejsze."
+    }
   }
 }

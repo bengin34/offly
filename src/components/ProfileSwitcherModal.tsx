@@ -7,6 +7,7 @@ import {
   Pressable,
   StyleSheet,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -108,12 +109,19 @@ export function ProfileSwitcherModal({ visible, onClose }: ProfileSwitcherModalP
                     style={[styles.profileRow, isActive && styles.profileRowActive]}
                     onPress={() => handleSelectProfile(profile)}
                   >
-                    <View style={[styles.profileIcon, { backgroundColor: profile.mode === 'pregnant' ? theme.primary + '15' : theme.accent + '15' }]}>
-                      <Ionicons
-                        name={profile.mode === 'pregnant' ? 'heart' : 'happy'}
-                        size={20}
-                        color={profile.mode === 'pregnant' ? theme.primary : theme.accent}
-                      />
+                    <View style={[
+                      styles.profileAvatar,
+                      { backgroundColor: isActive ? theme.primary : theme.primary + '30' },
+                    ]}>
+                      {profile.avatar ? (
+                        <Image source={{ uri: profile.avatar }} style={styles.profileAvatarPhoto} />
+                      ) : profile.name ? (
+                        <Text style={[styles.profileAvatarInitial, { color: isActive ? theme.white : theme.primary }]}>
+                          {profile.name.charAt(0).toUpperCase()}
+                        </Text>
+                      ) : (
+                        <Ionicons name="footsteps" size={18} color={isActive ? theme.white : theme.primary} />
+                      )}
                     </View>
                     <View style={styles.profileInfo}>
                       <Text style={[styles.profileName, isActive && { color: theme.primary }]}>
@@ -131,7 +139,7 @@ export function ProfileSwitcherModal({ visible, onClose }: ProfileSwitcherModalP
               })}
 
               <TouchableOpacity style={styles.addButton} onPress={handleAddNew}>
-                <View style={[styles.profileIcon, { backgroundColor: theme.backgroundSecondary }]}>
+                <View style={[styles.profileAvatar, { backgroundColor: theme.backgroundSecondary }]}>
                   <Ionicons name="add" size={22} color={theme.primary} />
                 </View>
                 <Text style={styles.addButtonText}>{t('profiles.addNew')}</Text>
@@ -189,6 +197,23 @@ const createStyles = (theme: ThemeColors) =>
       alignItems: 'center',
       justifyContent: 'center',
       marginRight: spacing.md,
+    },
+    profileAvatar: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: spacing.md,
+    },
+    profileAvatarPhoto: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+    },
+    profileAvatarInitial: {
+      fontSize: fontSize.lg,
+      fontFamily: fonts.display,
     },
     profileInfo: {
       flex: 1,
