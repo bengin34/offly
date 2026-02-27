@@ -17,7 +17,22 @@
       "bundleIdentifier": "com.offly.baby.photo.vault",
       "usesAppleSignIn": false,
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "CFBundleDevelopmentRegion": "en",
+        "CFBundleLocalizations": [
+          "de",
+          "en",
+          "es",
+          "fr",
+          "it",
+          "ja",
+          "ko",
+          "nl",
+          "pl",
+          "pt-BR",
+          "ru",
+          "tr"
+        ]
       },
       "appleTeamId": "WLKHQPA32F"
     },
