@@ -198,7 +198,7 @@ export default function EditMemoryScreen() {
                   color={memoryType === 'milestone' ? theme.white : theme.milestone}
                 />
                 <Text style={[styles.typeButtonText, memoryType === 'milestone' && styles.typeButtonTextActive]}>
-                  {t('memoryForm.milestone') || 'Milestone'}
+                  {t('memoryForm.milestone')}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -211,21 +211,21 @@ export default function EditMemoryScreen() {
                   color={memoryType === 'note' ? theme.white : theme.memory}
                 />
                 <Text style={[styles.typeButtonText, memoryType === 'note' && styles.typeButtonTextActive]}>
-                  {t('memoryForm.note') || 'Note'}
+                  {t('memoryForm.note')}
                 </Text>
               </TouchableOpacity>
             </View>
 
             <View style={styles.field}>
-              <Text style={styles.label}>{(t('memoryForm.titleLabel') || t('entryForm.titleLabel')).toLocaleUpperCase(locale)}</Text>
+              <Text style={styles.label}>{t('memoryForm.titleLabel').toLocaleUpperCase(locale)}</Text>
               <TextInput
                 style={styles.input}
                 value={title}
                 onChangeText={setTitle}
                 placeholder={
                   memoryType === 'milestone'
-                    ? (t('placeholders.memoryTitleMilestone') || 'First smile, First steps...')
-                    : (t('placeholders.memoryTitleNote') || 'A quiet afternoon, Funny moment...')
+                    ? t('placeholders.memoryTitleMilestone')
+                    : t('placeholders.memoryTitleNote')
                 }
                 placeholderTextColor={theme.textMuted}
               />
@@ -238,11 +238,11 @@ export default function EditMemoryScreen() {
               <View style={styles.photoButtons}>
                 <TouchableOpacity style={styles.photoButton} onPress={handlePickImage}>
                   <Ionicons name="images-outline" size={24} color={theme.accent} />
-                  <Text style={styles.photoButtonText}>{t('entryForm.gallery') || 'Gallery'}</Text>
+                  <Text style={styles.photoButtonText}>{t('entryForm.gallery')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.photoButton} onPress={handleTakePhoto}>
                   <Ionicons name="camera-outline" size={24} color={theme.accent} />
-                  <Text style={styles.photoButtonText}>{t('entryForm.camera') || 'Camera'}</Text>
+                  <Text style={styles.photoButtonText}>{t('entryForm.camera')}</Text>
                 </TouchableOpacity>
               </View>
               {photos.length > 0 && (
@@ -306,12 +306,12 @@ export default function EditMemoryScreen() {
             )}
 
             <View style={styles.field}>
-              <Text style={styles.label}>{(t('memoryForm.descriptionLabel') || t('entryForm.notesLabel')).toLocaleUpperCase(locale)}</Text>
+              <Text style={styles.label}>{t('memoryForm.descriptionLabel').toLocaleUpperCase(locale)}</Text>
               <TextInput
                 style={[styles.input, styles.textArea]}
                 value={description}
                 onChangeText={setDescription}
-                placeholder={t('placeholders.entryNotes') || 'Add details...'}
+                placeholder={t('placeholders.entryNotes')}
                 placeholderTextColor={theme.textMuted}
                 multiline
                 numberOfLines={4}
@@ -321,13 +321,13 @@ export default function EditMemoryScreen() {
 
             {/* Tags */}
             <View style={styles.field}>
-              <Text style={styles.label}>{(t('memoryForm.tagsLabel') || t('entryForm.tagsLabel')).toLocaleUpperCase(locale)}</Text>
+              <Text style={styles.label}>{t('memoryForm.tagsLabel').toLocaleUpperCase(locale)}</Text>
               <TouchableOpacity
                 style={styles.tagInputContainer}
                 onPress={() => setShowTagPicker(true)}
               >
                 {selectedTags.length === 0 ? (
-                  <Text style={styles.tagPlaceholder}>{t('entryForm.tapToAddTags') || 'Tap to add tags'}</Text>
+                  <Text style={styles.tagPlaceholder}>{t('entryForm.tapToAddTags')}</Text>
                 ) : (
                   <View style={styles.selectedTagsInline}>
                     {selectedTags.slice(0, 3).map((tag) => (

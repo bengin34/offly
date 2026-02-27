@@ -212,7 +212,7 @@ export function getLocalizedChapterTitle(rawTitle: string, t: TranslateFn): stri
     }
   }
 
-  const monthMatch = rawTitle.match(/^Month\s+(\d+)$/i);
+  const monthMatch = rawTitle.match(/^(?:Month|Ay)\s+(\d+)$/i);
   if (monthMatch) {
     const count = Number.parseInt(monthMatch[1], 10);
     if (Number.isFinite(count)) {
@@ -221,7 +221,7 @@ export function getLocalizedChapterTitle(rawTitle: string, t: TranslateFn): stri
     }
   }
 
-  const yearMatch = rawTitle.match(/^Year\s+(\d+)$/i);
+  const yearMatch = rawTitle.match(/^(?:Year|Yıl|Yil)\s+(\d+)$/i);
   if (yearMatch) {
     const count = Number.parseInt(yearMatch[1], 10);
     if (Number.isFinite(count)) {

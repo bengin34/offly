@@ -25,7 +25,6 @@ import { useI18n, useTheme, ThemeColors } from '../../src/hooks';
 import { useThemeStore } from '../../src/stores/themeStore';
 import { getLocalizedChapterTitle } from '../../src/constants/chapterTemplates';
 import { getLocalizedMilestoneLabel, getMilestoneTemplateById } from '../../src/constants/milestoneTemplates';
-import { getLocalizedSeedMockTitle, getLocalizedSeedMockDescription } from '../../src/mocks/localizeSeedMockContent';
 import type { MemoryWithRelations, Chapter } from '../../src/types';
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -202,13 +201,12 @@ export default function MemoryDetailScreen() {
       }
     }
 
-    return getLocalizedSeedMockTitle(memory.title, t);
+    return memory.title;
   }, [memory, t]);
 
   const displayMemoryDescription = useMemo(() => {
-    if (!memory?.description) return memory?.description;
-    return getLocalizedSeedMockDescription(memory.description, t);
-  }, [memory?.description, t]);
+    return memory?.description;
+  }, [memory?.description]);
 
   const displayChapterTitle = useMemo(() => {
     if (!chapter) return '';
@@ -296,8 +294,8 @@ export default function MemoryDetailScreen() {
                   />
                   <Text style={styles.typeBadgeText}>
                     {memory.memoryType === 'milestone'
-                      ? (t('memoryForm.milestone') || 'Milestone')
-                      : (t('memoryForm.note') || 'Note')}
+                      ? t('memoryForm.milestone')
+                      : t('memoryForm.note')}
                   </Text>
                 </View>
               </View>
@@ -336,7 +334,7 @@ export default function MemoryDetailScreen() {
           {displayMemoryDescription && (
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>
-                {(t('memoryDetail.descriptionTitle') || t('entryDetail.notesTitle')).toLocaleUpperCase(locale)}
+                {t('memoryDetail.descriptionTitle').toLocaleUpperCase(locale)}
               </Text>
               <Text style={styles.notes}>{displayMemoryDescription}</Text>
             </View>
@@ -346,7 +344,7 @@ export default function MemoryDetailScreen() {
           {memory.tags.length > 0 && (
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>
-                {(t('memoryDetail.tagsTitle') || t('entryDetail.tagsTitle')).toLocaleUpperCase(locale)}
+                {t('memoryDetail.tagsTitle').toLocaleUpperCase(locale)}
               </Text>
               <View style={styles.tagsContainer}>
                 {memory.tags.map((tag) => (

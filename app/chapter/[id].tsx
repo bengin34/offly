@@ -34,7 +34,6 @@ import { MilestoneTimeline } from '../../src/components/MilestoneTimeline';
 import { MilestoneQuickAddModal } from '../../src/components/MilestoneQuickAddModal';
 import { useI18n, useTheme, ThemeColors } from '../../src/hooks';
 import { getMilestoneTemplateById, getLocalizedMilestoneLabel } from '../../src/constants/milestoneTemplates';
-import { getLocalizedSeedMockTitle, getLocalizedSeedMockDescription } from '../../src/mocks/localizeSeedMockContent';
 import type {
   ChapterWithTags,
   MemoryWithRelations,
@@ -171,7 +170,7 @@ export default function ChapterDetailScreen() {
       loadData();
     } catch (error) {
       console.error('Failed to save milestone memory:', error);
-      Alert.alert(t('alerts.errorTitle') || 'Error', 'Failed to save milestone memory');
+      Alert.alert(t('alerts.errorTitle'), t('alerts.createEntryFailed'));
     }
   };
 
@@ -190,8 +189,8 @@ export default function ChapterDetailScreen() {
   const handleMilestoneDelete = (milestone: MilestoneInstanceWithTemplate) => {
     if (!milestone.associatedMemory) return;
     Alert.alert(
-      'Delete Milestone Memory',
-      'This will remove the memory but keep the milestone for later.',
+      t('alerts.deleteEntryTitle'),
+      t('alerts.deleteEntryMessage'),
       [
         { text: t('common.cancel'), style: 'cancel' },
         {
@@ -280,10 +279,8 @@ export default function ChapterDetailScreen() {
       : null;
     const displayTitle = isMilestone && milestoneTemplate
       ? getLocalizedMilestoneLabel(milestoneTemplate, t)
-      : getLocalizedSeedMockTitle(memory.title, t);
-    const displayDescription = memory.description
-      ? getLocalizedSeedMockDescription(memory.description, t)
-      : '';
+      : memory.title;
+    const displayDescription = memory.description ?? '';
 
     return (
       <SwipeableRow
@@ -376,7 +373,9 @@ export default function ChapterDetailScreen() {
                     </View>
                   ))}
                   {memory.tags.length > 3 && (
-                    <Text style={styles.moreTagsText}>+{memory.tags.length - 3}</Text>
+                    <Text style={styles.moreTagsText}>
+                      {t('entryForm.moreTags', { count: memory.tags.length - 3 })}
+                    </Text>
                   )}
                 </View>
               )}

@@ -50,7 +50,9 @@
     "editMemory": "Erinnerung bearbeiten",
     "newEntry": "Neue Erinnerung",
     "entry": "Erinnerung",
-    "editEntry": "Erinnerung bearbeiten"
+    "editEntry": "Erinnerung bearbeiten",
+    "pregnancyJournal": "Schwangerschaftstagebuch",
+    "newJournalEntry": "Neuer Tagebucheintrag"
   },
   "chapters": {
     "addCover": "Titelbild hinzufügen",
@@ -178,7 +180,8 @@
     "editBabyProfileTitle": "Babyprofil bearbeiten",
     "name": "Name",
     "namePlaceholder": "Name oder Spitzname des Babys",
-    "birthDateLabel": "Geburtsdatum"
+    "birthDateLabel": "Geburtsdatum",
+    "exportEstimate": "Geschätzte Größe: ca. {size} MB ({count} Fotos)"
   },
   "proBanner": {
     "title": "Pro freischalten",
@@ -233,7 +236,8 @@
       "sitsUpAlone": "Sitzt allein",
       "firstCrawl": "Erstes Krabbeln",
       "firstSteps": "Erste Schritte",
-      "firstWords": "Erste Worte"
+      "firstWords": "Erste Worte",
+      "inDays": "In {count} Tagen"
     }
   },
   "placeholders": {
@@ -1080,5 +1084,44 @@
       "morningCuddles": "Wir haben den ganzen Morgen einfach zusammen verbracht. Diese stillen Momente bedeuten alles.",
       "tummyTimeChampion": "Heute den Kopf fast 10 Sekunden hochgehalten! Wird jeden Tag stärker."
     }
+  },
+  "vault": {
+    "title": "Tresor",
+    "newLetterTitle": "Neuer Brief",
+    "notFound": "Tresor nicht gefunden",
+    "lockedUntil": "Gesperrt bis {date}",
+    "lockedDescription": "Die Briefe in diesem Tresor werden freigeschaltet, wenn dein Kind {age} Jahre alt wird. Du kannst jederzeit neue Briefe schreiben.",
+    "freeLimitReached": "Gratis-Limit erreicht · Upgrade, um mehr Briefe zu schreiben",
+    "freeRemaining": "Noch {count} kostenloser Brief",
+    "freeRemainingPlural": "Noch {count} kostenlose Briefe",
+    "statLetter": "Brief",
+    "statLetters": "Briefe",
+    "emptyLockedTitle": "Noch keine Briefe",
+    "emptyLockedSubtitle": "Schreibe deinen ersten Brief für die Zukunft",
+    "emptyUnlockedTitle": "Keine Briefe",
+    "emptyUnlockedSubtitle": "Dieser Tresor ist leer",
+    "fromPast": "{count} Brief aus der Vergangenheit",
+    "fromPastPlural": "{count} Briefe aus der Vergangenheit",
+    "letterWrittenOn": "Brief geschrieben am {date}",
+    "writeLetterTitle": "Brief schreiben",
+    "saveAction": "Speichern",
+    "savingAction": "Wird gespeichert...",
+    "safeUntilUnlock": "Dieser Brief bleibt sicher verwahrt, bis sich der Tresor öffnet",
+    "fieldTitle": "Titel",
+    "fieldDate": "Datum",
+    "fieldBody": "Dein Brief",
+    "placeholderTitle": "Liebes zukünftiges Ich...",
+    "placeholderBody": "Schreibe etwas Bedeutungsvolles...",
+    "alertTitleRequiredTitle": "Titel erforderlich",
+    "alertTitleRequiredMessage": "Bitte gib deinem Brief einen Titel.",
+    "alertNoVaultTitle": "Fehler",
+    "alertNoVaultMessage": "Kein Tresor ausgewählt.",
+    "alertSaveFailedTitle": "Fehler",
+    "alertSaveFailedMessage": "Der Brief konnte nicht gespeichert werden. Bitte versuche es erneut."
+  },
+  "pregnancyJournal": {
+    "emptyTitle": "Dein Schwangerschaftstagebuch",
+    "emptySubtitle": "Halte Gedanken, Gefühle und Meilensteine deiner Schwangerschaft fest",
+    "emptyButton": "Ersten Eintrag schreiben"
   }
 }

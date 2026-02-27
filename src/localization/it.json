@@ -50,7 +50,9 @@
     "editMemory": "Modifica ricordo",
     "newEntry": "Nuovo ricordo",
     "entry": "Ricordo",
-    "editEntry": "Modifica ricordo"
+    "editEntry": "Modifica ricordo",
+    "pregnancyJournal": "Diario della gravidanza",
+    "newJournalEntry": "Nuova voce del diario"
   },
   "chapters": {
     "addCover": "Aggiungi copertina",
@@ -178,7 +180,8 @@
     "editBabyProfileTitle": "Modifica profilo del bebè",
     "name": "Nome",
     "namePlaceholder": "Nome o soprannome del bebè",
-    "birthDateLabel": "Data di nascita"
+    "birthDateLabel": "Data di nascita",
+    "exportEstimate": "Dimensione stimata: ~{size} MB ({count} foto)"
   },
   "proBanner": {
     "title": "Passa a Pro",
@@ -233,7 +236,8 @@
       "sitsUpAlone": "Sta seduto da solo",
       "firstCrawl": "Primo gattonamento",
       "firstSteps": "Primi passi",
-      "firstWords": "Prime parole"
+      "firstWords": "Prime parole",
+      "inDays": "Tra {count} giorni"
     }
   },
   "placeholders": {
@@ -1080,5 +1084,44 @@
       "morningCuddles": "Abbiamo passato tutta la mattina semplicemente insieme. Questi momenti tranquilli sono tutto.",
       "tummyTimeChampion": "Oggi ha tenuto la testolina su per quasi 10 secondi! Sta diventando sempre più forte."
     }
+  },
+  "vault": {
+    "title": "Scrigno",
+    "newLetterTitle": "Nuova lettera",
+    "notFound": "Scrigno non trovato",
+    "lockedUntil": "Bloccato fino al {date}",
+    "lockedDescription": "Le lettere in questo scrigno saranno disponibili quando tuo figlio compirà {age} anni. Puoi comunque scrivere nuove lettere in qualsiasi momento.",
+    "freeLimitReached": "Limite gratuito raggiunto · Passa a Pro per scrivere più lettere",
+    "freeRemaining": "Ti resta {count} lettera gratuita",
+    "freeRemainingPlural": "Ti restano {count} lettere gratuite",
+    "statLetter": "lettera",
+    "statLetters": "lettere",
+    "emptyLockedTitle": "Ancora nessuna lettera",
+    "emptyLockedSubtitle": "Scrivi la tua prima lettera da aprire in futuro",
+    "emptyUnlockedTitle": "Nessuna lettera",
+    "emptyUnlockedSubtitle": "Questo scrigno è vuoto",
+    "fromPast": "{count} lettera dal passato",
+    "fromPastPlural": "{count} lettere dal passato",
+    "letterWrittenOn": "Lettera scritta il {date}",
+    "writeLetterTitle": "Scrivi una lettera",
+    "saveAction": "Salva",
+    "savingAction": "Salvataggio...",
+    "safeUntilUnlock": "Questa lettera sarà custodita al sicuro finché lo scrigno non si sblocca",
+    "fieldTitle": "Titolo",
+    "fieldDate": "Data",
+    "fieldBody": "La tua lettera",
+    "placeholderTitle": "Cara me del futuro...",
+    "placeholderBody": "Scrivi qualcosa di significativo...",
+    "alertTitleRequiredTitle": "Titolo obbligatorio",
+    "alertTitleRequiredMessage": "Inserisci un titolo per la tua lettera.",
+    "alertNoVaultTitle": "Errore",
+    "alertNoVaultMessage": "Nessuno scrigno selezionato.",
+    "alertSaveFailedTitle": "Errore",
+    "alertSaveFailedMessage": "Impossibile salvare la lettera. Riprova."
+  },
+  "pregnancyJournal": {
+    "emptyTitle": "Il tuo diario della gravidanza",
+    "emptySubtitle": "Raccogli pensieri, emozioni e traguardi durante la gravidanza",
+    "emptyButton": "Scrivi la tua prima voce"
   }
 }

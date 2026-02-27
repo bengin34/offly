@@ -50,7 +50,9 @@
     "editMemory": "Edit Memory",
     "newEntry": "New Memory",
     "entry": "Memory",
-    "editEntry": "Edit Memory"
+    "editEntry": "Edit Memory",
+    "pregnancyJournal": "Pregnancy Journal",
+    "newJournalEntry": "New Journal Entry"
   },
   "chapters": {
     "addCover": "Add a cover",
@@ -178,7 +180,8 @@
     "editBabyProfileTitle": "Edit Baby Profile",
     "name": "Name",
     "namePlaceholder": "Baby's name or nickname",
-    "birthDateLabel": "Birth Date"
+    "birthDateLabel": "Birth Date",
+    "exportEstimate": "Estimated size: ~{size} MB ({count} photos)"
   },
   "proBanner": {
     "title": "Go Pro",
@@ -233,7 +236,8 @@
       "sitsUpAlone": "Sits Up Alone",
       "firstCrawl": "First Crawl",
       "firstSteps": "First Steps",
-      "firstWords": "First Words"
+      "firstWords": "First Words",
+      "inDays": "In {count} days"
     }
   },
   "placeholders": {
@@ -888,5 +892,44 @@
       "morningCuddles": "We spent the whole morning just being together. These quiet moments are everything.",
       "tummyTimeChampion": "Held their head up for almost 10 seconds today! Getting so strong."
     }
+  },
+  "vault": {
+    "title": "Vault",
+    "newLetterTitle": "New Letter",
+    "notFound": "Vault not found",
+    "lockedUntil": "Locked until {date}",
+    "lockedDescription": "Letters in this vault will be revealed when your child turns {age}. You can still write new letters at any time.",
+    "freeLimitReached": "Free limit reached · Upgrade to write more letters",
+    "freeRemaining": "{count} free letter left",
+    "freeRemainingPlural": "{count} free letters left",
+    "statLetter": "letter",
+    "statLetters": "letters",
+    "emptyLockedTitle": "No letters yet",
+    "emptyLockedSubtitle": "Write your first letter to be opened in the future",
+    "emptyUnlockedTitle": "No letters",
+    "emptyUnlockedSubtitle": "This vault is empty",
+    "fromPast": "{count} letter from the past",
+    "fromPastPlural": "{count} letters from the past",
+    "letterWrittenOn": "Letter written {date}",
+    "writeLetterTitle": "Write a Letter",
+    "saveAction": "Save",
+    "savingAction": "Saving...",
+    "safeUntilUnlock": "This letter will be kept safe until the vault unlocks",
+    "fieldTitle": "Title",
+    "fieldDate": "Date",
+    "fieldBody": "Your letter",
+    "placeholderTitle": "Dear future you...",
+    "placeholderBody": "Write something meaningful...",
+    "alertTitleRequiredTitle": "Title required",
+    "alertTitleRequiredMessage": "Please give your letter a title.",
+    "alertNoVaultTitle": "Error",
+    "alertNoVaultMessage": "No vault selected.",
+    "alertSaveFailedTitle": "Error",
+    "alertSaveFailedMessage": "Failed to save your letter. Please try again."
+  },
+  "pregnancyJournal": {
+    "emptyTitle": "Your pregnancy journal",
+    "emptySubtitle": "Capture thoughts, feelings, and milestones during your pregnancy",
+    "emptyButton": "Write your first entry"
   }
 }

@@ -50,7 +50,9 @@
     "editMemory": "추억 편집",
     "newEntry": "새 추억",
     "entry": "추억",
-    "editEntry": "추억 편집"
+    "editEntry": "추억 편집",
+    "pregnancyJournal": "임신 일기",
+    "newJournalEntry": "새 일기 작성"
   },
   "chapters": {
     "addCover": "표지 추가",
@@ -178,7 +180,8 @@
     "editBabyProfileTitle": "아기 프로필 편집",
     "name": "이름",
     "namePlaceholder": "아기 이름 또는 별명",
-    "birthDateLabel": "출생일"
+    "birthDateLabel": "출생일",
+    "exportEstimate": "예상 용량: 약 {size}MB (사진 {count}장)"
   },
   "proBanner": {
     "title": "Pro로 이동",
@@ -233,7 +236,8 @@
       "sitsUpAlone": "혼자 앉기",
       "firstCrawl": "첫 기어가기",
       "firstSteps": "첫걸음",
-      "firstWords": "첫 단어"
+      "firstWords": "첫 단어",
+      "inDays": "{count}일 후"
     }
   },
   "placeholders": {
@@ -912,5 +916,44 @@
       "morningCuddles": "오늘 아침은 함께 꼭 붙어 지냈어요. 이런 조용한 순간이 가장 소중해요.",
       "tummyTimeChampion": "오늘은 거의 10초 동안 고개를 들고 있었어요! 점점 더 힘이 생기고 있어요."
     }
+  },
+  "vault": {
+    "title": "보관함",
+    "newLetterTitle": "새 편지",
+    "notFound": "보관함을 찾을 수 없어요",
+    "lockedUntil": "{date}까지 잠겨 있어요",
+    "lockedDescription": "이 보관함의 편지는 아이가 {age}살이 되면 열립니다. 언제든지 새 편지를 쓸 수 있어요.",
+    "freeLimitReached": "무료 한도 도달 · 더 작성하려면 업그레이드하세요",
+    "freeRemaining": "무료 편지 {count}개 남았어요",
+    "freeRemainingPlural": "무료 편지 {count}개 남았어요",
+    "statLetter": "편지",
+    "statLetters": "편지",
+    "emptyLockedTitle": "아직 편지가 없어요",
+    "emptyLockedSubtitle": "미래에 열어볼 첫 편지를 작성해 보세요",
+    "emptyUnlockedTitle": "편지가 없어요",
+    "emptyUnlockedSubtitle": "이 보관함은 비어 있어요",
+    "fromPast": "과거의 편지 {count}개",
+    "fromPastPlural": "과거의 편지 {count}개",
+    "letterWrittenOn": "작성일 {date}",
+    "writeLetterTitle": "편지 쓰기",
+    "saveAction": "저장",
+    "savingAction": "저장 중...",
+    "safeUntilUnlock": "이 편지는 보관함이 열릴 때까지 안전하게 보관됩니다",
+    "fieldTitle": "제목",
+    "fieldDate": "날짜",
+    "fieldBody": "편지 내용",
+    "placeholderTitle": "미래의 나에게...",
+    "placeholderBody": "의미 있는 내용을 적어보세요...",
+    "alertTitleRequiredTitle": "제목이 필요해요",
+    "alertTitleRequiredMessage": "편지 제목을 입력해 주세요.",
+    "alertNoVaultTitle": "오류",
+    "alertNoVaultMessage": "보관함이 선택되지 않았어요.",
+    "alertSaveFailedTitle": "오류",
+    "alertSaveFailedMessage": "편지를 저장하지 못했어요. 다시 시도해 주세요."
+  },
+  "pregnancyJournal": {
+    "emptyTitle": "나의 임신 일기",
+    "emptySubtitle": "임신 기간의 생각, 감정, 중요한 순간을 기록해 보세요",
+    "emptyButton": "첫 일기 작성하기"
   }
 }

@@ -50,7 +50,9 @@
     "editMemory": "Herinnering bewerken",
     "newEntry": "Nieuwe herinnering",
     "entry": "Herinnering",
-    "editEntry": "Herinnering bewerken"
+    "editEntry": "Herinnering bewerken",
+    "pregnancyJournal": "Zwangerschapsdagboek",
+    "newJournalEntry": "Nieuwe dagboekaantekening"
   },
   "chapters": {
     "addCover": "Omslag toevoegen",
@@ -178,7 +180,8 @@
     "editBabyProfileTitle": "Bewerk babyprofiel",
     "name": "Naam",
     "namePlaceholder": "Naam of bijnaam van de baby",
-    "birthDateLabel": "Geboortedatum"
+    "birthDateLabel": "Geboortedatum",
+    "exportEstimate": "Geschatte grootte: ~{size} MB ({count} foto's)"
   },
   "proBanner": {
     "title": "Word Pro",
@@ -233,7 +236,8 @@
       "sitsUpAlone": "Zit zelfstandig",
       "firstCrawl": "Eerste keer kruipen",
       "firstSteps": "Eerste stapjes",
-      "firstWords": "Eerste woordjes"
+      "firstWords": "Eerste woordjes",
+      "inDays": "Over {count} dagen"
     }
   },
   "placeholders": {
@@ -912,5 +916,44 @@
       "morningCuddles": "We brachten de hele ochtend gewoon samen door. Deze rustige momenten betekenen alles.",
       "tummyTimeChampion": "Vandaag het hoofdje bijna 10 seconden omhoog gehouden! Wordt met de dag sterker."
     }
+  },
+  "vault": {
+    "title": "Kluis",
+    "newLetterTitle": "Nieuwe brief",
+    "notFound": "Kluis niet gevonden",
+    "lockedUntil": "Vergrendeld tot {date}",
+    "lockedDescription": "Brieven in deze kluis worden zichtbaar wanneer je kind {age} jaar wordt. Je kunt op elk moment nieuwe brieven schrijven.",
+    "freeLimitReached": "Gratis limiet bereikt · Upgrade om meer brieven te schrijven",
+    "freeRemaining": "Nog {count} gratis brief",
+    "freeRemainingPlural": "Nog {count} gratis brieven",
+    "statLetter": "brief",
+    "statLetters": "brieven",
+    "emptyLockedTitle": "Nog geen brieven",
+    "emptyLockedSubtitle": "Schrijf je eerste brief om later te openen",
+    "emptyUnlockedTitle": "Geen brieven",
+    "emptyUnlockedSubtitle": "Deze kluis is leeg",
+    "fromPast": "{count} brief uit het verleden",
+    "fromPastPlural": "{count} brieven uit het verleden",
+    "letterWrittenOn": "Brief geschreven op {date}",
+    "writeLetterTitle": "Brief schrijven",
+    "saveAction": "Opslaan",
+    "savingAction": "Opslaan...",
+    "safeUntilUnlock": "Deze brief blijft veilig bewaard tot de kluis opengaat",
+    "fieldTitle": "Titel",
+    "fieldDate": "Datum",
+    "fieldBody": "Je brief",
+    "placeholderTitle": "Lieve toekomstige jij...",
+    "placeholderBody": "Schrijf iets betekenisvols...",
+    "alertTitleRequiredTitle": "Titel verplicht",
+    "alertTitleRequiredMessage": "Geef je brief een titel.",
+    "alertNoVaultTitle": "Fout",
+    "alertNoVaultMessage": "Geen kluis geselecteerd.",
+    "alertSaveFailedTitle": "Fout",
+    "alertSaveFailedMessage": "Je brief kon niet worden opgeslagen. Probeer het opnieuw."
+  },
+  "pregnancyJournal": {
+    "emptyTitle": "Jouw zwangerschapsdagboek",
+    "emptySubtitle": "Leg gedachten, gevoelens en mijlpalen tijdens je zwangerschap vast",
+    "emptyButton": "Schrijf je eerste aantekening"
   }
 }

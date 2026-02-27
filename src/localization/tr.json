@@ -50,7 +50,9 @@
     "editMemory": "Anıyı Düzenle",
     "newEntry": "Yeni Anı",
     "entry": "Anı",
-    "editEntry": "Anıyı Düzenle"
+    "editEntry": "Anıyı Düzenle",
+    "pregnancyJournal": "Hamilelik Günlüğü",
+    "newJournalEntry": "Yeni Günlük Kaydı"
   },
   "chapters": {
     "addCover": "Kapak ekle",
@@ -178,7 +180,8 @@
     "editBabyProfileTitle": "Bebek Profilini Düzenle",
     "name": "İsim",
     "namePlaceholder": "Bebeğin adı veya takma adı",
-    "birthDateLabel": "Doğum Tarihi"
+    "birthDateLabel": "Doğum Tarihi",
+    "exportEstimate": "Tahmini boyut: ~{size} MB ({count} fotoğraf)"
   },
   "proBanner": {
     "title": "Pro'ya Geç",
@@ -233,7 +236,8 @@
       "sitsUpAlone": "Desteksiz Oturuyor",
       "firstCrawl": "İlk Emekleme",
       "firstSteps": "İlk Adımlar",
-      "firstWords": "İlk Kelimeler"
+      "firstWords": "İlk Kelimeler",
+      "inDays": "{count} gün içinde"
     }
   },
   "placeholders": {
@@ -1080,5 +1084,44 @@
       "morningCuddles": "Tüm sabahı sadece birlikte sarılarak geçirdik. Bu sakin anlar her şeye değer.",
       "tummyTimeChampion": "Bugün başını neredeyse 10 saniye boyunca yukarıda tuttu! Her gün daha da güçleniyor."
     }
+  },
+  "vault": {
+    "title": "Kasa",
+    "newLetterTitle": "Yeni Mektup",
+    "notFound": "Kasa bulunamadı",
+    "lockedUntil": "{date} tarihine kadar kilitli",
+    "lockedDescription": "Bu kasadaki mektuplar çocuğunuz {age} yaşına geldiğinde açılır. Dilediğiniz zaman yeni mektup yazabilirsiniz.",
+    "freeLimitReached": "Ücretsiz sınıra ulaşıldı · Daha fazla mektup için yükseltin",
+    "freeRemaining": "{count} ücretsiz mektup hakkı kaldı",
+    "freeRemainingPlural": "{count} ücretsiz mektup hakkı kaldı",
+    "statLetter": "mektup",
+    "statLetters": "mektup",
+    "emptyLockedTitle": "Henüz mektup yok",
+    "emptyLockedSubtitle": "Gelecekte açılacak ilk mektubunuzu yazın",
+    "emptyUnlockedTitle": "Mektup yok",
+    "emptyUnlockedSubtitle": "Bu kasa boş",
+    "fromPast": "Geçmişten {count} mektup",
+    "fromPastPlural": "Geçmişten {count} mektup",
+    "letterWrittenOn": "Mektup yazıldı {date}",
+    "writeLetterTitle": "Mektup Yaz",
+    "saveAction": "Kaydet",
+    "savingAction": "Kaydediliyor...",
+    "safeUntilUnlock": "Bu mektup kasa açılana kadar güvenle saklanır",
+    "fieldTitle": "Başlık",
+    "fieldDate": "Tarih",
+    "fieldBody": "Mektubunuz",
+    "placeholderTitle": "Sevgili gelecekteki ben...",
+    "placeholderBody": "Anlamlı bir şeyler yazın...",
+    "alertTitleRequiredTitle": "Başlık gerekli",
+    "alertTitleRequiredMessage": "Lütfen mektubunuza bir başlık verin.",
+    "alertNoVaultTitle": "Hata",
+    "alertNoVaultMessage": "Kasa seçilmedi.",
+    "alertSaveFailedTitle": "Hata",
+    "alertSaveFailedMessage": "Mektup kaydedilemedi. Lütfen tekrar deneyin."
+  },
+  "pregnancyJournal": {
+    "emptyTitle": "Hamilelik günlüğün",
+    "emptySubtitle": "Hamilelik sürecindeki düşüncelerini, duygularını ve dönüm noktalarını kaydet",
+    "emptyButton": "İlk kaydını yaz"
   }
 }

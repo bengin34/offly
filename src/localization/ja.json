@@ -50,7 +50,9 @@
     "editMemory": "思い出を編集",
     "newEntry": "新しい思い出",
     "entry": "思い出",
-    "editEntry": "思い出を編集"
+    "editEntry": "思い出を編集",
+    "pregnancyJournal": "妊娠日記",
+    "newJournalEntry": "新しい日記エントリー"
   },
   "chapters": {
     "addCover": "カバーを追加",
@@ -178,7 +180,8 @@
     "editBabyProfileTitle": "赤ちゃんプロフィールを編集",
     "name": "名前",
     "namePlaceholder": "赤ちゃんの名前またはニックネーム",
-    "birthDateLabel": "誕生日"
+    "birthDateLabel": "誕生日",
+    "exportEstimate": "推定サイズ: 約{size} MB（写真{count}枚）"
   },
   "proBanner": {
     "title": "Proにアップグレード",
@@ -233,7 +236,8 @@
       "sitsUpAlone": "ひとりでおすわり",
       "firstCrawl": "はじめてのはいはい",
       "firstSteps": "はじめての一歩",
-      "firstWords": "はじめての言葉"
+      "firstWords": "はじめての言葉",
+      "inDays": "{count}日後"
     }
   },
   "placeholders": {
@@ -912,5 +916,44 @@
       "morningCuddles": "朝はずっと一緒にのんびり過ごしました。こういう静かな時間が何より大切。",
       "tummyTimeChampion": "今日はうつぶせで、ほぼ10秒も頭を上げられました! どんどん強くなっています。"
     }
+  },
+  "vault": {
+    "title": "保管庫",
+    "newLetterTitle": "新しい手紙",
+    "notFound": "保管庫が見つかりません",
+    "lockedUntil": "{date}までロック",
+    "lockedDescription": "この保管庫の手紙は、お子さまが{age}歳になると開封されます。いつでも新しい手紙を書けます。",
+    "freeLimitReached": "無料上限に達しました。さらに書くにはアップグレードしてください",
+    "freeRemaining": "無料であと{count}通",
+    "freeRemainingPlural": "無料であと{count}通",
+    "statLetter": "通",
+    "statLetters": "通",
+    "emptyLockedTitle": "まだ手紙はありません",
+    "emptyLockedSubtitle": "将来開封する最初の手紙を書きましょう",
+    "emptyUnlockedTitle": "手紙はありません",
+    "emptyUnlockedSubtitle": "この保管庫は空です",
+    "fromPast": "過去からの手紙 {count}通",
+    "fromPastPlural": "過去からの手紙 {count}通",
+    "letterWrittenOn": "{date} に書いた手紙",
+    "writeLetterTitle": "手紙を書く",
+    "saveAction": "保存",
+    "savingAction": "保存中...",
+    "safeUntilUnlock": "この手紙は保管庫が開くまで安全に保管されます",
+    "fieldTitle": "タイトル",
+    "fieldDate": "日付",
+    "fieldBody": "手紙本文",
+    "placeholderTitle": "未来の自分へ...",
+    "placeholderBody": "心に残ることを書いてみましょう...",
+    "alertTitleRequiredTitle": "タイトルが必要です",
+    "alertTitleRequiredMessage": "手紙にタイトルを付けてください。",
+    "alertNoVaultTitle": "エラー",
+    "alertNoVaultMessage": "保管庫が選択されていません。",
+    "alertSaveFailedTitle": "エラー",
+    "alertSaveFailedMessage": "手紙を保存できませんでした。もう一度お試しください。"
+  },
+  "pregnancyJournal": {
+    "emptyTitle": "あなたの妊娠日記",
+    "emptySubtitle": "妊娠中の気持ちや出来事、節目を記録しましょう",
+    "emptyButton": "最初のエントリーを書く"
   }
 }

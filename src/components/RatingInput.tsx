@@ -55,7 +55,7 @@ export function RatingInput({ value, onChange }: RatingInputProps) {
         })}
       </View>
       <Text style={styles.valueText}>
-        {ratingValue > 0 ? `${formatRating(ratingValue)} / 5` : 'Not rated'}
+        {ratingValue > 0 ? `${formatRating(ratingValue)} / 5` : '—'}
       </Text>
     </View>
   );

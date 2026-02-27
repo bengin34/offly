@@ -362,7 +362,7 @@ export default function SettingsScreen() {
       await loadProfile();
     } catch (error) {
       console.error('Failed to update archived chapters visibility:', error);
-      Alert.alert(t('alerts.errorTitle'), 'Failed to update settings');
+      Alert.alert(t('alerts.errorTitle'), t('settings.alertProfileUpdateFailedMessage'));
     }
   };
 

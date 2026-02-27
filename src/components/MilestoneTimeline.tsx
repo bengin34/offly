@@ -109,7 +109,7 @@ export function MilestoneTimeline({
                 >
                   <Ionicons name="checkmark-circle" size={16} color={theme.primary} />
                   <Text style={[styles.statusText, { color: theme.primary }]}>
-                    {t('labels.filled') || 'Filled'}
+                    {t('labels.filled')}
                   </Text>
                 </View>
               </View>
@@ -153,12 +153,12 @@ export function MilestoneTimeline({
               </Text>
               <Text style={[styles.emptyDate, { color: theme.textSecondary }]}>
                 {isPast
-                  ? `${t('labels.milestone.pastDue') || 'Past due'}`
+                  ? t('labels.milestone.pastDue')
                   : daysUntil === 0
-                    ? `${t('labels.milestone.today') || 'Today'}`
+                    ? t('labels.milestone.today')
                     : daysUntil === 1
-                      ? `${t('labels.milestone.tomorrow') || 'Tomorrow'}`
-                      : `In ${daysUntil} days`}
+                      ? t('labels.milestone.tomorrow')
+                      : t('labels.milestone.inDays', { count: daysUntil })}
               </Text>
             </View>
           </View>
@@ -187,10 +187,10 @@ export function MilestoneTimeline({
       <View style={[styles.emptyStateContainer, { backgroundColor: theme.background }]}>
         <Ionicons name="star-outline" size={64} color={theme.textMuted} />
         <Text style={[styles.emptyStateTitle, { color: theme.text }]}>
-          {t('labels.milestone.empty') || 'No milestones yet'}
+          {t('labels.milestone.empty')}
         </Text>
         <Text style={[styles.emptyStateSubtitle, { color: theme.textMuted }]}>
-          {t('labels.milestone.emptySubtitle') || 'Milestones will appear here'}
+          {t('labels.milestone.emptySubtitle')}
         </Text>
       </View>
     );

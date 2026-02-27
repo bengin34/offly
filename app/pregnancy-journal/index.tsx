@@ -19,7 +19,7 @@ import type { MemoryWithRelations } from '../../src/types';
 export default function PregnancyJournalScreen() {
   const router = useRouter();
   const theme = useTheme();
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
   const { activeBaby, loadActiveProfile } = useProfileStore();
 
   const [entries, setEntries] = useState<MemoryWithRelations[]>([]);
@@ -94,7 +94,9 @@ export default function PregnancyJournalScreen() {
             </View>
           ))}
           {item.tags.length > 3 && (
-            <Text style={styles.moreTagsText}>+{item.tags.length - 3}</Text>
+            <Text style={styles.moreTagsText}>
+              {t('entryForm.moreTags', { count: item.tags.length - 3 })}
+            </Text>
           )}
         </View>
       )}
@@ -104,15 +106,15 @@ export default function PregnancyJournalScreen() {
   const renderEmpty = () => (
     <View style={styles.emptyContainer}>
       <Ionicons name="heart-outline" size={64} color={theme.textMuted} />
-      <Text style={styles.emptyTitle}>Your pregnancy journal</Text>
+      <Text style={styles.emptyTitle}>{t('pregnancyJournal.emptyTitle')}</Text>
       <Text style={styles.emptySubtitle}>
-        Capture thoughts, feelings, and milestones during your pregnancy
+        {t('pregnancyJournal.emptySubtitle')}
       </Text>
       <TouchableOpacity
         style={styles.emptyButton}
         onPress={() => router.push('/pregnancy-journal/new-entry')}
       >
-        <Text style={styles.emptyButtonText}>Write your first entry</Text>
+        <Text style={styles.emptyButtonText}>{t('pregnancyJournal.emptyButton')}</Text>
       </TouchableOpacity>
     </View>
   );

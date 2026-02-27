@@ -50,7 +50,9 @@
     "editMemory": "Modifier le souvenir",
     "newEntry": "Nouveau souvenir",
     "entry": "Souvenir",
-    "editEntry": "Modifier le souvenir"
+    "editEntry": "Modifier le souvenir",
+    "pregnancyJournal": "Journal de grossesse",
+    "newJournalEntry": "Nouvelle entrée du journal"
   },
   "chapters": {
     "addCover": "Ajouter une couverture",
@@ -178,7 +180,8 @@
     "editBabyProfileTitle": "Modifier le profil du bébé",
     "name": "Nom",
     "namePlaceholder": "Nom ou surnom du bébé",
-    "birthDateLabel": "Date de naissance"
+    "birthDateLabel": "Date de naissance",
+    "exportEstimate": "Taille estimée : ~{size} Mo ({count} photos)"
   },
   "proBanner": {
     "title": "Passer à Pro",
@@ -233,7 +236,8 @@
       "sitsUpAlone": "S'assoit seul",
       "firstCrawl": "Premier quatre pattes",
       "firstSteps": "Premiers pas",
-      "firstWords": "Premiers mots"
+      "firstWords": "Premiers mots",
+      "inDays": "Dans {count} jours"
     }
   },
   "placeholders": {
@@ -1080,5 +1084,44 @@
       "morningCuddles": "Nous avons passé toute la matinée simplement ensemble. Ces moments calmes sont précieux.",
       "tummyTimeChampion": "Aujourd'hui, il a tenu sa tête presque 10 secondes! Il devient de plus en plus fort."
     }
+  },
+  "vault": {
+    "title": "Coffre",
+    "newLetterTitle": "Nouvelle lettre",
+    "notFound": "Coffre introuvable",
+    "lockedUntil": "Verrouillé jusqu'au {date}",
+    "lockedDescription": "Les lettres de ce coffre seront révélées lorsque votre enfant aura {age} ans. Vous pouvez toujours écrire de nouvelles lettres à tout moment.",
+    "freeLimitReached": "Limite gratuite atteinte · Passez à Pro pour écrire plus de lettres",
+    "freeRemaining": "Il vous reste {count} lettre gratuite",
+    "freeRemainingPlural": "Il vous reste {count} lettres gratuites",
+    "statLetter": "lettre",
+    "statLetters": "lettres",
+    "emptyLockedTitle": "Aucune lettre pour le moment",
+    "emptyLockedSubtitle": "Écrivez votre première lettre à ouvrir dans le futur",
+    "emptyUnlockedTitle": "Aucune lettre",
+    "emptyUnlockedSubtitle": "Ce coffre est vide",
+    "fromPast": "{count} lettre du passé",
+    "fromPastPlural": "{count} lettres du passé",
+    "letterWrittenOn": "Lettre écrite le {date}",
+    "writeLetterTitle": "Écrire une lettre",
+    "saveAction": "Enregistrer",
+    "savingAction": "Enregistrement...",
+    "safeUntilUnlock": "Cette lettre sera conservée en sécurité jusqu'à l'ouverture du coffre",
+    "fieldTitle": "Titre",
+    "fieldDate": "Date",
+    "fieldBody": "Votre lettre",
+    "placeholderTitle": "Cher moi du futur...",
+    "placeholderBody": "Écrivez quelque chose de significatif...",
+    "alertTitleRequiredTitle": "Titre requis",
+    "alertTitleRequiredMessage": "Veuillez donner un titre à votre lettre.",
+    "alertNoVaultTitle": "Erreur",
+    "alertNoVaultMessage": "Aucun coffre sélectionné.",
+    "alertSaveFailedTitle": "Erreur",
+    "alertSaveFailedMessage": "Impossible d'enregistrer votre lettre. Veuillez réessayer."
+  },
+  "pregnancyJournal": {
+    "emptyTitle": "Votre journal de grossesse",
+    "emptySubtitle": "Notez vos pensées, vos ressentis et les étapes clés de votre grossesse",
+    "emptyButton": "Écrire votre première entrée"
   }
 }

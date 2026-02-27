@@ -30,9 +30,7 @@ import { useProfileStore } from '../../src/stores/profileStore';
 import { useSettingsStore } from '../../src/stores/settingsStore';
 import { formatHeaderTitle } from '../../src/utils/ageFormatter';
 import type { ChapterWithMilestoneProgress, BabyProfile, VaultWithEntryCount } from '../../src/types';
-import { useMockData } from '../../src/mocks/useMockData';
-import { isMockActive } from '../../src/mocks/config';
-import { autoGenerateTimeline, cleanupBornChapters } from '../../src/utils/autoGenerate';
+import { cleanupBornChapters } from '../../src/utils/autoGenerate';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -40,9 +38,6 @@ export default function HomeScreen() {
   const theme = useTheme();
   const { t, locale } = useI18n();
   const { activeBaby, loadActiveProfile } = useProfileStore();
-  const babyMockData = useMockData(locale, 'baby');
-  const pregnancyMockData = useMockData(locale, 'pregnancy');
-
   const { multiProfileEnabled } = useSettingsStore();
   const [showProfileSwitcher, setShowProfileSwitcher] = useState(false);
   const [profile, setProfile] = useState<BabyProfile | null>(null);
@@ -140,23 +135,6 @@ export default function HomeScreen() {
           }
         }
 
-        // In pregnancy mock mode, keep real week titles from DB
-        // but force pregnancy cover images.
-        if (pregnancyMockData) {
-          chapterData = chapterData.map((chapter, index) => {
-            const weekMatch = chapter.title.match(/^Week\s+(\d+)$/i);
-            const weekNumber = weekMatch ? Number.parseInt(weekMatch[1], 10) : index + 1;
-            const mock = pregnancyMockData.milestones[
-              Math.max(0, weekNumber - 1) % pregnancyMockData.milestones.length
-            ];
-            return {
-              ...chapter,
-              // In pregnancy mock mode, always use pregnancy covers (prevents leaked baby covers).
-              coverImageUri: mock?.imageUrl ?? chapter.coverImageUri ?? null,
-            };
-          });
-        }
-
         setChapters(chapterData);
 
         // Also load pregnancy journal count
@@ -174,36 +152,7 @@ export default function HomeScreen() {
         // Clean up any leftover pregnancy chapters or duplicates from the DB
         await cleanupBornChapters(babyProfile.id);
 
-        let chapterData = await ChapterRepository.getAllWithProgress(babyProfile.id);
-        if (chapterData.length === 0 && isMockActive() && babyProfile.birthdate) {
-          try {
-            await autoGenerateTimeline(babyProfile);
-            chapterData = await ChapterRepository.getAllWithProgress(babyProfile.id);
-          } catch (error) {
-            console.warn('Born timeline fallback generation failed:', error);
-          }
-        }
-
-        // In baby mock mode, force deterministic covers by chronological week order.
-        // This guarantees stable, ordered visuals regardless of previously persisted covers.
-        if (babyMockData) {
-          const MS_PER_WEEK = 1000 * 60 * 60 * 24 * 7;
-          const birthMs = babyProfile.birthdate ? new Date(babyProfile.birthdate).getTime() : null;
-          chapterData = chapterData.map((chapter, index) => {
-            const startMs = new Date(chapter.startDate).getTime();
-            const weekOffset =
-              birthMs !== null
-                ? Math.max(0, Math.floor((startMs - birthMs) / MS_PER_WEEK))
-                : index;
-            const mock = babyMockData.milestones[
-              weekOffset % babyMockData.milestones.length
-            ];
-            return {
-              ...chapter,
-              coverImageUri: mock?.imageUrl ?? chapter.coverImageUri ?? null,
-            };
-          });
-        }
+        const chapterData = await ChapterRepository.getAllWithProgress(babyProfile.id);
 
         setChapters(chapterData);
         const currentId = getCurrentChapterIdFromList(chapterData);
@@ -226,7 +175,7 @@ export default function HomeScreen() {
         void loadData();
       }
     }
-  }, [activeBaby, getCurrentChapterIdFromList, scrollToCurrentChapter, babyMockData, pregnancyMockData]);
+  }, [activeBaby, getCurrentChapterIdFromList, scrollToCurrentChapter]);
 
   const { loadSettings } = useSettingsStore();
 

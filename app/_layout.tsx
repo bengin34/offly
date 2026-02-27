@@ -4,7 +4,6 @@ import { StatusBar } from 'expo-status-bar';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { getDatabase } from '../src/db/database';
-import { seedMockDatabase } from '../src/mocks/seedDb';
 import { colors, fonts } from '../src/constants';
 import { useI18n, useTheme, SubscriptionProvider } from '../src/hooks';
 import { useLocaleStore, useThemeStore, useBackupStore } from '../src/stores';
@@ -118,13 +117,13 @@ function AppContent() {
         <Stack.Screen
           name="pregnancy-journal/index"
           options={{
-            title: 'Pregnancy Journal',
+            title: t('navigation.pregnancyJournal'),
           }}
         />
         <Stack.Screen
           name="pregnancy-journal/new-entry"
           options={{
-            title: 'New Journal Entry',
+            title: t('navigation.newJournalEntry'),
             presentation: 'modal',
             headerShown: false,
           }}
@@ -132,13 +131,13 @@ function AppContent() {
         <Stack.Screen
           name="vault/[id]"
           options={{
-            title: 'Vault',
+            title: t('vault.title'),
           }}
         />
         <Stack.Screen
           name="vault/new-entry"
           options={{
-            title: 'New Letter',
+            title: t('vault.newLetterTitle'),
             presentation: 'modal',
             headerShown: false,
           }}
@@ -171,7 +170,6 @@ export default function RootLayout() {
     async function initializeApp() {
       try {
         await Promise.all([getDatabase(), loadTheme(), loadLocale(), loadOnboardingState(), loadBackupState()]);
-        await seedMockDatabase();
         setIsReady(true);
       } catch (error) {
         console.error('Failed to initialize app:', error);

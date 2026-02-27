@@ -50,7 +50,9 @@
     "editMemory": "Редактировать память",
     "newEntry": "Новая память",
     "entry": "Память",
-    "editEntry": "Редактировать память"
+    "editEntry": "Редактировать память",
+    "pregnancyJournal": "Дневник беременности",
+    "newJournalEntry": "Новая запись в дневник"
   },
   "chapters": {
     "addCover": "Добавить обложку",
@@ -178,7 +180,8 @@
     "editBabyProfileTitle": "Редактировать профиль малыша",
     "name": "Имя",
     "namePlaceholder": "Имя или ласковое прозвище",
-    "birthDateLabel": "Дата рождения"
+    "birthDateLabel": "Дата рождения",
+    "exportEstimate": "Оценочный размер: ~{size} МБ ({count} фото)"
   },
   "proBanner": {
     "title": "Перейти на Pro",
@@ -233,7 +236,8 @@
       "sitsUpAlone": "Сидит самостоятельно",
       "firstCrawl": "Первое ползание",
       "firstSteps": "Первые шаги",
-      "firstWords": "Первые слова"
+      "firstWords": "Первые слова",
+      "inDays": "Через {count} дней"
     }
   },
   "placeholders": {
@@ -912,5 +916,44 @@
       "morningCuddles": "Мы провели всё утро просто вместе. Эти тихие моменты бесценны.",
       "tummyTimeChampion": "Сегодня почти 10 секунд держал голову! С каждым днём становится всё сильнее."
     }
+  },
+  "vault": {
+    "title": "Хранилище",
+    "newLetterTitle": "Новое письмо",
+    "notFound": "Хранилище не найдено",
+    "lockedUntil": "Закрыто до {date}",
+    "lockedDescription": "Письма в этом хранилище откроются, когда вашему ребенку исполнится {age}. Вы можете писать новые письма в любое время.",
+    "freeLimitReached": "Бесплатный лимит достигнут · Обновитесь, чтобы писать больше писем",
+    "freeRemaining": "Бесплатных писем осталось: {count}",
+    "freeRemainingPlural": "Бесплатных писем осталось: {count}",
+    "statLetter": "письмо",
+    "statLetters": "писем",
+    "emptyLockedTitle": "Писем пока нет",
+    "emptyLockedSubtitle": "Напишите первое письмо, которое откроется в будущем",
+    "emptyUnlockedTitle": "Писем нет",
+    "emptyUnlockedSubtitle": "Это хранилище пусто",
+    "fromPast": "Писем из прошлого: {count}",
+    "fromPastPlural": "Писем из прошлого: {count}",
+    "letterWrittenOn": "Письмо написано {date}",
+    "writeLetterTitle": "Написать письмо",
+    "saveAction": "Сохранить",
+    "savingAction": "Сохранение...",
+    "safeUntilUnlock": "Это письмо будет храниться в безопасности до открытия хранилища",
+    "fieldTitle": "Заголовок",
+    "fieldDate": "Дата",
+    "fieldBody": "Ваше письмо",
+    "placeholderTitle": "Дорогой я из будущего...",
+    "placeholderBody": "Напишите что-то важное...",
+    "alertTitleRequiredTitle": "Нужен заголовок",
+    "alertTitleRequiredMessage": "Пожалуйста, добавьте заголовок письму.",
+    "alertNoVaultTitle": "Ошибка",
+    "alertNoVaultMessage": "Хранилище не выбрано.",
+    "alertSaveFailedTitle": "Ошибка",
+    "alertSaveFailedMessage": "Не удалось сохранить письмо. Попробуйте еще раз."
+  },
+  "pregnancyJournal": {
+    "emptyTitle": "Ваш дневник беременности",
+    "emptySubtitle": "Сохраняйте мысли, чувства и важные этапы беременности",
+    "emptyButton": "Написать первую запись"
   }
 }

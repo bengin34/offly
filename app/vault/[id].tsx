@@ -22,7 +22,7 @@ export default function VaultDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const theme = useTheme();
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
   const { isPro, presentPaywall } = useSubscription();
 
   const [vault, setVault] = useState<Vault | null>(null);
@@ -79,7 +79,7 @@ export default function VaultDetailScreen() {
       <View style={styles.container}>
         <Background />
         <View style={styles.emptyContainer}>
-          <Text style={styles.emptyTitle}>Vault not found</Text>
+          <Text style={styles.emptyTitle}>{t('vault.notFound')}</Text>
         </View>
       </View>
     );
@@ -88,7 +88,7 @@ export default function VaultDetailScreen() {
   const isLocked = vault?.status === 'locked';
   const unlockLabel = vault?.unlockDate
     ? formatDate(vault.unlockDate)
-    : 'Date not set';
+    : t('home.vaultDateNotSet');
 
   const freeLettersRemaining = Math.max(0, APP_LIMITS.FREE_MAX_LETTERS_PER_VAULT - entries.length);
   const hasReachedFreeLimit = !isPro && !hideVaultFreeLimit && entries.length >= APP_LIMITS.FREE_MAX_LETTERS_PER_VAULT;
@@ -98,10 +98,9 @@ export default function VaultDetailScreen() {
       <View style={styles.lockIconContainer}>
         <Ionicons name="lock-closed" size={48} color={theme.accent} />
       </View>
-      <Text style={styles.lockedTitle}>Locked until {unlockLabel}</Text>
+      <Text style={styles.lockedTitle}>{t('vault.lockedUntil', { date: unlockLabel })}</Text>
       <Text style={styles.lockedSubtitle}>
-        Letters in this vault will be revealed when your child turns {vault?.targetAgeYears}.
-        You can still write new letters at any time.
+        {t('vault.lockedDescription', { age: vault?.targetAgeYears ?? '' })}
       </Text>
       {hasReachedFreeLimit && (
         <TouchableOpacity
@@ -111,19 +110,21 @@ export default function VaultDetailScreen() {
         >
           <Ionicons name="star" size={14} color={theme.primary} />
           <Text style={[styles.proBannerText, { color: theme.primary }]}>
-            Free limit reached · Upgrade to write more letters
+            {t('vault.freeLimitReached')}
           </Text>
         </TouchableOpacity>
       )}
       {!isPro && !hasReachedFreeLimit && freeLettersRemaining > 0 && (
         <Text style={[styles.freeHint, { color: theme.textMuted }]}>
-          {freeLettersRemaining} free {freeLettersRemaining === 1 ? 'letter' : 'letters'} remaining
+          {freeLettersRemaining === 1
+            ? t('vault.freeRemaining', { count: freeLettersRemaining })
+            : t('vault.freeRemainingPlural', { count: freeLettersRemaining })}
         </Text>
       )}
       <View style={styles.lockedStats}>
         <View style={styles.statItem}>
           <Text style={styles.statNumber}>{entries.length}</Text>
-          <Text style={styles.statLabel}>{entries.length === 1 ? 'letter' : 'letters'}</Text>
+          <Text style={styles.statLabel}>{entries.length === 1 ? t('vault.statLetter') : t('vault.statLetters')}</Text>
         </View>
       </View>
     </View>
@@ -134,11 +135,13 @@ export default function VaultDetailScreen() {
       <View style={[styles.lockIconContainer, { backgroundColor: theme.success + '20' }]}>
         <Ionicons name="lock-open" size={48} color={theme.success} />
       </View>
-      <Text style={styles.unlockedTitle}>Unlocked</Text>
+      <Text style={styles.unlockedTitle}>{t('home.vaultUnlocked')}</Text>
       <Text style={styles.unlockedSubtitle}>
         {entries.length === 0
-          ? 'No letters in this vault yet.'
-          : `${entries.length} ${entries.length === 1 ? 'letter' : 'letters'} from the past`}
+          ? t('vault.emptyUnlockedTitle')
+          : entries.length === 1
+            ? t('vault.fromPast', { count: entries.length })
+            : t('vault.fromPastPlural', { count: entries.length })}
       </Text>
     </View>
   );
@@ -148,7 +151,7 @@ export default function VaultDetailScreen() {
     <View style={styles.lockedEntryCard}>
       <Ionicons name="mail" size={20} color={theme.textMuted} />
       <View style={styles.lockedEntryContent}>
-        <Text style={styles.lockedEntryText}>Letter written {formatDate(item.createdAt)}</Text>
+        <Text style={styles.lockedEntryText}>{t('vault.letterWrittenOn', { date: formatDate(item.createdAt) })}</Text>
       </View>
       <Ionicons name="lock-closed" size={14} color={theme.textMuted} />
     </View>
@@ -180,9 +183,9 @@ export default function VaultDetailScreen() {
       return (
         <View style={styles.emptySection}>
           <Ionicons name="mail-outline" size={48} color={theme.textMuted} />
-          <Text style={styles.emptySectionTitle}>No letters yet</Text>
+          <Text style={styles.emptySectionTitle}>{t('vault.emptyLockedTitle')}</Text>
           <Text style={styles.emptySectionSubtitle}>
-            Write your first letter to be opened in the future
+            {t('vault.emptyLockedSubtitle')}
           </Text>
         </View>
       );
@@ -190,9 +193,9 @@ export default function VaultDetailScreen() {
     return (
       <View style={styles.emptySection}>
         <Ionicons name="mail-open-outline" size={48} color={theme.textMuted} />
-        <Text style={styles.emptySectionTitle}>No letters</Text>
+        <Text style={styles.emptySectionTitle}>{t('vault.emptyUnlockedTitle')}</Text>
         <Text style={styles.emptySectionSubtitle}>
-          This vault is empty
+          {t('vault.emptyUnlockedSubtitle')}
         </Text>
       </View>
     );

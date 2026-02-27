@@ -24,7 +24,7 @@ export default function NewVaultEntryScreen() {
   const { vaultId } = useLocalSearchParams<{ vaultId: string }>();
   const router = useRouter();
   const theme = useTheme();
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
   const { isPro, presentPaywall } = useSubscription();
 
   const [title, setTitle] = useState('');
@@ -64,12 +64,12 @@ export default function NewVaultEntryScreen() {
 
   const handleSave = async () => {
     if (!title.trim()) {
-      Alert.alert('Title required', 'Please give your letter a title.');
+      Alert.alert(t('vault.alertTitleRequiredTitle'), t('vault.alertTitleRequiredMessage'));
       return;
     }
 
     if (!vaultId) {
-      Alert.alert('Error', 'No vault selected.');
+      Alert.alert(t('vault.alertNoVaultTitle'), t('vault.alertNoVaultMessage'));
       return;
     }
 
@@ -96,7 +96,7 @@ export default function NewVaultEntryScreen() {
       router.back();
     } catch (error) {
       console.error('Failed to create vault entry:', error);
-      Alert.alert('Error', 'Failed to save your letter. Please try again.');
+      Alert.alert(t('vault.alertSaveFailedTitle'), t('vault.alertSaveFailedMessage'));
     } finally {
       setIsSubmitting(false);
     }
@@ -108,9 +108,9 @@ export default function NewVaultEntryScreen() {
     <View style={styles.container}>
       <Background />
       <ModalWrapper
-        title="Write a Letter"
+        title={t('vault.writeLetterTitle')}
         onClose={() => router.back()}
-        actionLabel={isSubmitting ? 'Saving...' : 'Save'}
+        actionLabel={isSubmitting ? t('vault.savingAction') : t('vault.saveAction')}
         onAction={handleSave}
         actionDisabled={isSubmitting}
         palette={{
@@ -128,18 +128,18 @@ export default function NewVaultEntryScreen() {
           <View style={styles.infoBanner}>
             <Ionicons name="lock-closed" size={16} color={theme.accent} />
             <Text style={styles.infoBannerText}>
-              This letter will be kept safe until the vault unlocks
+              {t('vault.safeUntilUnlock')}
             </Text>
           </View>
 
           {/* Title */}
           <View style={styles.field}>
-            <Text style={styles.label}>TITLE</Text>
+            <Text style={styles.label}>{t('vault.fieldTitle')}</Text>
             <TextInput
               style={styles.input}
               value={title}
               onChangeText={setTitle}
-              placeholder="Dear future you..."
+              placeholder={t('vault.placeholderTitle')}
               placeholderTextColor={theme.textMuted}
               autoFocus
             />
@@ -147,7 +147,7 @@ export default function NewVaultEntryScreen() {
 
           {/* Date */}
           <View style={styles.field}>
-            <Text style={styles.label}>DATE</Text>
+            <Text style={styles.label}>{t('vault.fieldDate')}</Text>
             <TouchableOpacity style={styles.dateButton} onPress={openDatePicker} activeOpacity={0.8}>
               <Ionicons name="calendar-outline" size={20} color={theme.textSecondary} />
               <Text style={styles.dateText}>{formatDate(date)}</Text>
@@ -169,7 +169,7 @@ export default function NewVaultEntryScreen() {
                   style={[styles.datePickerDone, { borderTopColor: theme.borderLight }]}
                   onPress={confirmIOSDate}
                 >
-                  <Text style={[styles.datePickerDoneText, { color: theme.primary }]}>Done</Text>
+                  <Text style={[styles.datePickerDoneText, { color: theme.primary }]}>{t('common.done')}</Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -177,12 +177,12 @@ export default function NewVaultEntryScreen() {
 
           {/* Letter body */}
           <View style={styles.field}>
-            <Text style={styles.label}>YOUR LETTER</Text>
+            <Text style={styles.label}>{t('vault.fieldBody')}</Text>
             <TextInput
               style={[styles.input, styles.textArea]}
               value={description}
               onChangeText={setDescription}
-              placeholder="Write something meaningful..."
+              placeholder={t('vault.placeholderBody')}
               placeholderTextColor={theme.textMuted}
               multiline
               numberOfLines={8}

@@ -50,7 +50,9 @@
     "editMemory": "Editar lembrança",
     "newEntry": "Nova lembrança",
     "entry": "Lembrança",
-    "editEntry": "Editar lembrança"
+    "editEntry": "Editar lembrança",
+    "pregnancyJournal": "Diário da gravidez",
+    "newJournalEntry": "Nova entrada no diário"
   },
   "chapters": {
     "addCover": "Adicionar capa",
@@ -178,7 +180,8 @@
     "editBabyProfileTitle": "Editar perfil do bebê",
     "name": "Nome",
     "namePlaceholder": "Nome ou apelido do bebê",
-    "birthDateLabel": "Data de nascimento"
+    "birthDateLabel": "Data de nascimento",
+    "exportEstimate": "Tamanho estimado: ~{size} MB ({count} fotos)"
   },
   "proBanner": {
     "title": "Vire Pro",
@@ -233,7 +236,8 @@
       "sitsUpAlone": "Senta sozinho",
       "firstCrawl": "Primeiro engatinhar",
       "firstSteps": "Primeiros passos",
-      "firstWords": "Primeiras palavras"
+      "firstWords": "Primeiras palavras",
+      "inDays": "Em {count} dias"
     }
   },
   "placeholders": {
@@ -912,5 +916,44 @@
       "morningCuddles": "Passamos a manhã inteira apenas juntos. Esses momentos tranquilos são tudo.",
       "tummyTimeChampion": "Hoje segurou a cabecinha por quase 10 segundos! Está ficando cada dia mais forte."
     }
+  },
+  "vault": {
+    "title": "Cofre",
+    "newLetterTitle": "Nova carta",
+    "notFound": "Cofre não encontrado",
+    "lockedUntil": "Bloqueado até {date}",
+    "lockedDescription": "As cartas deste cofre serão reveladas quando seu filho completar {age} anos. Você ainda pode escrever novas cartas a qualquer momento.",
+    "freeLimitReached": "Limite gratuito atingido · Faça upgrade para escrever mais cartas",
+    "freeRemaining": "Você ainda tem {count} carta grátis",
+    "freeRemainingPlural": "Você ainda tem {count} cartas grátis",
+    "statLetter": "carta",
+    "statLetters": "cartas",
+    "emptyLockedTitle": "Ainda não há cartas",
+    "emptyLockedSubtitle": "Escreva sua primeira carta para ser aberta no futuro",
+    "emptyUnlockedTitle": "Sem cartas",
+    "emptyUnlockedSubtitle": "Este cofre está vazio",
+    "fromPast": "{count} carta do passado",
+    "fromPastPlural": "{count} cartas do passado",
+    "letterWrittenOn": "Carta escrita em {date}",
+    "writeLetterTitle": "Escrever uma carta",
+    "saveAction": "Salvar",
+    "savingAction": "Salvando...",
+    "safeUntilUnlock": "Esta carta ficará guardada com segurança até o cofre abrir",
+    "fieldTitle": "Título",
+    "fieldDate": "Data",
+    "fieldBody": "Sua carta",
+    "placeholderTitle": "Querido eu do futuro...",
+    "placeholderBody": "Escreva algo significativo...",
+    "alertTitleRequiredTitle": "Título obrigatório",
+    "alertTitleRequiredMessage": "Dê um título para sua carta.",
+    "alertNoVaultTitle": "Erro",
+    "alertNoVaultMessage": "Nenhum cofre selecionado.",
+    "alertSaveFailedTitle": "Erro",
+    "alertSaveFailedMessage": "Não foi possível salvar sua carta. Tente novamente."
+  },
+  "pregnancyJournal": {
+    "emptyTitle": "Seu diário da gravidez",
+    "emptySubtitle": "Registre pensamentos, sentimentos e marcos durante a gravidez",
+    "emptyButton": "Escreva sua primeira entrada"
   }
 }

@@ -17,14 +17,13 @@ import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
 import { Background } from '../../src/components/Background';
 import { ModalWrapper } from '../../src/components/ModalWrapper';
 import { TagPickerDialog } from '../../src/components/TagPickerDialog';
-import { useI18n, useTheme, useSubscription } from '../../src/hooks';
+import { useI18n, useTheme } from '../../src/hooks';
 import type { MemoryType, Tag } from '../../src/types';
 
 export default function NewPregnancyJournalEntryScreen() {
   const router = useRouter();
   const theme = useTheme();
-  const { locale } = useI18n();
-  const { isPro } = useSubscription();
+  const { locale, t } = useI18n();
 
   const [memoryType, setMemoryType] = useState<MemoryType>('note');
   const [title, setTitle] = useState('');
@@ -70,7 +69,7 @@ export default function NewPregnancyJournalEntryScreen() {
 
   const handleSave = async () => {
     if (!title.trim()) {
-      Alert.alert('Title required', 'Please enter a title for your journal entry.');
+      Alert.alert(t('alerts.requiredTitle'), t('alerts.requiredEntryTitle'));
       return;
     }
 
@@ -89,7 +88,7 @@ export default function NewPregnancyJournalEntryScreen() {
       router.back();
     } catch (error) {
       console.error('Failed to create pregnancy journal entry:', error);
-      Alert.alert('Error', 'Failed to save your journal entry. Please try again.');
+      Alert.alert(t('alerts.errorTitle'), t('alerts.createEntryFailed'));
     } finally {
       setIsSubmitting(false);
     }
@@ -101,9 +100,9 @@ export default function NewPregnancyJournalEntryScreen() {
     <View style={styles.container}>
       <Background />
       <ModalWrapper
-        title="New Journal Entry"
+        title={t('navigation.newJournalEntry')}
         onClose={() => router.back()}
-        actionLabel={isSubmitting ? 'Saving...' : 'Save'}
+        actionLabel={isSubmitting ? t('common.saving') : t('common.save')}
         onAction={handleSave}
         actionDisabled={isSubmitting}
         palette={{
@@ -129,7 +128,7 @@ export default function NewPregnancyJournalEntryScreen() {
                 color={memoryType === 'note' ? theme.white : theme.memory}
               />
               <Text style={[styles.typeButtonText, memoryType === 'note' && styles.typeButtonTextActive]}>
-                Note
+                {t('memoryForm.note')}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -142,22 +141,22 @@ export default function NewPregnancyJournalEntryScreen() {
                 color={memoryType === 'milestone' ? theme.white : theme.milestone}
               />
               <Text style={[styles.typeButtonText, memoryType === 'milestone' && styles.typeButtonTextActive]}>
-                Milestone
+                {t('memoryForm.milestone')}
               </Text>
             </TouchableOpacity>
           </View>
 
           {/* Title */}
           <View style={styles.field}>
-            <Text style={styles.label}>TITLE</Text>
+            <Text style={styles.label}>{t('labels.title').toLocaleUpperCase(locale)}</Text>
             <TextInput
               style={styles.input}
               value={title}
               onChangeText={setTitle}
               placeholder={
                 memoryType === 'milestone'
-                  ? 'First kick, Ultrasound...'
-                  : 'How I feel today...'
+                  ? t('placeholders.memoryTitleMilestone')
+                  : t('placeholders.memoryTitleNote')
               }
               placeholderTextColor={theme.textMuted}
               autoFocus
@@ -166,7 +165,7 @@ export default function NewPregnancyJournalEntryScreen() {
 
           {/* Date */}
           <View style={styles.field}>
-            <Text style={styles.label}>DATE</Text>
+            <Text style={styles.label}>{t('labels.date').toLocaleUpperCase(locale)}</Text>
             <TouchableOpacity style={styles.dateButton} onPress={openDatePicker} activeOpacity={0.8}>
               <Ionicons name="calendar-outline" size={20} color={theme.textSecondary} />
               <Text style={styles.dateText}>{formatDate(date)}</Text>
@@ -188,7 +187,7 @@ export default function NewPregnancyJournalEntryScreen() {
                   style={[styles.datePickerDone, { borderTopColor: theme.borderLight }]}
                   onPress={confirmIOSDate}
                 >
-                  <Text style={[styles.datePickerDoneText, { color: theme.primary }]}>Done</Text>
+                  <Text style={[styles.datePickerDoneText, { color: theme.primary }]}>{t('common.done')}</Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -196,12 +195,12 @@ export default function NewPregnancyJournalEntryScreen() {
 
           {/* Description */}
           <View style={styles.field}>
-            <Text style={styles.label}>NOTES</Text>
+            <Text style={styles.label}>{t('labels.notes').toLocaleUpperCase(locale)}</Text>
             <TextInput
               style={[styles.input, styles.textArea]}
               value={description}
               onChangeText={setDescription}
-              placeholder="Write your thoughts..."
+              placeholder={t('placeholders.entryNotes')}
               placeholderTextColor={theme.textMuted}
               multiline
               numberOfLines={6}
@@ -211,13 +210,13 @@ export default function NewPregnancyJournalEntryScreen() {
 
           {/* Tags */}
           <View style={styles.field}>
-            <Text style={styles.label}>TAGS</Text>
+            <Text style={styles.label}>{t('memoryForm.tagsLabel').toLocaleUpperCase(locale)}</Text>
             <TouchableOpacity
               style={styles.tagInputContainer}
               onPress={() => setShowTagPicker(true)}
             >
               {selectedTags.length === 0 ? (
-                <Text style={styles.tagPlaceholder}>Tap to add tags</Text>
+                <Text style={styles.tagPlaceholder}>{t('entryForm.tapToAddTags')}</Text>
               ) : (
                 <View style={styles.selectedTagsInline}>
                   {selectedTags.slice(0, 3).map((tag) => (
@@ -234,7 +233,9 @@ export default function NewPregnancyJournalEntryScreen() {
                     </View>
                   ))}
                   {selectedTags.length > 3 && (
-                    <Text style={styles.moreTagsText}>+{selectedTags.length - 3} more</Text>
+                    <Text style={styles.moreTagsText}>
+                      {t('entryForm.moreTags', { count: selectedTags.length - 3 })}
+                    </Text>
                   )}
                 </View>
               )}

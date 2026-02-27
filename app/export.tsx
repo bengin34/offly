@@ -87,15 +87,15 @@ export default function ExportScreen() {
           <View style={styles.cardHeader}>
             <Ionicons name="archive-outline" size={24} color={theme.primary} />
             <View style={styles.cardHeaderText}>
-              <Text style={styles.cardTitle}>Full Backup (ZIP)</Text>
+              <Text style={styles.cardTitle}>{t('settings.backupMemoriesTitle')}</Text>
               <Text style={styles.cardDescription}>
-                Includes all data and photos. Best for device migration.
+                {t('settings.exportPhotosNote')}
               </Text>
             </View>
           </View>
           {photoCount > 0 && (
             <Text style={styles.estimateText}>
-              Estimated size: ~{estimatedSizeMB} MB ({photoCount} photos)
+              {t('settings.exportEstimate', { size: estimatedSizeMB, count: photoCount })}
             </Text>
           )}
           <TouchableOpacity
@@ -120,7 +120,7 @@ export default function ExportScreen() {
             ) : (
               <>
                 <Ionicons name="archive" size={20} color={theme.white} />
-                <Text style={styles.exportButtonText}>Create Full Backup</Text>
+                <Text style={styles.exportButtonText}>{t('settings.createBackup')}</Text>
                 {!isPro && <Ionicons name="lock-closed" size={16} color={theme.white} style={styles.lockIcon} />}
               </>
             )}
@@ -132,9 +132,9 @@ export default function ExportScreen() {
           <View style={styles.cardHeader}>
             <Ionicons name="document-text-outline" size={24} color={theme.textSecondary} />
             <View style={styles.cardHeaderText}>
-              <Text style={styles.cardTitle}>Data Export</Text>
+              <Text style={styles.cardTitle}>{t('settings.exportFormatsTitle')}</Text>
               <Text style={styles.cardDescription}>
-                Export data only (without photos). Good for spreadsheets or lightweight backups.
+                {t('settings.exportFormatsDescription')}
               </Text>
             </View>
           </View>

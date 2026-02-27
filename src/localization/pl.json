@@ -50,7 +50,9 @@
     "editMemory": "Edytuj wspomnienie",
     "newEntry": "Nowe wspomnienie",
     "entry": "Wspomnienie",
-    "editEntry": "Edytuj wspomnienie"
+    "editEntry": "Edytuj wspomnienie",
+    "pregnancyJournal": "Dziennik ciąży",
+    "newJournalEntry": "Nowy wpis do dziennika"
   },
   "chapters": {
     "addCover": "Dodaj okładkę",
@@ -178,7 +180,8 @@
     "editBabyProfileTitle": "Edytuj profil dziecka",
     "name": "Imię",
     "namePlaceholder": "Imię lub przezwisko dziecka",
-    "birthDateLabel": "Data urodzenia"
+    "birthDateLabel": "Data urodzenia",
+    "exportEstimate": "Szacowany rozmiar: ~{size} MB ({count} zdjęć)"
   },
   "proBanner": {
     "title": "Przejdź na Pro",
@@ -233,7 +236,8 @@
       "sitsUpAlone": "Siedzi samodzielnie",
       "firstCrawl": "Pierwsze raczkowanie",
       "firstSteps": "Pierwsze kroki",
-      "firstWords": "Pierwsze słowa"
+      "firstWords": "Pierwsze słowa",
+      "inDays": "Za {count} dni"
     }
   },
   "placeholders": {
@@ -912,5 +916,44 @@
       "morningCuddles": "Spędziliśmy cały poranek po prostu razem. Te spokojne chwile znaczą wszystko.",
       "tummyTimeChampion": "Dziś trzymało główkę uniesioną prawie 10 sekund! Z dnia na dzień jest coraz silniejsze."
     }
+  },
+  "vault": {
+    "title": "Skarbiec",
+    "newLetterTitle": "Nowy list",
+    "notFound": "Nie znaleziono skarbca",
+    "lockedUntil": "Zablokowane do {date}",
+    "lockedDescription": "Listy w tym skarbcu zostaną ujawnione, gdy Twoje dziecko skończy {age} lat. W każdej chwili możesz napisać nowe listy.",
+    "freeLimitReached": "Osiągnięto darmowy limit · Ulepsz, aby pisać więcej listów",
+    "freeRemaining": "Pozostało darmowych listów: {count}",
+    "freeRemainingPlural": "Pozostało darmowych listów: {count}",
+    "statLetter": "list",
+    "statLetters": "listów",
+    "emptyLockedTitle": "Jeszcze brak listów",
+    "emptyLockedSubtitle": "Napisz pierwszy list do otwarcia w przyszłości",
+    "emptyUnlockedTitle": "Brak listów",
+    "emptyUnlockedSubtitle": "Ten skarbiec jest pusty",
+    "fromPast": "Listy z przeszłości: {count}",
+    "fromPastPlural": "Listy z przeszłości: {count}",
+    "letterWrittenOn": "List napisany {date}",
+    "writeLetterTitle": "Napisz list",
+    "saveAction": "Zapisz",
+    "savingAction": "Zapisywanie...",
+    "safeUntilUnlock": "Ten list będzie bezpiecznie przechowywany do czasu odblokowania skarbca",
+    "fieldTitle": "Tytuł",
+    "fieldDate": "Data",
+    "fieldBody": "Twój list",
+    "placeholderTitle": "Drogi przyszły ja...",
+    "placeholderBody": "Napisz coś ważnego...",
+    "alertTitleRequiredTitle": "Wymagany tytuł",
+    "alertTitleRequiredMessage": "Nadaj swojemu listowi tytuł.",
+    "alertNoVaultTitle": "Błąd",
+    "alertNoVaultMessage": "Nie wybrano skarbca.",
+    "alertSaveFailedTitle": "Błąd",
+    "alertSaveFailedMessage": "Nie udało się zapisać listu. Spróbuj ponownie."
+  },
+  "pregnancyJournal": {
+    "emptyTitle": "Twój dziennik ciąży",
+    "emptySubtitle": "Zapisuj myśli, emocje i ważne momenty w czasie ciąży",
+    "emptyButton": "Napisz pierwszy wpis"
   }
 }

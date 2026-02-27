@@ -64,7 +64,7 @@ export function MilestoneQuickAddModal({
 
   const handlePickImage = useCallback(async () => {
     if (photos.length >= 3) {
-      Alert.alert(t('alerts.maxPhotos') || 'Max 3 photos', t('alerts.maxPhotosDesc') || 'You can add up to 3 photos');
+      Alert.alert(t('alerts.maxPhotos'), t('alerts.maxPhotosDesc'));
       return;
     }
 
@@ -82,13 +82,13 @@ export function MilestoneQuickAddModal({
 
   const handleTakePhoto = useCallback(async () => {
     if (photos.length >= 3) {
-      Alert.alert(t('alerts.maxPhotos') || 'Max 3 photos', t('alerts.maxPhotosDesc') || 'You can add up to 3 photos');
+      Alert.alert(t('alerts.maxPhotos'), t('alerts.maxPhotosDesc'));
       return;
     }
 
     const permission = await ImagePicker.requestCameraPermissionsAsync();
     if (!permission.granted) {
-      Alert.alert(t('alerts.cameraPermission') || 'Camera Permission', t('alerts.cameraPermissionDesc') || 'Please enable camera');
+      Alert.alert(t('alerts.cameraPermission'), t('alerts.cameraPermissionDesc'));
       return;
     }
 
@@ -116,7 +116,7 @@ export function MilestoneQuickAddModal({
     if (isSaving || isLoading) return;
 
     if (!title.trim()) {
-      Alert.alert(t('alerts.required') || 'Required', t('alerts.requiredTitle') || 'Please enter a title');
+      Alert.alert(t('alerts.requiredTitle'), t('alerts.requiredEntryTitle'));
       return;
     }
 
@@ -165,14 +165,14 @@ export function MilestoneQuickAddModal({
     <ModalWrapper
       onClose={onClose}
       title={displayMilestoneLabel}
-      actionLabel={isSaving ? (t('common.saving') || 'Saving...') : (t('common.save') || 'Save')}
+      actionLabel={isSaving ? t('common.saving') : t('common.save')}
       onAction={handleSave}
       actionDisabled={isSaving || isLoading}
     >
       <View style={[styles.container, { backgroundColor: theme.background }]}>
         {/* Title Input */}
         <View style={styles.field}>
-          <Text style={[styles.label, { color: theme.text }]}>{t('labels.title') || 'Title'}</Text>
+          <Text style={[styles.label, { color: theme.text }]}>{t('labels.title')}</Text>
           <TextInput
             style={[
               styles.input,
@@ -182,7 +182,7 @@ export function MilestoneQuickAddModal({
                 borderColor: theme.borderLight,
               },
             ]}
-            placeholder={t('placeholders.memoryTitle') || 'What happened?'}
+            placeholder={t('placeholders.memoryTitle')}
             placeholderTextColor={theme.textMuted}
             value={title}
             onChangeText={setTitle}
@@ -192,7 +192,7 @@ export function MilestoneQuickAddModal({
 
         {/* Date Picker */}
         <View style={styles.field}>
-          <Text style={[styles.label, { color: theme.text }]}>{t('labels.date') || 'Date'}</Text>
+          <Text style={[styles.label, { color: theme.text }]}>{t('labels.date')}</Text>
           <TouchableOpacity
             style={[
               styles.dateButton,
@@ -220,7 +220,7 @@ export function MilestoneQuickAddModal({
         {/* Photos */}
         <View style={styles.field}>
           <Text style={[styles.label, { color: theme.text }]}>
-            {t('entryForm.photosLabel', { count: photos.length, max: 3 }) || `Photos (${photos.length}/3)`}
+            {t('entryForm.photosLabel', { count: photos.length, max: 3 })}
           </Text>
           <View style={styles.photoButtons}>
             <TouchableOpacity
@@ -230,7 +230,7 @@ export function MilestoneQuickAddModal({
             >
               <Ionicons name="images-outline" size={24} color={theme.accent} />
               <Text style={[styles.photoButtonText, { color: theme.accent }]}>
-                {t('entryForm.gallery') || 'Gallery'}
+                {t('entryForm.gallery')}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -240,7 +240,7 @@ export function MilestoneQuickAddModal({
             >
               <Ionicons name="camera-outline" size={24} color={theme.accent} />
               <Text style={[styles.photoButtonText, { color: theme.accent }]}>
-                {t('entryForm.camera') || 'Camera'}
+                {t('entryForm.camera')}
               </Text>
             </TouchableOpacity>
           </View>
@@ -269,7 +269,7 @@ export function MilestoneQuickAddModal({
         {/* Description */}
         <View style={styles.field}>
           <Text style={[styles.label, { color: theme.text }]}>
-            {t('labels.notes') || 'Notes'} ({t('labels.optional') || 'optional'})
+            {t('labels.notes')} ({t('labels.optional')})
           </Text>
           <TextInput
             style={[
@@ -280,7 +280,7 @@ export function MilestoneQuickAddModal({
                 borderColor: theme.borderLight,
               },
             ]}
-            placeholder={t('placeholders.memoryNotes') || 'Add details...'}
+            placeholder={t('placeholders.memoryNotes')}
             placeholderTextColor={theme.textMuted}
             value={description}
             onChangeText={setDescription}
@@ -293,7 +293,7 @@ export function MilestoneQuickAddModal({
         {/* Tags */}
         <View style={styles.field}>
           <Text style={[styles.label, { color: theme.text }]}>
-            {(t('memoryForm.tagsLabel') || t('entryForm.tagsLabel') || 'Tags').toLocaleUpperCase(locale)}
+            {t('memoryForm.tagsLabel').toLocaleUpperCase(locale)}
           </Text>
           <TouchableOpacity
             style={[
@@ -308,7 +308,7 @@ export function MilestoneQuickAddModal({
           >
             {selectedTags.length === 0 ? (
               <Text style={[styles.tagPlaceholder, { color: theme.textMuted }]}>
-                {t('entryForm.tapToAddTags') || 'Tap to add tags...'}
+                {t('entryForm.tapToAddTags')}
               </Text>
             ) : (
               <View style={styles.selectedTagsInline}>

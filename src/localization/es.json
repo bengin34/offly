@@ -50,7 +50,9 @@
     "editMemory": "Editar recuerdo",
     "newEntry": "Nuevo recuerdo",
     "entry": "Recuerdo",
-    "editEntry": "Editar recuerdo"
+    "editEntry": "Editar recuerdo",
+    "pregnancyJournal": "Diario de embarazo",
+    "newJournalEntry": "Nueva entrada del diario"
   },
   "chapters": {
     "addCover": "Agregar portada",
@@ -178,7 +180,8 @@
     "editBabyProfileTitle": "Editar perfil del bebé",
     "name": "Nombre",
     "namePlaceholder": "Nombre o apodo del bebé",
-    "birthDateLabel": "Fecha de nacimiento"
+    "birthDateLabel": "Fecha de nacimiento",
+    "exportEstimate": "Tamaño estimado: ~{size} MB ({count} fotos)"
   },
   "proBanner": {
     "title": "Hazte Pro",
@@ -233,7 +236,8 @@
       "sitsUpAlone": "Se sienta solo",
       "firstCrawl": "Primer gateo",
       "firstSteps": "Primeros pasos",
-      "firstWords": "Primeras palabras"
+      "firstWords": "Primeras palabras",
+      "inDays": "En {count} días"
     }
   },
   "placeholders": {
@@ -1080,5 +1084,44 @@
       "morningCuddles": "Pasamos toda la mañana simplemente juntos. Estos momentos tranquilos lo son todo.",
       "tummyTimeChampion": "¡Hoy mantuvo la cabeza levantada casi 10 segundos! Cada día está más fuerte."
     }
+  },
+  "vault": {
+    "title": "Bóveda",
+    "newLetterTitle": "Nueva carta",
+    "notFound": "Bóveda no encontrada",
+    "lockedUntil": "Bloqueada hasta {date}",
+    "lockedDescription": "Las cartas de esta bóveda se revelarán cuando tu hijo cumpla {age} años. Aun así, puedes escribir nuevas cartas en cualquier momento.",
+    "freeLimitReached": "Límite gratuito alcanzado · Actualiza para escribir más cartas",
+    "freeRemaining": "Te queda {count} carta gratis",
+    "freeRemainingPlural": "Te quedan {count} cartas gratis",
+    "statLetter": "carta",
+    "statLetters": "cartas",
+    "emptyLockedTitle": "Aún no hay cartas",
+    "emptyLockedSubtitle": "Escribe tu primera carta para abrir en el futuro",
+    "emptyUnlockedTitle": "No hay cartas",
+    "emptyUnlockedSubtitle": "Esta bóveda está vacía",
+    "fromPast": "{count} carta del pasado",
+    "fromPastPlural": "{count} cartas del pasado",
+    "letterWrittenOn": "Carta escrita el {date}",
+    "writeLetterTitle": "Escribir una carta",
+    "saveAction": "Guardar",
+    "savingAction": "Guardando...",
+    "safeUntilUnlock": "Esta carta se guardará de forma segura hasta que la bóveda se desbloquee",
+    "fieldTitle": "Título",
+    "fieldDate": "Fecha",
+    "fieldBody": "Tu carta",
+    "placeholderTitle": "Querido yo del futuro...",
+    "placeholderBody": "Escribe algo significativo...",
+    "alertTitleRequiredTitle": "Título obligatorio",
+    "alertTitleRequiredMessage": "Ponle un título a tu carta.",
+    "alertNoVaultTitle": "Error",
+    "alertNoVaultMessage": "No se seleccionó ninguna bóveda.",
+    "alertSaveFailedTitle": "Error",
+    "alertSaveFailedMessage": "No se pudo guardar tu carta. Inténtalo de nuevo."
+  },
+  "pregnancyJournal": {
+    "emptyTitle": "Tu diario de embarazo",
+    "emptySubtitle": "Guarda pensamientos, emociones e hitos durante tu embarazo",
+    "emptyButton": "Escribe tu primera entrada"
   }
 }
