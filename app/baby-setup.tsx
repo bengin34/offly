@@ -240,7 +240,7 @@ export default function BabySetupScreen() {
             ]}
             keyboardShouldPersistTaps="handled"
           >
-            <TouchableOpacity style={styles.backButton} onPress={() => setStep('multiProfile')}>
+            <TouchableOpacity style={styles.backButton} onPress={() => setStep('details')}>
               <Ionicons name="arrow-back" size={22} color={theme.textSecondary} />
             </TouchableOpacity>
 

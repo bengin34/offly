@@ -35,7 +35,8 @@ export const ChapterRepository = {
     const db = await getDatabase();
 
     if (babyId) {
-      const { BabyProfileRepository } = await import('./BabyProfileRepository');
+      const { BabyProfileRepository } =
+        require('./BabyProfileRepository') as typeof import('./BabyProfileRepository');
       const profile = await BabyProfileRepository.getById(babyId);
       const includeArchived = profile?.mode === 'born' && Boolean(profile.showArchivedChapters);
 
@@ -60,7 +61,8 @@ export const ChapterRepository = {
     const db = await getDatabase();
 
     if (babyId) {
-      const { BabyProfileRepository } = await import('./BabyProfileRepository');
+      const { BabyProfileRepository } =
+        require('./BabyProfileRepository') as typeof import('./BabyProfileRepository');
       const profile = await BabyProfileRepository.getById(babyId);
       const includeArchived = profile?.mode === 'born' && Boolean(profile.showArchivedChapters);
       const query =
@@ -82,7 +84,8 @@ export const ChapterRepository = {
 
     let rows: ChapterRow[];
     if (babyId) {
-      const { BabyProfileRepository } = await import('./BabyProfileRepository');
+      const { BabyProfileRepository } =
+        require('./BabyProfileRepository') as typeof import('./BabyProfileRepository');
       const profile = await BabyProfileRepository.getById(babyId);
       const includeArchived = profile?.mode === 'born' && Boolean(profile.showArchivedChapters);
 
@@ -118,7 +121,8 @@ export const ChapterRepository = {
 
     let rows: ChapterRow[];
     if (babyId) {
-      const { BabyProfileRepository } = await import('./BabyProfileRepository');
+      const { BabyProfileRepository } =
+        require('./BabyProfileRepository') as typeof import('./BabyProfileRepository');
       const profile = await BabyProfileRepository.getById(babyId);
       const includeArchived = profile?.mode === 'born' && Boolean(profile.showArchivedChapters);
 
@@ -364,9 +368,9 @@ export const ChapterRepository = {
    * Creates missing weeks only; does not generate milestones.
    */
   async ensurePregnancyWeekChapters(babyId: string, edd: string): Promise<Chapter[]> {
-    const { PREGNANCY_CHAPTER_TEMPLATES, getPregnancyChapterDates } = await import(
+    const { PREGNANCY_CHAPTER_TEMPLATES, getPregnancyChapterDates } = require(
       '../../constants/pregnancyChapterTemplates'
-    );
+    ) as typeof import('../../constants/pregnancyChapterTemplates');
     const db = await getDatabase();
     const now = getTimestamp();
 
@@ -430,9 +434,9 @@ export const ChapterRepository = {
    * Called when profile mode is 'pregnant' and edd is set
    */
   async autoGeneratePregnancyChapters(babyId: string, edd: string): Promise<Chapter[]> {
-    const { getPregnancyChapterTemplateByTitle } = await import(
+    const { getPregnancyChapterTemplateByTitle } = require(
       '../../constants/pregnancyChapterTemplates'
-    );
+    ) as typeof import('../../constants/pregnancyChapterTemplates');
 
     // Backward compatibility: Delete old non-weekly chapters if they exist
     const existing = await this.getAllIncludingArchived(babyId);
@@ -479,10 +483,10 @@ export const ChapterRepository = {
     chapterId: string,
     trimesterTemplate: any
   ): Promise<void> {
-    const { PREGNANCY_MODE_MILESTONES } = await import('../../constants/milestoneTemplates');
-    const { MilestoneRepository } = await import('./MilestoneRepository');
-    const { getExpectedDate } = await import('../../utils/milestones');
-    const { BabyProfileRepository } = await import('./BabyProfileRepository');
+    const { PREGNANCY_MODE_MILESTONES } = require('../../constants/milestoneTemplates') as typeof import('../../constants/milestoneTemplates');
+    const { MilestoneRepository } = require('./MilestoneRepository') as typeof import('./MilestoneRepository');
+    const { getExpectedDate } = require('../../utils/milestones') as typeof import('../../utils/milestones');
+    const { BabyProfileRepository } = require('./BabyProfileRepository') as typeof import('./BabyProfileRepository');
 
     const profile = await BabyProfileRepository.getById(babyId);
     if (!profile || !profile.edd) return;

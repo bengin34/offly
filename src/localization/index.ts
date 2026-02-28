@@ -88,8 +88,24 @@ export function normalizeLocale(input?: string): Locale {
 
 export function getSystemLocale(): Locale {
   try {
-    const resolved = Intl.DateTimeFormat().resolvedOptions().locale;
-    return normalizeLocale(resolved);
+    // expo-localization reads the device's preferred UI language list directly
+    // from the OS (NSLocale preferredLanguages on iOS, LocaleList on Android),
+    // which is more reliable than Intl.DateTimeFormat whose locale reflects
+    // the regional format setting, not the UI language.
+    const { getLocales } = require('expo-localization');
+    const locales: { languageCode: string | null }[] = getLocales();
+    for (const loc of locales) {
+      if (!loc.languageCode) continue;
+      const code = loc.languageCode.toLowerCase().split('-')[0];
+      if (supportedLocales.includes(code as Locale)) {
+        return code as Locale;
+      }
+    }
+  } catch {
+    // fall through to Intl fallback
+  }
+  try {
+    return normalizeLocale(Intl.DateTimeFormat().resolvedOptions().locale);
   } catch {
     return fallbackLocale;
   }

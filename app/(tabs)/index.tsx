@@ -253,8 +253,7 @@ export default function HomeScreen() {
 
   useEffect(() => {
     let dynamicTitle = formatHeaderTitle(profile, t);
-    const canSwitchProfile =
-      profile?.mode !== 'pregnant' && (multiProfileEnabled || profileCount > 1);
+    const canSwitchProfile = multiProfileEnabled || profileCount > 1;
 
     // For pregnancy mode, add current week to title
     if (profile?.mode === 'pregnant' && profile.edd) {
@@ -312,18 +311,9 @@ export default function HomeScreen() {
   const currentChapterId = getCurrentChapterIdFromList(chapters);
 
   // Get week label for pregnancy chapters
-  const getWeekLabelForChapter = useCallback((chapter: ChapterWithMilestoneProgress, edd: string) => {
-    const start = new Date(chapter.startDate);
-    const end = chapter.endDate ? new Date(chapter.endDate) : new Date();
-    const now = Date.now();
-    const isCurrentChapter = now >= start.getTime() && now <= end.getTime();
-
-    if (isCurrentChapter) {
-      const currentWeek = calculateGestationWeeks(edd);
-      return t('home.weekLabel', { week: currentWeek });
-    }
-
-    // For past/future chapters, show week range
+  const getWeekLabelForChapter = useCallback((chapter: ChapterWithMilestoneProgress, _edd: string) => {
+    // Always use the chapter's template week, not the live gestation calculation,
+    // to avoid showing "Week 22" on a "Week 23" chapter card.
     const template = getPregnancyChapterTemplateByTitle(chapter.title);
     if (template) {
       return template.gestationWeeksMin === template.gestationWeeksMax
@@ -655,7 +645,14 @@ export default function HomeScreen() {
                   onPress={() => {
                     closeFab();
                     const lastChapter = chapters[0];
-                    router.push(`/memory/new?chapterId=${lastChapter.id}`);
+                    router.push({
+                      pathname: '/memory/new',
+                      params: {
+                        chapterId: lastChapter.id,
+                        chapterStartDate: lastChapter.startDate,
+                        chapterEndDate: lastChapter.endDate ?? undefined,
+                      },
+                    });
                   }}
                 >
                   <View style={styles.fabOptionLabel}>

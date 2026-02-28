@@ -20,20 +20,34 @@ import { spacing, fontSize, borderRadius, fonts } from '../../src/constants';
 import { Background } from '../../src/components/Background';
 import { ModalWrapper } from '../../src/components/ModalWrapper';
 import { TagPickerDialog } from '../../src/components/TagPickerDialog';
-import { useI18n, useTheme, useSubscription } from '../../src/hooks';
-import type { MemoryType, Tag } from '../../src/types';
+import { useI18n, useTheme } from '../../src/hooks';
+import { useProfileStore } from '../../src/stores/profileStore';
+import type { Tag } from '../../src/types';
 
 export default function NewMemoryScreen() {
-  const { chapterId } = useLocalSearchParams<{ chapterId: string }>();
+  const { activeBaby } = useProfileStore();
+  const { chapterId, chapterStartDate, chapterEndDate } = useLocalSearchParams<{
+    chapterId: string;
+    chapterStartDate?: string;
+    chapterEndDate?: string;
+  }>();
   const router = useRouter();
   const theme = useTheme();
   const { t, locale } = useI18n();
-  const { isPro } = useSubscription();
+  const minDate = chapterStartDate ? new Date(chapterStartDate) : undefined;
+  const maxDate = chapterEndDate ? new Date(chapterEndDate) : new Date();
 
-  const [memoryType, setMemoryType] = useState<MemoryType>('milestone');
+  // Clamp initial date to chapter range
+  const getInitialDate = () => {
+    const now = new Date();
+    if (maxDate && now > maxDate) return maxDate;
+    if (minDate && now < minDate) return minDate;
+    return now;
+  };
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(getInitialDate());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [photos, setPhotos] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
@@ -114,11 +128,21 @@ export default function NewMemoryScreen() {
       return;
     }
 
+    if (minDate && date < minDate) {
+      Alert.alert(t('alerts.invalidDateTitle'), t('alerts.dateBelowChapterStart'));
+      return;
+    }
+    if (maxDate && date > maxDate) {
+      Alert.alert(t('alerts.invalidDateTitle'), t('alerts.dateAboveChapterEnd'));
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       await MemoryRepository.create({
         chapterId: chapterId!,
-        memoryType,
+        babyId: activeBaby?.id,
+        memoryType: 'note',
         title: title.trim(),
         description: description.trim() || undefined,
         date: date.toISOString(),
@@ -157,47 +181,13 @@ export default function NewMemoryScreen() {
         backgroundColor={theme.background}
       >
         <View style={styles.form}>
-            {/* Memory Type Toggle */}
-            <View style={styles.typeToggle}>
-              <TouchableOpacity
-                style={[styles.typeButton, memoryType === 'milestone' && styles.typeButtonActiveMilestone]}
-                onPress={() => setMemoryType('milestone')}
-              >
-                <Ionicons
-                  name="flag"
-                  size={20}
-                  color={memoryType === 'milestone' ? theme.white : theme.milestone}
-                />
-                <Text style={[styles.typeButtonText, memoryType === 'milestone' && styles.typeButtonTextActive]}>
-                  {t('memoryForm.milestone')}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.typeButton, memoryType === 'note' && styles.typeButtonActiveNote]}
-                onPress={() => setMemoryType('note')}
-              >
-                <Ionicons
-                  name="document-text"
-                  size={20}
-                  color={memoryType === 'note' ? theme.white : theme.memory}
-                />
-                <Text style={[styles.typeButtonText, memoryType === 'note' && styles.typeButtonTextActive]}>
-                  {t('memoryForm.note')}
-                </Text>
-              </TouchableOpacity>
-            </View>
-
             <View style={styles.field}>
               <Text style={styles.label}>{t('memoryForm.titleLabel').toLocaleUpperCase(locale)}</Text>
               <TextInput
                 style={styles.input}
                 value={title}
                 onChangeText={setTitle}
-                placeholder={
-                  memoryType === 'milestone'
-                    ? t('placeholders.memoryTitleMilestone')
-                    : t('placeholders.memoryTitleNote')
-                }
+                placeholder={t('placeholders.memoryTitleNote')}
                 placeholderTextColor={theme.textMuted}
                 autoFocus
               />
@@ -262,6 +252,8 @@ export default function NewMemoryScreen() {
                   mode="date"
                   display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                   onChange={handleDateChange}
+                  minimumDate={minDate}
+                  maximumDate={maxDate}
                   locale={locale}
                   themeVariant={theme.isDark ? 'dark' : 'light'}
                   style={styles.datePicker}
@@ -362,45 +354,6 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
     form: {
       padding: spacing.md,
       paddingBottom: spacing.xl,
-    },
-    typeToggle: {
-      flexDirection: 'row',
-      backgroundColor: theme.card,
-      borderRadius: borderRadius.xl,
-      padding: 4,
-      borderWidth: 1,
-      borderColor: theme.borderLight,
-      marginBottom: spacing.lg,
-      shadowColor: theme.shadow,
-      shadowOffset: { width: 0, height: 6 },
-      shadowOpacity: 0.1,
-      shadowRadius: 10,
-      elevation: 2,
-    },
-    typeButton: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: spacing.xs,
-      paddingVertical: spacing.sm,
-      paddingHorizontal: spacing.md,
-      borderRadius: borderRadius.lg,
-      backgroundColor: theme.backgroundSecondary,
-    },
-    typeButtonActiveMilestone: {
-      backgroundColor: theme.milestone,
-    },
-    typeButtonActiveNote: {
-      backgroundColor: theme.memory,
-    },
-    typeButtonText: {
-      fontSize: fontSize.md,
-      fontFamily: fonts.ui,
-      color: theme.text,
-    },
-    typeButtonTextActive: {
-      color: theme.white,
     },
     field: {
       marginBottom: spacing.lg,

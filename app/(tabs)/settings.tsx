@@ -1128,6 +1128,57 @@ export default function SettingsScreen() {
           </View>
         </View>
 
+        {/* Photo Credits */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>PHOTO CREDITS</Text>
+          <View style={styles.card}>
+            <Text style={[styles.limitationText, { color: theme.textSecondary, marginBottom: spacing.sm }]}>
+              Some photos used in this app are provided by Freepik.
+            </Text>
+            {[
+              {
+                label: 'Image by rawpixel.com on Freepik',
+                url: 'https://www.freepik.com/free-photo/pregnant-woman-life_2765264.htm',
+              },
+              {
+                label: 'Image by Freepik',
+                url: 'https://www.freepik.com/free-photo/pregnant-woman-with-husband-ultrasound_2045641.htm',
+              },
+              {
+                label: 'Image by Freepik',
+                url: 'https://www.freepik.com/free-photo/pregnant-woman-front-balcony_2045620.htm',
+              },
+              {
+                label: 'Image by Freepik',
+                url: 'https://www.freepik.com/free-photo/baby-laying-floor-while-defocused-mother-is-his-back_24751495.htm',
+              },
+              {
+                label: 'Image by rawpixel.com on Freepik',
+                url: 'https://www.freepik.com/free-photo/newborn-baby_2765276.htm',
+              },
+            ].map((credit, index, arr) => (
+              <View key={credit.url}>
+                <TouchableOpacity
+                  style={styles.creditRow}
+                  onPress={() => Linking.openURL(credit.url)}
+                  accessibilityRole="link"
+                >
+                  <View style={{ flex: 1 }}>
+                    <Text style={[styles.creditLabel, { color: theme.text }]}>{credit.label}</Text>
+                    <Text style={[styles.creditUrl, { color: theme.primary }]} numberOfLines={1}>
+                      {credit.url.replace('https://www.', '')}
+                    </Text>
+                  </View>
+                  <Ionicons name="open-outline" size={16} color={theme.textMuted} />
+                </TouchableOpacity>
+                {index < arr.length - 1 && (
+                  <View style={[styles.settingsDivider, { backgroundColor: theme.border }]} />
+                )}
+              </View>
+            ))}
+          </View>
+        </View>
+
         <Text style={styles.footerText}>
           {t('settings.footer')}
         </Text>
@@ -1854,6 +1905,22 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       fontFamily: fonts.body,
       color: theme.textSecondary,
       lineHeight: 20,
+    },
+    creditRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.sm,
+      paddingVertical: spacing.sm,
+    },
+    creditLabel: {
+      fontSize: fontSize.sm,
+      fontFamily: fonts.body,
+      lineHeight: 18,
+    },
+    creditUrl: {
+      fontSize: fontSize.xs,
+      fontFamily: fonts.body,
+      marginTop: 2,
     },
     // Modal styles
     modalOverlay: {

@@ -19,6 +19,7 @@ import { hideVaultFreeLimit } from '../../src/config/dev';
 import { Background } from '../../src/components/Background';
 import { ModalWrapper } from '../../src/components/ModalWrapper';
 import { useI18n, useTheme, useSubscription } from '../../src/hooks';
+import { useProfileStore } from '../../src/stores/profileStore';
 
 export default function NewVaultEntryScreen() {
   const { vaultId } = useLocalSearchParams<{ vaultId: string }>();
@@ -26,6 +27,7 @@ export default function NewVaultEntryScreen() {
   const theme = useTheme();
   const { locale, t } = useI18n();
   const { isPro, presentPaywall } = useSubscription();
+  const { activeBaby } = useProfileStore();
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -87,6 +89,7 @@ export default function NewVaultEntryScreen() {
       await MemoryRepository.create({
         chapterId: '', // No chapter for vault entries
         vaultId,
+        babyId: activeBaby?.id,
         memoryType: 'letter',
         title: title.trim(),
         description: description.trim() || undefined,

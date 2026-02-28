@@ -18,12 +18,14 @@ import { Background } from '../../src/components/Background';
 import { ModalWrapper } from '../../src/components/ModalWrapper';
 import { TagPickerDialog } from '../../src/components/TagPickerDialog';
 import { useI18n, useTheme } from '../../src/hooks';
+import { useProfileStore } from '../../src/stores/profileStore';
 import type { MemoryType, Tag } from '../../src/types';
 
 export default function NewPregnancyJournalEntryScreen() {
   const router = useRouter();
   const theme = useTheme();
   const { locale, t } = useI18n();
+  const { activeBaby } = useProfileStore();
 
   const [memoryType, setMemoryType] = useState<MemoryType>('note');
   const [title, setTitle] = useState('');
@@ -77,6 +79,7 @@ export default function NewPregnancyJournalEntryScreen() {
     try {
       await MemoryRepository.create({
         chapterId: '', // No chapter for pregnancy journal
+        babyId: activeBaby?.id,
         isPregnancyJournal: true,
         memoryType,
         title: title.trim(),

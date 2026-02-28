@@ -33,6 +33,7 @@ import { SwipeableRow } from '../../src/components/SwipeableRow';
 import { MilestoneTimeline } from '../../src/components/MilestoneTimeline';
 import { MilestoneQuickAddModal } from '../../src/components/MilestoneQuickAddModal';
 import { useI18n, useTheme, ThemeColors } from '../../src/hooks';
+import { useProfileStore } from '../../src/stores/profileStore';
 import { getMilestoneTemplateById, getLocalizedMilestoneLabel } from '../../src/constants/milestoneTemplates';
 import type {
   ChapterWithTags,
@@ -46,6 +47,7 @@ export default function ChapterDetailScreen() {
   const router = useRouter();
   const theme = useTheme();
   const { t, locale } = useI18n();
+  const { activeBaby } = useProfileStore();
   const insets = useSafeAreaInsets();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const [chapter, setChapter] = useState<ChapterWithTags | null>(null);
@@ -69,6 +71,7 @@ export default function ChapterDetailScreen() {
       setChapter(chapterData);
       setMemories(memoriesData);
       setMilestones(milestoneData);
+      if (milestoneData.length === 0) setActiveTab('memories');
     } catch (error) {
       console.error('Failed to load chapter:', error);
     } finally {
@@ -151,6 +154,7 @@ export default function ChapterDetailScreen() {
     try {
       const memory = await MemoryRepository.create({
         chapterId: id,
+        babyId: activeBaby?.id,
         isPregnancyJournal: false,
         memoryType: 'milestone',
         title: data.title,
@@ -273,10 +277,10 @@ export default function ChapterDetailScreen() {
     const photoCount = memory.photos.length;
     const tagCount = memory.tags.length;
     const hasDescription = Boolean(memory.description);
-    const isMilestone = memory.memoryType === 'milestone';
     const milestoneTemplate = memory.milestoneTemplateId
       ? getMilestoneTemplateById(memory.milestoneTemplateId)
       : null;
+    const isMilestone = !!milestoneTemplate;
     const displayTitle = isMilestone && milestoneTemplate
       ? getLocalizedMilestoneLabel(milestoneTemplate, t)
       : memory.title;
@@ -404,7 +408,7 @@ export default function ChapterDetailScreen() {
       </Text>
       <TouchableOpacity
         style={styles.emptyButton}
-        onPress={() => router.push({ pathname: '/memory/new', params: { chapterId: id } })}
+        onPress={() => router.push({ pathname: '/memory/new', params: { chapterId: id, chapterStartDate: chapter?.startDate, chapterEndDate: chapter?.endDate ?? undefined } })}
       >
         <Text style={styles.emptyButtonText}>{t('chapterDetail.addFirstMemory')}</Text>
       </TouchableOpacity>
@@ -483,7 +487,9 @@ export default function ChapterDetailScreen() {
     return getLocalizedChapterDescription(chapter.title, chapter.description, t);
   }, [chapter?.title, chapter?.description, t]);
 
-  const renderTabBar = () => (
+  const renderTabBar = () => {
+    if (milestones.length === 0) return null;
+    return (
     <View style={styles.tabBar}>
       <TouchableOpacity
         style={[styles.tab, activeTab === 'memories' && styles.tabActive]}
@@ -521,7 +527,8 @@ export default function ChapterDetailScreen() {
         )}
       </TouchableOpacity>
     </View>
-  );
+    );
+  };
 
   return (
     <>
@@ -605,7 +612,7 @@ export default function ChapterDetailScreen() {
         {activeTab === 'memories' && memories.length > 0 && (
           <TouchableOpacity
             style={styles.fab}
-            onPress={() => router.push({ pathname: '/memory/new', params: { chapterId: id } })}
+            onPress={() => router.push({ pathname: '/memory/new', params: { chapterId: id, chapterStartDate: chapter?.startDate, chapterEndDate: chapter?.endDate ?? undefined } })}
           >
             <Ionicons name="add" size={28} color={theme.white} />
           </TouchableOpacity>

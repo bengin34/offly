@@ -190,10 +190,10 @@ export const BabyProfileRepository = {
     const db = await getDatabase();
     const now = getTimestamp();
 
-    const { ChapterRepository } = await import('./ChapterRepository');
-    const { MilestoneRepository } = await import('./MilestoneRepository');
-    const { VaultRepository } = await import('./VaultRepository');
-    const { MemoryRepository } = await import('./MemoryRepository');
+    const { ChapterRepository } = require('./ChapterRepository') as typeof import('./ChapterRepository');
+    const { MilestoneRepository } = require('./MilestoneRepository') as typeof import('./MilestoneRepository');
+    const { VaultRepository } = require('./VaultRepository') as typeof import('./VaultRepository');
+    const { MemoryRepository } = require('./MemoryRepository') as typeof import('./MemoryRepository');
     const modeSwitchedAt = profile.modeSwitchedAt ?? profile.updatedAt;
 
     // 1. Restore profile to pregnant mode

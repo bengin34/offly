@@ -61,7 +61,8 @@
           "photosPermission": "Allow Offly to access your photos to add memories to your chapters.",
           "cameraPermission": "Allow Offly to access your camera to capture precious moments."
         }
-      ]
+      ],
+      "expo-localization"
     ],
     "scheme": "Offly"
   }

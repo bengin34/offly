@@ -16,13 +16,14 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { MemoryRepository } from '../../../src/db/repositories';
+import { MemoryRepository, ChapterRepository } from '../../../src/db/repositories';
 import { spacing, fontSize, borderRadius, fonts } from '../../../src/constants';
 import { Background } from '../../../src/components/Background';
 import { ModalWrapper } from '../../../src/components/ModalWrapper';
 import { TagPickerDialog } from '../../../src/components/TagPickerDialog';
 import { useI18n, useTheme } from '../../../src/hooks';
 import type { MemoryType, Tag } from '../../../src/types';
+// memoryType is preserved on save but not editable by the user in the form
 
 export default function EditMemoryScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -40,6 +41,8 @@ export default function EditMemoryScreen() {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [showTagPicker, setShowTagPicker] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [minDate, setMinDate] = useState<Date | undefined>(undefined);
+  const [maxDate, setMaxDate] = useState<Date | undefined>(undefined);
 
   useEffect(() => {
     async function loadMemory() {
@@ -53,6 +56,14 @@ export default function EditMemoryScreen() {
           setDate(new Date(mem.date));
           setPhotos(mem.photos.map((p) => p.uri));
           setSelectedTags(mem.tags);
+
+          if (mem.chapterId) {
+            const chap = await ChapterRepository.getWithTags(mem.chapterId);
+            if (chap) {
+              setMinDate(new Date(chap.startDate));
+              setMaxDate(chap.endDate ? new Date(chap.endDate) : new Date());
+            }
+          }
         }
       } catch (error) {
         console.error('Failed to load memory:', error);
@@ -136,6 +147,15 @@ export default function EditMemoryScreen() {
       return;
     }
 
+    if (minDate && date < minDate) {
+      Alert.alert(t('alerts.invalidDateTitle'), t('alerts.dateBelowChapterStart'));
+      return;
+    }
+    if (maxDate && date > maxDate) {
+      Alert.alert(t('alerts.invalidDateTitle'), t('alerts.dateAboveChapterEnd'));
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       await MemoryRepository.update({
@@ -186,47 +206,13 @@ export default function EditMemoryScreen() {
         backgroundColor={theme.background}
       >
         <View style={styles.form}>
-            {/* Memory Type Toggle */}
-            <View style={styles.typeToggle}>
-              <TouchableOpacity
-                style={[styles.typeButton, memoryType === 'milestone' && styles.typeButtonActiveMilestone]}
-                onPress={() => setMemoryType('milestone')}
-              >
-                <Ionicons
-                  name="flag"
-                  size={20}
-                  color={memoryType === 'milestone' ? theme.white : theme.milestone}
-                />
-                <Text style={[styles.typeButtonText, memoryType === 'milestone' && styles.typeButtonTextActive]}>
-                  {t('memoryForm.milestone')}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.typeButton, memoryType === 'note' && styles.typeButtonActiveNote]}
-                onPress={() => setMemoryType('note')}
-              >
-                <Ionicons
-                  name="document-text"
-                  size={20}
-                  color={memoryType === 'note' ? theme.white : theme.memory}
-                />
-                <Text style={[styles.typeButtonText, memoryType === 'note' && styles.typeButtonTextActive]}>
-                  {t('memoryForm.note')}
-                </Text>
-              </TouchableOpacity>
-            </View>
-
             <View style={styles.field}>
               <Text style={styles.label}>{t('memoryForm.titleLabel').toLocaleUpperCase(locale)}</Text>
               <TextInput
                 style={styles.input}
                 value={title}
                 onChangeText={setTitle}
-                placeholder={
-                  memoryType === 'milestone'
-                    ? t('placeholders.memoryTitleMilestone')
-                    : t('placeholders.memoryTitleNote')
-                }
+                placeholder={t('placeholders.memoryTitleNote')}
                 placeholderTextColor={theme.textMuted}
               />
             </View>
@@ -288,6 +274,8 @@ export default function EditMemoryScreen() {
                   mode="date"
                   display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                   onChange={handleDateChange}
+                  minimumDate={minDate}
+                  maximumDate={maxDate}
                   locale={locale}
                   themeVariant={theme.isDark ? 'dark' : 'light'}
                   style={styles.datePicker}
@@ -393,45 +381,6 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
     form: {
       padding: spacing.md,
       paddingBottom: spacing.xl,
-    },
-    typeToggle: {
-      flexDirection: 'row',
-      backgroundColor: theme.card,
-      borderRadius: borderRadius.xl,
-      padding: 4,
-      borderWidth: 1,
-      borderColor: theme.borderLight,
-      marginBottom: spacing.lg,
-      shadowColor: theme.shadow,
-      shadowOffset: { width: 0, height: 6 },
-      shadowOpacity: 0.1,
-      shadowRadius: 10,
-      elevation: 2,
-    },
-    typeButton: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: spacing.xs,
-      paddingVertical: spacing.sm,
-      paddingHorizontal: spacing.md,
-      borderRadius: borderRadius.lg,
-      backgroundColor: theme.backgroundSecondary,
-    },
-    typeButtonActiveMilestone: {
-      backgroundColor: theme.milestone,
-    },
-    typeButtonActiveNote: {
-      backgroundColor: theme.memory,
-    },
-    typeButtonText: {
-      fontSize: fontSize.md,
-      fontFamily: fonts.ui,
-      color: theme.text,
-    },
-    typeButtonTextActive: {
-      color: theme.white,
     },
     field: {
       marginBottom: spacing.lg,

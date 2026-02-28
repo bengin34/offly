@@ -654,6 +654,8 @@
     "errorTitle": "Error",
     "requiredTitle": "Required",
     "invalidDateTitle": "Invalid Date",
+    "dateBelowChapterStart": "The date is before this chapter's start date. Please pick a date within the chapter.",
+    "dateAboveChapterEnd": "The date is after this chapter's end date. Please pick a date within the chapter.",
     "permissionTitle": "Permission needed",
     "deleteEntryTitle": "Delete Memory",
     "deleteEntryMessage": "Are you sure you want to delete this memory?",
