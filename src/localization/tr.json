@@ -237,6 +237,27 @@
       "firstCrawl": "İlk Emekleme",
       "firstSteps": "İlk Adımlar",
       "firstWords": "İlk Kelimeler",
+      "heartbeatVisible": "Kalp Atışı Görüldü",
+      "tenWeeks": "10. Hafta",
+      "firstTrimesterComplete": "İlk Trimester Tamamlandı",
+      "quickeningBegins": "Hareketler Başlıyor",
+      "anatomyScan": "Detaylı Ultrason",
+      "viabilityMilestone": "Yaşayabilirlik Dönüm Noktası",
+      "thirdTrimesterBegins": "Üçüncü Trimester Başlıyor",
+      "thirtyTwoWeeks": "32. Hafta",
+      "fullTerm": "Tam Dönem",
+      "thirtyEightWeeks": "38. Hafta",
+      "dueDate": "Tahmini Doğum Tarihi",
+      "oneMonthPregnant": "1 Aylık Hamilelik",
+      "twoMonthsPregnant": "2 Aylık Hamilelik",
+      "threeMonthsPregnant": "3 Aylık Hamilelik",
+      "fourMonthsPregnant": "4 Aylık Hamilelik",
+      "fiveMonthsPregnant": "5 Aylık Hamilelik",
+      "sixMonthsPregnant": "6 Aylık Hamilelik",
+      "sevenMonthsPregnant": "7 Aylık Hamilelik",
+      "eightMonthsPregnant": "8 Aylık Hamilelik",
+      "nineMonthsPregnant": "9 Aylık Hamilelik",
+      "tenMonthsPregnant": "10 Aylık Hamilelik",
       "inDays": "{count} gün içinde"
     }
   },
@@ -315,7 +336,17 @@
     "addFirstMemory": "İlk Anıyı Ekle",
     "addMemory": "Anı Ekle",
     "autoDescriptionMonth": "Dünyayı her gün biraz daha keşfediyor",
-    "autoDescriptionYear": "Büyüme ve yeni maceralarla dolu bir yıl"
+    "autoDescriptionYear": "Büyüme ve yeni maceralarla dolu bir yıl",
+    "pregnancyAutoDescription4": "Bir aylık hamilesin",
+    "pregnancyAutoDescription8": "İki aylık hamilesin",
+    "pregnancyAutoDescription12": "Üç ay - ilk trimester tamamlandı",
+    "pregnancyAutoDescription16": "Dört aylık hamilesin",
+    "pregnancyAutoDescription20": "Beş ay - yolun yarısı",
+    "pregnancyAutoDescription24": "Altı aylık hamilesin",
+    "pregnancyAutoDescription28": "Yedi ay - üçüncü trimester başlıyor",
+    "pregnancyAutoDescription32": "Sekiz aylık hamilesin",
+    "pregnancyAutoDescription36": "Dokuz ay - tam dönem",
+    "pregnancyAutoDescription40": "On ay - doğum haftası"
   },
   "chapterDetailLegacy": {
     "noPhoto": "Fotoğraf yok",
@@ -961,8 +992,8 @@
     "journalEntries": "Günlük kayıtlarını gör ({count})",
     "fabNewMemory": "Yeni Anı",
     "fabNewChapter": "Yeni Bölüm",
-    "weekLabel": "Hafta {week}",
-    "weeksLabel": "Hafta {min}–{max}",
+    "weekLabel": "{week}. Hafta",
+    "weeksLabel": "{min}.–{max}. Hafta",
     "monthLabel": "{count}. Ay",
     "yearLabel": "{count}. Yıl"
   },
@@ -990,8 +1021,8 @@
     "weekContext36": "Miad doldu",
     "weekContext40": "Beklenen doğum haftası",
     "weekContextOverdue": "Her an olabilir",
-    "pregnancyWeekWithContext": "Hafta {week} · {context}",
-    "pregnancyWeek": "Hafta {week}"
+    "pregnancyWeekWithContext": "{week}. Hafta · {context}",
+    "pregnancyWeek": "{week}. Hafta"
   },
   "babySetup": {
     "welcomeTitle": "Offly'ye hoş geldiniz",

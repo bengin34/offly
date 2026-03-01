@@ -26,13 +26,13 @@ export async function getDatabase(): Promise<SQLite.SQLiteDatabase> {
     db = openedDb;
 
     // Enable foreign keys
-    await openedDb.execAsync("PRAGMA foreign_keys = ON;");
+    await runStatement(openedDb, "PRAGMA foreign_keys = ON;");
     // Wait briefly instead of failing immediately when a write lock is active.
-    await openedDb.execAsync("PRAGMA busy_timeout = 5000;");
+    await runStatement(openedDb, "PRAGMA busy_timeout = 5000;");
 
     // Run create-table migrations (idempotent via IF NOT EXISTS)
     for (const migration of ALL_MIGRATIONS) {
-      await openedDb.execAsync(migration);
+      await runStatement(openedDb, migration);
     }
 
     await ensureRequiredColumns(openedDb);
@@ -40,7 +40,7 @@ export async function getDatabase(): Promise<SQLite.SQLiteDatabase> {
     // Run ALTER upgrades safely (column may already exist)
     for (const migration of UPGRADE_MIGRATIONS) {
       try {
-        await openedDb.execAsync(migration);
+        await runStatement(openedDb, migration);
       } catch (error) {
         // Keep startup resilient but don't hide unexpected migration issues.
         const message = error instanceof Error ? error.message : String(error);
@@ -85,7 +85,7 @@ async function ensureColumnExists(
   );
   const hasColumn = columns.some((column) => column.name === columnName);
   if (!hasColumn) {
-    await database.execAsync(addColumnSql);
+    await runStatement(database, addColumnSql);
   }
 }
 
@@ -119,4 +119,11 @@ export async function closeDatabase(): Promise<void> {
 // Helper to generate timestamps
 export function getTimestamp(): string {
   return new Date().toISOString();
+}
+
+async function runStatement(
+  database: SQLite.SQLiteDatabase,
+  sql: string
+): Promise<void> {
+  await database.runAsync(sql);
 }

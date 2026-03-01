@@ -237,7 +237,28 @@
       "firstCrawl": "Erstes Krabbeln",
       "firstSteps": "Erste Schritte",
       "firstWords": "Erste Worte",
-      "inDays": "In {count} Tagen"
+      "inDays": "In {count} Tagen",
+      "heartbeatVisible": "Heartbeat Visible",
+      "tenWeeks": "Ten Weeks",
+      "firstTrimesterComplete": "First Trimester Complete",
+      "quickeningBegins": "Quickening Begins",
+      "anatomyScan": "Anatomy Scan",
+      "viabilityMilestone": "Viability Milestone",
+      "thirdTrimesterBegins": "Third Trimester Begins",
+      "thirtyTwoWeeks": "Thirty-Two Weeks",
+      "fullTerm": "Full Term",
+      "thirtyEightWeeks": "Thirty-Eight Weeks",
+      "dueDate": "Due Date",
+      "oneMonthPregnant": "One Month Pregnant",
+      "twoMonthsPregnant": "Two Months Pregnant",
+      "threeMonthsPregnant": "Three Months Pregnant",
+      "fourMonthsPregnant": "Four Months Pregnant",
+      "fiveMonthsPregnant": "Five Months Pregnant",
+      "sixMonthsPregnant": "Six Months Pregnant",
+      "sevenMonthsPregnant": "Seven Months Pregnant",
+      "eightMonthsPregnant": "Eight Months Pregnant",
+      "nineMonthsPregnant": "Nine Months Pregnant",
+      "tenMonthsPregnant": "Ten Months Pregnant"
     }
   },
   "placeholders": {
@@ -315,7 +336,17 @@
     "addFirstMemory": "Erste Erinnerung hinzufügen",
     "addMemory": "Erinnerung hinzufügen",
     "autoDescriptionMonth": "Entdeckt die Welt Tag für Tag",
-    "autoDescriptionYear": "Ein Jahr voller Wachstum und neuer Abenteuer"
+    "autoDescriptionYear": "Ein Jahr voller Wachstum und neuer Abenteuer",
+    "pregnancyAutoDescription4": "One month pregnant",
+    "pregnancyAutoDescription8": "Two months pregnant",
+    "pregnancyAutoDescription12": "Three months - first trimester complete",
+    "pregnancyAutoDescription16": "Four months pregnant",
+    "pregnancyAutoDescription20": "Five months - halfway there",
+    "pregnancyAutoDescription24": "Six months pregnant",
+    "pregnancyAutoDescription28": "Seven months - third trimester begins",
+    "pregnancyAutoDescription32": "Eight months pregnant",
+    "pregnancyAutoDescription36": "Nine months - full term",
+    "pregnancyAutoDescription40": "Ten months - due date week"
   },
   "chapterDetailLegacy": {
     "noPhoto": "Kein Foto",

@@ -1,4 +1,5 @@
 import type { ChapterPlaceholder } from './chapterTemplates';
+type TranslateFn = (key: string, params?: Record<string, string | number>) => string;
 
 export interface PregnancyChapterTemplate {
   id: string;
@@ -91,6 +92,50 @@ export function getPregnancyChapterTemplateByTitle(
   title: string
 ): PregnancyChapterTemplate | undefined {
   return PREGNANCY_CHAPTER_TEMPLATES.find((t) => t.title === title);
+}
+
+/**
+ * Localize auto-generated pregnancy chapter descriptions.
+ * User-edited/custom descriptions are returned as-is.
+ */
+export function getLocalizedPregnancyChapterDescription(
+  chapterTitle: string,
+  chapterDescription: string | undefined,
+  t: TranslateFn
+): string | undefined {
+  if (!chapterDescription) return chapterDescription;
+
+  const weekMatch = chapterTitle.match(/(\d+)/);
+  if (!weekMatch) return chapterDescription;
+
+  const week = Number.parseInt(weekMatch[1], 10);
+  if (!Number.isFinite(week)) return chapterDescription;
+
+  const template = PREGNANCY_CHAPTER_TEMPLATES.find(
+    (item) => item.gestationWeeksMin === week
+  );
+  if (!template || template.description !== chapterDescription) {
+    return chapterDescription;
+  }
+
+  const keyByWeek: Record<number, string> = {
+    4: 'chapterDetail.pregnancyAutoDescription4',
+    8: 'chapterDetail.pregnancyAutoDescription8',
+    12: 'chapterDetail.pregnancyAutoDescription12',
+    16: 'chapterDetail.pregnancyAutoDescription16',
+    20: 'chapterDetail.pregnancyAutoDescription20',
+    24: 'chapterDetail.pregnancyAutoDescription24',
+    28: 'chapterDetail.pregnancyAutoDescription28',
+    32: 'chapterDetail.pregnancyAutoDescription32',
+    36: 'chapterDetail.pregnancyAutoDescription36',
+    40: 'chapterDetail.pregnancyAutoDescription40',
+  };
+
+  const key = keyByWeek[week];
+  if (!key) return chapterDescription;
+
+  const translated = t(key);
+  return translated === key ? chapterDescription : translated;
 }
 
 /**

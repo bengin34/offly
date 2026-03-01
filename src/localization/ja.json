@@ -237,7 +237,28 @@
       "firstCrawl": "はじめてのはいはい",
       "firstSteps": "はじめての一歩",
       "firstWords": "はじめての言葉",
-      "inDays": "{count}日後"
+      "inDays": "{count}日後",
+      "heartbeatVisible": "Heartbeat Visible",
+      "tenWeeks": "Ten Weeks",
+      "firstTrimesterComplete": "First Trimester Complete",
+      "quickeningBegins": "Quickening Begins",
+      "anatomyScan": "Anatomy Scan",
+      "viabilityMilestone": "Viability Milestone",
+      "thirdTrimesterBegins": "Third Trimester Begins",
+      "thirtyTwoWeeks": "Thirty-Two Weeks",
+      "fullTerm": "Full Term",
+      "thirtyEightWeeks": "Thirty-Eight Weeks",
+      "dueDate": "Due Date",
+      "oneMonthPregnant": "One Month Pregnant",
+      "twoMonthsPregnant": "Two Months Pregnant",
+      "threeMonthsPregnant": "Three Months Pregnant",
+      "fourMonthsPregnant": "Four Months Pregnant",
+      "fiveMonthsPregnant": "Five Months Pregnant",
+      "sixMonthsPregnant": "Six Months Pregnant",
+      "sevenMonthsPregnant": "Seven Months Pregnant",
+      "eightMonthsPregnant": "Eight Months Pregnant",
+      "nineMonthsPregnant": "Nine Months Pregnant",
+      "tenMonthsPregnant": "Ten Months Pregnant"
     }
   },
   "placeholders": {
@@ -315,7 +336,17 @@
     "addFirstMemory": "最初の思い出を追加",
     "addMemory": "思い出を追加",
     "autoDescriptionMonth": "毎日少しずつ世界を発見",
-    "autoDescriptionYear": "成長と新しい冒険が詰まった1年"
+    "autoDescriptionYear": "成長と新しい冒険が詰まった1年",
+    "pregnancyAutoDescription4": "One month pregnant",
+    "pregnancyAutoDescription8": "Two months pregnant",
+    "pregnancyAutoDescription12": "Three months - first trimester complete",
+    "pregnancyAutoDescription16": "Four months pregnant",
+    "pregnancyAutoDescription20": "Five months - halfway there",
+    "pregnancyAutoDescription24": "Six months pregnant",
+    "pregnancyAutoDescription28": "Seven months - third trimester begins",
+    "pregnancyAutoDescription32": "Eight months pregnant",
+    "pregnancyAutoDescription36": "Nine months - full term",
+    "pregnancyAutoDescription40": "Ten months - due date week"
   },
   "chapterDetailLegacy": {
     "noPhoto": "写真なし",

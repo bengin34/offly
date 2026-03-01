@@ -54,7 +54,7 @@ export const SearchRepository = {
           matchedField = 'title';
           matchedText = row.title;
         } else if (row.description?.toLowerCase().includes(query.toLowerCase())) {
-          matchedField = 'description';
+          matchedField = 'notes';
           matchedText = row.description;
         }
 
@@ -128,7 +128,7 @@ export const SearchRepository = {
           matchedField = 'title';
           matchedText = row.title;
         } else if (row.description?.toLowerCase().includes(query.toLowerCase())) {
-          matchedField = 'description';
+          matchedField = 'notes';
           matchedText = row.description;
         }
 

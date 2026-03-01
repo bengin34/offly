@@ -1,6 +1,6 @@
 {
   "name": "offly",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
@@ -8,7 +8,9 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "test": "jest",
-    "bump-version": "node scripts/bump-version.js"
+    "bump-version": "node scripts/bump-version.js",
+    "publish-ios": "bundle exec fastlane ios beta",
+    "publish-android": "cd android && gradle bundleRelease"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",

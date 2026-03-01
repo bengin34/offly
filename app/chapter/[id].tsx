@@ -26,6 +26,7 @@ import {
   getLocalizedChapterDescription,
   getLocalizedChapterTitle,
 } from '../../src/constants/chapterTemplates';
+import { getLocalizedPregnancyChapterDescription } from '../../src/constants/pregnancyChapterTemplates';
 import { persistPhoto } from '../../src/utils/photos';
 import { Background } from '../../src/components/Background';
 import { PageTitle, HEADER_ACTIONS_WIDTH } from '../../src/components/PageTitle';
@@ -484,7 +485,12 @@ export default function ChapterDetailScreen() {
 
   const displayChapterDescription = useMemo(() => {
     if (!chapter?.title) return chapter?.description;
-    return getLocalizedChapterDescription(chapter.title, chapter.description, t);
+    const pregnancyLocalized = getLocalizedPregnancyChapterDescription(
+      chapter.title,
+      chapter.description,
+      t
+    );
+    return getLocalizedChapterDescription(chapter.title, pregnancyLocalized, t);
   }, [chapter?.title, chapter?.description, t]);
 
   const renderTabBar = () => {

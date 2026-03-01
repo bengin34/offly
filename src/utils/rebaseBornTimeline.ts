@@ -32,7 +32,7 @@ export async function rebaseBornTimelineDates(
   const db = await getDatabase();
   const now = getTimestamp();
 
-  await db.execAsync('BEGIN TRANSACTION');
+  await db.runAsync('BEGIN TRANSACTION');
   try {
     const chapterRows = await db.getAllAsync<ChapterRow>(
       'SELECT id, title, start_date, end_date FROM chapters WHERE baby_id = ?',
@@ -108,7 +108,7 @@ export async function rebaseBornTimelineDates(
     }
 
     if (chapterWindows.length === 0) {
-      await db.execAsync('COMMIT');
+      await db.runAsync('COMMIT');
       return { updatedChapters, updatedMilestones: 0 };
     }
 
@@ -159,10 +159,10 @@ export async function rebaseBornTimelineDates(
       updatedMilestones += 1;
     }
 
-    await db.execAsync('COMMIT');
+    await db.runAsync('COMMIT');
     return { updatedChapters, updatedMilestones };
   } catch (error) {
-    await db.execAsync('ROLLBACK');
+    await db.runAsync('ROLLBACK');
     throw error;
   }
 }

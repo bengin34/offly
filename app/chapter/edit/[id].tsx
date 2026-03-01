@@ -2,27 +2,20 @@ import { useState, useEffect } from 'react';
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
   Alert,
-  Platform,
   ActivityIndicator,
   Image,
-  Keyboard,
-  Switch,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { ChapterRepository } from '../../../src/db/repositories';
 import { spacing, fontSize, borderRadius, fonts } from '../../../src/constants';
 import { Background } from '../../../src/components/Background';
 import { ModalWrapper } from '../../../src/components/ModalWrapper';
 import { useI18n, useTheme } from '../../../src/hooks';
-
-type DatePickerTarget = 'start' | 'end' | null;
 
 export default function EditChapterScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -36,8 +29,6 @@ export default function EditChapterScreen() {
   const [hasEndDate, setHasEndDate] = useState(false);
   const [description, setDescription] = useState('');
   const [coverImage, setCoverImage] = useState<string | undefined>();
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [datePickerTarget, setDatePickerTarget] = useState<DatePickerTarget>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -77,43 +68,6 @@ export default function EditChapterScreen() {
     }
   };
 
-  const openDatePicker = (target: DatePickerTarget) => {
-    Keyboard.dismiss();
-    setDatePickerTarget(target);
-    setShowDatePicker(true);
-  };
-
-  const handleDateChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    if (Platform.OS === 'android') {
-      setShowDatePicker(false);
-      setDatePickerTarget(null);
-    }
-    if (event.type !== 'set' || !selectedDate || !datePickerTarget) return;
-
-    if (datePickerTarget === 'start') {
-      setStartDate(selectedDate);
-      if (endDate && selectedDate > endDate) {
-        setEndDate(selectedDate);
-      }
-    } else {
-      if (selectedDate < startDate) {
-        Alert.alert(t('alerts.invalidDateTitle'), t('alerts.invalidDateMessage'));
-        return;
-      }
-      setEndDate(selectedDate);
-    }
-  };
-
-  const confirmIOSDate = () => {
-    setShowDatePicker(false);
-    setDatePickerTarget(null);
-  };
-
-  const getPickerDate = () => {
-    if (datePickerTarget === 'end') return endDate || startDate;
-    return startDate;
-  };
-
   const handlePickCoverImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
@@ -130,22 +84,7 @@ export default function EditChapterScreen() {
     setCoverImage(undefined);
   };
 
-  const handleToggleEndDate = (value: boolean) => {
-    setHasEndDate(value);
-    if (value && !endDate) {
-      setEndDate(new Date());
-    }
-    if (!value) {
-      setEndDate(undefined);
-    }
-  };
-
   const handleSave = async () => {
-    if (!title.trim()) {
-      Alert.alert(t('alerts.requiredTitle'), t('alerts.requiredChapterTitle'));
-      return;
-    }
-
     setIsSubmitting(true);
     try {
       await ChapterRepository.update({
@@ -198,92 +137,37 @@ export default function EditChapterScreen() {
         <View style={styles.form}>
             <View style={styles.field}>
               <Text style={styles.label}>{t('chapterForm.titleLabel').toLocaleUpperCase(locale)}</Text>
-              <TextInput
-                style={styles.input}
-                value={title}
-                onChangeText={setTitle}
-                placeholder={t('placeholders.chapterTitle')}
-                placeholderTextColor={theme.textMuted}
-              />
+              <View style={[styles.input, styles.readOnlyField]}>
+                <Text style={styles.readOnlyText}>{title}</Text>
+              </View>
             </View>
 
             <View style={styles.field}>
               <Text style={styles.label}>{t('labels.startDate').toLocaleUpperCase(locale)}</Text>
-              <TouchableOpacity
-                style={styles.dateButton}
-                onPress={() => openDatePicker('start')}
-                activeOpacity={0.8}
-              >
-                <Ionicons name="calendar-outline" size={18} color={theme.textSecondary} />
-                <Text style={styles.dateText}>{formatDate(startDate)}</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.field}>
-              <View style={styles.endDateToggleRow}>
-                <Text style={styles.label}>{t('labels.endDate').toLocaleUpperCase(locale)}</Text>
-                <Switch
-                  value={hasEndDate}
-                  onValueChange={handleToggleEndDate}
-                  trackColor={{ false: theme.borderLight, true: theme.primary }}
-                  thumbColor={theme.white}
-                />
+              <View style={[styles.dateButton, styles.readOnlyField]}>
+                <Ionicons name="calendar-outline" size={18} color={theme.textMuted} />
+                <Text style={[styles.dateText, { color: theme.textSecondary }]}>{formatDate(startDate)}</Text>
               </View>
-              {hasEndDate && (
-                <TouchableOpacity
-                  style={styles.dateButton}
-                  onPress={() => openDatePicker('end')}
-                  activeOpacity={0.8}
-                >
-                  <Ionicons name="calendar-outline" size={18} color={theme.textSecondary} />
-                  <Text style={styles.dateText}>{formatDate(endDate || new Date())}</Text>
-                </TouchableOpacity>
-              )}
             </View>
 
-            {showDatePicker && (
-              <View style={[styles.datePickerContainer, { backgroundColor: theme.card, borderColor: theme.borderLight }]}>
-                <Text style={[styles.datePickerLabel, { color: theme.textSecondary }]}>
-                  {datePickerTarget === 'end'
-                    ? t('labels.endDate')
-                    : t('labels.startDate')}
-                </Text>
-                <DateTimePicker
-                  value={getPickerDate()}
-                  mode="date"
-                  display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                  onChange={handleDateChange}
-                  locale={locale}
-                  themeVariant={theme.isDark ? 'dark' : 'light'}
-                  minimumDate={datePickerTarget === 'end' ? startDate : undefined}
-                  style={styles.datePicker}
-                />
-                {Platform.OS === 'ios' && (
-                  <TouchableOpacity
-                    style={[styles.datePickerDone, { borderTopColor: theme.borderLight }]}
-                    onPress={confirmIOSDate}
-                  >
-                    <Text style={[styles.datePickerDoneText, { color: theme.primary }]}>
-                      {t('common.done')}
-                    </Text>
-                  </TouchableOpacity>
-                )}
+            {hasEndDate && (
+              <View style={styles.field}>
+                <Text style={styles.label}>{t('labels.endDate').toLocaleUpperCase(locale)}</Text>
+                <View style={[styles.dateButton, styles.readOnlyField]}>
+                  <Ionicons name="calendar-outline" size={18} color={theme.textMuted} />
+                  <Text style={[styles.dateText, { color: theme.textSecondary }]}>{formatDate(endDate || new Date())}</Text>
+                </View>
               </View>
             )}
 
-            <View style={styles.field}>
-              <Text style={styles.label}>{t('chapterForm.descriptionLabel').toLocaleUpperCase(locale)}</Text>
-              <TextInput
-                style={[styles.input, styles.textArea]}
-                value={description}
-                onChangeText={setDescription}
-                placeholder={t('placeholders.chapterDescription')}
-                placeholderTextColor={theme.textMuted}
-                multiline
-                numberOfLines={3}
-                textAlignVertical="top"
-              />
-            </View>
+            {description ? (
+              <View style={styles.field}>
+                <Text style={styles.label}>{t('chapterForm.descriptionLabel').toLocaleUpperCase(locale)}</Text>
+                <View style={[styles.input, styles.textArea, styles.readOnlyField]}>
+                  <Text style={styles.readOnlyText}>{description}</Text>
+                </View>
+              </View>
+            ) : null}
 
             <View style={styles.field}>
               <Text style={styles.label}>{t('chapterForm.coverImageLabel').toLocaleUpperCase(locale)}</Text>
@@ -367,12 +251,6 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
     textArea: {
       minHeight: 80,
     },
-    endDateToggleRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      marginBottom: spacing.xs,
-    },
     dateButton: {
       backgroundColor: theme.card,
       borderRadius: borderRadius.lg,
@@ -387,33 +265,6 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       fontSize: fontSize.md,
       fontFamily: fonts.body,
       color: theme.text,
-    },
-    datePickerContainer: {
-      borderRadius: borderRadius.lg,
-      borderWidth: 1,
-      marginBottom: spacing.lg,
-      overflow: 'hidden',
-    },
-    datePickerLabel: {
-      fontSize: fontSize.sm,
-      fontFamily: fonts.ui,
-      paddingHorizontal: spacing.md,
-      paddingTop: spacing.md,
-      paddingBottom: spacing.xs,
-      textTransform: 'uppercase',
-      letterSpacing: 0.6,
-    },
-    datePicker: {
-      height: 200,
-    },
-    datePickerDone: {
-      alignItems: 'center',
-      padding: spacing.md,
-      borderTopWidth: 1,
-    },
-    datePickerDoneText: {
-      fontSize: fontSize.md,
-      fontFamily: fonts.ui,
     },
     coverImageContainer: {
       position: 'relative',
@@ -467,5 +318,13 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       color: theme.textMuted,
       fontSize: fontSize.md,
       fontFamily: fonts.body,
+    },
+    readOnlyField: {
+      opacity: 0.6,
+    },
+    readOnlyText: {
+      fontSize: fontSize.md,
+      fontFamily: fonts.body,
+      color: theme.text,
     },
   });

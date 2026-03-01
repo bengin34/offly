@@ -24,14 +24,12 @@ const mockedGetMilestoneTemplateById = getMilestoneTemplateById as jest.MockedFu
 const mockedGetExpectedDate = getExpectedDate as jest.MockedFunction<typeof getExpectedDate>;
 
 type DbMock = {
-  execAsync: jest.Mock;
   getAllAsync: jest.Mock;
   runAsync: jest.Mock;
 };
 
 function makeDbMock(): DbMock {
   return {
-    execAsync: jest.fn(),
     getAllAsync: jest.fn(),
     runAsync: jest.fn(),
   };
@@ -51,9 +49,9 @@ describe('rebase born timeline flow', () => {
     const result = await rebaseBornTimelineDates('baby-1', '2026-01-01T00:00:00.000Z');
 
     expect(result).toEqual({ updatedChapters: 0, updatedMilestones: 0 });
-    expect(db.execAsync).toHaveBeenNthCalledWith(1, 'BEGIN TRANSACTION');
-    expect(db.execAsync).toHaveBeenLastCalledWith('COMMIT');
-    expect(db.runAsync).not.toHaveBeenCalled();
+    expect(db.runAsync).toHaveBeenNthCalledWith(1, 'BEGIN TRANSACTION');
+    expect(db.runAsync).toHaveBeenLastCalledWith('COMMIT');
+    expect(db.runAsync).toHaveBeenCalledTimes(2);
   });
 
   it('updates matched template chapters and remaps milestone expected dates', async () => {
@@ -107,7 +105,7 @@ describe('rebase born timeline flow', () => {
         'mi-1',
       ]
     );
-    expect(db.execAsync).toHaveBeenLastCalledWith('COMMIT');
+    expect(db.runAsync).toHaveBeenLastCalledWith('COMMIT');
   });
 
   it('uses fallback shift when timeline chapters are custom-renamed', async () => {
@@ -176,7 +174,7 @@ describe('rebase born timeline flow', () => {
       rebaseBornTimelineDates('baby-1', '2026-01-01T00:00:00.000Z')
     ).rejects.toThrow('boom');
 
-    expect(db.execAsync).toHaveBeenNthCalledWith(1, 'BEGIN TRANSACTION');
-    expect(db.execAsync).toHaveBeenLastCalledWith('ROLLBACK');
+    expect(db.runAsync).toHaveBeenNthCalledWith(1, 'BEGIN TRANSACTION');
+    expect(db.runAsync).toHaveBeenLastCalledWith('ROLLBACK');
   });
 });

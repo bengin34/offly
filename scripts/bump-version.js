@@ -19,6 +19,7 @@ const ROOT = path.join(__dirname, '..');
 const PACKAGE_JSON = path.join(ROOT, 'package.json');
 const APP_JSON = path.join(ROOT, 'app.json');
 const ANDROID_BUILD_GRADLE = path.join(ROOT, 'android', 'app', 'build.gradle');
+const HAS_ANDROID_GRADLE = fs.existsSync(ANDROID_BUILD_GRADLE);
 
 // The iOS targets are discovered dynamically so the script survives renames.
 const { iosInfoPlistPath: IOS_INFO_PLIST, iosProjectPbxPath: IOS_PROJECT } = resolveIosTargets();
@@ -170,11 +171,15 @@ function updateAppJson(newVersion, options = {}) {
     // Increment iOS buildNumber
     if (app.expo.ios?.buildNumber) {
       app.expo.ios.buildNumber = incrementBuildNumber(app.expo.ios.buildNumber);
+    } else if (app.expo.ios) {
+      app.expo.ios.buildNumber = '1';
     }
 
     // Increment Android versionCode
     if (app.expo.android?.versionCode) {
       app.expo.android.versionCode = parseInt(app.expo.android.versionCode, 10) + 1;
+    } else if (app.expo.android) {
+      app.expo.android.versionCode = 1;
     }
   }
 
@@ -242,13 +247,15 @@ function getAndroidGradleVersions(content) {
 
 function updateAndroidGradle(newVersion, newVersionCode) {
   const content = readFileSafe(ANDROID_BUILD_GRADLE);
-  if (!content) throw new Error('android/app/build.gradle not found');
+  if (!content) {
+    return null;
+  }
 
   const hasCode = /versionCode\s+\d+/.test(content);
   const hasName = /versionName\s+"[^"]+"/.test(content);
 
   if (!hasCode || !hasName) {
-    throw new Error('Could not find versionCode/versionName in android/app/build.gradle');
+    return null;
   }
 
   let updated = content.replace(/versionCode\s+\d+/, `versionCode ${newVersionCode}`);
@@ -281,7 +288,7 @@ function ask(rl, question) {
 // Main function
 async function main() {
   console.log(`${colors.cyan}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${colors.reset}`);
-  console.log(`${colors.cyan}   Mamio Version Bump Script${colors.reset}`);
+  console.log(`${colors.cyan}   Offly Version Bump Script${colors.reset}`);
   console.log(`${colors.cyan}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${colors.reset}\n`);
 
   // Read current version
@@ -292,12 +299,17 @@ async function main() {
   const androidGradle = readAndroidGradle();
   const gradleVersions = androidGradle ? getAndroidGradleVersions(androidGradle) : null;
   const currentAndroidVersion = gradleVersions?.versionCode ?? app.expo.android?.versionCode ?? 'N/A';
-  const currentAndroidName = gradleVersions?.versionName ?? app.expo.android?.versionName ?? 'N/A';
+  const currentAndroidName = gradleVersions?.versionName ?? app.expo.android?.versionName ?? currentVersion;
 
   console.log(`${colors.blue}Current version:${colors.reset} ${currentVersion}`);
   console.log(`${colors.blue}iOS build:${colors.reset} ${currentIosBuild}`);
-  console.log(`${colors.blue}Android versionCode (Gradle):${colors.reset} ${currentAndroidVersion}`);
-  console.log(`${colors.blue}Android versionName (Gradle):${colors.reset} ${currentAndroidName}\n`);
+  if (HAS_ANDROID_GRADLE) {
+    console.log(`${colors.blue}Android versionCode (Gradle):${colors.reset} ${currentAndroidVersion}`);
+    console.log(`${colors.blue}Android versionName (Gradle):${colors.reset} ${currentAndroidName}\n`);
+  } else {
+    console.log(`${colors.blue}Android versionCode (app.json):${colors.reset} ${currentAndroidVersion}`);
+    console.log(`${colors.blue}Android versionName:${colors.reset} ${currentAndroidName}\n`);
+  }
 
   // Calculate bump previews
   const patchVersion = bumpVersion(currentVersion, 'patch');
@@ -330,10 +342,9 @@ async function main() {
   // Calculate new build numbers
   const newIosBuild = incrementBuildNumber(currentIosBuild);
   const currentAndroidVersionNumber = parseInt(currentAndroidVersion, 10);
-  if (isNaN(currentAndroidVersionNumber)) {
-    throw new Error('Android versionCode is missing or not a number');
-  }
-  const newAndroidVersion = currentAndroidVersionNumber + 1;
+  const newAndroidVersion = isNaN(currentAndroidVersionNumber)
+    ? 1
+    : currentAndroidVersionNumber + 1;
 
   console.log('');
   console.log(`${colors.blue}Preview:${colors.reset}`);
@@ -346,6 +357,11 @@ async function main() {
   console.log('Files to update:');
   console.log(`  ${colors.green}✓${colors.reset} package.json`);
   console.log(`  ${colors.green}✓${colors.reset} app.json (version + iOS/Android builds)`);
+  if (HAS_ANDROID_GRADLE) {
+    console.log(`  ${colors.green}✓${colors.reset} android/app/build.gradle`);
+  } else {
+    console.log(`  ${colors.yellow}•${colors.reset} android/app/build.gradle (skipped: file not found)`);
+  }
   console.log('');
 
   // Ask for confirmation
@@ -365,9 +381,15 @@ async function main() {
     console.log(`${colors.green}✓${colors.reset} Updated package.json → ${newVersion}`);
 
     const gradleBuilds = updateAndroidGradle(newVersion, newAndroidVersion);
-    console.log(`${colors.green}✓${colors.reset} Updated android/app/build.gradle`);
-    console.log(`  - versionCode: ${gradleBuilds.versionCode}`);
-    console.log(`  - versionName: ${gradleBuilds.versionName}`);
+    if (gradleBuilds) {
+      console.log(`${colors.green}✓${colors.reset} Updated android/app/build.gradle`);
+      console.log(`  - versionCode: ${gradleBuilds.versionCode}`);
+      console.log(`  - versionName: ${gradleBuilds.versionName}`);
+    } else if (HAS_ANDROID_GRADLE) {
+      console.log(`${colors.yellow}•${colors.reset} Skipped android/app/build.gradle (version keys not found)`);
+    } else {
+      console.log(`${colors.yellow}•${colors.reset} Skipped android/app/build.gradle (file not found)`);
+    }
 
     const builds = updateAppJson(newVersion, { incrementBuilds: true, androidVersionCode: newAndroidVersion });
     console.log(`${colors.green}✓${colors.reset} Updated app.json`);

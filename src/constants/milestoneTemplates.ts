@@ -406,44 +406,44 @@ export function getMilestoneTemplateById(id: string): MilestoneTemplate | null {
 export function getLocalizedMilestoneLabel(template: MilestoneTemplate, t: TranslateFn): string {
   const id = template.id;
 
-  if (id === 'milestone_1_week') {
-    const translated = t('labels.milestone.firstWeek');
-    return translated === 'labels.milestone.firstWeek' ? template.label : translated;
-  }
+  const keyByMilestoneId: Record<string, string> = {
+    milestone_1_week: 'labels.milestone.firstWeek',
+    milestone_first_smile: 'labels.milestone.firstSmile',
+    milestone_first_laughs: 'labels.milestone.firstLaughs',
+    milestone_first_tooth: 'labels.milestone.firstTooth',
+    milestone_sits_up: 'labels.milestone.sitsUpAlone',
+    milestone_crawling: 'labels.milestone.firstCrawl',
+    milestone_first_steps: 'labels.milestone.firstSteps',
+    milestone_first_words: 'labels.milestone.firstWords',
+    milestone_pregnancy_8_weeks: 'labels.milestone.heartbeatVisible',
+    milestone_pregnancy_10_weeks: 'labels.milestone.tenWeeks',
+    milestone_pregnancy_12_weeks: 'labels.milestone.firstTrimesterComplete',
+    milestone_pregnancy_16_weeks: 'labels.milestone.quickeningBegins',
+    milestone_pregnancy_20_weeks: 'labels.milestone.anatomyScan',
+    milestone_pregnancy_24_weeks: 'labels.milestone.viabilityMilestone',
+    milestone_pregnancy_28_weeks: 'labels.milestone.thirdTrimesterBegins',
+    milestone_pregnancy_32_weeks: 'labels.milestone.thirtyTwoWeeks',
+    milestone_pregnancy_36_weeks: 'labels.milestone.fullTerm',
+    milestone_pregnancy_38_weeks: 'labels.milestone.thirtyEightWeeks',
+    milestone_pregnancy_40_weeks: 'labels.milestone.dueDate',
+    milestone_pregnancy_month_1: 'labels.milestone.oneMonthPregnant',
+    milestone_pregnancy_month_2: 'labels.milestone.twoMonthsPregnant',
+    milestone_pregnancy_month_3: 'labels.milestone.threeMonthsPregnant',
+    milestone_pregnancy_month_4: 'labels.milestone.fourMonthsPregnant',
+    milestone_pregnancy_month_5: 'labels.milestone.fiveMonthsPregnant',
+    milestone_pregnancy_month_6: 'labels.milestone.sixMonthsPregnant',
+    milestone_pregnancy_month_7: 'labels.milestone.sevenMonthsPregnant',
+    milestone_pregnancy_month_8: 'labels.milestone.eightMonthsPregnant',
+    milestone_pregnancy_month_9: 'labels.milestone.nineMonthsPregnant',
+    milestone_pregnancy_month_10: 'labels.milestone.tenMonthsPregnant',
+  };
 
-  if (id === 'milestone_first_smile') {
-    const translated = t('labels.milestone.firstSmile');
-    return translated === 'labels.milestone.firstSmile' ? template.label : translated;
-  }
-
-  if (id === 'milestone_first_laughs') {
-    const translated = t('labels.milestone.firstLaughs');
-    return translated === 'labels.milestone.firstLaughs' ? template.label : translated;
-  }
-
-  if (id === 'milestone_first_tooth') {
-    const translated = t('labels.milestone.firstTooth');
-    return translated === 'labels.milestone.firstTooth' ? template.label : translated;
-  }
-
-  if (id === 'milestone_sits_up') {
-    const translated = t('labels.milestone.sitsUpAlone');
-    return translated === 'labels.milestone.sitsUpAlone' ? template.label : translated;
-  }
-
-  if (id === 'milestone_crawling') {
-    const translated = t('labels.milestone.firstCrawl');
-    return translated === 'labels.milestone.firstCrawl' ? template.label : translated;
-  }
-
-  if (id === 'milestone_first_steps') {
-    const translated = t('labels.milestone.firstSteps');
-    return translated === 'labels.milestone.firstSteps' ? template.label : translated;
-  }
-
-  if (id === 'milestone_first_words') {
-    const translated = t('labels.milestone.firstWords');
-    return translated === 'labels.milestone.firstWords' ? template.label : translated;
+  const key = keyByMilestoneId[id];
+  if (key) {
+    const translated = t(key);
+    if (translated !== key) {
+      return translated;
+    }
   }
 
   const monthMatch = id.match(/^milestone_(\d+)_months?$/);

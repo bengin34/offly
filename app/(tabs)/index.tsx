@@ -330,6 +330,46 @@ export default function HomeScreen() {
     [t]
   );
 
+  // --- Before-birth separator (rendered instead of a regular card for the pregnancy chapter) ---
+  const beforeBirthChapterId = !isPregnant ? profile?.beforeBirthChapterId : undefined;
+
+  const renderBeforeBirthSeparator = (item: ChapterWithMilestoneProgress, index: number) => (
+    <View key={item.id} style={styles.timelineRow}>
+      {/* Timeline column */}
+      <View style={styles.dateColumn}>
+        {index > 0 && <View style={styles.dateLine} />}
+        <View style={styles.beforeBirthDot}>
+          <Ionicons name="heart" size={14} color={theme.white} />
+        </View>
+        {index < chapters.length - 1 && <View style={styles.dateLineBottom} />}
+      </View>
+
+      {/* Separator card */}
+      <TouchableOpacity
+        style={styles.beforeBirthCard}
+        onPress={() => router.push(`/chapter/${item.id}`)}
+        activeOpacity={0.8}
+      >
+        <View style={styles.beforeBirthIconWrap}>
+          <Ionicons name="leaf-outline" size={22} color={theme.accent} />
+        </View>
+        <View style={styles.beforeBirthContent}>
+          <Text style={styles.beforeBirthTitle}>
+            {t('settings.beforeBirthChapterTitle')}
+          </Text>
+          {item.memoryCount > 0 && (
+            <Text style={styles.beforeBirthMeta}>
+              {item.memoryCount === 1
+                ? t('home.memoryCount', { count: 1 })
+                : t('home.memoryCountPlural', { count: item.memoryCount })}
+            </Text>
+          )}
+        </View>
+        <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
+      </TouchableOpacity>
+    </View>
+  );
+
   // --- Section: Chapters Timeline ---
   const renderChaptersSection = () => (
     <View style={styles.sectionContainer}>
@@ -343,6 +383,11 @@ export default function HomeScreen() {
         </View>
       ) : (
         chapters.map((item, index) => {
+          // Render the "Before you were born" chapter as a special separator
+          if (beforeBirthChapterId && item.id === beforeBirthChapterId) {
+            return renderBeforeBirthSeparator(item, index);
+          }
+
           const startDate = new Date(item.startDate);
           const endDate = item.endDate ? new Date(item.endDate) : null;
           const now = Date.now();
@@ -940,6 +985,57 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       backgroundColor: theme.borderLight,
       borderRadius: 2,
     },
+
+    // "Before you were born" separator
+    beforeBirthDot: {
+      width: 28,
+      height: 28,
+      borderRadius: 14,
+      backgroundColor: theme.accent,
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 2,
+      shadowColor: theme.accent,
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: 0.35,
+      shadowRadius: 8,
+      elevation: 3,
+    },
+    beforeBirthCard: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: theme.accent + '10',
+      borderRadius: borderRadius.xl,
+      borderWidth: 1,
+      borderColor: theme.accent + '30',
+      paddingVertical: spacing.md,
+      paddingHorizontal: spacing.md,
+    },
+    beforeBirthIconWrap: {
+      width: 42,
+      height: 42,
+      borderRadius: 21,
+      backgroundColor: theme.accent + '18',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: spacing.md,
+    },
+    beforeBirthContent: {
+      flex: 1,
+    },
+    beforeBirthTitle: {
+      fontSize: fontSize.md,
+      fontFamily: fonts.heading,
+      color: theme.text,
+    },
+    beforeBirthMeta: {
+      fontSize: fontSize.xs,
+      fontFamily: fonts.body,
+      color: theme.textSecondary,
+      marginTop: 2,
+    },
+
     chapterCard: {
       flex: 1,
       backgroundColor: theme.card,
