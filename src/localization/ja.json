@@ -87,10 +87,10 @@
     "exportFormatsTitle": "形式を選択",
     "exportFormatsDescription": "JSONはバックアップと再インポートに最適です。XLSはExcelやGoogleスプレッドシートで簡単に開けます。",
     "importSection": "インポート",
-    "importTitle": "データをインポート",
+    "importTitle": "バックアップから復元",
     "importDescription": "保存したチャプターと思い出をJSONファイルから取り込みます。",
-    "importButton": "JSONをインポート",
-    "importButtonImporting": "インポート中...",
+    "importButton": "ファイルを選択",
+    "importButtonImporting": "復元中...",
     "dataSection": "データ",
     "dataTitle": "エクスポートとインポート",
     "dataDescription": "エクスポートとインポートで思い出をバックアップまたは移行できます。",
@@ -144,7 +144,7 @@
     "lastBackup": "最終バックアップ: {date}",
     "noBackupYet": "まだバックアップがありません。定期的なバックアップをおすすめします。",
     "createBackup": "バックアップを作成",
-    "moreExportImportOptions": "その他のエクスポート/インポートオプション",
+    "restoreFromBackup": "バックアップから復元",
     "chooseColorTheme": "カラーテーマを選択",
     "palette": {
       "blush": {
@@ -821,7 +821,6 @@
   },
   "limitations": {
     "title": "ご注意",
-    "photosNotBundled": "エクスポートに写真本体は含まれません。ローカルファイル参照のみが含まれます",
     "noCloudSync": "すべてのデータはこの端末内にのみ保存されます",
     "freeTextCities": "マイルストーンリスト名は自由入力です。同じ名前でも別リストとして扱われます",
     "noAutoBackup": "自動バックアップはありません。定期的にデータをエクスポートしてください"

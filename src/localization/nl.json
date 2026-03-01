@@ -87,10 +87,10 @@
     "exportFormatsTitle": "Kies een formaat",
     "exportFormatsDescription": "JSON is ideaal voor backups en opnieuw importeren. XLS opent eenvoudig in Excel of Google Sheets.",
     "importSection": "Importeren",
-    "importTitle": "Gegevens importeren",
+    "importTitle": "Back-up terugzetten",
     "importDescription": "Breng je opgeslagen hoofdstukken en herinneringen in vanaf een JSON-bestand.",
-    "importButton": "JSON importeren",
-    "importButtonImporting": "Importeren...",
+    "importButton": "Bestand kiezen",
+    "importButtonImporting": "Herstellen...",
     "dataSection": "Gegevens",
     "dataTitle": "Exporteren & importeren",
     "dataDescription": "Back-up of verplaats je herinneringen met export en import.",
@@ -144,7 +144,7 @@
     "lastBackup": "Laatste back-up: {date}",
     "noBackupYet": "Nog geen back-up. We raden regelmatige back-ups aan.",
     "createBackup": "Maak back-up",
-    "moreExportImportOptions": "Meer export-/importopties",
+    "restoreFromBackup": "Back-up terugzetten",
     "chooseColorTheme": "Kies kleurenpalet",
     "palette": {
       "blush": {
@@ -821,7 +821,6 @@
   },
   "limitations": {
     "title": "Goed om te weten",
-    "photosNotBundled": "Foto's zitten niet in exports - alleen verwijzingen naar lokale bestanden",
     "noCloudSync": "Alle data blijft alleen lokaal op je apparaat opgeslagen",
     "freeTextCities": "Mijlpalenlijsten hebben vrije tekstnamen — duplicaten worden als aparte lijsten behandeld",
     "noAutoBackup": "Geen automatische back-ups - vergeet niet regelmatig te exporteren"

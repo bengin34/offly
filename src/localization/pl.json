@@ -87,10 +87,10 @@
     "exportFormatsTitle": "Wybierz format",
     "exportFormatsDescription": "JSON jest najlepszy do backupów i ponownego importu. XLS łatwo otworzyć w Excelu lub Google Sheets.",
     "importSection": "Import",
-    "importTitle": "Importuj dane",
+    "importTitle": "Przywróć z kopii zapasowej",
     "importDescription": "Zaimportuj zapisane rozdziały i wspomnienia z pliku JSON.",
-    "importButton": "Importuj JSON",
-    "importButtonImporting": "Importowanie...",
+    "importButton": "Wybierz plik",
+    "importButtonImporting": "Przywracanie...",
     "dataSection": "Dane",
     "dataTitle": "Eksport i import",
     "dataDescription": "Wykonaj backup lub przenieś wspomnienia przez eksport i import.",
@@ -144,7 +144,7 @@
     "lastBackup": "Ostatni backup: {date}",
     "noBackupYet": "Brak backupu. Zalecamy regularne tworzenie kopii.",
     "createBackup": "Utwórz backup",
-    "moreExportImportOptions": "Więcej opcji eksportu/importu",
+    "restoreFromBackup": "Przywróć z kopii zapasowej",
     "chooseColorTheme": "Wybierz motyw kolorystyczny",
     "palette": {
       "blush": {
@@ -821,7 +821,6 @@
   },
   "limitations": {
     "title": "Warto wiedzieć",
-    "photosNotBundled": "Zdjęcia nie są dołączane do eksportu — zawarte są jedynie odwołania do plików lokalnych",
     "noCloudSync": "Wszystkie dane są przechowywane tylko na urządzeniu",
     "freeTextCities": "Nazwy list miast można wpisywać dowolnie — duplikaty traktowane są jako osobne listy",
     "noAutoBackup": "Brak automatycznego backupu — pamiętaj o regularnym eksporcie danych"

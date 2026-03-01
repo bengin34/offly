@@ -26,7 +26,7 @@ function AppContent() {
       return;
     }
 
-    if (hasCompletedOnboarding && isOnboardingRoute) {
+    if (hasCompletedOnboarding && segments[0] === 'onboarding') {
       router.replace('/');
     }
   }, [hasCompletedOnboarding, isOnboardingLoaded, router, segments]);
@@ -140,12 +140,6 @@ function AppContent() {
             title: t('vault.newLetterTitle'),
             presentation: 'modal',
             headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="export"
-          options={{
-            title: t('settings.exportTitle'),
           }}
         />
         <Stack.Screen

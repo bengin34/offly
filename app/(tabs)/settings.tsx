@@ -53,7 +53,6 @@ export default function SettingsScreen() {
   const [showThemeModal, setShowThemeModal] = useState(false);
   const [showPaletteModal, setShowPaletteModal] = useState(false);
   const [showLanguageModal, setShowLanguageModal] = useState(false);
-  const [showDataModal, setShowDataModal] = useState(false);
   const [showModeSwitchModal, setShowModeSwitchModal] = useState(false);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
@@ -503,7 +502,7 @@ export default function SettingsScreen() {
     }
     Alert.alert(
       t('settings.importTitle'),
-      `${t('settings.importDescription')}\n\n${t('settings.exportPhotosNote')}`,
+      t('settings.importDescription'),
       [
         { text: t('common.cancel'), style: 'cancel' },
         {
@@ -592,7 +591,7 @@ export default function SettingsScreen() {
         <ProUpgradeBanner style={styles.proBanner} />
 
         {/* Profile Switcher Section */}
-        {allProfiles.length > 1 && profile?.mode !== 'pregnant' && (
+        {allProfiles.length > 1 && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>
               {t('profiles.multipleProfiles').toLocaleUpperCase(locale)}
@@ -852,21 +851,6 @@ export default function SettingsScreen() {
               </View>
             </View>
 
-            {/* Add new baby button (shown when multiple profiles enabled or already >1) */}
-            {(multiProfileEnabled || allProfiles.length > 1) && (
-              <TouchableOpacity
-                style={[styles.settingsRow, { marginTop: spacing.md }]}
-                onPress={handleAddNewProfile}
-              >
-                <View style={styles.settingsRowLeft}>
-                  <Ionicons name="add-circle-outline" size={22} color={theme.primary} />
-                  <Text style={[styles.settingsRowLabel, { color: theme.primary }]}>{t('profiles.addNew')}</Text>
-                </View>
-                {!isPro && allProfiles.length >= APP_LIMITS.FREE_MAX_PROFILES && (
-                  <Ionicons name="lock-closed" size={14} color={theme.textMuted} />
-                )}
-              </TouchableOpacity>
-            )}
           </View>
         )}
 
@@ -1103,22 +1087,26 @@ export default function SettingsScreen() {
               )}
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.exportLink}
-              onPress={() => {
-                if (!isPro) {
-                  void presentPaywall();
-                  return;
-                }
-                setShowDataModal(true);
-              }}
-              accessibilityRole="button"
-              accessibilityLabel={t('settings.dataButton')}
+              style={[
+                styles.restoreButton,
+                isImporting && { opacity: 0.6 },
+                !isPro && { backgroundColor: theme.textMuted },
+              ]}
+              onPress={() => void handleImport()}
+              disabled={isImporting}
             >
-              <Text style={styles.exportLinkText}>{t('settings.moreExportImportOptions')}</Text>
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-                {!isPro && <Ionicons name="lock-closed" size={14} color={theme.textMuted} />}
-                <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
-              </View>
+              {isImporting ? (
+                <>
+                  <ActivityIndicator color={theme.white} size="small" />
+                  <Text style={styles.onboardingButtonText}>{t('settings.importButtonImporting')}</Text>
+                </>
+              ) : (
+                <>
+                  <Ionicons name="push-outline" size={20} color={theme.white} />
+                  <Text style={styles.onboardingButtonText}>{t('settings.restoreFromBackup')}</Text>
+                  {!isPro && <Ionicons name="lock-closed" size={16} color={theme.white} style={{ marginLeft: 4 }} />}
+                </>
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -1128,10 +1116,7 @@ export default function SettingsScreen() {
             {t('limitations.title').toLocaleUpperCase(locale)}
           </Text>
           <View style={styles.card}>
-            <View style={styles.limitationRow}>
-              <Ionicons name="image-outline" size={18} color={theme.textMuted} />
-              <Text style={styles.limitationText}>{t('limitations.photosNotBundled')}</Text>
-            </View>
+
             <View style={styles.limitationRow}>
               <Ionicons name="cloud-offline-outline" size={18} color={theme.textMuted} />
               <Text style={styles.limitationText}>{t('limitations.noCloudSync')}</Text>
@@ -1147,56 +1132,6 @@ export default function SettingsScreen() {
           </View>
         </View>
 
-        {/* Photo Credits */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>PHOTO CREDITS</Text>
-          <View style={styles.card}>
-            <Text style={[styles.limitationText, { color: theme.textSecondary, marginBottom: spacing.sm }]}>
-              Some photos used in this app are provided by Freepik.
-            </Text>
-            {[
-              {
-                label: 'Image by rawpixel.com on Freepik',
-                url: 'https://www.freepik.com/free-photo/pregnant-woman-life_2765264.htm',
-              },
-              {
-                label: 'Image by Freepik',
-                url: 'https://www.freepik.com/free-photo/pregnant-woman-with-husband-ultrasound_2045641.htm',
-              },
-              {
-                label: 'Image by Freepik',
-                url: 'https://www.freepik.com/free-photo/pregnant-woman-front-balcony_2045620.htm',
-              },
-              {
-                label: 'Image by Freepik',
-                url: 'https://www.freepik.com/free-photo/baby-laying-floor-while-defocused-mother-is-his-back_24751495.htm',
-              },
-              {
-                label: 'Image by rawpixel.com on Freepik',
-                url: 'https://www.freepik.com/free-photo/newborn-baby_2765276.htm',
-              },
-            ].map((credit, index, arr) => (
-              <View key={credit.url}>
-                <TouchableOpacity
-                  style={styles.creditRow}
-                  onPress={() => Linking.openURL(credit.url)}
-                  accessibilityRole="link"
-                >
-                  <View style={{ flex: 1 }}>
-                    <Text style={[styles.creditLabel, { color: theme.text }]}>{credit.label}</Text>
-                    <Text style={[styles.creditUrl, { color: theme.primary }]} numberOfLines={1}>
-                      {credit.url.replace('https://www.', '')}
-                    </Text>
-                  </View>
-                  <Ionicons name="open-outline" size={16} color={theme.textMuted} />
-                </TouchableOpacity>
-                {index < arr.length - 1 && (
-                  <View style={[styles.settingsDivider, { backgroundColor: theme.border }]} />
-                )}
-              </View>
-            ))}
-          </View>
-        </View>
 
         <Text style={styles.footerText}>
           {t('settings.footer')}
@@ -1397,67 +1332,6 @@ export default function SettingsScreen() {
             ))}
           </ScrollView>
         </View>
-      </Modal>
-
-      {/* Data Transfer Modal */}
-      <Modal
-        visible={showDataModal}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setShowDataModal(false)}
-      >
-        <Pressable style={styles.modalOverlay} onPress={() => setShowDataModal(false)}>
-          <View style={styles.modalContent}>
-            <DialogHeader
-              title={t('settings.dataTitle')}
-              titleNumberOfLines={2}
-              onClose={() => setShowDataModal(false)}
-              actionLabel={t('common.close')}
-              onAction={() => setShowDataModal(false)}
-              palette={{
-                text: theme.text,
-                textSecondary: theme.textSecondary,
-                textMuted: theme.textMuted,
-                primary: theme.primary,
-                border: theme.border,
-              }}
-              containerStyle={styles.modalHeader}
-            />
-            <TouchableOpacity
-              style={styles.modalOption}
-              onPress={() => {
-                setShowDataModal(false);
-                router.push('/export');
-              }}
-            >
-              <View style={styles.modalOptionLeft}>
-                <Ionicons name="download-outline" size={22} color={theme.textSecondary} />
-                <Text style={styles.modalOptionText}>{t('settings.exportTitle')}</Text>
-              </View>
-              <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.modalOption, isImporting && styles.modalOptionDisabled]}
-              onPress={() => {
-                setShowDataModal(false);
-                void handleImport();
-              }}
-              disabled={isImporting}
-            >
-              <View style={styles.modalOptionLeft}>
-                <Ionicons name="cloud-upload-outline" size={22} color={theme.textSecondary} />
-                <Text style={styles.modalOptionText}>
-                  {isImporting ? t('settings.importButtonImporting') : t('settings.importTitle')}
-                </Text>
-              </View>
-              {isImporting ? (
-                <ActivityIndicator size="small" color={theme.primary} />
-              ) : (
-                <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
-              )}
-            </TouchableOpacity>
-          </View>
-        </Pressable>
       </Modal>
 
       {/* Mode Switch Modal (Pregnant → Born) — 2-step */}
@@ -1849,23 +1723,6 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       color: theme.textSecondary,
       marginTop: 4,
     },
-    exportLink: {
-      marginTop: spacing.md,
-      paddingVertical: spacing.sm,
-      paddingHorizontal: spacing.md,
-      borderRadius: borderRadius.md,
-      backgroundColor: theme.backgroundSecondary,
-      borderWidth: 1,
-      borderColor: theme.borderLight,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    },
-    exportLinkText: {
-      fontSize: fontSize.md,
-      fontFamily: fonts.ui,
-      color: theme.text,
-    },
     onboardingButton: {
       backgroundColor: theme.primary,
       borderRadius: borderRadius.md,
@@ -1875,6 +1732,22 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       alignItems: 'center',
       justifyContent: 'center',
       gap: spacing.sm,
+      shadowColor: theme.shadow,
+      shadowOffset: { width: 0, height: 6 },
+      shadowOpacity: 0.2,
+      shadowRadius: 10,
+      elevation: 3,
+    },
+    restoreButton: {
+      backgroundColor: theme.textSecondary,
+      borderRadius: borderRadius.md,
+      padding: spacing.md,
+      minHeight: 48,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: spacing.sm,
+      marginTop: spacing.sm,
       shadowColor: theme.shadow,
       shadowOffset: { width: 0, height: 6 },
       shadowOpacity: 0.2,

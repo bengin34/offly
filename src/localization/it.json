@@ -87,10 +87,10 @@
     "exportFormatsTitle": "Scegli un formato",
     "exportFormatsDescription": "JSON è ideale per backup e reimportazione. XLS si apre facilmente in Excel o Google Sheets.",
     "importSection": "Importazione",
-    "importTitle": "Importa dati",
+    "importTitle": "Ripristina da backup",
     "importDescription": "Importa i tuoi capitoli e ricordi da un file JSON.",
-    "importButton": "Importa JSON",
-    "importButtonImporting": "Importazione in corso...",
+    "importButton": "Scegli file",
+    "importButtonImporting": "Ripristino in corso...",
     "dataSection": "Dati",
     "dataTitle": "Esporta e importa",
     "dataDescription": "Fai backup o trasferisci i tuoi ricordi con esportazione e importazione.",
@@ -144,7 +144,7 @@
     "lastBackup": "Ultimo backup: {date}",
     "noBackupYet": "Nessun backup ancora. Ti consigliamo di fare backup regolari.",
     "createBackup": "Crea backup",
-    "moreExportImportOptions": "Altre opzioni di esportazione e importazione",
+    "restoreFromBackup": "Ripristina da backup",
     "chooseColorTheme": "Scegli tema colore",
     "palette": {
       "blush": {
@@ -989,7 +989,6 @@
   },
   "limitations": {
     "title": "Da sapere",
-    "photosNotBundled": "Le foto non sono incluse nelle esportazioni - solo riferimenti ai file locali",
     "noCloudSync": "Tutti i dati sono memorizzati solo localmente sul tuo dispositivo",
     "freeTextCities": "I nomi delle liste di traguardi sono testo libero — i duplicati sono liste separate",
     "noAutoBackup": "Nessun backup automatico - ricordati di esportare i dati regolarmente"

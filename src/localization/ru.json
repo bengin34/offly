@@ -87,10 +87,10 @@
     "exportFormatsTitle": "Выберите формат",
     "exportFormatsDescription": "JSON идеально подходит для бэкапов и повторного импорта. XLS легко открыть в Excel или Google Sheets.",
     "importSection": "Импорт",
-    "importTitle": "Импорт данных",
+    "importTitle": "Восстановить из резервной копии",
     "importDescription": "Загрузите сохраненные главы и воспоминания из JSON-файла.",
-    "importButton": "Импортировать JSON",
-    "importButtonImporting": "Импорт...",
+    "importButton": "Выбрать файл",
+    "importButtonImporting": "Восстановление...",
     "dataSection": "Данные",
     "dataTitle": "Экспорт и импорт",
     "dataDescription": "Сделайте бэкап или перенесите воспоминания через экспорт и импорт.",
@@ -144,7 +144,7 @@
     "lastBackup": "Последний бэкап: {date}",
     "noBackupYet": "Нет бэкапа. Рекомендуем делать их регулярно.",
     "createBackup": "Создать бэкап",
-    "moreExportImportOptions": "Дополнительные параметры экспорта/импорта",
+    "restoreFromBackup": "Восстановить из резервной копии",
     "chooseColorTheme": "Выбрать цветовую тему",
     "palette": {
       "blush": {
@@ -821,7 +821,6 @@
   },
   "limitations": {
     "title": "Важно знать",
-    "photosNotBundled": "Фотографии не входят в экспорт — только ссылки на локальные файлы",
     "noCloudSync": "Данные хранятся только на устройстве",
     "freeTextCities": "Имена списков вех вводятся вручную — дубликаты считаются разными списками",
     "noAutoBackup": "Автоматического бэкапа нет — не забывайте экспортировать"

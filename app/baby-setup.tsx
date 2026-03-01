@@ -187,9 +187,18 @@ export default function BabySetupScreen() {
     return (
       <View style={styles.container}>
         <Background />
-        <View style={[styles.content, { paddingTop: insets.top + spacing.xxl }]}>
-          <Text style={styles.title}>{t('babySetup.welcomeTitle')}</Text>
-          <Text style={styles.subtitle}>{t('babySetup.welcomeSubtitle')}</Text>
+        <View style={[styles.content, { paddingTop: insets.top + spacing.lg }]}>
+          {isAddingNew && (
+            <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+              <Ionicons name="arrow-back" size={22} color={theme.textSecondary} />
+            </TouchableOpacity>
+          )}
+          <Text style={[styles.title, isAddingNew && { marginTop: spacing.md }]}>
+            {isAddingNew ? 'Add New Baby' : t('babySetup.welcomeTitle')}
+          </Text>
+          <Text style={styles.subtitle}>
+            {isAddingNew ? 'Choose how you want to set up this profile.' : t('babySetup.welcomeSubtitle')}
+          </Text>
 
           <View style={styles.modeCards}>
             <TouchableOpacity
@@ -331,12 +340,14 @@ export default function BabySetupScreen() {
           </TouchableOpacity>
 
           <Text style={styles.title}>
-            {mode === 'born' ? t('babySetup.detailsBornTitle') : t('babySetup.detailsPregnantTitle')}
+            {mode === 'born'
+              ? (isAddingNew ? "Baby's details" : t('babySetup.detailsBornTitle'))
+              : (isAddingNew ? "Pregnancy details" : t('babySetup.detailsPregnantTitle'))}
           </Text>
           <Text style={styles.subtitle}>
             {mode === 'born'
-              ? t('babySetup.detailsBornSubtitle')
-              : t('babySetup.detailsPregnantSubtitle')}
+              ? (isAddingNew ? "Enter a name and birth date for this baby." : t('babySetup.detailsBornSubtitle'))
+              : (isAddingNew ? "Enter the estimated due date for this pregnancy." : t('babySetup.detailsPregnantSubtitle'))}
           </Text>
 
           <View style={styles.formSection}>

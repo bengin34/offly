@@ -87,10 +87,10 @@
     "exportFormatsTitle": "형식 선택",
     "exportFormatsDescription": "JSON은 백업 및 다시 가져오기에 이상적입니다. XLS는 Excel이나 Google Sheets에서 쉽게 열 수 있습니다.",
     "importSection": "가져오기",
-    "importTitle": "데이터 가져오기",
+    "importTitle": "백업에서 복원",
     "importDescription": "저장한 챕터와 추억을 JSON 파일에서 가져오세요.",
-    "importButton": "JSON 가져오기",
-    "importButtonImporting": "가져오는 중...",
+    "importButton": "파일 선택",
+    "importButtonImporting": "복원 중...",
     "dataSection": "데이터",
     "dataTitle": "내보내기 및 가져오기",
     "dataDescription": "추억을 내보내기/가져오기 기능으로 백업하거나 이동하세요.",
@@ -144,7 +144,7 @@
     "lastBackup": "마지막 백업: {date}",
     "noBackupYet": "아직 백업이 없습니다. 정기적으로 백업하세요.",
     "createBackup": "백업 생성",
-    "moreExportImportOptions": "추가 내보내기/가져오기 옵션",
+    "restoreFromBackup": "백업에서 복원",
     "chooseColorTheme": "색상 테마 선택",
     "palette": {
       "blush": {
@@ -821,7 +821,6 @@
   },
   "limitations": {
     "title": "알아두면 좋은 정보",
-    "photosNotBundled": "내보내기에는 사진이 포함되지 않으며 로컬 파일에 대한 참조만 포함됩니다",
     "noCloudSync": "모든 데이터는 기기에만 저장됩니다",
     "freeTextCities": "마일스톤 목록 이름은 자유 입력이며, 동일한 이름이라도 별도의 목록으로 처리됩니다",
     "noAutoBackup": "자동 백업은 제공되지 않습니다 — 정기적으로 데이터를 내보내세요"
