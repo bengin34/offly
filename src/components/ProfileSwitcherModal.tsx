@@ -61,12 +61,10 @@ export function ProfileSwitcherModal({ visible, onClose }: ProfileSwitcherModalP
     onClose();
   };
 
-  const handleAddNew = async () => {
-    if (!isPro && profiles.length >= APP_LIMITS.FREE_MAX_PROFILES) {
-      onClose();
-      await presentPaywall();
-      return;
-    }
+  const isAddNewLocked = !isPro && profiles.length >= APP_LIMITS.FREE_MAX_PROFILES;
+
+  const handleAddNew = () => {
+    if (isAddNewLocked) return;
     onClose();
     router.push('/baby-setup?addNew=true');
   };
@@ -81,7 +79,7 @@ export function ProfileSwitcherModal({ visible, onClose }: ProfileSwitcherModalP
       onRequestClose={onClose}
     >
       <Pressable style={styles.overlay} onPress={onClose}>
-        <Pressable style={styles.content} onPress={(e) => e.stopPropagation()}>
+        <View style={styles.content} onStartShouldSetResponder={() => true}>
           <DialogHeader
             title={t('profiles.switchProfile')}
             onClose={onClose}
@@ -138,18 +136,29 @@ export function ProfileSwitcherModal({ visible, onClose }: ProfileSwitcherModalP
                 );
               })}
 
-              <TouchableOpacity style={styles.addButton} onPress={handleAddNew}>
+              <TouchableOpacity
+                style={[styles.addButton, isAddNewLocked && styles.addButtonLocked]}
+                onPress={handleAddNew}
+                activeOpacity={isAddNewLocked ? 1 : 0.7}
+              >
                 <View style={[styles.profileAvatar, { backgroundColor: theme.backgroundSecondary }]}>
-                  <Ionicons name="add" size={22} color={theme.primary} />
+                  <Ionicons name="add" size={22} color={isAddNewLocked ? theme.textMuted : theme.primary} />
                 </View>
-                <Text style={styles.addButtonText}>{t('profiles.addNew')}</Text>
-                {!isPro && profiles.length >= APP_LIMITS.FREE_MAX_PROFILES && (
-                  <Ionicons name="lock-closed" size={14} color={theme.textMuted} />
+                <View style={styles.addButtonContent}>
+                  <Text style={[styles.addButtonText, isAddNewLocked && styles.addButtonTextLocked]}>
+                    {t('profiles.addNew')}
+                  </Text>
+                  {isAddNewLocked && (
+                    <Text style={styles.addButtonProHint}>{t('profiles.addNewProOnly')}</Text>
+                  )}
+                </View>
+                {isAddNewLocked && (
+                  <Ionicons name="lock-closed" size={16} color={theme.textMuted} />
                 )}
               </TouchableOpacity>
             </>
           )}
-        </Pressable>
+        </View>
       </Pressable>
     </Modal>
   );
@@ -239,10 +248,24 @@ const createStyles = (theme: ThemeColors) =>
       borderTopColor: theme.borderLight,
       marginTop: spacing.xs,
     },
-    addButtonText: {
+    addButtonLocked: {
+      opacity: 0.55,
+    },
+    addButtonContent: {
       flex: 1,
+    },
+    addButtonText: {
       fontSize: fontSize.md,
       fontFamily: fonts.ui,
       color: theme.primary,
+    },
+    addButtonTextLocked: {
+      color: theme.textMuted,
+    },
+    addButtonProHint: {
+      fontSize: fontSize.xs,
+      fontFamily: fonts.body,
+      color: theme.textMuted,
+      marginTop: 2,
     },
   });

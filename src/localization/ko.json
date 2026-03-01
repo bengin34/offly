@@ -812,6 +812,7 @@
     "multipleProfiles": "다중 프로필",
     "defaultName": "아기",
     "addNew": "새 아기 추가",
+    "addNewProOnly": "Pro에서 사용 가능",
     "deleteTitle": "프로필 삭제",
     "deleteMessage": "이 프로필과 모든 챕터, 추억, 보관함이 영구적으로 삭제됩니다. 이 작업은 되돌릴 수 없습니다.",
     "deleteConfirm": "프로필 삭제",
@@ -1004,7 +1005,9 @@
     "alertNoVaultTitle": "오류",
     "alertNoVaultMessage": "보관함이 선택되지 않았어요.",
     "alertSaveFailedTitle": "오류",
-    "alertSaveFailedMessage": "편지를 저장하지 못했어요. 다시 시도해 주세요."
+    "alertSaveFailedMessage": "편지를 저장하지 못했어요. 다시 시도해 주세요.",
+    "alertEmptyLetterTitle": "빈 편지",
+    "alertEmptyLetterMessage": "저장하기 전에 내용을 작성해 주세요."
   },
   "pregnancyJournal": {
     "emptyTitle": "나의 임신 일기",

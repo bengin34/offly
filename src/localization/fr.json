@@ -980,6 +980,7 @@
     "multipleProfiles": "Profils multiples",
     "defaultName": "Bébé",
     "addNew": "Ajouter un nouveau bébé",
+    "addNewProOnly": "Disponible avec Pro",
     "deleteTitle": "Supprimer le profil",
     "deleteMessage": "Ce profil et tous ses chapitres, souvenirs et coffres seront supprimés définitivement. Cette action est irréversible.",
     "deleteConfirm": "Supprimer le profil",
@@ -1172,7 +1173,9 @@
     "alertNoVaultTitle": "Erreur",
     "alertNoVaultMessage": "Aucun coffre sélectionné.",
     "alertSaveFailedTitle": "Erreur",
-    "alertSaveFailedMessage": "Impossible d'enregistrer votre lettre. Veuillez réessayer."
+    "alertSaveFailedMessage": "Impossible d'enregistrer votre lettre. Veuillez réessayer.",
+    "alertEmptyLetterTitle": "Lettre vide",
+    "alertEmptyLetterMessage": "Écris quelque chose avant d'enregistrer."
   },
   "pregnancyJournal": {
     "emptyTitle": "Votre journal de grossesse",

@@ -812,6 +812,7 @@
     "multipleProfiles": "Perfis múltiplos",
     "defaultName": "Bebê",
     "addNew": "Adicionar novo bebê",
+    "addNewProOnly": "Disponível com Pro",
     "deleteTitle": "Excluir perfil",
     "deleteMessage": "Isso excluirá permanentemente este perfil e todos os seus capítulos, memórias e cofres. Esta ação não pode ser desfeita.",
     "deleteConfirm": "Excluir perfil",
@@ -1004,7 +1005,9 @@
     "alertNoVaultTitle": "Erro",
     "alertNoVaultMessage": "Nenhum cofre selecionado.",
     "alertSaveFailedTitle": "Erro",
-    "alertSaveFailedMessage": "Não foi possível salvar sua carta. Tente novamente."
+    "alertSaveFailedMessage": "Não foi possível salvar sua carta. Tente novamente.",
+    "alertEmptyLetterTitle": "Carta vazia",
+    "alertEmptyLetterMessage": "Escreva algo antes de salvar."
   },
   "pregnancyJournal": {
     "emptyTitle": "Seu diário da gravidez",

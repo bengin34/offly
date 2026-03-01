@@ -980,6 +980,7 @@
     "multipleProfiles": "Profili multipli",
     "defaultName": "Bambino",
     "addNew": "Aggiungi un nuovo bambino",
+    "addNewProOnly": "Disponibile con Pro",
     "deleteTitle": "Elimina profilo",
     "deleteMessage": "Questo eliminerà definitivamente questo profilo e tutti i suoi capitoli, ricordi e caveau. Questa azione non può essere annullata.",
     "deleteConfirm": "Elimina profilo",
@@ -1172,7 +1173,9 @@
     "alertNoVaultTitle": "Errore",
     "alertNoVaultMessage": "Nessuno scrigno selezionato.",
     "alertSaveFailedTitle": "Errore",
-    "alertSaveFailedMessage": "Impossibile salvare la lettera. Riprova."
+    "alertSaveFailedMessage": "Impossibile salvare la lettera. Riprova.",
+    "alertEmptyLetterTitle": "Lettera vuota",
+    "alertEmptyLetterMessage": "Scrivi qualcosa prima di salvare."
   },
   "pregnancyJournal": {
     "emptyTitle": "Il tuo diario della gravidanza",

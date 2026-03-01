@@ -980,6 +980,7 @@
     "multipleProfiles": "Mehrere Profile",
     "defaultName": "Baby",
     "addNew": "Neues Baby hinzufügen",
+    "addNewProOnly": "Mit Pro verfügbar",
     "deleteTitle": "Profil löschen",
     "deleteMessage": "Dieses Profil und alle zugehörigen Kapitel, Erinnerungen und Tresore werden dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.",
     "deleteConfirm": "Profil löschen",
@@ -1172,7 +1173,9 @@
     "alertNoVaultTitle": "Fehler",
     "alertNoVaultMessage": "Kein Tresor ausgewählt.",
     "alertSaveFailedTitle": "Fehler",
-    "alertSaveFailedMessage": "Der Brief konnte nicht gespeichert werden. Bitte versuche es erneut."
+    "alertSaveFailedMessage": "Der Brief konnte nicht gespeichert werden. Bitte versuche es erneut.",
+    "alertEmptyLetterTitle": "Leerer Brief",
+    "alertEmptyLetterMessage": "Schreibe etwas, bevor du speicherst."
   },
   "pregnancyJournal": {
     "emptyTitle": "Dein Schwangerschaftstagebuch",

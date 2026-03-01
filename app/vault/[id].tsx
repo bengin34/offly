@@ -158,25 +158,33 @@ export default function VaultDetailScreen() {
   );
 
   // When unlocked, show full content
-  const renderUnlockedEntry = ({ item }: { item: MemoryWithRelations }) => (
-    <TouchableOpacity
-      style={styles.entryCard}
-      onPress={() => router.push(`/memory/${item.id}`)}
-      activeOpacity={0.8}
-    >
-      <View style={styles.entryDateBadge}>
-        <Text style={styles.entryDateText}>{formatDate(item.date)}</Text>
-      </View>
-      <Text style={styles.entryTitle} numberOfLines={1}>
-        {item.title}
-      </Text>
-      {item.description && (
-        <Text style={styles.entryDescription} numberOfLines={3}>
-          {item.description}
+  const renderUnlockedEntry = ({ item }: { item: MemoryWithRelations }) => {
+    // Letters auto-generate title from body, so prefer showing description directly
+    const displayTitle = item.title;
+    const displayPreview = item.description && item.description !== item.title
+      ? item.description
+      : undefined;
+
+    return (
+      <TouchableOpacity
+        style={styles.entryCard}
+        onPress={() => router.push(`/memory/${item.id}`)}
+        activeOpacity={0.8}
+      >
+        <View style={styles.entryDateBadge}>
+          <Text style={styles.entryDateText}>{formatDate(item.date)}</Text>
+        </View>
+        <Text style={styles.entryTitle} numberOfLines={2}>
+          {displayTitle}
         </Text>
-      )}
-    </TouchableOpacity>
-  );
+        {displayPreview && (
+          <Text style={styles.entryDescription} numberOfLines={3}>
+            {displayPreview}
+          </Text>
+        )}
+      </TouchableOpacity>
+    );
+  };
 
   const renderEmpty = () => {
     if (isLocked) {

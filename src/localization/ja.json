@@ -812,6 +812,7 @@
     "multipleProfiles": "複数プロフィール",
     "defaultName": "赤ちゃん",
     "addNew": "新しい赤ちゃんを追加",
+    "addNewProOnly": "Proで利用可能",
     "deleteTitle": "プロフィールを削除",
     "deleteMessage": "このプロフィールと、そのすべてのチャプター、思い出、保管庫が完全に削除されます。この操作は元に戻せません。",
     "deleteConfirm": "プロフィールを削除",
@@ -1004,7 +1005,9 @@
     "alertNoVaultTitle": "エラー",
     "alertNoVaultMessage": "保管庫が選択されていません。",
     "alertSaveFailedTitle": "エラー",
-    "alertSaveFailedMessage": "手紙を保存できませんでした。もう一度お試しください。"
+    "alertSaveFailedMessage": "手紙を保存できませんでした。もう一度お試しください。",
+    "alertEmptyLetterTitle": "空の手紙",
+    "alertEmptyLetterMessage": "保存する前に内容を入力してください。"
   },
   "pregnancyJournal": {
     "emptyTitle": "あなたの妊娠日記",

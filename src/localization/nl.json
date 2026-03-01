@@ -812,6 +812,7 @@
     "multipleProfiles": "Meerdere profielen",
     "defaultName": "Baby",
     "addNew": "Nieuwe baby toevoegen",
+    "addNewProOnly": "Beschikbaar met Pro",
     "deleteTitle": "Profiel verwijderen",
     "deleteMessage": "Dit profiel en alle hoofdstukken, herinneringen en kluizen worden permanent verwijderd. Dit kan niet ongedaan worden gemaakt.",
     "deleteConfirm": "Profiel verwijderen",
@@ -1004,7 +1005,9 @@
     "alertNoVaultTitle": "Fout",
     "alertNoVaultMessage": "Geen kluis geselecteerd.",
     "alertSaveFailedTitle": "Fout",
-    "alertSaveFailedMessage": "Je brief kon niet worden opgeslagen. Probeer het opnieuw."
+    "alertSaveFailedMessage": "Je brief kon niet worden opgeslagen. Probeer het opnieuw.",
+    "alertEmptyLetterTitle": "Lege brief",
+    "alertEmptyLetterMessage": "Schrijf iets voordat je opslaat."
   },
   "pregnancyJournal": {
     "emptyTitle": "Jouw zwangerschapsdagboek",

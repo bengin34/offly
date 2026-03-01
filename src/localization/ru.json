@@ -812,6 +812,7 @@
     "multipleProfiles": "Несколько профилей",
     "defaultName": "Малыш",
     "addNew": "Добавить малыша",
+    "addNewProOnly": "Доступно с Pro",
     "deleteTitle": "Удалить профиль",
     "deleteMessage": "Это навсегда удалит этот профиль и все его главы, воспоминания и хранилища. Это действие нельзя отменить.",
     "deleteConfirm": "Удалить профиль",
@@ -1004,7 +1005,9 @@
     "alertNoVaultTitle": "Ошибка",
     "alertNoVaultMessage": "Хранилище не выбрано.",
     "alertSaveFailedTitle": "Ошибка",
-    "alertSaveFailedMessage": "Не удалось сохранить письмо. Попробуйте еще раз."
+    "alertSaveFailedMessage": "Не удалось сохранить письмо. Попробуйте еще раз.",
+    "alertEmptyLetterTitle": "Пустое письмо",
+    "alertEmptyLetterMessage": "Напишите что-нибудь перед сохранением."
   },
   "pregnancyJournal": {
     "emptyTitle": "Ваш дневник беременности",

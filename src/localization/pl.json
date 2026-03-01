@@ -812,6 +812,7 @@
     "multipleProfiles": "Wiele profili",
     "defaultName": "Dziecko",
     "addNew": "Dodaj nowe dziecko",
+    "addNewProOnly": "Dostępne w Pro",
     "deleteTitle": "Usuń profil",
     "deleteMessage": "To trwale usunie ten profil oraz wszystkie jego rozdziały, wspomnienia i sejfy. Tej operacji nie można cofnąć.",
     "deleteConfirm": "Usuń profil",
@@ -1004,7 +1005,9 @@
     "alertNoVaultTitle": "Błąd",
     "alertNoVaultMessage": "Nie wybrano skarbca.",
     "alertSaveFailedTitle": "Błąd",
-    "alertSaveFailedMessage": "Nie udało się zapisać listu. Spróbuj ponownie."
+    "alertSaveFailedMessage": "Nie udało się zapisać listu. Spróbuj ponownie.",
+    "alertEmptyLetterTitle": "Pusty list",
+    "alertEmptyLetterMessage": "Napisz coś przed zapisaniem."
   },
   "pregnancyJournal": {
     "emptyTitle": "Twój dziennik ciąży",

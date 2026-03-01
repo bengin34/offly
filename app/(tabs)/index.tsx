@@ -261,8 +261,13 @@ export default function HomeScreen() {
       dynamicTitle = `${t('home.weekLabel', { week: currentWeek })} · ${dynamicTitle}`;
     }
 
+    const titleText = dynamicTitle || t('tabs.chapters');
     navigation.setOptions({
-      headerTitle: dynamicTitle || t('tabs.chapters'),
+      headerTitle: () => (
+        <Text style={styles.headerTitleText} numberOfLines={1} ellipsizeMode="tail">
+          {titleText}
+        </Text>
+      ),
       headerRight: canSwitchProfile
         ? () => (
             <TouchableOpacity
@@ -1366,11 +1371,19 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       elevation: 3,
     },
 
+    // Header title
+    headerTitleText: {
+      fontFamily: fonts.display,
+      fontSize: 18,
+      color: theme.text,
+    },
+
     // Header profile switcher
     headerProfileButton: {
       flexDirection: 'row',
       alignItems: 'center',
       gap: 2,
+      marginRight: spacing.sm,
     },
     headerAvatar: {
       width: 28,

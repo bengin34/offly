@@ -980,6 +980,7 @@
     "multipleProfiles": "Çoklu Profiller",
     "defaultName": "Bebek",
     "addNew": "Yeni bebek ekle",
+    "addNewProOnly": "Pro ile kullanılabilir",
     "deleteTitle": "Profili Sil",
     "deleteMessage": "Bu profil ve ona ait tüm bölümler, anılar ve kasalar kalıcı olarak silinecek. Bu işlem geri alınamaz.",
     "deleteConfirm": "Profili Sil",
@@ -1172,7 +1173,9 @@
     "alertNoVaultTitle": "Hata",
     "alertNoVaultMessage": "Kasa seçilmedi.",
     "alertSaveFailedTitle": "Hata",
-    "alertSaveFailedMessage": "Mektup kaydedilemedi. Lütfen tekrar deneyin."
+    "alertSaveFailedMessage": "Mektup kaydedilemedi. Lütfen tekrar deneyin.",
+    "alertEmptyLetterTitle": "Boş mektup",
+    "alertEmptyLetterMessage": "Kaydetmeden önce bir şeyler yaz."
   },
   "pregnancyJournal": {
     "emptyTitle": "Hamilelik günlüğün",
