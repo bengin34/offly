@@ -149,6 +149,12 @@ function AppContent() {
           }}
         />
         <Stack.Screen
+          name="credits"
+          options={{
+            title: t('settings.creditsTitle'),
+          }}
+        />
+        <Stack.Screen
           name="badges"
           options={{
             title: t('badges.allBadges'),

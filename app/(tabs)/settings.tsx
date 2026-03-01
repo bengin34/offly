@@ -579,6 +579,10 @@ export default function SettingsScreen() {
     }
   };
 
+  const handleOpenCredits = () => {
+    router.push('/credits');
+  };
+
   const styles = createStyles(theme);
 
   return (
@@ -967,6 +971,19 @@ export default function SettingsScreen() {
               <View style={styles.settingsRowLeft}>
                 <Ionicons name="mail-outline" size={22} color={theme.textSecondary} />
                 <Text style={styles.settingsRowLabel}>{t('settings.supportContact')}</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
+            </TouchableOpacity>
+            <View style={styles.settingsDivider} />
+            <TouchableOpacity
+              style={styles.settingsRow}
+              onPress={handleOpenCredits}
+              accessibilityRole="button"
+              accessibilityLabel={t('settings.supportCredits')}
+            >
+              <View style={styles.settingsRowLeft}>
+                <Ionicons name="document-text-outline" size={22} color={theme.textSecondary} />
+                <Text style={styles.settingsRowLabel}>{t('settings.supportCredits')}</Text>
               </View>
               <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
             </TouchableOpacity>
