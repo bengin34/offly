@@ -317,7 +317,8 @@
     "moreTags": "+{count} más",
     "locationLabel": "Lugar",
     "locationPlaceholder": "Agregar lugar (opcional)",
-    "locationHint": "Agrega un lugar si ayuda al recuerdo"
+    "locationHint": "Agrega un lugar si ayuda al recuerdo",
+    "dateRangeHint": "Limitado a las fechas de este capítulo"
   },
   "memoryDetail": {
     "descriptionTitle": "Descripción",
@@ -826,7 +827,22 @@
       "viewPoint": "Mirador",
       "historic": "Histórico",
       "art": "Arte",
-      "transport": "Transporte"
+      "transport": "Transporte",
+      "prenatal": "Consulta prenatal",
+      "ultrasound": "Ecografía",
+      "firstKick": "Primera patadita",
+      "babyMovement": "Movimiento del bebé",
+      "heartbeat": "Latido",
+      "babyShower": "Baby shower",
+      "morningMsickness": "Náuseas matutinas",
+      "cravings": "Antojos",
+      "nesting": "Preparar el nido",
+      "genderReveal": "Revelación de género",
+      "announcement": "Anuncio",
+      "nursery": "Preparar la habitación",
+      "trimester": "Trimestre",
+      "birthPrep": "Preparación para el parto",
+      "symptoms": "Síntomas"
     }
   },
   "dialogs": {
@@ -836,7 +852,8 @@
       "addCustom": "Agregar etiqueta personalizada",
       "customPlaceholder": "Escribe un nombre de etiqueta...",
       "quickTags": "Etiquetas rápidas",
-      "yourTags": "Tus etiquetas"
+      "yourTags": "Tus etiquetas",
+      "pregnancyTags": "Embarazo"
     },
     "locationPicker": {
       "label": "Ciudad",
@@ -954,7 +971,9 @@
     "maxPhotos": "Máximo 3 fotos",
     "maxPhotosDesc": "Puedes añadir hasta 3 fotos",
     "required": "Obligatorio",
-    "deleteProfileFailed": "No se pudo eliminar el perfil"
+    "deleteProfileFailed": "No se pudo eliminar el perfil",
+    "dateBelowChapterStart": "La fecha es anterior al inicio de este capítulo. Elige una fecha dentro del capítulo.",
+    "dateAboveChapterEnd": "La fecha es posterior al final de este capítulo. Elige una fecha dentro del capítulo."
   },
   "profiles": {
     "switchProfile": "Cambiar bebé",

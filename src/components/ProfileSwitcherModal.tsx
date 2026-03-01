@@ -28,7 +28,7 @@ interface ProfileSwitcherModalProps {
 export function ProfileSwitcherModal({ visible, onClose }: ProfileSwitcherModalProps) {
   const theme = useTheme();
   const router = useRouter();
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const { isPro, presentPaywall } = useSubscription();
   const { activeBaby, setActiveBaby } = useProfileStore();
   const [profiles, setProfiles] = useState<BabyProfile[]>([]);
@@ -117,7 +117,7 @@ export function ProfileSwitcherModal({ visible, onClose }: ProfileSwitcherModalP
                         <Image source={{ uri: profile.avatar }} style={styles.profileAvatarPhoto} />
                       ) : profile.name ? (
                         <Text style={[styles.profileAvatarInitial, { color: isActive ? theme.white : theme.primary }]}>
-                          {profile.name.charAt(0).toUpperCase()}
+                          {profile.name.charAt(0).toLocaleUpperCase(locale)}
                         </Text>
                       ) : (
                         <Ionicons name="footsteps" size={18} color={isActive ? theme.white : theme.primary} />

@@ -317,7 +317,8 @@
     "moreTags": "+{count} a mais",
     "locationLabel": "Local",
     "locationPlaceholder": "Adicione um local (opcional)",
-    "locationHint": "Adicione um local se ajudar a lembrar"
+    "locationHint": "Adicione um local se ajudar a lembrar",
+    "dateRangeHint": "Limitado às datas deste capítulo"
   },
   "memoryDetail": {
     "descriptionTitle": "Descrição",
@@ -658,7 +659,22 @@
       "viewPoint": "Mirante",
       "historic": "Histórico",
       "art": "Arte",
-      "transport": "Transporte"
+      "transport": "Transporte",
+      "prenatal": "Consulta pré-natal",
+      "ultrasound": "Ultrassom",
+      "firstKick": "Primeiro chute",
+      "babyMovement": "Movimentos do bebê",
+      "heartbeat": "Batimentos cardíacos",
+      "babyShower": "Chá de bebê",
+      "morningMsickness": "Enjoo matinal",
+      "cravings": "Desejos",
+      "nesting": "Preparação do ninho",
+      "genderReveal": "Chá revelação",
+      "announcement": "Anúncio",
+      "nursery": "Preparação do quarto",
+      "trimester": "Trimestre",
+      "birthPrep": "Preparação para o parto",
+      "symptoms": "Sintomas"
     }
   },
   "dialogs": {
@@ -668,7 +684,8 @@
       "addCustom": "Adicionar etiqueta personalizada",
       "customPlaceholder": "Digite o nome da etiqueta...",
       "quickTags": "Etiquetas rápidas",
-      "yourTags": "Suas etiquetas"
+      "yourTags": "Suas etiquetas",
+      "pregnancyTags": "Gravidez"
     },
     "locationPicker": {
       "label": "Cidade",
@@ -786,7 +803,9 @@
     "maxPhotos": "Máximo de 3 fotos",
     "maxPhotosDesc": "Você pode adicionar até 3 fotos",
     "required": "Obrigatório",
-    "deleteProfileFailed": "Falha ao excluir o perfil"
+    "deleteProfileFailed": "Falha ao excluir o perfil",
+    "dateBelowChapterStart": "A data é anterior ao início deste capítulo. Escolha uma data dentro do capítulo.",
+    "dateAboveChapterEnd": "A data é posterior ao fim deste capítulo. Escolha uma data dentro do capítulo."
   },
   "profiles": {
     "switchProfile": "Trocar bebê",

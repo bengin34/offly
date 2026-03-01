@@ -317,7 +317,8 @@
     "moreTags": "+{count} więcej",
     "locationLabel": "Lokalizacja",
     "locationPlaceholder": "Dodaj miejsce (opcjonalnie)",
-    "locationHint": "Dodaj lokalizację, jeśli pomoże przypomnieć wspomnienie"
+    "locationHint": "Dodaj lokalizację, jeśli pomoże przypomnieć wspomnienie",
+    "dateRangeHint": "Ograniczone do dat tego rozdziału"
   },
   "memoryDetail": {
     "descriptionTitle": "Opis",
@@ -658,7 +659,22 @@
       "viewPoint": "Punkt widokowy",
       "historic": "Historyczne",
       "art": "Sztuka",
-      "transport": "Transport"
+      "transport": "Transport",
+      "prenatal": "Wizyta prenatalna",
+      "ultrasound": "USG",
+      "firstKick": "Pierwsze kopnięcie",
+      "babyMovement": "Ruchy dziecka",
+      "heartbeat": "Bicie serca",
+      "babyShower": "Baby shower",
+      "morningMsickness": "Poranne mdłości",
+      "cravings": "Zachcianki",
+      "nesting": "Wicie gniazda",
+      "genderReveal": "Ujawnienie płci",
+      "announcement": "Ogłoszenie",
+      "nursery": "Przygotowanie pokoju",
+      "trimester": "Trymestr",
+      "birthPrep": "Przygotowanie do porodu",
+      "symptoms": "Objawy"
     }
   },
   "dialogs": {
@@ -668,7 +684,8 @@
       "addCustom": "Dodaj własny tag",
       "customPlaceholder": "Wpisz nazwę tagu...",
       "quickTags": "Szybkie tagi",
-      "yourTags": "Twoje tagi"
+      "yourTags": "Twoje tagi",
+      "pregnancyTags": "Ciąża"
     },
     "locationPicker": {
       "label": "Miasto",
@@ -786,7 +803,9 @@
     "maxPhotos": "Maksymalnie 3 zdjęcia",
     "maxPhotosDesc": "Możesz dodać maksymalnie 3 zdjęcia",
     "required": "Wymagane",
-    "deleteProfileFailed": "Nie udało się usunąć profilu"
+    "deleteProfileFailed": "Nie udało się usunąć profilu",
+    "dateBelowChapterStart": "Data jest wcześniejsza niż początek tego rozdziału. Wybierz datę w obrębie rozdziału.",
+    "dateAboveChapterEnd": "Data jest późniejsza niż koniec tego rozdziału. Wybierz datę w obrębie rozdziału."
   },
   "profiles": {
     "switchProfile": "Przełącz dziecko",

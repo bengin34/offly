@@ -662,7 +662,7 @@ export default function SettingsScreen() {
                     <View style={[styles.babyAvatarPlaceholder, { backgroundColor: theme.primary + '20' }]}>
                       {profile.name ? (
                         <Text style={[styles.babyAvatarInitial, { color: theme.primary }]}>
-                          {profile.name.charAt(0).toUpperCase()}
+                          {profile.name.charAt(0).toLocaleUpperCase(locale)}
                         </Text>
                       ) : (
                         <Ionicons name="camera-outline" size={22} color={theme.primary} />
@@ -990,33 +990,35 @@ export default function SettingsScreen() {
           </View>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>
-            {t('settings.onboardingSection').toLocaleUpperCase(locale)}
-          </Text>
-          <View style={styles.card}>
-            <View style={styles.cardHeader}>
-              <Ionicons name="sparkles-outline" size={24} color={theme.primary} />
-              <View style={styles.cardHeaderText}>
-                <Text style={styles.cardTitle}>{t('settings.onboardingTitle')}</Text>
-                <Text style={styles.cardDescription}>
-                  {t('settings.onboardingDescription')}
-                </Text>
+        {__DEV__ && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>
+              {t('settings.onboardingSection').toLocaleUpperCase(locale)}
+            </Text>
+            <View style={styles.card}>
+              <View style={styles.cardHeader}>
+                <Ionicons name="sparkles-outline" size={24} color={theme.primary} />
+                <View style={styles.cardHeaderText}>
+                  <Text style={styles.cardTitle}>{t('settings.onboardingTitle')}</Text>
+                  <Text style={styles.cardDescription}>
+                    {t('settings.onboardingDescription')}
+                  </Text>
+                </View>
               </View>
+              <TouchableOpacity
+                style={styles.onboardingButton}
+                onPress={handleShowOnboarding}
+                accessibilityRole="button"
+                accessibilityLabel={t('settings.onboardingButton')}
+              >
+                <Ionicons name="play-outline" size={20} color={theme.white} />
+                <Text style={styles.onboardingButtonText}>
+                  {t('settings.onboardingButton')}
+                </Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              style={styles.onboardingButton}
-              onPress={handleShowOnboarding}
-              accessibilityRole="button"
-              accessibilityLabel={t('settings.onboardingButton')}
-            >
-              <Ionicons name="play-outline" size={20} color={theme.white} />
-              <Text style={styles.onboardingButtonText}>
-                {t('settings.onboardingButton')}
-              </Text>
-            </TouchableOpacity>
           </View>
-        </View>
+        )}
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>

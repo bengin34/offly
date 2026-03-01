@@ -33,6 +33,7 @@ interface MilestoneQuickAddModalProps {
   }) => Promise<void>;
   isLoading?: boolean;
   locale?: string;
+  isPregnancyMode?: boolean;
 }
 
 export function MilestoneQuickAddModal({
@@ -42,6 +43,7 @@ export function MilestoneQuickAddModal({
   onSave,
   isLoading = false,
   locale = 'en-US',
+  isPregnancyMode = false,
 }: MilestoneQuickAddModalProps) {
   const theme = useTheme();
   const { t } = useI18n();
@@ -182,7 +184,7 @@ export function MilestoneQuickAddModal({
                 borderColor: theme.borderLight,
               },
             ]}
-            placeholder={t('placeholders.memoryTitle')}
+            placeholder={`e.g., ${displayMilestoneLabel}`}
             placeholderTextColor={theme.textMuted}
             value={title}
             onChangeText={setTitle}
@@ -366,6 +368,7 @@ export function MilestoneQuickAddModal({
           onClose={() => setShowTagPicker(false)}
           selectedTags={selectedTags}
           onTagsChange={setSelectedTags}
+          isPregnancyMode={isPregnancyMode}
         />
       </View>
     </ModalWrapper>

@@ -317,7 +317,8 @@
     "moreTags": "+{count} more",
     "locationLabel": "Location",
     "locationPlaceholder": "Add a location (optional)",
-    "locationHint": "Add a location if it helps the memory"
+    "locationHint": "Add a location if it helps the memory",
+    "dateRangeHint": "Limited to this chapter's dates"
   },
   "memoryDetail": {
     "descriptionTitle": "Description",
@@ -634,7 +635,22 @@
       "crawling": "Crawling",
       "friends": "Friends",
       "pet": "With Pet",
-      "messy": "Messy"
+      "messy": "Messy",
+      "prenatal": "Prenatal Visit",
+      "ultrasound": "Ultrasound",
+      "firstKick": "First Kick",
+      "babyMovement": "Baby Movement",
+      "heartbeat": "Heartbeat",
+      "babyShower": "Baby Shower",
+      "morningMsickness": "Morning Sickness",
+      "cravings": "Cravings",
+      "nesting": "Nesting",
+      "genderReveal": "Gender Reveal",
+      "announcement": "Announcement",
+      "nursery": "Nursery Prep",
+      "trimester": "Trimester",
+      "birthPrep": "Birth Prep",
+      "symptoms": "Symptoms"
     }
   },
   "dialogs": {
@@ -644,6 +660,7 @@
       "addCustom": "Add Custom Tag",
       "customPlaceholder": "Type a tag name...",
       "quickTags": "Quick Tags",
+      "pregnancyTags": "Pregnancy",
       "yourTags": "Your Tags"
     },
     "locationPicker": {

@@ -317,7 +317,8 @@
     "moreTags": "+{count}개 더",
     "locationLabel": "위치",
     "locationPlaceholder": "장소 추가 (선택 사항)",
-    "locationHint": "추억에 도움이 된다면 위치를 추가하세요"
+    "locationHint": "추억에 도움이 된다면 위치를 추가하세요",
+    "dateRangeHint": "이 챕터의 날짜로만 제한됩니다"
   },
   "memoryDetail": {
     "descriptionTitle": "설명",
@@ -658,7 +659,22 @@
       "viewPoint": "전망대",
       "historic": "역사",
       "art": "예술",
-      "transport": "교통"
+      "transport": "교통",
+      "prenatal": "산전 진료",
+      "ultrasound": "초음파",
+      "firstKick": "첫 태동",
+      "babyMovement": "태동",
+      "heartbeat": "심장 박동",
+      "babyShower": "베이비 샤워",
+      "morningMsickness": "입덧",
+      "cravings": "당김",
+      "nesting": "둥지 준비",
+      "genderReveal": "성별 공개",
+      "announcement": "발표",
+      "nursery": "아기방 준비",
+      "trimester": "임신 분기",
+      "birthPrep": "출산 준비",
+      "symptoms": "증상"
     }
   },
   "dialogs": {
@@ -668,7 +684,8 @@
       "addCustom": "맞춤 태그 추가",
       "customPlaceholder": "태그 이름 입력...",
       "quickTags": "빠른 태그",
-      "yourTags": "내 태그"
+      "yourTags": "내 태그",
+      "pregnancyTags": "임신"
     },
     "locationPicker": {
       "label": "도시",
@@ -786,7 +803,9 @@
     "maxPhotos": "최대 3장의 사진",
     "maxPhotosDesc": "최대 3장까지 사진을 추가할 수 있습니다",
     "required": "필수",
-    "deleteProfileFailed": "프로필 삭제 실패"
+    "deleteProfileFailed": "프로필 삭제 실패",
+    "dateBelowChapterStart": "날짜가 이 챕터의 시작일보다 이전입니다. 챕터 기간 내 날짜를 선택해 주세요.",
+    "dateAboveChapterEnd": "날짜가 이 챕터의 종료일보다 이후입니다. 챕터 기간 내 날짜를 선택해 주세요."
   },
   "profiles": {
     "switchProfile": "아기 전환",

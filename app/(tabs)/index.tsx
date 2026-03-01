@@ -275,7 +275,7 @@ export default function HomeScreen() {
                   <Image source={{ uri: profile.avatar }} style={styles.headerAvatarImage} />
                 ) : profile?.name ? (
                   <Text style={styles.headerAvatarInitial}>
-                    {profile.name.charAt(0).toUpperCase()}
+                    {profile.name.charAt(0).toLocaleUpperCase(locale)}
                   </Text>
                 ) : (
                   <Ionicons name="footsteps" size={12} color={theme.white} />

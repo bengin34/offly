@@ -317,7 +317,8 @@
     "moreTags": "+{count} de plus",
     "locationLabel": "Lieu",
     "locationPlaceholder": "Ajouter un lieu (optionnel)",
-    "locationHint": "Ajoutez un lieu si cela aide le souvenir"
+    "locationHint": "Ajoutez un lieu si cela aide le souvenir",
+    "dateRangeHint": "Limité aux dates de ce chapitre"
   },
   "memoryDetail": {
     "descriptionTitle": "Description",
@@ -826,7 +827,22 @@
       "viewPoint": "Point de vue",
       "historic": "Historique",
       "art": "Art",
-      "transport": "Transports"
+      "transport": "Transports",
+      "prenatal": "Visite prénatale",
+      "ultrasound": "Échographie",
+      "firstKick": "Premier coup",
+      "babyMovement": "Mouvements du bébé",
+      "heartbeat": "Battement de cœur",
+      "babyShower": "Baby shower",
+      "morningMsickness": "Nausées matinales",
+      "cravings": "Envies",
+      "nesting": "Préparation du nid",
+      "genderReveal": "Révélation du sexe",
+      "announcement": "Annonce",
+      "nursery": "Préparation de la chambre",
+      "trimester": "Trimestre",
+      "birthPrep": "Préparation à l'accouchement",
+      "symptoms": "Symptômes"
     }
   },
   "dialogs": {
@@ -836,7 +852,8 @@
       "addCustom": "Ajouter un tag personnalisé",
       "customPlaceholder": "Saisissez un nom de tag...",
       "quickTags": "Tags rapides",
-      "yourTags": "Vos tags"
+      "yourTags": "Vos tags",
+      "pregnancyTags": "Grossesse"
     },
     "locationPicker": {
       "label": "Ville",
@@ -954,7 +971,9 @@
     "maxPhotos": "Maximum 3 photos",
     "maxPhotosDesc": "Vous pouvez ajouter jusqu’à 3 photos",
     "required": "Obligatoire",
-    "deleteProfileFailed": "Impossible de supprimer le profil"
+    "deleteProfileFailed": "Impossible de supprimer le profil",
+    "dateBelowChapterStart": "La date est antérieure au début de ce chapitre. Choisissez une date dans le chapitre.",
+    "dateAboveChapterEnd": "La date est postérieure à la fin de ce chapitre. Choisissez une date dans le chapitre."
   },
   "profiles": {
     "switchProfile": "Changer de bébé",

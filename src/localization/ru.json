@@ -317,7 +317,8 @@
     "moreTags": "+{count} еще",
     "locationLabel": "Место",
     "locationPlaceholder": "Добавьте место (необязательно)",
-    "locationHint": "Добавьте локацию, если это помогает вспомнить событие"
+    "locationHint": "Добавьте локацию, если это помогает вспомнить событие",
+    "dateRangeHint": "Ограничено датами этой главы"
   },
   "memoryDetail": {
     "descriptionTitle": "Описание",
@@ -658,7 +659,22 @@
       "viewPoint": "Смотровая площадка",
       "historic": "Историческое",
       "art": "Искусство",
-      "transport": "Транспорт"
+      "transport": "Транспорт",
+      "prenatal": "Дородовый осмотр",
+      "ultrasound": "УЗИ",
+      "firstKick": "Первый толчок",
+      "babyMovement": "Шевеления малыша",
+      "heartbeat": "Сердцебиение",
+      "babyShower": "Бэби-шауэр",
+      "morningMsickness": "Утренняя тошнота",
+      "cravings": "Прихоти",
+      "nesting": "Подготовка гнездышка",
+      "genderReveal": "Гендер-пати",
+      "announcement": "Объявление",
+      "nursery": "Подготовка детской",
+      "trimester": "Триместр",
+      "birthPrep": "Подготовка к родам",
+      "symptoms": "Симптомы"
     }
   },
   "dialogs": {
@@ -668,7 +684,8 @@
       "addCustom": "Добавить свой тег",
       "customPlaceholder": "Введите название тега...",
       "quickTags": "Быстрые теги",
-      "yourTags": "Ваши теги"
+      "yourTags": "Ваши теги",
+      "pregnancyTags": "Беременность"
     },
     "locationPicker": {
       "label": "Город",
@@ -786,7 +803,9 @@
     "maxPhotos": "Максимум 3 фото",
     "maxPhotosDesc": "Можно добавить не больше 3 фото",
     "required": "Обязательно",
-    "deleteProfileFailed": "Не удалось удалить профиль"
+    "deleteProfileFailed": "Не удалось удалить профиль",
+    "dateBelowChapterStart": "Дата раньше даты начала этой главы. Пожалуйста, выберите дату в пределах главы.",
+    "dateAboveChapterEnd": "Дата позже даты окончания этой главы. Пожалуйста, выберите дату в пределах главы."
   },
   "profiles": {
     "switchProfile": "Сменить малыша",

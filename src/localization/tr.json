@@ -99,9 +99,9 @@
     "supportRate": "Bize 5 yıldız ver",
     "supportShare": "Uygulamayı paylaş",
     "supportContact": "Bizimle iletişime geç",
-    "supportCredits": "Credit",
+    "supportCredits": "Atıflar",
     "supportShareMessage": "Offly - özel bir aile arşivi uygulaması buldum, bir bak: {link}",
-    "creditsTitle": "Credit",
+    "creditsTitle": "Atıflar",
     "creditsDescription": "Uygulama ekranlarında kullanılan görseller için atıflar.",
     "creditsOpenSource": "Kaynak bağlantısını aç",
     "creditsFooterNote": "Bu görseller uygulamadaki örnek/mock içeriklerde kullanılmaktadır.",
@@ -317,7 +317,8 @@
     "moreTags": "+{count} daha",
     "locationLabel": "Konum",
     "locationPlaceholder": "İsteğe bağlı konum ekle",
-    "locationHint": "Anıya yardımcı olacaksa konum ekle"
+    "locationHint": "Anıya yardımcı olacaksa konum ekle",
+    "dateRangeHint": "Bu bölümün tarihleriyle sınırlı"
   },
   "memoryDetail": {
     "descriptionTitle": "Açıklama",
@@ -826,7 +827,22 @@
       "viewPoint": "Seyir Noktası",
       "historic": "Tarihi",
       "art": "Sanat",
-      "transport": "Ulaşım"
+      "transport": "Ulaşım",
+      "prenatal": "Doğum Öncesi Kontrol",
+      "ultrasound": "Ultrason",
+      "firstKick": "İlk Tekme",
+      "babyMovement": "Bebek Hareketi",
+      "heartbeat": "Kalp Atışı",
+      "babyShower": "Baby Shower",
+      "morningMsickness": "Sabah Bulantısı",
+      "cravings": "Aşermeler",
+      "nesting": "Yuva Hazırlığı",
+      "genderReveal": "Cinsiyet Öğrenme",
+      "announcement": "Duyuru",
+      "nursery": "Bebek Odası Hazırlığı",
+      "trimester": "Trimester",
+      "birthPrep": "Doğuma Hazırlık",
+      "symptoms": "Belirtiler"
     }
   },
   "dialogs": {
@@ -836,7 +852,8 @@
       "addCustom": "Özel Etiket Ekle",
       "customPlaceholder": "Etiket adı yaz...",
       "quickTags": "Hızlı Etiketler",
-      "yourTags": "Etiketlerin"
+      "yourTags": "Etiketlerin",
+      "pregnancyTags": "Hamilelik"
     },
     "locationPicker": {
       "label": "Şehir",
@@ -954,7 +971,9 @@
     "maxPhotos": "Maksimum 3 fotoğraf",
     "maxPhotosDesc": "En fazla 3 fotoğraf ekleyebilirsin",
     "required": "Zorunlu",
-    "deleteProfileFailed": "Profil silinemedi"
+    "deleteProfileFailed": "Profil silinemedi",
+    "dateBelowChapterStart": "Tarih bu bölümün başlangıç tarihinden önce. Lütfen bölüm içinde bir tarih seçin.",
+    "dateAboveChapterEnd": "Tarih bu bölümün bitiş tarihinden sonra. Lütfen bölüm içinde bir tarih seçin."
   },
   "profiles": {
     "switchProfile": "Bebeği Değiştir",

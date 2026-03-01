@@ -6,6 +6,25 @@ export type QuickTag = {
   icon: keyof typeof Ionicons.glyphMap;
 };
 
+// Pregnancy-specific quick tags — shown first when user is in pregnancy mode
+export const PREGNANCY_QUICK_TAGS: QuickTag[] = [
+  { key: 'prenatal', label: 'Prenatal Visit', icon: 'medkit' },
+  { key: 'ultrasound', label: 'Ultrasound', icon: 'scan' },
+  { key: 'firstKick', label: 'First Kick', icon: 'hand-right' },
+  { key: 'babyMovement', label: 'Baby Movement', icon: 'pulse' },
+  { key: 'heartbeat', label: 'Heartbeat', icon: 'heart-circle' },
+  { key: 'babyShower', label: 'Baby Shower', icon: 'gift' },
+  { key: 'morningMsickness', label: 'Morning Sickness', icon: 'bandage' },
+  { key: 'cravings', label: 'Cravings', icon: 'fast-food' },
+  { key: 'nesting', label: 'Nesting', icon: 'home' },
+  { key: 'genderReveal', label: 'Gender Reveal', icon: 'help-circle' },
+  { key: 'announcement', label: 'Announcement', icon: 'megaphone' },
+  { key: 'nursery', label: 'Nursery Prep', icon: 'bed' },
+  { key: 'trimester', label: 'Trimester', icon: 'timer' },
+  { key: 'birthPrep', label: 'Birth Prep', icon: 'clipboard' },
+  { key: 'symptoms', label: 'Symptoms', icon: 'thermometer' },
+];
+
 // Predefined quick tags for baby-related memories
 export const QUICK_TAGS: QuickTag[] = [
   { key: 'firstTime', label: 'First Time', icon: 'star' },

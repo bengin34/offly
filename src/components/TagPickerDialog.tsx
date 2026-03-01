@@ -12,7 +12,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { TagRepository } from '../db/repositories';
 import { spacing, fontSize, borderRadius, fonts } from '../constants';
-import { QUICK_TAGS, type QuickTag } from '../constants/quickTags';
+import { QUICK_TAGS, PREGNANCY_QUICK_TAGS, type QuickTag } from '../constants/quickTags';
 import { useI18n, useTheme } from '../hooks';
 import type { Tag } from '../types';
 
@@ -21,6 +21,7 @@ type TagPickerDialogProps = {
   onClose: () => void;
   selectedTags: Tag[];
   onTagsChange: (tags: Tag[]) => void;
+  isPregnancyMode?: boolean;
 };
 
 export function TagPickerDialog({
@@ -28,6 +29,7 @@ export function TagPickerDialog({
   onClose,
   selectedTags,
   onTagsChange,
+  isPregnancyMode = false,
 }: TagPickerDialogProps) {
   const theme = useTheme();
   const { t, locale } = useI18n();
@@ -102,7 +104,9 @@ export function TagPickerDialog({
   const isQuickTagSelected = (tagLabel: string) =>
     selectedTags.some((t) => t.name.toLowerCase() === tagLabel.toLowerCase());
 
-  const quickTagLabels = QUICK_TAGS.map((tag) => getQuickTagLabel(tag).toLowerCase());
+  const quickTagLabels = [...QUICK_TAGS, ...PREGNANCY_QUICK_TAGS].map((tag) =>
+    getQuickTagLabel(tag).toLowerCase()
+  );
 
   // Filter existing tags that are not quick tags and not already selected
   const otherExistingTags = existingTags.filter(
@@ -193,6 +197,41 @@ export function TagPickerDialog({
               </View>
             )}
           </View>
+
+          {/* Pregnancy Tags — shown first in pregnancy mode */}
+          {isPregnancyMode && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>
+                {t('dialogs.tagPicker.pregnancyTags').toLocaleUpperCase(locale)}
+              </Text>
+              <View style={styles.quickTagsGrid}>
+                {PREGNANCY_QUICK_TAGS.map((quickTag) => {
+                  const label = getQuickTagLabel(quickTag);
+                  const isSelected = isQuickTagSelected(label);
+                  return (
+                    <TouchableOpacity
+                      key={quickTag.key}
+                      style={[styles.quickTagChip, isSelected && styles.quickTagChipSelected]}
+                      onPress={() => handleAddQuickTag(label)}
+                      disabled={isSelected}
+                    >
+                      <Ionicons
+                        name={quickTag.icon}
+                        size={16}
+                        color={isSelected ? theme.white : theme.accent}
+                      />
+                      <Text style={[styles.quickTagText, isSelected && styles.quickTagTextSelected]}>
+                        {label}
+                      </Text>
+                      {!isSelected && (
+                        <Ionicons name="add" size={16} color={theme.textMuted} />
+                      )}
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </View>
+          )}
 
           {/* Quick Tags */}
           <View style={styles.section}>

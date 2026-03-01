@@ -630,6 +630,7 @@ export default function ChapterDetailScreen() {
         onClose={() => { setQuickAddVisible(false); setQuickAddMilestone(null); }}
         onSave={handleMilestoneQuickSave}
         locale={locale}
+        isPregnancyMode={activeBaby?.mode === 'pregnant'}
       />
       <Modal
         visible={actionMenuVisible}

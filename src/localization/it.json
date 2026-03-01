@@ -317,7 +317,8 @@
     "moreTags": "+{count} in più",
     "locationLabel": "Luogo",
     "locationPlaceholder": "Aggiungi un luogo (opzionale)",
-    "locationHint": "Aggiungi un luogo se aiuta il ricordo"
+    "locationHint": "Aggiungi un luogo se aiuta il ricordo",
+    "dateRangeHint": "Limitato alle date di questo capitolo"
   },
   "memoryDetail": {
     "descriptionTitle": "Descrizione",
@@ -826,7 +827,22 @@
       "viewPoint": "Punto panoramico",
       "historic": "Storico",
       "art": "Arte",
-      "transport": "Trasporti"
+      "transport": "Trasporti",
+      "prenatal": "Visita prenatale",
+      "ultrasound": "Ecografia",
+      "firstKick": "Primo calcio",
+      "babyMovement": "Movimenti del bambino",
+      "heartbeat": "Battito cardiaco",
+      "babyShower": "Baby shower",
+      "morningMsickness": "Nausea mattutina",
+      "cravings": "Voglie",
+      "nesting": "Preparazione del nido",
+      "genderReveal": "Rivelazione del sesso",
+      "announcement": "Annuncio",
+      "nursery": "Preparazione cameretta",
+      "trimester": "Trimestre",
+      "birthPrep": "Preparazione al parto",
+      "symptoms": "Sintomi"
     }
   },
   "dialogs": {
@@ -836,7 +852,8 @@
       "addCustom": "Aggiungi tag personalizzato",
       "customPlaceholder": "Digita un nome tag...",
       "quickTags": "Tag rapidi",
-      "yourTags": "I tuoi tag"
+      "yourTags": "I tuoi tag",
+      "pregnancyTags": "Gravidanza"
     },
     "locationPicker": {
       "label": "Città",
@@ -954,7 +971,9 @@
     "maxPhotos": "Massimo 3 foto",
     "maxPhotosDesc": "Puoi aggiungere fino a 3 foto",
     "required": "Obbligatorio",
-    "deleteProfileFailed": "Impossibile eliminare il profilo"
+    "deleteProfileFailed": "Impossibile eliminare il profilo",
+    "dateBelowChapterStart": "La data è precedente all'inizio di questo capitolo. Scegli una data all'interno del capitolo.",
+    "dateAboveChapterEnd": "La data è successiva alla fine di questo capitolo. Scegli una data all'interno del capitolo."
   },
   "profiles": {
     "switchProfile": "Cambia bambino",

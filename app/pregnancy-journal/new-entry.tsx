@@ -251,6 +251,7 @@ export default function NewPregnancyJournalEntryScreen() {
             onClose={() => setShowTagPicker(false)}
             selectedTags={selectedTags}
             onTagsChange={setSelectedTags}
+            isPregnancyMode
           />
         </View>
       </ModalWrapper>

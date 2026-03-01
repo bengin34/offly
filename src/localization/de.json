@@ -317,7 +317,8 @@
     "moreTags": "+{count} mehr",
     "locationLabel": "Ort",
     "locationPlaceholder": "Optionalen Ort hinzufügen",
-    "locationHint": "Füge einen Ort hinzu, wenn er hilft"
+    "locationHint": "Füge einen Ort hinzu, wenn er hilft",
+    "dateRangeHint": "Auf die Daten dieses Kapitels beschränkt"
   },
   "memoryDetail": {
     "descriptionTitle": "Beschreibung",
@@ -826,7 +827,22 @@
       "viewPoint": "Aussichtspunkt",
       "historic": "Historisch",
       "art": "Kunst",
-      "transport": "Verkehr"
+      "transport": "Verkehr",
+      "prenatal": "Vorsorgeuntersuchung",
+      "ultrasound": "Ultraschall",
+      "firstKick": "Erster Tritt",
+      "babyMovement": "Kindsbewegung",
+      "heartbeat": "Herzschlag",
+      "babyShower": "Babyparty",
+      "morningMsickness": "Morgenübelkeit",
+      "cravings": "Gelüste",
+      "nesting": "Nestbau",
+      "genderReveal": "Gender-Reveal",
+      "announcement": "Ankündigung",
+      "nursery": "Kinderzimmer vorbereiten",
+      "trimester": "Trimester",
+      "birthPrep": "Geburtsvorbereitung",
+      "symptoms": "Symptome"
     }
   },
   "dialogs": {
@@ -836,7 +852,8 @@
       "addCustom": "Benutzerdefiniertes Tag hinzufügen",
       "customPlaceholder": "Tag-Namen eingeben...",
       "quickTags": "Schnell-Tags",
-      "yourTags": "Deine Tags"
+      "yourTags": "Deine Tags",
+      "pregnancyTags": "Schwangerschaft"
     },
     "locationPicker": {
       "label": "Stadt",
@@ -954,7 +971,9 @@
     "maxPhotos": "Max. 3 Fotos",
     "maxPhotosDesc": "Du kannst bis zu 3 Fotos hinzufügen",
     "required": "Erforderlich",
-    "deleteProfileFailed": "Profil konnte nicht gelöscht werden"
+    "deleteProfileFailed": "Profil konnte nicht gelöscht werden",
+    "dateBelowChapterStart": "Das Datum liegt vor dem Startdatum dieses Kapitels. Bitte wähle ein Datum innerhalb des Kapitels.",
+    "dateAboveChapterEnd": "Das Datum liegt nach dem Enddatum dieses Kapitels. Bitte wähle ein Datum innerhalb des Kapitels."
   },
   "profiles": {
     "switchProfile": "Baby wechseln",

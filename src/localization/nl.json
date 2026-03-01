@@ -317,7 +317,8 @@
     "moreTags": "+{count} meer",
     "locationLabel": "Locatie",
     "locationPlaceholder": "Voeg een plaats toe (optioneel)",
-    "locationHint": "Voeg een locatie toe als dat helpt om de herinnering te begrijpen"
+    "locationHint": "Voeg een locatie toe als dat helpt om de herinnering te begrijpen",
+    "dateRangeHint": "Beperkt tot de datums van dit hoofdstuk"
   },
   "memoryDetail": {
     "descriptionTitle": "Beschrijving",
@@ -658,7 +659,22 @@
       "viewPoint": "Uitzichtpunt",
       "historic": "Historisch",
       "art": "Kunst",
-      "transport": "Vervoer"
+      "transport": "Vervoer",
+      "prenatal": "Prenatale controle",
+      "ultrasound": "Echo",
+      "firstKick": "Eerste schop",
+      "babyMovement": "Babybeweging",
+      "heartbeat": "Hartslag",
+      "babyShower": "Babyshower",
+      "morningMsickness": "Ochtendmisselijkheid",
+      "cravings": "Trek",
+      "nesting": "Nestdrang",
+      "genderReveal": "Gender reveal",
+      "announcement": "Aankondiging",
+      "nursery": "Babykamer klaarmaken",
+      "trimester": "Trimester",
+      "birthPrep": "Voorbereiding bevalling",
+      "symptoms": "Symptomen"
     }
   },
   "dialogs": {
@@ -668,7 +684,8 @@
       "addCustom": "Aangepaste tag toevoegen",
       "customPlaceholder": "Typ een tagnaam...",
       "quickTags": "Sneltags",
-      "yourTags": "Jouw tags"
+      "yourTags": "Jouw tags",
+      "pregnancyTags": "Zwangerschap"
     },
     "locationPicker": {
       "label": "Stad",
@@ -786,7 +803,9 @@
     "maxPhotos": "Maximaal 3 foto's",
     "maxPhotosDesc": "Je kunt maximaal 3 foto's toevoegen",
     "required": "Verplicht",
-    "deleteProfileFailed": "Profiel verwijderen mislukt"
+    "deleteProfileFailed": "Profiel verwijderen mislukt",
+    "dateBelowChapterStart": "De datum ligt voor de startdatum van dit hoofdstuk. Kies een datum binnen het hoofdstuk.",
+    "dateAboveChapterEnd": "De datum ligt na de einddatum van dit hoofdstuk. Kies een datum binnen het hoofdstuk."
   },
   "profiles": {
     "switchProfile": "Baby wisselen",

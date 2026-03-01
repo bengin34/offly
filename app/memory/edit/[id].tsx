@@ -22,12 +22,14 @@ import { Background } from '../../../src/components/Background';
 import { ModalWrapper } from '../../../src/components/ModalWrapper';
 import { TagPickerDialog } from '../../../src/components/TagPickerDialog';
 import { useI18n, useTheme } from '../../../src/hooks';
+import { useProfileStore } from '../../../src/stores/profileStore';
 import type { MemoryType, Tag } from '../../../src/types';
 // memoryType is preserved on save but not editable by the user in the form
 
 export default function EditMemoryScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
+  const { activeBaby } = useProfileStore();
   const theme = useTheme();
   const { t, locale } = useI18n();
 
@@ -212,7 +214,7 @@ export default function EditMemoryScreen() {
                 style={styles.input}
                 value={title}
                 onChangeText={setTitle}
-                placeholder={t('placeholders.memoryTitleNote')}
+                placeholder={memoryType === 'milestone' ? t('placeholders.memoryTitleMilestone') : t('placeholders.memoryTitleNote')}
                 placeholderTextColor={theme.textMuted}
               />
             </View>
@@ -262,6 +264,9 @@ export default function EditMemoryScreen() {
                 <Ionicons name="calendar-outline" size={20} color={theme.textSecondary} />
                 <Text style={styles.dateText}>{formatDate(date)}</Text>
               </TouchableOpacity>
+              {(minDate || maxDate) && (
+                <Text style={styles.dateHint}>{t('entryForm.dateRangeHint')}</Text>
+              )}
             </View>
 
             {showDatePicker && (
@@ -359,6 +364,7 @@ export default function EditMemoryScreen() {
               onClose={() => setShowTagPicker(false)}
               selectedTags={selectedTags}
               onTagsChange={setSelectedTags}
+              isPregnancyMode={activeBaby?.mode === 'pregnant'}
             />
         </View>
       </ModalWrapper>
@@ -425,6 +431,12 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       fontSize: fontSize.md,
       fontFamily: fonts.body,
       color: theme.text,
+    },
+    dateHint: {
+      fontSize: fontSize.xs,
+      fontFamily: fonts.body,
+      color: theme.textMuted,
+      marginTop: spacing.xs,
     },
     datePickerContainer: {
       borderRadius: borderRadius.lg,

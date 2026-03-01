@@ -240,6 +240,9 @@ export default function NewMemoryScreen() {
                 <Ionicons name="calendar-outline" size={20} color={theme.textSecondary} />
                 <Text style={styles.dateText}>{formatDate(date)}</Text>
               </TouchableOpacity>
+              {(chapterStartDate || chapterEndDate) && (
+                <Text style={styles.dateHint}>{t('entryForm.dateRangeHint')}</Text>
+              )}
             </View>
 
             {showDatePicker && (
@@ -338,6 +341,7 @@ export default function NewMemoryScreen() {
               onClose={() => setShowTagPicker(false)}
               selectedTags={selectedTags}
               onTagsChange={setSelectedTags}
+              isPregnancyMode={activeBaby?.mode === 'pregnant'}
             />
         </View>
       </ModalWrapper>
@@ -398,6 +402,12 @@ const createStyles = (theme: ReturnType<typeof useTheme>) =>
       fontSize: fontSize.md,
       fontFamily: fonts.body,
       color: theme.text,
+    },
+    dateHint: {
+      fontSize: fontSize.xs,
+      fontFamily: fonts.body,
+      color: theme.textMuted,
+      marginTop: spacing.xs,
     },
     datePickerContainer: {
       borderRadius: borderRadius.lg,

@@ -317,7 +317,8 @@
     "moreTags": "+{count}件",
     "locationLabel": "場所",
     "locationPlaceholder": "場所を追加（任意）",
-    "locationHint": "思い出の助けになる場合は場所を追加"
+    "locationHint": "思い出の助けになる場合は場所を追加",
+    "dateRangeHint": "このチャプターの日付に制限されています"
   },
   "memoryDetail": {
     "descriptionTitle": "説明",
@@ -658,7 +659,22 @@
       "viewPoint": "展望スポット",
       "historic": "歴史",
       "art": "アート",
-      "transport": "交通"
+      "transport": "交通",
+      "prenatal": "妊婦健診",
+      "ultrasound": "超音波検査",
+      "firstKick": "初めての胎動",
+      "babyMovement": "胎動",
+      "heartbeat": "心拍",
+      "babyShower": "ベビーシャワー",
+      "morningMsickness": "つわり",
+      "cravings": "食べ物の欲求",
+      "nesting": "巣作り",
+      "genderReveal": "性別発表",
+      "announcement": "発表",
+      "nursery": "ベビールーム準備",
+      "trimester": "トリメスター",
+      "birthPrep": "出産準備",
+      "symptoms": "症状"
     }
   },
   "dialogs": {
@@ -668,7 +684,8 @@
       "addCustom": "カスタムタグを追加",
       "customPlaceholder": "タグ名を入力...",
       "quickTags": "クイックタグ",
-      "yourTags": "あなたのタグ"
+      "yourTags": "あなたのタグ",
+      "pregnancyTags": "妊娠"
     },
     "locationPicker": {
       "label": "都市",
@@ -786,7 +803,9 @@
     "maxPhotos": "写真は最大3枚",
     "maxPhotosDesc": "追加できる写真は最大3枚です",
     "required": "必須",
-    "deleteProfileFailed": "プロフィールの削除に失敗しました"
+    "deleteProfileFailed": "プロフィールの削除に失敗しました",
+    "dateBelowChapterStart": "この日付はこの章の開始日より前です。章の期間内の日付を選んでください。",
+    "dateAboveChapterEnd": "この日付はこの章の終了日より後です。章の期間内の日付を選んでください。"
   },
   "profiles": {
     "switchProfile": "赤ちゃんを切り替える",
